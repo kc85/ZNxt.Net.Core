@@ -1,0 +1,37 @@
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using ZNxt.Net.Core.Model;
+
+namespace ZNxt.Net.Core.Interfaces
+{
+    public interface IDBService
+    {
+        bool WriteData(string collection, JObject data);
+
+        long GetCount(string collection, FilterQuery filters);
+
+        long GetCount(string collection, IDBQueryBuilder query);
+
+        JArray Get(string collection, DBQuery query, int? top = null, int? skip = null);
+
+        JArray Get(string collection, IDBQueryBuilder query, List<string> properties = null, Dictionary<string, int> sortColumns = null, int? top = null, int? skip = null);
+
+        long Delete(string collection, FilterQuery filters);
+
+        long Delete(string collection, IDBQueryBuilder query);
+
+        long Update(string collection, FilterQuery filters, JObject data, bool overrideData = false, MergeArrayHandling mergeType = MergeArrayHandling.Union);
+
+        long Update(string collection, IDBQueryBuilder query , JObject data, bool overrideData = false, MergeArrayHandling mergeType = MergeArrayHandling.Union);
+
+        JObject GetPageData(string collection, IDBQueryBuilder query, List<string> fields = null, Dictionary<string, int> sortColumns = null, int pageSize = 10, int currentPage = 1);
+
+        bool DropDB();
+    }
+
+    public enum SortBy
+    {
+        Ascending,
+        Descending
+    }
+}

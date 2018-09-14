@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  znxt.net.core.web.sample:
+    image: ${DOCKER_REGISTRY}znxtnetcorewebsample
+    build:
+      context: .
+      dockerfile: ZNxt.Net.Core.Web.Sample/Dockerfile
+
