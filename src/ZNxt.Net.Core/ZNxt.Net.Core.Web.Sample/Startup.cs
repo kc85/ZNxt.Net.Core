@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-
+using ZNxt.Net.Core.Web.ContentHandler;
 namespace ZNxt.Net.Core.Web.Sample
 {
     public class Startup
@@ -24,6 +24,7 @@ namespace ZNxt.Net.Core.Web.Sample
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticContentHandler();
 
             app.Run(async (context) =>
             {
