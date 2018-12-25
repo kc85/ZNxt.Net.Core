@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZNxt.Net.Core.Web.ContentHandler
+namespace ZNxt.Net.Core.Web.Handlers
 {
     public class StaticContentHandler
     {
+        private readonly RequestDelegate _next;
         public StaticContentHandler(RequestDelegate next)
         {
+            _next = next;
             // This is an HTTP Handler, so no need to store next
         }
 
@@ -20,6 +22,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
 
             context.Response.ContentType = GetContentType();
             await context.Response.WriteAsync(response);
+            // await _next(context);
         }
 
         // ...

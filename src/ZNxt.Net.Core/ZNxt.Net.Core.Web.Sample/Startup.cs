@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using ZNxt.Net.Core.Web.ContentHandler;
+using ZNxt.Net.Core.Web.Handlers;
 namespace ZNxt.Net.Core.Web.Sample
 {
     public class Startup
@@ -15,6 +15,7 @@ namespace ZNxt.Net.Core.Web.Sample
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -24,12 +25,26 @@ namespace ZNxt.Net.Core.Web.Sample
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticContentHandler();
+            app.Map("/api",
+                               HandlerAPI);
+            app.MapWhen(context => context.Request.Query.ContainsKey("branch"),
+                               HandlerStaticContant);
+           
 
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
             });
         }
+        private static void HandlerStaticContant(IApplicationBuilder app)
+    {
+         app.UseStaticContentHandler();
+        
+    }
+         private static void HandlerAPI(IApplicationBuilder app)
+    {
+         app.UseApiHandler();
+        
+    }
     }
 }
