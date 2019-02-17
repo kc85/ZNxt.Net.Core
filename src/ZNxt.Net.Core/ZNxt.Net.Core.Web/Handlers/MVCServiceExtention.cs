@@ -28,7 +28,7 @@ public static class MVCServiceExtention
         services.AddSingleton<UserAccontHelper, UserAccontHelper>();
 
         services.AddSingleton<IDBServiceConfig>(new MongoDBServiceConfig());
-       services.AddSingleton<IKeyValueStorage, FileKeyValueFileStorage>();
+        services.AddSingleton<IKeyValueStorage, FileKeyValueFileStorage>();
         services.AddTransient<IDBService, MongoDBService>();
         services.AddSingleton<IRouting, Routing>();
         services.AddTransient<IAssemblyLoader, AssemblyLoader>();
@@ -36,10 +36,11 @@ public static class MVCServiceExtention
         services.AddTransient<ILogger, Logger>();
         services.AddTransient<ILogReader, Logger>();
         services.AddTransient<IHttpContextProxy, HttpContextProxy>();
+        services.AddTransient<IHttpFileUploader, HttpContextProxy>();
         services.AddTransient<IViewEngine, ViewEngine>();
         services.AddTransient<IActionExecuter, ActionExecuter>();
         services.AddTransient<IResponseBuilder, ResponseBuilder>();
-       services.AddTransient<IAppSettingService, AppSettingService>();
+        services.AddTransient<IAppSettingService, AppSettingService>();
 
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);

@@ -8,7 +8,7 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Web.Proxies
 {
-    public class HttpContextProxy : IHttpContextProxy
+    public partial class HttpContextProxy : IHttpContextProxy
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         public HttpContextProxy(IHttpContextAccessor httpContextAccessor)
