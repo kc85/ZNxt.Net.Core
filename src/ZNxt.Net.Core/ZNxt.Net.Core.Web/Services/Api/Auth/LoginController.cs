@@ -85,40 +85,4 @@ namespace ZNxt.Net.Core.Web.Services.Api.Auth
             return await Task.FromResult(response);
         }
     }
-
-    //public class BaseController
-    //{
-
-    //    private readonly ILogger _logger;
-    //    private readonly IResponseBuilder _responseBuilder;
-    //    private readonly IHttpContextProxy _httpContextProxy;
-
-    //    public BaseController(ILogger logger, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy)
-    //    {
-    //        _logger = logger;
-    //        _responseBuilder = responseBuilder;
-    //        _httpContextProxy = httpContextProxy;
-    //    }
-    //    public async Task<T> Invoke<T,T1>(Func<T1, Task<T>> action)
-    //    {
-    //        try
-    //        {
-    //            var requestData = _httpContextProxy.GetRequestBody<T1>();
-    //            return await action(requestData);
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            var logData = new JObject()
-    //            {
-    //                ["RequestBody"] = _httpContextProxy.GetRequestBody(),
-    //                ["RequestUrl"] = _httpContextProxy.GetURIAbsolutePath(),
-    //                ["RequestQueryString"] = _httpContextProxy.GetQueryString()
-    //            };
-    //            logData["RequestHeader"] = string.Join(";", _httpContextProxy.GetHeaders().Select(f => string.Format("{0}:{1}", f.Key, f.Value)));
-
-    //            _logger.Error(ex.Message, ex, logData);
-    //            throw;
-    //        }
-    //    }
-    //}
 }
