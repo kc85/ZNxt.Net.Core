@@ -7,7 +7,8 @@
             DUPLICATE_ID = 4000,
             MULTIPLE_ROW_RETURNED = 4010,
             UPDATE_DATA_COUNT_NOT_MATCH = 4020,
-            DB_WRITE_ERROR = 4030
+            DB_WRITE_ERROR = 4030,
+            CONNECTION_ERROR = 4040
         }
 
         public enum ClientValidation

@@ -9,13 +9,15 @@ namespace ZNxt.Net.Core.Model
         public string email { get; set; }
         public string name { get; set; }
         public string user_type { get; set; }
+        public string salt { get; set; }
+
         public string email_validation_required { get; set; }
         public string phone_validation_required { get; set; }
-        public List<string> groups { get; set; }
+        public List<Claim> claims { get; set; }
 
         public UserModel()
         {
-            groups = new List<string>();
+            claims = new List<Claim>();
         }
     }
 }

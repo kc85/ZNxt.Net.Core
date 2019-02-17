@@ -110,6 +110,13 @@ namespace ZNxt.Net.Core.Consts
             public const string GET = "GET";
             public const string POST = "POST";
             public const string ACTION = "ACTION";
+            public const string DELETE = "DELETE";
+            public const string PUT = "PUT";
+
+        }
+        public static class Filters
+        {
+            public const string IS_OVERRIDE_FILTER = "{" + CommonConst.CommonField.IS_OVERRIDE + " : " + CommonConst.CommonValue.FALSE + "}";
         }
     }
 }

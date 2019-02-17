@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Exceptions;
+using ZNxt.Net.Core.Exceptions.ErrorCodes;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
@@ -15,21 +17,34 @@ namespace ZNxt.Net.Core.DB.Mongo
     {
         private IMongoDatabase _mongoDataBase;
         private MongoClient _mongoClient;
+        private IDBServiceConfig _DBConfig;
         public Func<string> User;
         private const string DUPLICATE_KEY_ERROR = "duplicate key error";
-
-
-        private readonly string _dbName;
-
-        public MongoDBService(string dbName)
+        public bool IsConnected { get; private set; }
+        public MongoDBService(IDBServiceConfig DBConfig)
         {
-            _dbName = dbName;
-            Init();
+            try
+            {
+                _DBConfig = DBConfig;
+                if (ApplicationConfig.AppInstallStatus != Enums.AppInstallStatus.DBNotSet)
+                {
+                    Init();
+                    IsConnected = true;
+                }
+                else
+                {
+                    IsConnected = false;
+                }
+            }
+            catch (Exception)
+            {
+                IsConnected = false;
+            }
         }
         private void Init()
         {
-            _mongoClient = new MongoClient(ApplicationConfig.MongoDBConnectionString);
-            _mongoDataBase = _mongoClient.GetDatabase(_dbName);
+            _mongoClient = new MongoClient(_DBConfig.ConnectingString);
+            _mongoDataBase = _mongoClient.GetDatabase(_DBConfig.DBName);
         }
         public long Delete(string collection, FilterQuery filters)
         {
@@ -46,7 +61,7 @@ namespace ZNxt.Net.Core.DB.Mongo
         {
             try
             {
-                _mongoClient.DropDatabase(_dbName);
+                _mongoClient.DropDatabase(_DBConfig.DBName);
                 return true;
             }
             catch (System.Exception)
@@ -106,7 +121,43 @@ namespace ZNxt.Net.Core.DB.Mongo
 
         public bool WriteData(string collection, JObject data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                UpdateCommonData(data);
+                data[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = CommonUtility.GetUnixTimestamp(DateTime.Now);
+                data[CommonConst.CommonField.UPDATED_DATE_TIME] = CommonUtility.GetUnixTimestamp(DateTime.Now);
+                data[CommonConst.CommonField.CREATED_BY] = GetUserId();
+                var dbcollection = _mongoDataBase.GetCollection<BsonDocument>(collection);
+                MongoDB.Bson.BsonDocument document = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(data.ToString());
+                dbcollection.InsertOne(document);
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                if (ex.Message.Contains("duplicate key error"))
+                {
+                    throw new DuplicateDBIDException((int)ErrorCode.DB.DUPLICATE_ID, ErrorCode.DB.DUPLICATE_ID.ToString(), ex);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+        private void UpdateCommonData(Newtonsoft.Json.Linq.JObject data)
+        {
+            if (data[CommonConst.CommonField.ID] == null && data[CommonConst.CommonField.DISPLAY_ID] != null)
+            {
+                data[CommonConst.CommonField.ID] = data[CommonConst.CommonField.DISPLAY_ID];
+            }
+            else if (data[CommonConst.CommonField.ID] != null && data[CommonConst.CommonField.DISPLAY_ID] == null)
+            {
+                data[CommonConst.CommonField.DISPLAY_ID] = data[CommonConst.CommonField.ID];
+            }
+        }
+        private string GetUserId()
+        {
+            return User != null ? User() : "";
         }
 
         private List<string> GetProperties(DBQuery query)

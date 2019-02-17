@@ -4,7 +4,7 @@
     {
         string GetHash(string inputString);
 
-        string GetHash(string inputString, string encryptionKey);
+        string GetHash(string inputString, string salt);
 
         string Encrypt(string inputString);
 

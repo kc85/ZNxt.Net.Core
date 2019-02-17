@@ -1,11 +1,14 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
-EXPOSE 3596
-EXPOSE 44373
+EXPOSE 3496
 
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY ZNxt.Net.Core.Web.Sample/ZNxt.Net.Core.Web.Sample.csproj ZNxt.Net.Core.Web.Sample/
+COPY ZNxt.Net.Core.DB.Mongo/ZNxt.Net.Core.DB.Mongo.csproj ZNxt.Net.Core.DB.Mongo/
+COPY ZNxt.Net.Core/ZNxt.Net.Core.csproj ZNxt.Net.Core/
+COPY ZNxt.Net.Core.Web/ZNxt.Net.Core.Web.csproj ZNxt.Net.Core.Web/
+COPY ZNxt.Net.Core.Web.ContentHandler/ZNxt.Net.Core.Web.ContentHandler.csproj ZNxt.Net.Core.Web.ContentHandler/
 RUN dotnet restore ZNxt.Net.Core.Web.Sample/ZNxt.Net.Core.Web.Sample.csproj
 COPY . .
 WORKDIR /src/ZNxt.Net.Core.Web.Sample

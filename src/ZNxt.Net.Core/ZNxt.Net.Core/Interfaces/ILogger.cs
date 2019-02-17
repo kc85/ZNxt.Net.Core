@@ -16,6 +16,8 @@ namespace ZNxt.Net.Core.Interfaces
         void Transaction(JObject transactionData, TransactionState state);
 
         string TransactionId { get; }
+
+        double TransactionStartTime { get;  }
     }
 
     public enum TransactionState

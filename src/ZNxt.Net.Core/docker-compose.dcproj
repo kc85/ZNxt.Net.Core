@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>2ccbe0ac-de8d-4471-93b7-7ff529aaeef5</ProjectGuid>
+    <ProjectGuid>a78d47bf-574b-4e5b-a323-7ee70f6aaa67</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>znxt.net.core</DockerServiceName>
+    <DockerServiceName>znxt.net.core.web.sample</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

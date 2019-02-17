@@ -1,41 +1,83 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using System;
+using Microsoft.AspNetCore.StaticFiles;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using ZNxt.Net.Core.Helpers;
+using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Net.Core.Web.Handlers
 {
     public class StaticContentHandler
     {
         private readonly RequestDelegate _next;
-        public StaticContentHandler(RequestDelegate next)
+        private readonly IStaticContentHandler _staticContentHandler;
+        private readonly IHttpContextProxy _httpProxy;
+        public StaticContentHandler(RequestDelegate next, IStaticContentHandler staticContentHandler, IHttpContextProxy httpProxy)
         {
             _next = next;
-            // This is an HTTP Handler, so no need to store next
+            _staticContentHandler = staticContentHandler;
+            _httpProxy = httpProxy;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            string response = GenerateResponse(context);
+            var paths = GetPages(context.Request.Path.Value);
+            context.Response.ContentType = GetContentType(paths.First());
 
-            context.Response.ContentType = GetContentType();
-            await context.Response.WriteAsync(response);
-            // await _next(context);
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            if (CommonUtility.IsTextConent(context.Response.ContentType))
+            {
+                string response = string.Empty;
+                foreach (var path in paths)
+                {
+                    response = await _staticContentHandler.GetStringContentAsync(path);
+                    if (response != null) break;
+                }
+
+                if (!string.IsNullOrEmpty(response))
+                {
+                    await context.Response.WriteAsync(response);
+
+                    return;
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                byte[] response = await _staticContentHandler.GetContentAsync(context.Request.Path.Value);
+                if (response != null)
+                {
+                    await context.Response.Body.WriteAsync(response, 0, response.Length);
+                    return;
+                }
+            }
+            await _next(context);
         }
 
-        // ...
-
-        private string GenerateResponse(HttpContext context)
+        public List<string> GetPages(string filePath)
         {
-            string title = context.Request.Query["title"];
-            return string.Format("Title of the report: {0}", title);
+            return CommonUtility.IsDefaultPages(filePath);            
         }
 
-        private string GetContentType()
+        private string GetContentType(string filePath)
         {
-            return "text/plain";
+            string contentType;
+
+            if (CommonUtility.IsServerSidePage(filePath, true))
+            {
+                contentType = "text/html; charset=utf-8";
+            }
+            else
+            {
+                new FileExtensionContentTypeProvider().TryGetContentType(filePath, out contentType);
+            }
+             return contentType ?? "application/octet-stream";
         }
     }
     public static class StaticContentHandlerExtensions

@@ -6,7 +6,7 @@ namespace ZNxt.Net.Core.Services
 {
     public abstract class ViewBaseService : ApiBaseService
     {
-        protected IWwwrootContentHandler ContentHandler;
+        protected IStaticContentHandler ContentHandler;
 
         public ViewBaseService(ParamContainer paramContainer)
             : base(paramContainer)

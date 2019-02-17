@@ -2,17 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>02aa5ee6-4fd7-4169-86b9-25d70bedbc03</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\ZNxt.Net.Core.DB.Mongo\ZNxt.Net.Core.DB.Mongo.csproj" />
+    <ProjectReference Include="..\ZNxt.Net.Core.Web.ContentHandler\ZNxt.Net.Core.Web.ContentHandler.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core.Web\ZNxt.Net.Core.Web.csproj" />
   </ItemGroup>

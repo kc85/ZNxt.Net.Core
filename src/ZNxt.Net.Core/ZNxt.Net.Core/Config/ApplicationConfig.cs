@@ -10,6 +10,9 @@ namespace ZNxt.Net.Core.Config
     /// </summary>
     public static class ApplicationConfig
     {
+        
+        public static AppInstallStatus AppInstallStatus
+        { get; set; }
         public static string AppName
         {
             get
@@ -32,11 +35,11 @@ namespace ZNxt.Net.Core.Config
         /// <summary>
         /// Get MongoDB Connection String from Config
         /// </summary>
-        public static string MongoDBConnectionString
+        public static string ConnectionString
         {
             get
             {
-                return CommonUtility.GetAppConfigValue("MongoDBConnectionString");
+                return CommonUtility.GetAppConfigValue("ConnectionString");
             }
         }
 
@@ -160,8 +163,7 @@ namespace ZNxt.Net.Core.Config
         {
             get
             {
-                bool result = false;
-                bool.TryParse(CommonUtility.GetAppConfigValue("StaticContentCache"), out result);
+                bool.TryParse(CommonUtility.GetAppConfigValue("StaticContentCache"), out bool result);
                 return result;
             }
         }
@@ -172,8 +174,8 @@ namespace ZNxt.Net.Core.Config
 
         public static double SessionDuration { get { return _sessionDuration; } set { _sessionDuration = value; } }
 
-        public static string AppBinPath { get; set; }
+        public static string AppBinPath { get{ return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location); } }
 
-        public static string AppWWWRootPath { get; set; }
+        public static string AppWWWRootPath => CommonUtility.GetAppConfigValue("WWWRootFolder");
     }
 }

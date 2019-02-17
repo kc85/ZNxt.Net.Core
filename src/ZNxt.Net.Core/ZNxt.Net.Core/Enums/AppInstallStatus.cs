@@ -2,9 +2,11 @@
 {
     public enum AppInstallStatus
     {
-        Init = 0,
-        Start = 1,
-        Inprogress = 2,
-        Finish = 3
+        None = 0,
+        DBNotSet = 1,
+        Init = 2,
+        Start = 3,
+        Inprogress = 4,
+        Finish = 5
     }
 }

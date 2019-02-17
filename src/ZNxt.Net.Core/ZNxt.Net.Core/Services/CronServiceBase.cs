@@ -6,7 +6,7 @@ namespace ZNxt.Net.Core.Services
 {
     public abstract class CronServiceBase : BaseService
     {
-        protected IRoutings Routings { get; private set; }
+        protected IRouting Routings { get; private set; }
 
         public CronServiceBase(ParamContainer paramContainer)
             : base(paramContainer)

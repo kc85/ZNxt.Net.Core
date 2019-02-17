@@ -36,9 +36,6 @@ namespace ZNxt.Net.Core.Model
             }
         }
 
-        public void AddKey(object pARAM_CONTENT_HANDLER, Func<dynamic> p)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

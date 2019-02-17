@@ -7,20 +7,37 @@ using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Net.Core.Helpers
 {
-    public class ResponseBuilder
+    public class ResponseBuilder : IResponseBuilder
     {
         private readonly ILogger _logger;
         public ILogReader _logReader;
-        private readonly IInitData _initData;
 
 
-        public ResponseBuilder(ILogger logger, ILogReader logReader, IInitData initData)
+        public ResponseBuilder(ILogger logger, ILogReader logReader)
         {
             _logger = logger;
-            _initData = initData;
             _logReader = logReader;
         }
-
+        public JObject Success(JToken data = null, JObject extraData = null)
+        {
+            return CreateReponse(CommonConst._1_SUCCESS, data, extraData);
+        }
+        public JObject BadRequest(JToken data = null, JObject extraData = null)
+        {
+            return CreateReponse(CommonConst._400_BAD_REQUEST, data, extraData);
+        }
+        public JObject Unauthorized(JToken data = null, JObject extraData = null)
+        {
+            return CreateReponse(CommonConst._401_UNAUTHORIZED, data, extraData);
+        }
+        public JObject NotFound(JToken data = null, JObject extraData = null)
+        {
+            return CreateReponse(CommonConst._404_RESOURCE_NOT_FOUND, data, extraData);
+        }
+        public JObject ServerError(JToken data = null, JObject extraData = null)
+        {
+            return CreateReponse(CommonConst._500_SERVER_ERROR, data, extraData);
+        }
         public JObject CreateReponse(int code, JToken data = null, JObject extraData = null)
         {
             var response = CreateResponseObject(code);
@@ -51,7 +68,7 @@ namespace ZNxt.Net.Core.Helpers
             JObject response = new JObject();
             response[CommonConst.CommonField.HTTP_RESPONE_CODE] = code;
             response[CommonConst.CommonField.HTTP_RESPONE_MESSAGE] = CommonConst.Messages[code];
-            response[CommonConst.CommonField.TRANSACTION_ID] = _initData.TransactionId;
+            response[CommonConst.CommonField.TRANSACTION_ID] = _logger.TransactionId;
             return response;
         }
 
@@ -59,9 +76,10 @@ namespace ZNxt.Net.Core.Helpers
         {
             if (ApplicationMode.Maintenance == ApplicationConfig.GetApplicationMode)
             {
+               
                 JObject objDebugData = new JObject();
-                objDebugData[CommonConst.CommonValue.TIME_SPAN] = (DateTime.Now - _initData.InitDateTime).TotalMilliseconds;
-                objDebugData[CommonConst.CommonValue.LOGS] = _logReader.GetLogs(_initData.TransactionId);
+                objDebugData[CommonConst.CommonValue.TIME_SPAN] = Math.Round(CommonUtility.GetTimestampMilliseconds(DateTime.Now) - _logger.TransactionStartTime, 0);
+                objDebugData[CommonConst.CommonValue.LOGS] = _logReader.GetLogs(_logger.TransactionId);
                 response[CommonConst.CommonField.HTTP_RESPONE_DEBUG_INFO] = objDebugData;
             }
         }

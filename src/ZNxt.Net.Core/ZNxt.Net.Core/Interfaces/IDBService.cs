@@ -6,6 +6,7 @@ namespace ZNxt.Net.Core.Interfaces
 {
     public interface IDBService
     {
+        bool IsConnected{ get; }
         bool WriteData(string collection, JObject data);
 
         long GetCount(string collection, FilterQuery filters);

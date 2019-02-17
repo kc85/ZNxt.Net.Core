@@ -22,6 +22,8 @@
             public const string PARAM_SESSION_PROVIDER = "_param_session_prvider";
             public const string PARAM_VIEW_ENGINE = "_param_view_engine";
             public const string PARAM_CONTENT_HANDLER = "_param_content_handler";
+            public const string PARAM_HTTP_CLIENT = "_param_content_handler";
+
             public const string TIME_SPAN = "time_span";
             public const string TRANSACTION_ID_KEY = "zapp-transactionid";
             public const string LOGS = "logs";
@@ -46,6 +48,8 @@
             public const string FINISH = "finish";
             public const string FINISH_WITH_ERROR = "finish_with_error";
             public const string INPROGRESS = "inprogress";
+            public const string APPINSTALLSTATUS = "AppInstallStatus";
+
         }
     }
 }

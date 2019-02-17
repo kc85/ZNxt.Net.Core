@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 
 namespace ZNxt.Net.Core.Helpers
@@ -28,6 +30,12 @@ namespace ZNxt.Net.Core.Helpers
             TimeSpan unixTicks = new TimeSpan(dt.Ticks) - epochTicks;
             return (Int32)unixTicks.TotalSeconds;
         }
+        public static double GetTimestampMilliseconds(DateTime dt)
+        {
+            TimeSpan epochTicks = new TimeSpan(new DateTime(1970, 1, 1, 0, 0, 0).Ticks);
+            TimeSpan unixTicks = new TimeSpan(dt.Ticks) - epochTicks;
+            return (double)unixTicks.TotalMilliseconds;
+        }
 
         public static bool IsServerSidePage(string url, bool checkBlocks = false)
         {
@@ -43,6 +51,19 @@ namespace ZNxt.Net.Core.Helpers
                     fi.Extension == CommonConst.CommonField.SERVER_SIDE_PROCESS_HTML_TEMPLATE_EXTENSION ||
                     fi.Extension == CommonConst.CommonField.SERVER_SIDE_PROCESS_HTML_JS_EXTENSION
                     ;
+            }
+        }
+        public static List<string> IsDefaultPages(string url)
+        {
+            List<string> defultPages = new List<string> { $"{url}/index.html", $"{url}/index.z", $"{url}/home.html", $"{url}/home.z" };
+            var fi = new FileInfo(url);
+            if (string.IsNullOrEmpty(fi.Extension))
+            {
+                return defultPages;
+            }
+            else
+            {
+                return new List<string>() { url };
             }
         }
 
@@ -104,9 +125,36 @@ namespace ZNxt.Net.Core.Helpers
 
             return _configuration;
         }
+        public static void SaveConfig(string key, string value)
+        {
+
+
+            lock (lockObject)
+            {
+                var path = string.Format("{0}\\{1}", ApplicationConfig.AppBinPath, CONFIGRATION_FILE);
+
+                if (!new FileInfo(path).IsReadOnly)
+                {
+                    var config = JObjectHelper.GetJObjectFromFile(path);
+                    config[key] = value;
+                    JObjectHelper.WriteJSONData(path, config);
+                    _configuration = null;
+                    GetWebAppConfig();
+                }
+                Environment.SetEnvironmentVariable(key, value);
+            }
+        }
         public static string GetAppConfigValue(string key)
         {
-            return GetWebAppConfig()[key];
+            var value = Environment.GetEnvironmentVariable(key);
+            if (string.IsNullOrEmpty(value))
+            {
+                return GetWebAppConfig()[key];
+            }
+            else
+            {
+                return value;
+            }
         }
 
         public static bool IsTextConent(string contentType)

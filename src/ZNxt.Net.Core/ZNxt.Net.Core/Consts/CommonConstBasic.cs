@@ -32,6 +32,7 @@
             public const string ACCESS_TYPE = "access_type";
             public const string EMAIL = "email";
             public const string USER_ID = "user_id";
+            public const string AUTH_TOKEN = "auth_token";
             public const string PASSWORD = "password";
             public const string CONFIRM_PASSWORD = "confirm_password";
             public const string USER_TYPE = "user_type";
@@ -56,10 +57,15 @@
             public const string LOG_MESSAGE = "message";
             public const string STACKTRACE = "stack_trace";
             public const string ERR_MESSAGE = "error_message";
+            public const string ERR_DETAILS= "error_details";
             public const string URL = "Url";
             public const string ROUTE = "Route";
             public const string PAYLOAD = "Payload";
             public const string USER = "User";
+            public const string USER_ROLE = "user";
+            public const string SYS_ADMIN_ROLE = "sys_admin";
+            public const string ROLE_CLAIM_TYPE = "role";
+            public const string CLAIMS= "claims";
             public const string TRANSACTION_STATE = "TransactionState";
             public const string REPEAT_IN = "repeat_in";
             public const string EXECULT_ASSEMBLY = "ExecultAssembly";
@@ -115,6 +121,8 @@
             public const string WIDTH = "width";
             public const string HEIGHT = "height";
             public const string AUTH_USERS = "auth_users";
+
+            public const string SALT_KEY = "salt";
         }
     }
 }

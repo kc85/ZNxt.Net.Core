@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.IO;
+using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Interfaces
 {
@@ -28,17 +28,17 @@ namespace ZNxt.Net.Core.Interfaces
 
         void SetResponse(byte[] data);
 
-        string ContentType { get; set; }
 
         string GetMimeType(string fileName);
 
-        string GetContentType(FileInfo pathInfo);
 
         string GetRequestBody();
 
         T GetRequestBody<T>();
 
         string GetQueryString(string key);
+
+        string GetQueryString();
 
         string GetFormData(string key);
 
@@ -51,5 +51,7 @@ namespace ZNxt.Net.Core.Interfaces
         Dictionary<string, string> GetHeaders();
 
         string GetContentType(string path);
+
+        UserModel User { get; }
     }
 }
