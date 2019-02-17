@@ -108,7 +108,6 @@ namespace ZNxt.Net.Core.DB.Mongo
         {
             throw new NotImplementedException();
         }
-
         public long Update(string collection, FilterQuery filters, JObject data, bool overrideData = false, MergeArrayHandling mergeType = MergeArrayHandling.Union)
         {
             return Update(collection, new MongoQueryBuilder(filters), data, overrideData, mergeType);
@@ -116,8 +115,65 @@ namespace ZNxt.Net.Core.DB.Mongo
 
         public long Update(string collection, IDBQueryBuilder query, JObject data, bool overrideData = false, MergeArrayHandling mergeType = MergeArrayHandling.Union)
         {
-            throw new NotImplementedException();
+            data[CommonConst.CommonField.UPDATED_DATE_TIME] = CommonUtility.GetUnixTimestamp(DateTime.Now);
+            data[CommonConst.CommonField.UPDATED_BY] = GetUserId();
+            var dataResut = Get(collection, query, null, null);
+            var dbcollection = _mongoDataBase.GetCollection<BsonDocument>(collection);
+            if (overrideData)
+            {
+                if (dataResut.Count > 1)
+                {
+                    throw new InvalidFilterException((int)ErrorCode.DB.MULTIPLE_ROW_RETURNED, string.Format("Update replace command cannot execute in multiple rows"));
+                }
+                if (dataResut.Count == 1)
+                {
+                    (dataResut[0] as JObject).Merge(data, new JsonMergeSettings
+                    {
+                        MergeArrayHandling = mergeType
+                    });
+
+                    if (data[CommonConst.CommonField.ID] != null)
+                    {
+                        dataResut[0][CommonConst.CommonField.ID] = data[CommonConst.CommonField.ID];
+                    }
+                    BsonDocument document = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(dataResut[0].ToString());
+                    ReplaceOneResult result = dbcollection.ReplaceOne(GetFilter(query.GetQuery()), document, new UpdateOptions() { IsUpsert = true });
+                    if (dataResut.Count != result.ModifiedCount)
+                    {
+                        throw new ClientValidationError((int)ErrorCode.DB.UPDATE_DATA_COUNT_NOT_MATCH, ErrorCode.DB.UPDATE_DATA_COUNT_NOT_MATCH.ToString(), null);
+                    }
+                }
+                else
+                {
+                    WriteData(collection, data);
+                    return 1;
+                }
+            }
+            else
+            {
+                foreach (var item in dataResut)
+                {
+                    (item as JObject).Merge(data, new JsonMergeSettings
+                    {
+                        MergeArrayHandling = mergeType
+                    });
+                }
+                foreach (var item in dataResut)
+                {
+                    if (data[CommonConst.CommonField.ID] != null)
+                    {
+                        item[CommonConst.CommonField.ID] = data[CommonConst.CommonField.ID];
+                    }
+                    BsonDocument document = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(item.ToString());
+
+                    // todo
+                    string filter = "{" + CommonConst.CommonField.DISPLAY_ID + " : '" + item[CommonConst.CommonField.DISPLAY_ID].ToString() + "'}";
+                    ReplaceOneResult result = dbcollection.ReplaceOne(GetFilter(filter), document, new UpdateOptions() { IsUpsert = false });
+                }
+            }
+            return dataResut.Count;
         }
+
 
         public bool WriteData(string collection, JObject data)
         {

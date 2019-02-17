@@ -74,7 +74,7 @@ namespace ZNxt.Net.Core.Model
 
     public class RawQuery : IDBQueryBuilder
     {
-        private string _filter;
+        private readonly string _filter;
         public RawQuery(string filter)
         {
             _filter = filter;

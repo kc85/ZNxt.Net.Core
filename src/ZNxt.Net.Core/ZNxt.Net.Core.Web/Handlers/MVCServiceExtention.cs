@@ -8,12 +8,13 @@ using ZNxt.Net.Core.DB.Mongo;
 using ZNxt.Net.Core.Enums;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
+using ZNxt.Net.Core.Services;
 using ZNxt.Net.Core.Web.ContentHandler;
 using ZNxt.Net.Core.Web.Handlers;
 using ZNxt.Net.Core.Web.Helper;
 using ZNxt.Net.Core.Web.Proxies;
 using ZNxt.Net.Core.Web.Services;
-using ZNxt.Net.Core.Web.Services.Api.installer;
+using ZNxt.Net.Core.Web.Services.Api.Installer;
 
 public static class MVCServiceExtention
 {
@@ -27,6 +28,7 @@ public static class MVCServiceExtention
         services.AddSingleton<UserAccontHelper, UserAccontHelper>();
 
         services.AddSingleton<IDBServiceConfig>(new MongoDBServiceConfig());
+       services.AddSingleton<IKeyValueStorage, FileKeyValueFileStorage>();
         services.AddTransient<IDBService, MongoDBService>();
         services.AddSingleton<IRouting, Routing>();
         services.AddTransient<IAssemblyLoader, AssemblyLoader>();
@@ -37,6 +39,7 @@ public static class MVCServiceExtention
         services.AddTransient<IViewEngine, ViewEngine>();
         services.AddTransient<IActionExecuter, ActionExecuter>();
         services.AddTransient<IResponseBuilder, ResponseBuilder>();
+       services.AddTransient<IAppSettingService, AppSettingService>();
 
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);
@@ -50,8 +53,10 @@ public static class MVCServiceExtention
             var db = serviceProvider.GetService<IDBService>();
             if (db.IsConnected)
             {
+                var appSetting = serviceProvider.GetService<IAppSettingService>();
                 ApplicationConfig.AppInstallStatus = AppInstallStatus.Init;
-                Enum.TryParse(typeof(AppInstallStatus), CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APPINSTALLSTATUS), true, out object status);
+                var appstatus = appSetting.GetAppSettingData(CommonConst.CommonValue.APPINSTALLSTATUS);
+                Enum.TryParse(typeof(AppInstallStatus), appstatus, true, out object status);
                 if (status != null)
                 {
                     ApplicationConfig.AppInstallStatus = (AppInstallStatus)status;

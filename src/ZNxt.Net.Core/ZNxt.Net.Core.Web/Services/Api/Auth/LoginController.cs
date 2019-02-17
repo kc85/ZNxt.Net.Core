@@ -69,11 +69,12 @@ namespace ZNxt.Net.Core.Web.Services.Api.Auth
         }
         private IEnumerable<System.Security.Claims.Claim> GetUserClaims(UserModel user)
         {
-            List<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>();
-
-            claims.Add(new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, user.user_id));
-            claims.Add(new System.Security.Claims.Claim(ClaimTypes.Name, user.name));
-            claims.Add(new System.Security.Claims.Claim(ClaimTypes.Email, user.email));
+            List<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>
+            {
+                new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, user.user_id),
+                new System.Security.Claims.Claim(ClaimTypes.Name, user.name),
+                new System.Security.Claims.Claim(ClaimTypes.Email, user.email)
+            };
             // claims.AddRange(this.GetUserRoleClaims(user));
             return claims;
         }

@@ -6,7 +6,7 @@ namespace ZNxt.Net.Core.DB.Mongo
 {
     public class MongoQueryBuilder : IDBQueryBuilder
     {
-        private FilterQuery _filter;
+        private readonly FilterQuery _filter;
         public MongoQueryBuilder(FilterQuery filter)
         {
             _filter = filter;

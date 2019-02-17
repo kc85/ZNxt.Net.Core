@@ -1,4 +1,4 @@
-﻿namespace ZNxt.Net.Core.Web.Services.Api.installer.Model
+﻿namespace ZNxt.Net.Core.Web.Services.Api.Installer.Model
 {
     class DBConnection
     {

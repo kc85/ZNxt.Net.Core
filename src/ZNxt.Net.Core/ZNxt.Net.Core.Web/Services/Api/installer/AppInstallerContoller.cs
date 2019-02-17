@@ -6,9 +6,9 @@ using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Web.Helper;
-using ZNxt.Net.Core.Web.Services.Api.installer.Model;
+using ZNxt.Net.Core.Web.Services.Api.Installer.Model;
 
-namespace ZNxt.Net.Core.Web.Services.Api.installer
+namespace ZNxt.Net.Core.Web.Services.Api.Installer
 {
     public class AppInstallerContoller
     {
@@ -24,6 +24,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.installer
             _httpContextProxy = httpContextProxy;
             _dbConfig = dbConfig;
             _serviceResolver = serviceResolver;
+
         }
         [Route("/appinstaller/status", CommonConst.ActionMethods.GET)]
         public JObject Get()
@@ -77,12 +78,13 @@ namespace ZNxt.Net.Core.Web.Services.Api.installer
             var userAccontHelper = _serviceResolver.Resolve<UserAccontHelper>();
             if (db.IsConnected)
             {
+                var appSetting = _serviceResolver.Resolve<IAppSettingService>();
                 var customConfig = userAccontHelper.CreateNewUserObject(data.Email, data.Email, data.Email, data.Password, UserIDType.Email);
                 userAccontHelper.AddClaim(customConfig, CommonConst.CommonField.ROLE_CLAIM_TYPE, CommonConst.CommonField.SYS_ADMIN_ROLE);
                 if (db.Write(CommonConst.Collection.USERS, customConfig))
                 {
                     ApplicationConfig.AppInstallStatus = Enums.AppInstallStatus.Finish;
-                    CommonUtility.SaveConfig(CommonConst.CommonValue.APPINSTALLSTATUS, AppInstallStatus.Finish.ToString());
+                    appSetting.SetAppSetting(CommonConst.CommonValue.APPINSTALLSTATUS, AppInstallStatus.Finish.ToString());
                     return _responseBuilder.Success();
                 }
                 else

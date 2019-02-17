@@ -11,5 +11,6 @@ namespace ZNxt.Net.Core.Interfaces
         string GetAppSettingData(string key);
 
         void SetAppSetting(string key, JObject data, string module = null);
+        void SetAppSetting(string key, string data, string module = null);
     }
 }

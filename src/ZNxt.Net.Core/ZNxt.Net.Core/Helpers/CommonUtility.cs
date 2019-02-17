@@ -13,7 +13,7 @@ namespace ZNxt.Net.Core.Helpers
     {
         public const string CONFIGRATION_FILE = "znxtsettings.json.config";
         private static IConfigurationRoot _configuration;
-        private static object lockObject = new object();
+        private static readonly object lockObject = new object();
         public static string GetNewID()
         {
             return GetUnixTimestamp(DateTime.Now) + RandomString(3) + RandomNumber(5);
@@ -88,7 +88,7 @@ namespace ZNxt.Net.Core.Helpers
         }
 
         private static Random random = new Random();
-        private static object syncObj = new object();
+        private static readonly object syncObj = new object();
 
         public static string RandomString(int length)
         {
