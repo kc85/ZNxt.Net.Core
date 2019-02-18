@@ -202,6 +202,10 @@ namespace ZNxt.Net.Core.DB.Mongo
         }
         private void UpdateCommonData(Newtonsoft.Json.Linq.JObject data)
         {
+            if (data[CommonConst.CommonField.ID] == null)
+            {
+                data[CommonConst.CommonField.ID] = CommonUtility.GetNewID();
+            }
             if (data[CommonConst.CommonField.ID] == null && data[CommonConst.CommonField.DISPLAY_ID] != null)
             {
                 data[CommonConst.CommonField.ID] = data[CommonConst.CommonField.DISPLAY_ID];

@@ -1,8 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Text;
+using System.Xml;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
@@ -46,18 +50,54 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         {
             if (_httpFileUploader.GetFiles().Count != 0)
             {
+                string moduleName = string.Empty;
+                string moduleVersion = string.Empty;
+                var uploadId = CommonUtility.RandomString(19);
+                _dbService.Delete(CommonConst.Collection.FILE_UPLOAD_CACHE, new RawQuery(new JObject()
+                {
+                    [CommonConst.CommonField.MODULE_NAME] = moduleName
+                }.ToString()));
                 using (ZipArchive zip = new ZipArchive(_httpFileUploader.GetFileStream(_httpFileUploader.GetFiles()[0])))
                 {
                     foreach (var entry in zip.Entries)
                     {
-
-                        using (StreamReader sr = new StreamReader(entry.Open()))
+                        var stream = entry.Open();
+                        
+                        using (StreamReader sr = new StreamReader(stream))
                         {
-                            //sr.ReadToEnd();
-                            _dbService.WriteData(CommonConst.Collection.FILE_UPLOAD_CACHE, new JObject() { [CommonConst.CommonField.NAME] = entry.FullName });
+                            string stringData = sr.ReadToEnd() ;
+
+                            if (entry.FullName.LastIndexOf(".nuspec") == (entry.FullName.Length - ".nuspec".Length))
+                            {
+                                XmlDocument moduleConfig = new XmlDocument();
+                                moduleConfig.LoadXml(stringData);
+                                moduleName = moduleConfig.GetElementsByTagName("id").Item(0).InnerText;
+                                moduleVersion = moduleConfig.GetElementsByTagName("version").Item(0).InnerText;
+                            }
+
+
+
+                            _dbService.Write(CommonConst.Collection.FILE_UPLOAD_CACHE,
+                            new JObject()
+                            {
+                                [CommonConst.CommonField.TRANSACTION_ID] = uploadId,
+                                [CommonConst.CommonField.NAME] = entry.FullName,
+                                [CommonConst.CommonField.MODULE_NAME] = moduleName,
+                                [CommonConst.CommonField.DATA] = stringData,
+                                [CommonConst.CommonField.VERSION] = moduleVersion,
+                            });
                         }
                     }
                 }
+                _dbService.Update(CommonConst.Collection.FILE_UPLOAD_CACHE, new RawQuery(new JObject()
+                {
+                    [CommonConst.CommonField.TRANSACTION_ID] = uploadId
+                }.ToString()),
+                           new JObject()
+                           {
+                               [CommonConst.CommonField.MODULE_NAME] = moduleName,
+                               [CommonConst.CommonField.VERSION] = moduleVersion,
+                           });
                 return _responseBuilder.Success();
             }
             return _responseBuilder.BadRequest();
