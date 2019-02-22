@@ -53,17 +53,27 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             return new RawQuery(query);
         }
 
-        public static string GetStringContent(IDBService dbProxy, ILogger _logger, string path)
+        public static string GetStringContent(IDBService dbProxy, ILogger _logger, string path, IKeyValueStorage keyValueStorage)
         {
             JObject document = null;
             if(dbProxy.IsConnected)
             document = (JObject)dbProxy.Get(CommonConst.Collection.STATIC_CONTECT, GetFilter(path)).First;
             if (document != null)
             {
+                
                 var data = document[CommonConst.CommonField.DATA];
                 if (data != null)
                 {
                     return data.ToString();
+                }
+                else
+                {
+
+                    var dataFromFile = keyValueStorage.Get<string>(CommonConst.Collection.STATIC_CONTECT, document[CommonConst.CommonField.DISPLAY_ID].ToString());
+                    if (dataFromFile != null)
+                    {
+                        return CommonUtility.GetStringFromBase64(dataFromFile);
+                    }
                 }
             }
             else

@@ -28,7 +28,7 @@
             public const string EVENT_SUBSCRIPTION = "event_subscription";
             public const string APP_INSTALL_STATUS = "app_install_status";
             public const string AUTH_TOKEN_COLLECTION = "auth_tokens";
-            public const string FILE_UPLOAD_CACHE = "_file_upload_cache";
+            public const string MODULE_FILE_UPLOAD_CACHE = "_module_file_upload_cache";
         }
 
         public static class CollectionAccessTypes

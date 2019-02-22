@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json.Linq;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
@@ -142,12 +143,6 @@ namespace ZNxt.Net.Core.Web.Proxies
         {
             throw new NotImplementedException();
         }
-
-        public string GetContentType(string path)
-        {
-            throw new NotImplementedException();
-        }
-
-       
+        
     }
 }

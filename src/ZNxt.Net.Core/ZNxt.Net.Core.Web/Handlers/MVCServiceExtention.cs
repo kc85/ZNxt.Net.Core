@@ -37,10 +37,11 @@ public static class MVCServiceExtention
         services.AddTransient<ILogReader, Logger>();
         services.AddTransient<IHttpContextProxy, HttpContextProxy>();
         services.AddTransient<IHttpFileUploader, HttpContextProxy>();
-        services.AddTransient<IViewEngine, ViewEngine>();
+        services.AddTransient<IViewEngine, RazorTemplateEngine>();
         services.AddTransient<IActionExecuter, ActionExecuter>();
         services.AddTransient<IResponseBuilder, ResponseBuilder>();
         services.AddTransient<IAppSettingService, AppSettingService>();
+        services.AddTransient<ISessionProvider, SessionProvider>();
 
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);

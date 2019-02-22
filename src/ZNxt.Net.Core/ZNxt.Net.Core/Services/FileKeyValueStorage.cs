@@ -19,7 +19,7 @@ namespace ZNxt.Net.Core.Services
             _logger = logger;
             _encryption = encryption;
             _appSettingService = appSettingService;
-            _storageBasePath = appSettingService.GetAppSettingData("KeyValueFileStoragePath");
+            _storageBasePath = string.Format("{0}\\{1}", appSettingService.GetAppSettingData("KeyValueFileStoragePath"), appSettingService.GetAppSettingData("DataBaseName"));
         }
 
         public bool Delete(string bucket, string key)

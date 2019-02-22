@@ -67,16 +67,14 @@ namespace ZNxt.Net.Core.Helpers
             }
         }
 
-        public static JObject GetJObjectDbDataFromFile(FileInfo fi, string contentType, string basepath, string moduleName, string pathPrefix = "")
+        public static JObject GetJObjectDbDataFromFile(string fileName, string contentType, string basepath, string moduleName, int size, string pathPrefix = "")
         {
-            string fileData = GetData(fi.FullName, contentType);
-            string wwwwpath = fi.FullName.Replace(basepath, "").Replace("\\", "/");
+            string wwwwpath = fileName.Replace(basepath, "").Replace("\\", "/");
             JObject data = new JObject();
             data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
             data[CommonConst.CommonField.FILE_PATH] = string.Format("{0}{1}", pathPrefix, wwwwpath);
-            data[CommonConst.CommonField.DATA] = fileData;
             data[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
-            data[CommonConst.CommonField.FILE_SIZE] = fi.Length;
+            data[CommonConst.CommonField.FILE_SIZE] = size;
             data[CommonConst.CommonField.MODULE_NAME] = moduleName;
             data[CommonConst.CommonField.CONTENT_TYPE] = contentType;
             data[CommonConst.CommonField.ÌS_OVERRIDE] = false;

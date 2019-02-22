@@ -11,13 +11,18 @@ namespace ZNxt.Net.Core.Web.ContentHandler
         private readonly ILogger _logger;
         private readonly IActionExecuter _actionExecuter;
         private readonly IViewEngine _viewEngine;
-
-        public StaticContentHandler(IDBService dbService,ILogger logger, IActionExecuter actionExecuter, IViewEngine viewEngine)
+        private readonly IKeyValueStorage _keyValueStorage;
+        private readonly IHttpContextProxy _httpProxy;
+        private readonly ISessionProvider _sessionProvider;
+        public StaticContentHandler(IDBService dbService,ILogger logger, IActionExecuter actionExecuter,IHttpContextProxy httpProxy,ISessionProvider sessionProvider, IViewEngine viewEngine,IKeyValueStorage keyValueStorage)
         {
             _dbService = dbService;
             _logger = logger ;
             _actionExecuter = actionExecuter;
             _viewEngine = viewEngine;
+            _keyValueStorage = keyValueStorage;
+            _httpProxy = httpProxy;
+            _sessionProvider = sessionProvider;
         }
         public Task<byte[]> GetContentAsync(string path)
         {
@@ -33,14 +38,17 @@ namespace ZNxt.Net.Core.Web.ContentHandler
 
             if (CommonUtility.IsServerSidePage(path))
             {
-                // var response = ServerPageModelHelper.ServerSidePageHandler(path, _dbProxy, _httpProxy, _viewEngine, _actionExecuter, _logger);
+                var response = ServerPageModelHelper.ServerSidePageHandler(path, _dbService, _httpProxy, _viewEngine, _actionExecuter, _logger, _sessionProvider,_keyValueStorage);
+
+                //var data = ContentHelper.GetStringContent(_dbService, _logger, path, _keyValueStorage);
+                return Task.FromResult<string>(response);
                 // return response;
-                return Task.FromResult<string>($"In Progress :: {DateTime.Now.ToLongTimeString()}");
+               // return Task.FromResult<string>($"In Progress :: {DateTime.Now.ToLongTimeString()}");
 
             }
             else
             {
-                var data = ContentHelper.GetStringContent(_dbService, _logger, path);
+                var data = ContentHelper.GetStringContent(_dbService, _logger, path, _keyValueStorage);
                 return Task.FromResult<string>(data);
             }
         }

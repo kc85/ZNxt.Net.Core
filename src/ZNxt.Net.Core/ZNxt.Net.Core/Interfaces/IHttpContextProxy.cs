@@ -27,11 +27,7 @@ namespace ZNxt.Net.Core.Interfaces
         void SetResponse(string data);
 
         void SetResponse(byte[] data);
-
-
-        string GetMimeType(string fileName);
-
-
+        
         string GetRequestBody();
 
         T GetRequestBody<T>();
@@ -49,9 +45,7 @@ namespace ZNxt.Net.Core.Interfaces
         string GetHeader(string key);
 
         Dictionary<string, string> GetHeaders();
-
-        string GetContentType(string path);
-
+        
         UserModel User { get; }
     }
 }

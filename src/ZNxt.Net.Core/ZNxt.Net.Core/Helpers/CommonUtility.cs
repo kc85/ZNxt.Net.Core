@@ -55,7 +55,7 @@ namespace ZNxt.Net.Core.Helpers
         }
         public static List<string> IsDefaultPages(string url)
         {
-            List<string> defultPages = new List<string> { $"{url}/index.html", $"{url}/index.z", $"{url}/home.html", $"{url}/home.z" };
+            List<string> defultPages = new List<string> { $"{url}index.z", $"{url}index.html", $"{url}home.z", $"{url}home.html" };
             var fi = new FileInfo(url);
             if (string.IsNullOrEmpty(fi.Extension))
             {
@@ -75,6 +75,12 @@ namespace ZNxt.Net.Core.Helpers
         public static string GetBase64(string data)
         {
             return GetBase64(Encoding.ASCII.GetBytes(data));
+        }
+
+        public static string GetStringFromBase64(string base64Encoded)
+        {
+            byte[] data = System.Convert.FromBase64String(base64Encoded);
+            return System.Text.ASCIIEncoding.ASCII.GetString(data);
         }
 
         public static string GenerateTxnId(string prefix = "HT")
