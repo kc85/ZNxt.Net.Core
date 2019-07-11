@@ -80,6 +80,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             {
 
                 string filePath = GetFullPath(path);
+                  System.Console.WriteLine(filePath);
                 if (File.Exists(filePath))
                 {
                     return File.ReadAllText(filePath);

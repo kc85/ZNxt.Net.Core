@@ -39,7 +39,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             }
             else
             {
-                return string.Empty;
+                return null;
             }
         }
 

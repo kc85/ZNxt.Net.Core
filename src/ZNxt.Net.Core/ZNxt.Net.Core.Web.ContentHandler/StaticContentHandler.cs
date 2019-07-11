@@ -36,6 +36,8 @@ namespace ZNxt.Net.Core.Web.ContentHandler
         {
             path = ContentHelper.MappedUriPath(path);
 
+          
+
             if (CommonUtility.IsServerSidePage(path))
             {
                 var response = ServerPageModelHelper.ServerSidePageHandler(path, _dbService, _httpProxy, _viewEngine, _actionExecuter, _logger, _sessionProvider,_keyValueStorage);

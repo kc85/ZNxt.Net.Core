@@ -99,13 +99,13 @@ namespace ZNxt.Net.Core.Web.Proxies
                 }
                 else
                 {
-                    return default(T);
+                    return default;
                 }
             }
             catch (Exception ex)
             {
                 //logger.Error(string.Format("Error while converting data [{0}], Error :  {1}", body, ex.Message), ex);
-                return default(T);
+                return default;
             }
         }
 

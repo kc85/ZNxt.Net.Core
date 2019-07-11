@@ -1,0 +1,19 @@
+﻿
+@{
+	var products = ExecuteAction("/api/ecomm/products",null);
+}
+<!--Section: Main features & Quick Start-->
+<section>
+
+    <h3 class="h3 text-center mb-5" style="margin-top: 15px">Trading Fashion </h3>
+    <div class="row fadeIn">
+   @foreach (var product in @products["data"])
+   {
+        if(product.images!=null){
+           
+		   @Include("./product.zb",@product)
+
+        }
+     }
+    </div>
+</section>

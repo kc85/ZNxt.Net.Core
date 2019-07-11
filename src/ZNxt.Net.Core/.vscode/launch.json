@@ -4,13 +4,14 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
+
         {
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/ZNxt.Net.Core.Web.Sample/bin/Debug/netcoreapp2.2/ZNxt.Net.Core.Web.Sample.dll",
+            // If you have changed targlset frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/ZNxt.Net.Core.Web.Sample/bin/HPD/Debug/netcoreapp2.2/ZNxt.Net.Core.Web.Sample.dll",
             "args": [],
             "cwd": "${workspaceFolder}/ZNxt.Net.Core.Web.Sample",
             "stopAtEntry": false,
