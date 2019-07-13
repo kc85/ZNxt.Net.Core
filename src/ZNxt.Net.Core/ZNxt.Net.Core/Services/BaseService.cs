@@ -11,7 +11,7 @@ namespace ZNxt.Net.Core.Services
         protected ILogger Logger { get; private set; }
         protected IActionExecuter ActionExecuter { get; private set; }
         protected IPingService PingService { get; private set; }
-        protected ResponseBuilder ResponseBuilder { get; private set; }
+        protected IResponseBuilder ResponseBuilder { get; private set; }
         protected IAppSettingService AppSettingService { get; private set; }
         protected IViewEngine ViewEngine { get; private set; }
         protected IOTPService OTPService { get; private set; }
@@ -22,18 +22,18 @@ namespace ZNxt.Net.Core.Services
 
         public BaseService(ParamContainer paramContainer)
         {
-            DBProxy = paramContainer.GetKey(CommonConst.CommonValue.PARAM_DBPROXY);
-            Logger = paramContainer.GetKey(CommonConst.CommonValue.PARAM_LOGGER);
-            ActionExecuter = paramContainer.GetKey(CommonConst.CommonValue.PARAM_ACTIONEXECUTER);
-            PingService = paramContainer.GetKey(CommonConst.CommonValue.PARAM_PING_SERVICE);
-            ResponseBuilder = paramContainer.GetKey(CommonConst.CommonValue.PARAM_RESPONBUILDER);
-            ViewEngine = paramContainer.GetKey(CommonConst.CommonValue.PARAM_VIEW_ENGINE);
-            AppSettingService = paramContainer.GetKey(CommonConst.CommonValue.PARAM_APP_SETTING);
-            OTPService = paramContainer.GetKey(CommonConst.CommonValue.PARAM_OTP_SERVICE);
-            SMSService = paramContainer.GetKey(CommonConst.CommonValue.PARAM_SMS_SERVICE);
-            EmailService = paramContainer.GetKey(CommonConst.CommonValue.PARAM_EMAIL_SERVICE);
-            EncryptionService = paramContainer.GetKey(CommonConst.CommonValue.PARAM_ENCRYPTION_SERVICE);
-            KeyValueStorage = paramContainer.GetKey(CommonConst.CommonValue.PARAM_KEY_VALUE_STORAGE);
+            DBProxy = (IDBService) paramContainer.GetKey(CommonConst.CommonValue.PARAM_DBPROXY);
+            Logger = (ILogger)paramContainer.GetKey(CommonConst.CommonValue.PARAM_LOGGER);
+            ActionExecuter = (IActionExecuter)paramContainer.GetKey(CommonConst.CommonValue.PARAM_ACTIONEXECUTER);
+            PingService = (IPingService)paramContainer.GetKey(CommonConst.CommonValue.PARAM_PING_SERVICE);
+            ResponseBuilder  = (IResponseBuilder)paramContainer.GetKey(CommonConst.CommonValue.PARAM_RESPONBUILDER);
+            ViewEngine = (IViewEngine)paramContainer.GetKey(CommonConst.CommonValue.PARAM_VIEW_ENGINE);
+            AppSettingService =(IAppSettingService)  paramContainer.GetKey(CommonConst.CommonValue.PARAM_APP_SETTING);
+            OTPService = (IOTPService) paramContainer.GetKey(CommonConst.CommonValue.PARAM_OTP_SERVICE);
+            SMSService =  (ISMSService)paramContainer.GetKey(CommonConst.CommonValue.PARAM_SMS_SERVICE);
+            EmailService =(IEmailService) paramContainer.GetKey(CommonConst.CommonValue.PARAM_EMAIL_SERVICE);
+            EncryptionService = (IEncryption) paramContainer.GetKey(CommonConst.CommonValue.PARAM_ENCRYPTION_SERVICE);
+            KeyValueStorage =(IKeyValueStorage) paramContainer.GetKey(CommonConst.CommonValue.PARAM_KEY_VALUE_STORAGE);
         }
     }
 }

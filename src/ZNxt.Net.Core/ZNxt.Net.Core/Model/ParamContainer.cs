@@ -5,26 +5,23 @@ namespace ZNxt.Net.Core.Model
 {
     public class ParamContainer
     {
-        private Dictionary<string, Func<dynamic>> _keys = new Dictionary<string, Func<dynamic>>();
+        private Dictionary<string, Func<object>> _keys = new Dictionary<string, Func<object>>();
 
-        public dynamic this[string key]
+        public Func<object> this[string key]
         {
             get
             {
                 return _keys[key];
             }
-            set
-            {
-                _keys[key] = value;
-            }
+            set => _keys[key] = value;
         }
 
-        public void AddKey(string key, Func<dynamic> val)
+        public void AddKey(string key, Func<object> val)
         {
             _keys[key] = val;
         }
 
-        public dynamic GetKey(string key)
+        public object GetKey(string key)
         {
             if (_keys.ContainsKey(key))
             {

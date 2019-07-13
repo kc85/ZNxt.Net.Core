@@ -19,9 +19,9 @@ namespace ZNxt.Net.Core.Services
         public ApiBaseService(ParamContainer paramContainer)
             : base(paramContainer)
         {
-            HttpProxy = paramContainer.GetKey(CommonConst.CommonValue.PARAM_HTTPREQUESTPROXY);
-            Route = paramContainer.GetKey(CommonConst.CommonValue.PARAM_ROUTE);
-            SessionProvider = paramContainer.GetKey(CommonConst.CommonValue.PARAM_SESSION_PROVIDER);
+            HttpProxy = (IHttpContextProxy)paramContainer.GetKey(CommonConst.CommonValue.PARAM_HTTPREQUESTPROXY);
+            Route = (RoutingModel)paramContainer.GetKey(CommonConst.CommonValue.PARAM_ROUTE);
+            SessionProvider = (ISessionProvider)paramContainer.GetKey(CommonConst.CommonValue.PARAM_SESSION_PROVIDER);
         }
 
         protected JObject GetPaggedData(string collection, JArray joins = null, string overrideFilters = null, Dictionary<string, int> sortColumns = null, List<string> fields = null)

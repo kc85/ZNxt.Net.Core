@@ -14,8 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ZNxt.Net.Core.DB.Mongo\ZNxt.Net.Core.DB.Mongo.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core.Web.ContentHandler\ZNxt.Net.Core.Web.ContentHandler.csproj" />
-    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core.Web\ZNxt.Net.Core.Web.csproj" />
+    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
   </ItemGroup>
 
 </Project>

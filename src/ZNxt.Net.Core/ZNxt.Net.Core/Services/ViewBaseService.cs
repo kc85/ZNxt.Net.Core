@@ -11,7 +11,7 @@ namespace ZNxt.Net.Core.Services
         public ViewBaseService(ParamContainer paramContainer)
             : base(paramContainer)
         {
-            ContentHandler = paramContainer.GetKey(CommonConst.CommonValue.PARAM_CONTENT_HANDLER);
+            ContentHandler = (IStaticContentHandler)paramContainer.GetKey(CommonConst.CommonValue.PARAM_CONTENT_HANDLER);
         }
     }
 }

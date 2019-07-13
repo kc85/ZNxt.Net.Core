@@ -11,7 +11,7 @@ namespace ZNxt.Net.Core.Services
         public CronServiceBase(ParamContainer paramContainer)
             : base(paramContainer)
         {
-            Routings = paramContainer.GetKey(CommonConst.CommonValue.PARAM_ROUTING_OBJECT);
+            Routings = (IRouting)paramContainer.GetKey(CommonConst.CommonValue.PARAM_ROUTING_OBJECT);
         }
     }
 }

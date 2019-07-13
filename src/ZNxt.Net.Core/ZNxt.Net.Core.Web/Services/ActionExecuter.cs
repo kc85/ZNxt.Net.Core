@@ -49,8 +49,8 @@ namespace ZNxt.Net.Core.Web.Services
         {
             if (route.auth_users.FirstOrDefault(f => f.Trim() == "*") == null)
             {
-                ISessionProvider sessionProvider = helper.GetKey(CommonConst.CommonValue.PARAM_SESSION_PROVIDER);
-                IHttpContextProxy httpProxy = helper.GetKey(CommonConst.CommonValue.PARAM_HTTPREQUESTPROXY);
+                ISessionProvider sessionProvider =(ISessionProvider) helper.GetKey(CommonConst.CommonValue.PARAM_SESSION_PROVIDER);
+                IHttpContextProxy httpProxy = (IHttpContextProxy)helper.GetKey(CommonConst.CommonValue.PARAM_HTTPREQUESTPROXY);
                 if (sessionProvider == null || httpProxy == null)
                 {
                     string error = "ActionExecuter.Exec sessionProvider is null or HttpContextProxy is null on ParamContainer";

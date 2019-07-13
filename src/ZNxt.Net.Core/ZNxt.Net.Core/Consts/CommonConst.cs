@@ -70,8 +70,8 @@ namespace ZNxt.Net.Core.Consts
                     foreach (Type messageType in assemble.GetTypes()
                .Where(mytype => mytype.GetInterfaces().Contains(typeof(IMessageCodeContainer))))
                     {
-                        dynamic obj = Activator.CreateInstance(messageType);
-                        string text = obj.Get(code);
+                        object obj = Activator.CreateInstance(messageType);
+                        string text = (obj as IMessageCodeContainer).Get(code);
                         if (!string.IsNullOrEmpty(text))
                         {
                             return text;
