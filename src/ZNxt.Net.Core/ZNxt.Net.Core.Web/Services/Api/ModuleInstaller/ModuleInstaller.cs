@@ -63,7 +63,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             //moduleCollections.Add(CreateCollectionEntry(CommonConst.Collection.DLLS, CommonConst.CollectionAccessTypes.READONLY));
 
                InstallWWWRoot(request);
-            //    InstallDlls(moduleDir, moduleName);
+            //   InstallDlls(moduleDir, moduleName);
             //    InstallCollections(moduleDir, moduleName, moduleCollections);
 
             //    _dbProxy.Update(CommonConst.Collection.MODULES, "{" + CommonConst.CommonField.DATA_KEY + " :'" + moduleName + "'}", moduleObject, true);

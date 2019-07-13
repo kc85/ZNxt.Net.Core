@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Interfaces;
@@ -57,6 +58,10 @@ namespace ZNxt.Net.Core.Web.Handlers
                             {
                                 await context.Response.WriteAsync((response as string));
                             }
+                            //else if (method.ReturnType == typeof(JObject))
+                            //{
+                            //    await context.Response.WriteAsync((response.ToString() as string));
+                            //}
                             else if(method.ReturnType == typeof(byte[]))
                             {
                                 var byteResponse = response as byte[];

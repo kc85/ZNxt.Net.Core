@@ -122,7 +122,7 @@ namespace ZNxt.Net.Core.Web.Services
         }
         public JObject GetUserDetails()
         {
-            if (_httpContextProxy.User != null)
+            if (_httpContextProxy!=null && _httpContextProxy.User != null)
             {   
                 return JObject.Parse(JsonConvert.SerializeObject(_httpContextProxy.User));
             }

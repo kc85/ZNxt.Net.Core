@@ -35,7 +35,7 @@ namespace ZNxt.Net.Core.Consts
 
         public class MessageText
         {
-            private Dictionary<int, string> text = new Dictionary<int, string>();
+            private readonly Dictionary<int, string> text = new Dictionary<int, string>();
             private static MessageText _messageText;
             private static readonly object lockObj = new object();
 
