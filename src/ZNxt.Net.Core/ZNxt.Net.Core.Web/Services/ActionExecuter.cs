@@ -11,8 +11,8 @@ namespace ZNxt.Net.Core.Web.Services
 {
     public class ActionExecuter : IActionExecuter
     {
-        private ILogger _logger;
-        private IAssemblyLoader _assemblyLoader;
+        private readonly ILogger _logger;
+        private readonly  IAssemblyLoader _assemblyLoader;
 
         public ActionExecuter(IServiceResolver serviceResolver)
         {

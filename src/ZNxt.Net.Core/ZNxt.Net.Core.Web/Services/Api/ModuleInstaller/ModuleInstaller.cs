@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿    using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,8 +47,8 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             JObject moduleObject = new JObject();
             moduleObject[CommonConst.CommonField.NAME] = request.Name;
             moduleObject[CommonConst.CommonField.VERSION] = request.Version;
-            var config = GetModuleConfigFile(request);
-            moduleObject[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER] = config[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER];
+            // var config = GetModuleConfigFile(request);
+            moduleObject[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER] = "collections";// config[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER];
 
             //   var moduleCollections = new JArray();
             //if (moduleObject[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER] != null)
@@ -86,7 +86,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         private void InstallWWWRoot(ModuleInstallRequest request)
         {
 
-            var wwwrootFilter = @"{name: /^Content\/wwwroot/, " + CommonConst.CommonField.MODULE_NAME + ": '" + request.Name + "', " + CommonConst.CommonField.VERSION + ": '" + request.Version + "'}";
+            var wwwrootFilter = @"{name: /^content\/wwwroot/, " + CommonConst.CommonField.MODULE_NAME + ": '" + request.Name + "', " + CommonConst.CommonField.VERSION + ": '" + request.Version + "'}";
             CleanDBCollection(request.Name, CommonConst.Collection.STATIC_CONTECT);
 
             foreach (var item in _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(wwwrootFilter)))
@@ -95,7 +95,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 var fileName = item[CommonConst.CommonField.NAME].ToString();
                 var fileSize = int.Parse(item[CommonConst.CommonField.FILE_SIZE].ToString());
                 var contentType = Mime.GetMimeType(fileName);
-                var fileData = JObjectHelper.GetJObjectDbDataFromFile(fileName, contentType, "Content/wwwroot", request.Name, fileSize);
+                var fileData = JObjectHelper.GetJObjectDbDataFromFile(fileName, contentType, "content/wwwroot", request.Name, fileSize);
                 var id = fileData[CommonConst.CommonField.DISPLAY_ID].ToString();
                 if (_dbService.Write(CommonConst.Collection.STATIC_CONTECT, fileData))
                 {
@@ -112,18 +112,18 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         }
         private JObject GetModuleConfigFile(ModuleInstallRequest request)
         {
-            var moduleConfig = _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(new JObject()
-            {
-                [CommonConst.CommonField.MODULE_NAME] = request.Name,
-                [CommonConst.CommonField.VERSION] = request.Version,
-                [CommonConst.CommonField.NAME] = "Content/module.json"
-            }.ToString())).FirstOrDefault();
+            //var moduleConfig = _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(new JObject()
+            //{
+            //    [CommonConst.CommonField.MODULE_NAME] = request.Name,
+            //    [CommonConst.CommonField.VERSION] = request.Version,
+            //    [CommonConst.CommonField.NAME] = "Content/module.json"
+            //}.ToString())).FirstOrDefault();
 
-            if (moduleConfig == null)
-            {
-                throw new Exception("Module config not found");
-            }
-            var data = _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, moduleConfig[CommonConst.CommonField.DISPLAY_ID].ToString());
+            //if (moduleConfig == null)
+            //{
+            //    throw new Exception("Module config not found");
+            //}
+            var data = _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, request.Name);
             return JObject.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(data)));
 
         }

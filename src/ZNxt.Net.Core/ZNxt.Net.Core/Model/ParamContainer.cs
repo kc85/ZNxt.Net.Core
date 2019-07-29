@@ -5,7 +5,7 @@ namespace ZNxt.Net.Core.Model
 {
     public class ParamContainer
     {
-        private Dictionary<string, Func<object>> _keys = new Dictionary<string, Func<object>>();
+        private readonly Dictionary<string, Func<object>> _keys = new Dictionary<string, Func<object>>();
 
         public Func<object> this[string key]
         {
