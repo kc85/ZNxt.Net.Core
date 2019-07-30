@@ -31,6 +31,12 @@ namespace ZNxt.Net.Core.Helpers
             arrData = JArray.Parse(filedata);
             return arrData;
         }
+        public static JArray GetJArrayFromString(string data)
+        {
+            JArray arrData = new JArray();
+            arrData = JArray.Parse(data);
+            return arrData;
+        }
 
         public static JObject GetJObjectFromFile(string filePath)
         {

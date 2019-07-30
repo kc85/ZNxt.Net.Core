@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
@@ -40,22 +41,41 @@ namespace ZNxt.Net.Core.Web.Services
                     if (routes.Length != 0)
                     {
                         var r = (Route)routes.First();
-                        _routes.Add(new RoutingModel() {
-                            Method = r.Method,
-                            Route = r.RoutePath.ToLower(),
-                            ExecultAssembly = routeClass.Assembly.ManifestModule.Name,
-                            ExecuteMethod = mi.Name,
-                            ExecuteType = routeClass.FullName,
-                            ContentType = r.ContentType,
-                            auth_users = r.AuthUsers
-                        });
+                        if (GetRoute(r.Method, r.RoutePath) == null)
+                        {
+                            _routes.Add(new RoutingModel()
+                            {
+                                Method = r.Method,
+                                Route = r.RoutePath.ToLower(),
+                                ExecultAssembly = routeClass.Assembly.FullName,
+                                ExecuteMethod = mi.Name,
+                                ExecuteType = routeClass.FullName,
+                                ContentType = r.ContentType,
+                                auth_users = r.AuthUsers
+                            });
+                        }
                     }
+                }
+            }
+
+            // from DB 
+
+            var filter = "{" + CommonConst.CommonField.IS_OVERRIDE + " : " + CommonConst.CommonValue.FALSE + "}";
+            var dataResponse = _dbService.Get(CommonConst.Collection.SERVER_ROUTES, new RawQuery(filter));
+            foreach (var routeData in dataResponse)
+            {
+                var route = Newtonsoft.Json.JsonConvert.DeserializeObject<RoutingModel>(routeData.ToString());
+                if (GetRoute(route.Method, route.Route) == null)
+                {
+                    _routes.Add(route);
                 }
             }
         }
         public RoutingModel GetRoute(string method, string url)
         {
-            return _routes.FirstOrDefault(f => f.Method == method && f.Route == url);
+            var route =  _routes.FirstOrDefault(f => f.Method == method && f.Route == url);
+            
+            return route;
         }
 
         public List<RoutingModel> GetRoutes()

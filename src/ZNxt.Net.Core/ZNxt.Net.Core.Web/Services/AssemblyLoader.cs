@@ -14,11 +14,12 @@ namespace ZNxt.Net.Core.Web.Services
         private IDBService _dbProxy;
         private ILogger _logger;
         public Dictionary<string, byte[]> _loadedAssembly = new Dictionary<string, byte[]>();
-
-        public AssemblyLoader(IDBService dbService,ILogger logger)
+        private readonly IKeyValueStorage _keyValueStorage;
+        public AssemblyLoader(IDBService dbService,ILogger logger, IKeyValueStorage keyValueStorage)
         {
             _dbProxy = dbService;
             _logger = logger;
+            _keyValueStorage = keyValueStorage;
         }
         
         public Type GetType(string assemblyName, string executeType)
@@ -73,15 +74,16 @@ namespace ZNxt.Net.Core.Web.Services
 
             if (dataResponse.Count > 0)
             {
-                var assemblyData = dataResponse[0][CommonConst.CommonField.DATA].ToString();
+                var id = dataResponse[0][CommonConst.CommonField.DISPLAY_ID].ToString();
+                var assemblyData = _keyValueStorage.Get<string>(CommonConst.Collection.DLLS, id);
                 return System.Convert.FromBase64String(assemblyData);
             }
             return null;
         }
 
-        private static string GetFilter(string path)
+        private static string GetFilter(string name)
         {
-            return "{ $and: [ { is_override:{ $ne: true}  }, {'" + CommonConst.CommonField.FILE_PATH + "':  {$regex :'^" + path.ToLower() + "$','$options' : 'i'}}] }";
+            return "{ $and: [ { is_override:{ $ne: true}  }, {'" + CommonConst.CommonField.NAME + "':  {$regex :'^" + name + "$','$options' : 'i'}}] }";
         }
 
         private Assembly GetFromAppDomain(string fullName)
@@ -90,7 +92,7 @@ namespace ZNxt.Net.Core.Web.Services
 
             foreach (Assembly assembly in assemblies)
             {
-                if ((assembly.ManifestModule).ScopeName == fullName)
+                if (assembly.FullName == fullName)
                 {
                     return assembly;
                 }

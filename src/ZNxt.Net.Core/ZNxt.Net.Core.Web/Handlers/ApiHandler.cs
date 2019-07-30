@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                 var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
                 if (type != null)
                 {
+                    
                     _logger.Debug(string.Format("Executing route:{0}", route.ToString()));
                     var controller = _serviceResolver.Resolve(type);
                     var method = controller.GetType().GetMethods().FirstOrDefault(f => f.Name == route.ExecuteMethod);

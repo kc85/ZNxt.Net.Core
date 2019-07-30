@@ -43,6 +43,8 @@ public static class MVCServiceExtention
         services.AddTransient<IAppSettingService, AppSettingService>();
         services.AddTransient<ISessionProvider, SessionProvider>();
 
+       
+
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);
 
@@ -103,7 +105,6 @@ public static class MVCApplicationBuilderExtensions
 {
     public static void UseZNxtApp(this IApplicationBuilder app)
     {
-
         app.UseHttpProxyHandler();
         app.Map("/api", HandlerAPI);
         app.MapWhen(context => true, HandlerStaticContant);

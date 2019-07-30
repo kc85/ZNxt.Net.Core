@@ -1,0 +1,12 @@
+﻿[
+  {
+    "auth_users": [ "*" ],
+    "key": "base_module_test_app_setting",
+    "data": "test data"
+  },
+  {
+    "auth_users": [ "*" ],
+    "key": "base_module_test_2_app_setting",
+    "data": "test data 2"
+  }
+]

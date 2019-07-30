@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00022</Version>
+    <Version>1.0.0-Beta00029</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".\wwwroot\frontend\about.html" Pack="true" PackPath="." />
+    <None Include=".\collections\app_settings.json" Pack="true" PackPath="." />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
