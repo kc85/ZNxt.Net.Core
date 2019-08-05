@@ -1,0 +1,39 @@
+.catagory_post{
+    @media #{$tab}{
+        padding: 0 0 50px;
+    }
+    @media #{$medium_device}{
+    
+    }
+    .single_catagory_post{
+        @media #{$tab}{
+            margin-bottom: 20px;
+        }
+        @media #{$medium_device}{
+        
+        }
+        .post_text_1 {
+            padding: 34px 0 0;
+            h5{
+                text-transform: uppercase;
+                font-family: $font_stack_1;
+                font-size: 14px;
+                text-transform: uppercase;
+                margin-bottom: 13px;
+            }
+            h3{
+                font-size: 22px;
+                line-height: 34px;
+                text-transform: uppercase;
+                margin-bottom: 15px;
+                @include transform_time(0.5s);
+                
+            }
+        }
+        &:hover{
+            h3{
+                color: $primary_color;
+            }
+        }
+    }
+}

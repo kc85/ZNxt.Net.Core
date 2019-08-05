@@ -11,7 +11,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
 {
     public class ContentHelper
     {
-        public static byte[] GetContent(IDBService dbProxy, ILogger logger, string path)
+        public static byte[] GetContent(IDBService dbProxy, ILogger logger, string path, IKeyValueStorage keyValueStorage)
         {
             string wwwrootpath = ApplicationConfig.AppWWWRootPath;
             JObject document = null;
@@ -21,6 +21,10 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             if (document != null)
             {
                 var data = document[CommonConst.CommonField.DATA];
+                if (data == null)
+                {
+                    data = keyValueStorage.Get<string>(CommonConst.Collection.STATIC_CONTECT, document[CommonConst.CommonField.DISPLAY_ID].ToString());
+                }
                 if (data != null)
                 {
                     if (CommonUtility.IsTextConent(document[CommonConst.CommonField.CONTENT_TYPE].ToString()))
@@ -33,6 +37,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
                         return dataByte;
                     }
                 }
+                
             }
             else
             {

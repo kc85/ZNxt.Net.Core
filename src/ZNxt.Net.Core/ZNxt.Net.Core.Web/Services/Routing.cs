@@ -15,6 +15,7 @@ namespace ZNxt.Net.Core.Web.Services
         {
             _dbService = dbService;
             LoadRoutes();
+
         }
 
         private void LoadRoutes()
@@ -65,11 +66,18 @@ namespace ZNxt.Net.Core.Web.Services
             foreach (var routeData in dataResponse)
             {
                 var route = Newtonsoft.Json.JsonConvert.DeserializeObject<RoutingModel>(routeData.ToString());
-                if (GetRoute(route.Method, route.Route) == null)
+                var dbroute = GetRoute(route.Method, route.Route);
+                if (dbroute == null)
                 {
-                    _routes.Add(route);
+                    _routes.Remove(dbroute);
                 }
+                _routes.Add(route);
+
             }
+        }
+        public void ReLoadRoutes()
+        {
+            LoadRoutes();
         }
         public RoutingModel GetRoute(string method, string url)
         {

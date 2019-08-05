@@ -27,7 +27,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
         public Task<byte[]> GetContentAsync(string path)
         {
             path = ContentHelper.MappedUriPath(path);
-            var data = ContentHelper.GetContent(_dbService, _logger, path);
+            var data = ContentHelper.GetContent(_dbService, _logger, path, _keyValueStorage);
 
             return Task.FromResult<byte [] >(data);
         }

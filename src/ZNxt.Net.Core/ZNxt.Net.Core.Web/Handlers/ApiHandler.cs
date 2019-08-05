@@ -19,7 +19,8 @@ namespace ZNxt.Net.Core.Web.Handlers
         private readonly IAssemblyLoader _assemblyLoader;
         private readonly IServiceResolver _serviceResolver;
         private readonly ILogger _logger;
-        public ApiHandler(RequestDelegate next,ILogger logger,IDBService dbService, IRouting routing, IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver)
+        private readonly IResponseBuilder _responseBuilder;
+        public ApiHandler(RequestDelegate next,ILogger logger,IDBService dbService, IRouting routing, IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder)
         {
             _next = next;
             _routing = routing;
@@ -28,6 +29,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             _assemblyLoader = assemblyLoader;
             _serviceResolver = serviceResolver;
             _logger = logger;
+            _responseBuilder = responseBuilder;
         }
 
         public async Task Invoke(HttpContext context)
@@ -60,10 +62,6 @@ namespace ZNxt.Net.Core.Web.Handlers
                             {
                                 await context.Response.WriteAsync((response as string));
                             }
-                            //else if (method.ReturnType == typeof(JObject))
-                            //{
-                            //    await context.Response.WriteAsync((response.ToString() as string));
-                            //}
                             else if(method.ReturnType == typeof(byte[]))
                             {
                                 var byteResponse = response as byte[];
@@ -79,9 +77,18 @@ namespace ZNxt.Net.Core.Web.Handlers
                             await context.Response.Body.WriteAsync(new byte[] { });
                         }
                     }
+                    else
+                    {
+                        _logger.Error($"Method not found for route : {route.ToString()}");
+                        await context.Response.WriteAsync(_responseBuilder.NotFound().ToString());
+                    }
                     return;
                 }
-
+                else
+                {
+                    _logger.Error($"Type not found for route : {route.ToString()}");
+                    await context.Response.WriteAsync(_responseBuilder.NotFound().ToString());
+                }
             }
             await _next(context);
 

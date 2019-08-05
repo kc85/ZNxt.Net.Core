@@ -1,0 +1,120 @@
+/************review_part css start***************/
+.review_part {
+  position: relative;
+  z-index: 99;
+
+  .feature_icon_2 {
+    position: absolute;
+    right: 15%;
+    top: 5%;
+    z-index: -1;
+  }
+  .review_img{
+    margin-bottom: 25px;
+  }
+  .review_part_text {
+    text-align: left;
+    @media #{$tab}{
+      padding: 0 15px;
+    }
+    @media #{$medium_device}{
+    
+    }
+    h5{
+      font-size: 14px;
+      font-weight: 500;
+      color: #a7a8a9;
+      text-align: left;
+      text-transform: uppercase;
+      font-family: $font_stack_1;
+      margin-bottom: 25px;
+    }
+    h2 {
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 50px;
+      margin-bottom: 28px;
+      position: relative;
+
+      @media #{$small_mobile} {
+        font-size: 25px;
+        margin-bottom: 10px;
+        line-height: 35px;
+      }
+
+      @media #{$large_mobile} {
+        font-size: 25px;
+        margin-bottom: 10px;
+        line-height: 35px;
+      }
+
+      @media #{$tab_device} {
+        font-size: 25px;
+        margin-bottom: 10px;
+        line-height: 35px;
+      }
+
+      @media #{$medium_device} {
+        font-size: 28px;
+        margin-bottom: 20px;
+        line-height: 40px;
+      }
+    }
+
+    p {
+      line-height: 36px;
+      margin-bottom: 34px;
+
+      @media #{$small_mobile} {
+        margin-bottom: 10px;
+      }
+
+      @media #{$large_mobile} {
+        margin-bottom: 20px;
+      }
+
+      @media #{$tab_device} {
+        margin-bottom: 20px;
+      }
+
+      @media #{$medium_device} {}
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      @media #{$tab}{
+        margin-bottom: 0;
+      }
+      @media #{$medium_device}{
+      
+      }
+      span {
+        font-size: 70%;
+        color: #888888;
+        font-weight: 400;
+      }
+    }
+  }
+  .owl-dots {
+    padding-top: 33px;
+
+    button.owl-dot {
+      border-radius: 0;
+      display: inline-block;
+      background: #ccc;
+      margin: 0 15px 0 0;
+      width: 20px;
+      height: 4px;
+      background-color: $btn_hover;
+
+      &.active {
+        background-color: $btn_bg;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

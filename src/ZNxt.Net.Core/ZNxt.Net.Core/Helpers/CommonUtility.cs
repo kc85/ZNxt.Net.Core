@@ -80,7 +80,7 @@ namespace ZNxt.Net.Core.Helpers
         public static string GetStringFromBase64(string base64Encoded)
         {
             byte[] data = System.Convert.FromBase64String(base64Encoded);
-            return System.Text.ASCIIEncoding.ASCII.GetString(data);
+            return System.Text.Encoding.UTF8.GetString(data);
         }
 
         public static string GenerateTxnId(string prefix = "HT")
@@ -165,7 +165,9 @@ namespace ZNxt.Net.Core.Helpers
 
         public static bool IsTextConent(string contentType)
         {
-            return contentType.Contains("text/") || contentType.Contains("application/json") || contentType.Contains("application/xml");
+            return contentType.Contains("text/") || contentType.Contains("application/json")
+                || contentType.Contains("application/xml")
+            || contentType.Contains("application/javascript");
         }
 
         public static string GetTimestamp(DateTime value)

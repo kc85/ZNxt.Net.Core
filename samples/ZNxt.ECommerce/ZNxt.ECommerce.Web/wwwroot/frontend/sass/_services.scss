@@ -1,0 +1,91 @@
+/**************** services css start ****************/
+.our_service {
+    .single_offer_img{
+        img{
+            width: 100%;
+        }
+    }
+    .single_offer_text{
+        background-color: #fcf7f7;
+        height: 100% !important;
+        @media #{$tab_device}{
+
+        }
+        @media #{$medium_device}{
+        
+        }
+        span{
+            font-size: 60px !important;
+            margin-bottom: 27px;
+            display: inline-block;
+            @media #{$tab}{
+                margin-bottom: 10px;
+            }
+            @media #{$medium_device}{
+            
+            }
+        }
+        h4{
+            font-size: 22px;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            @media #{$tab}{
+                margin-bottom: 10px;
+            }
+            @media #{$medium_device}{
+            
+            }
+        }
+        p{
+            margin-bottom: 40px;
+        }
+        .btn_1{
+            color: $heading_color;
+            &:after{
+                background-color: $heading_color;
+
+            }
+            &:before{
+                background-color: $heading_color;
+            }
+            &:hover{
+                &:after{
+                    background-color: $primary_color;
+    
+                }
+                &:before{
+                    background-color: $primary_color;
+                }
+            }
+        }
+    }
+    .wedding{
+        margin-bottom: 30px;
+        padding: 56px 30px 65px;
+        @media #{$tab}{
+            padding: 25px 15px 30px;
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    .nature{
+        margin-top: 30px;
+        padding: 43px 109px 60px;
+        @media #{$tab}{
+            padding: 25px 15px 30px;
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    @media #{$tab}{
+        .single_offer_img{
+            margin-bottom: 30px;
+        }
+    }
+    @media #{$medium_device}{
+    
+    }
+}

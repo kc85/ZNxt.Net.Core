@@ -26,8 +26,9 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         private readonly IKeyValueStorage _keyValueStorage;
         private readonly IHttpFileUploader _httpFileUploader;
         private readonly ILogger _logger;
+        private readonly IRouting _routing;
 
-        public ModuleInstaller(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig,ILogger logger)
+        public ModuleInstaller(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig,ILogger logger,IRouting routing)
         {
             _responseBuilder = responseBuilder;
             _dbService = dbService;
@@ -37,6 +38,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             _keyValueStorage = keyValueStorage;
             _httpFileUploader = httpFileUploader;
             _logger = logger;
+            _routing = routing;
         }
         [Route("/moduleinstaller/install", CommonConst.ActionMethods.POST)]
         public JObject InstallModule()
@@ -57,6 +59,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 InstallWWWRoot(request);
                 InstallCollections(request);
                 InstallDlls(request);
+                _routing.ReLoadRoutes();
                 return _responseBuilder.Success();
             }
             catch (Exception ex)
@@ -123,6 +126,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                     }
                 }
             }
+            OverrideData(new JObject() { [CommonConst.CommonField.MODULE_NAME] = request.Name }, request.Name, CommonConst.CommonField.MODULE_NAME, CommonConst.Collection.SERVER_ROUTES);
 
             foreach (var route in routes)
             {
@@ -195,6 +199,8 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
             var wwwrootFilter = @"{name: /^content\/wwwroot/, " + CommonConst.CommonField.MODULE_NAME + ": '" + request.Name + "', " + CommonConst.CommonField.VERSION + ": '" + request.Version + "'}";
            // CleanDBCollection(request.Name, CommonConst.Collection.STATIC_CONTECT);
+
+                OverrideData(new JObject() { [CommonConst.CommonField.MODULE_NAME] = request.Name }, request.Name, CommonConst.CommonField.MODULE_NAME, CommonConst.Collection.STATIC_CONTECT);
 
             foreach (var item in _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(wwwrootFilter)))
             {

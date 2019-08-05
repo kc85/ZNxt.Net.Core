@@ -1,0 +1,73 @@
+/************about_us css start***************/
+.about_us {
+  position: relative;
+  z-index: 99;
+
+  .about_us_text {
+    h5{
+      font-size: 14px;
+      color: rgb(167, 168, 169);
+      line-height: 14px;
+      text-transform: uppercase;
+      margin-bottom: 26px;
+    }
+    h2 {
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 50px;
+      margin-bottom: 44px;
+      text-transform: uppercase;
+      @media #{$small_mobile} {
+        font-size: 25px;
+        margin-bottom: 10px;
+        line-height: 35px;
+      }
+
+      @media #{$large_mobile} {
+        font-size: 25px;
+        margin-bottom: 10px;
+        line-height: 35px;
+      }
+
+      @media #{$tab_device} {
+        font-size: 25px;
+        margin-bottom: 10px;
+        line-height: 35px;
+      }
+
+      @media #{$medium_device} {
+        font-size: 28px;
+        margin-bottom: 20px;
+        line-height: 40px;
+      }
+    }
+
+    p {
+      font-size: 15px;
+      margin-bottom: 53px;
+      @media #{$small_mobile} {
+        margin-bottom: 10px;
+      }
+
+      @media #{$large_mobile} {
+        margin-bottom: 20px;
+      }
+
+      @media #{$tab_device} {
+        margin-bottom: 20px;
+      }
+
+      @media #{$medium_device} {}
+    }
+
+    .btn_2 {
+      background-color: $heading_color;
+      border-color: $heading_color;
+      &:hover{
+        background-color: $primary_color;
+        border-color: $primary_color !important;
+        color: $white_color !important;
+      }
+    }
+  }
+}

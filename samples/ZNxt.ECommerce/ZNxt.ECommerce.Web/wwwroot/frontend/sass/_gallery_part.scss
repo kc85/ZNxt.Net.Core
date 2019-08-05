@@ -1,0 +1,250 @@
+/**************** gallery_part css start ****************/
+.gallery_part {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    .col-xl-12{
+        padding-left: 0;
+        padding-right: 0;
+        @media #{$tab}{
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        @media #{$medium_device}{
+        
+        }
+    }
+    .portfolio-filter{
+        margin-bottom: 32px;
+        ul{
+            li{
+                display: inline-block;
+                margin-right: 45px;
+                font-size: 14px;
+                text-transform: uppercase;
+                cursor: pointer;
+                font-weight: 500;
+                color: $heading_color;
+                @media #{$tab}{
+                    margin-right: 20px;
+                    margin-bottom: 15px;
+                }
+                @media #{$medium_device}{
+                
+                }
+                position: relative;
+                &:after{
+                    position: absolute;
+                    content: "";
+                    left: 0;
+                    top: -5px;
+                    width: 0;
+                    height: 2px;
+                    background-color: $btn_hover;
+                    @include transform_time(0.5s);
+                }
+                
+            }
+            
+        }
+        .active{
+            color: $btn_bg !important;
+            &:after{
+                position: absolute;
+                content: "";
+                left: 0;
+                top: -5px;
+                width: 50px;
+                height: 2px;
+                background-color: $btn_hover;
+            }
+        }
+    }
+    .single_gallery_item {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        overflow: hidden;
+        // &:before{
+        //     position: absolute;
+        //     content: "";
+        //     right: 0;
+        //     top: 0;
+        //     width: 5px;
+        //     height: 100%;
+        //     background-color: #fff;
+        //     z-index: -1;
+            
+        // }
+        // &:after{
+        //     position: absolute;
+        //     content: "";
+        //     right: 0;
+        //     top: 0;
+        //     width: 100%;
+        //     background-color: #fff;
+        //     z-index: -1;
+        //     height: 5px;
+        // }
+        .single_gallery_item_iner {
+            &:after {
+                position: absolute;
+                content: "";
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: $btn_hover;
+                z-index: -1;
+                opacity: 0;
+                @include transform_time(.5s);
+                transform: scale(0.7);
+                background-size: 200% auto;
+            }
+
+            .gallery_item_text {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 46%;
+                z-index: 5;
+                visibility: hidden;
+                opacity: 0;
+                @include transform_time(.5s);
+                width: 100%;
+                overflow: hidden;
+                text-align: center;
+                margin: 0 auto;
+                font-size: 40px;
+                color: $white_color;
+                h4 {
+                    color: $white_color;
+                    font-size: 22px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                }
+
+                p {
+                    color: $primary_color;
+                    text-transform: uppercase;
+                    position: relative;
+                    display: block;
+                    z-index: 1;
+                    margin-bottom: 10px;
+                    &:after{
+                        position: absolute;
+                        content: "";
+                        left: 0;
+                        top: 13px;
+                        width: 31%;
+                        height: 1px;
+                        background-color: #4b5153;
+                        z-index: -1;
+                    } 
+                    &:before{
+                        position: absolute;
+                        content: "";
+                        right: 5px;
+                        top: 13px;
+                        width: 31%;
+                        height: 1px;
+                        background-color: #4b5153;
+                        z-index: -1;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            .gallery_item_text {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .single_gallery_item_iner:after {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    }
+
+    
+    /* ---- grid-item ---- */
+
+    .img-gal{
+        width: 25%;
+        @media #{$small_mobile} {
+            width: 100%;
+        }
+
+        @media #{$large_mobile} {
+            width: 50%;
+        }
+
+        @media #{$tab_device} {
+            width: 50%;
+        }
+        @media #{$medium_device} {
+            
+        }
+    }
+
+    .img-gal {
+        height: 650px;
+        float: left;
+        @media #{$tab}{
+            height: 300px;
+        }
+        @media #{$medium_device}{
+            height: 400px;
+        }
+    }
+    .width-1 {
+        width: 33%;
+        @media #{$small_mobile} {
+            width: 100%;
+        }
+
+        @media #{$large_mobile} {
+            width: 50%;
+        }
+
+        @media #{$tab_device} {
+            width: 50%;
+        }
+
+        @media #{$medium_device} {}
+    }
+    .width-2 {
+        width: 42%;
+        border-right: 0 solid $white_color;
+        @media #{$small_mobile} {
+            width: 100%;
+        }
+        @media #{$large_mobile} {
+            width: 50%;
+        }
+
+        @media #{$tab_device} {
+            width: 50%;
+        }
+
+        @media #{$medium_device} {}
+    }
+    @media #{$tab} {
+        .sm_weight{
+            width: 100%;
+        }
+    }
+
+    @media #{$tab_device} {
+        
+    }
+
+    .bg_img {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}

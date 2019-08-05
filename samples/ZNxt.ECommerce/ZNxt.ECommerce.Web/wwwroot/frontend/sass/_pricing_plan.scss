@@ -1,0 +1,119 @@
+/************use_sasu css start***************/
+.pricing_part {
+    position: relative;
+    z-index: 1;
+    position: relative;
+    z-index: 99;
+
+    @media #{$tab} {
+        padding: 70px 0 40px;
+    }
+
+    @media #{$medium_device} {
+
+    }
+
+    .feature_icon_2 {
+        position: absolute;
+        left: 15%;
+        top: 8%;
+        z-index: -1;
+    }
+
+    .single_pricing_part {
+        text-align: center;
+        border: 20px solid transparent;
+        background-color: $white_color;
+        @include transform_time(0.5s);
+
+        @media #{$tab} {
+            border: 5px solid transparent;
+            margin-bottom: 30px;
+        }
+
+        @media #{$medium_device} {
+            
+        }
+
+        .pricing_tittle {
+            padding: 30px;
+            @include transform_time(0.1s);
+            img {
+                margin-bottom: 18px;
+                height: 65px;
+            }
+
+            p {
+                color: $heading_color;
+                font-size: 30px;
+                font-weight: 600;
+                text-transform: capitalize;
+            }
+
+            border: 1px solid #e4e7e9;
+            margin-bottom: 20px;
+        }
+
+        .pricing_content {
+            border: 1px solid #e4e7e9;
+            padding: 47px 15px 50px;
+            @include transform_time(0.1s);
+            h3 {
+                font-size: 40px;
+                font-weight: 700;
+                margin-bottom: 10px;
+
+                span {
+                    font-size: 16px;
+                    color: #919191;
+                    font-weight: 400;
+                }
+            }
+
+            .btn_2 {}
+
+            ul {
+                padding: 12px 0 30px;
+
+                @media #{$tab} {
+                    margin: 0;
+                }
+
+                @media #{$medium_device} {
+                    margin: 10px 0;
+                }
+
+                li {
+                    font-size: 14px;
+                    color: #7f7f7f;
+                    text-transform: capitalize;
+                    margin: 12px 0;
+                }
+            }
+
+            .pricing_btn {
+                padding-top: 33px;
+
+                @media #{$tab} {
+                    padding-top: 10px;
+                }
+
+                @media #{$medium_device} {}
+            }
+        }
+
+        &:hover {
+            border: 20px solid $heading_color;
+            background-color: $heading_color;
+
+            .pricing_btn {
+                color: $primary_color;
+            }
+
+            .pricing_tittle,
+            .pricing_content {
+                background-color: $white_color;
+            }
+        }
+    }
+}

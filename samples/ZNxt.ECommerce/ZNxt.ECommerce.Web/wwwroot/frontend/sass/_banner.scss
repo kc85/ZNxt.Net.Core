@@ -1,0 +1,72 @@
+/**************** banner part css start ****************/
+.banner_part {
+    position: relative;
+    background-image: url(../img/banner_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    .banner_text {
+        display: table;
+        width: 100%;
+        height: 900px;
+        .banner_text_iner {
+            display: table-cell;
+            vertical-align: middle;
+            @media #{$medium_device} {
+                height: 650px;
+            }
+        }
+        h5{
+            font-size: 18px;
+            text-transform: uppercase;
+            color: $white_color;
+        }
+        @media #{$tab} {
+            height: 650px;
+        }
+
+        @media #{$medium_device} {
+            height: 650px;
+        }
+
+        h1 {
+            font-size: 60px;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin: 24px 0 29px;
+            line-height: 60px;
+            color: $white_color;
+            @media #{$tab} {
+                font-size: 30px;
+                line-height: 1.3;
+                margin: 10px 0;
+            }
+
+            @media #{$medium_device} {
+                font-size: 40px;
+                margin-bottom: 15px;
+                line-height: 1.4;
+            }
+
+            span {
+                color: $primary_color;
+            }
+        }
+
+        p {
+            margin-bottom: 40px;
+            color: $white_color;
+            @media #{$tab} {
+                padding-right: 0;
+                margin-bottom: 10px;
+            }
+
+            @media #{$medium_device} {
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+/**************** hero part css end ****************/

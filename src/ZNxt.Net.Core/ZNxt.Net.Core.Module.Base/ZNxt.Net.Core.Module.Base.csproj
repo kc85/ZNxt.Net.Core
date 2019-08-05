@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00029</Version>
+    <Version>1.0.0-Beta00036</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,5 +18,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="wwwroot\frontend\about.z">
+      <PackPath>.</PackPath>
+      <Pack>true</Pack>
+    </None>
   </ItemGroup>
 </Project>

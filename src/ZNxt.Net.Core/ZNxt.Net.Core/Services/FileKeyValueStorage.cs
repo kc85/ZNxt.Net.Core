@@ -42,10 +42,14 @@ namespace ZNxt.Net.Core.Services
             {
                 return (T)Convert.ChangeType(Get(bucket, key, encriptionKey), typeof(T));
             }
+            else if ( typeof(T) == typeof(string))
+            {
+                return (T)Convert.ChangeType(GetString(bucket, key, encriptionKey),typeof(T));
+            }
             else
             {
                 var data = GetString(bucket, key, encriptionKey);
-                return JsonConvert.DeserializeObject<T>(data);
+                return JsonConvert.DeserializeObject<T>(data.Trim());
             }
         }
 
@@ -82,6 +86,11 @@ namespace ZNxt.Net.Core.Services
                     byteData = _encryption.Encrypt(byteData, encriptionKey);
                 }
                 File.WriteAllBytes(GetPath(bucket, key), byteData);
+                return true;
+            }
+            if (typeof(T) == typeof(string))
+            {
+                File.WriteAllText(GetPath(bucket, key), data as string);
                 return true;
             }
             else
