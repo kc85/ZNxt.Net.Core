@@ -198,8 +198,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         {
 
             var wwwrootFilter = @"{name: /^content\/wwwroot/, " + CommonConst.CommonField.MODULE_NAME + ": '" + request.Name + "', " + CommonConst.CommonField.VERSION + ": '" + request.Version + "'}";
-           // CleanDBCollection(request.Name, CommonConst.Collection.STATIC_CONTECT);
-
+           
                 OverrideData(new JObject() { [CommonConst.CommonField.MODULE_NAME] = request.Name }, request.Name, CommonConst.CommonField.MODULE_NAME, CommonConst.Collection.STATIC_CONTECT);
 
             foreach (var item in _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(wwwrootFilter)))
@@ -342,6 +341,41 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             {
                 [CommonConst.CommonField.DISPLAY_ID] = fileItem[CommonConst.CommonField.DISPLAY_ID].ToString(),
             }.ToString()));
+        }
+
+        [Route("/moduleinstaller/uninstall", CommonConst.ActionMethods.POST)]
+        public JObject UninstallModule()
+        {
+            try
+            {
+                var request = _httpContextProxy.GetRequestBody<ModuleInstallRequest>();
+                if (request == null)
+                {
+                    return _responseBuilder.BadRequest();
+                }
+
+                JObject moduleObject = new JObject();
+                moduleObject[CommonConst.CommonField.NAME] = request.Name;
+                moduleObject[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER] = "collections";
+                
+                // UninstallWWWRoot
+                CleanDBCollection(request.Name, CommonConst.Collection.STATIC_CONTECT);
+
+                // Uninstall Dlls
+                CleanDBCollection(request.Name, CommonConst.Collection.DLLS);
+
+                // Server routes Dlls
+                CleanDBCollection(request.Name, CommonConst.Collection.SERVER_ROUTES);
+
+                InstallDlls(request);
+                _routing.ReLoadRoutes();
+                return _responseBuilder.Success();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return _responseBuilder.ServerError();
+            }
         }
     }
 }

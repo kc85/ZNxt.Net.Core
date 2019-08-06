@@ -8,4 +8,6 @@ rem set http_base_url=https://ZNxt.App
 
  ZNxtApp.CLI -u   %http_base_url%/api/moduleinstaller/upload  .\..\..\bin\Debug\ZNxt.ECommerce.Web.1.0.0-Beta00%1.nupkg
 
- wget -S -O response.json --post-data "{\"Name\":\"ZNxt.ECommerce.Web\",\"Version\":\"1.0.0-Beta00%1\"}" %http_base_url%/api/moduleinstaller/install
+ wget -S -O uninstall_response.json --post-data "{\"Name\":\"ZNxt.ECommerce.Web\"}" %http_base_url%/api/moduleinstaller/uninstall
+
+ wget -S -O install_response.json --post-data "{\"Name\":\"ZNxt.ECommerce.Web\",\"Version\":\"1.0.0-Beta00%1\"}" %http_base_url%/api/moduleinstaller/install
