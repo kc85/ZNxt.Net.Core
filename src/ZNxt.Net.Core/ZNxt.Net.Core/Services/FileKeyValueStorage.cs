@@ -19,7 +19,7 @@ namespace ZNxt.Net.Core.Services
             _logger = logger;
             _encryption = encryption;
             _appSettingService = appSettingService;
-            _storageBasePath = string.Format("{0}\\{1}", appSettingService.GetAppSettingData("KeyValueFileStoragePath"), appSettingService.GetAppSettingData("DataBaseName"));
+            _storageBasePath  = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ZNxtApp", appSettingService.GetAppSettingData("DataBaseName"));
         }
 
         public bool Delete(string bucket, string key)
@@ -117,7 +117,7 @@ namespace ZNxt.Net.Core.Services
 
         private string GetBaseFolder()
         {
-            string path = string.Format("{0}", _storageBasePath);
+            string path = _storageBasePath;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -127,7 +127,7 @@ namespace ZNxt.Net.Core.Services
 
         private string GetBucketFolder(string bucket)
         {
-            string path = string.Format("{0}\\{1}", GetBaseFolder(), bucket);
+            string path = Path.Combine(GetBaseFolder(), bucket);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -140,7 +140,7 @@ namespace ZNxt.Net.Core.Services
             var path = GetBucketFolder(bucket);
             if (!string.IsNullOrEmpty(key))
             {
-                path = string.Format("{0}\\{1}{2}", path, key, _fileExtn);
+                path = Path.Combine(path, $"{key}{_fileExtn}");
             }
             return path;
         }
@@ -163,17 +163,27 @@ namespace ZNxt.Net.Core.Services
 
         public string GetString(string bucket, string key, string encriptionKey = null)
         {
-            var path = GetPath(bucket, key);
-            if (!File.Exists(path))
+            try
             {
-                throw new KeyNotFoundException(key);
+                var path = GetPath(bucket, key);
+                if (!File.Exists(path))
+                {
+                    throw new KeyNotFoundException(key);
+                }
+                byte[] byteData = File.ReadAllBytes(path);
+                if (!string.IsNullOrEmpty(encriptionKey))
+                {
+                    byteData = _encryption.Decrypt(byteData, encriptionKey);
+                }
+                return System.Text.Encoding.UTF8.GetString(byteData);
             }
-            byte[] byteData = File.ReadAllBytes(path);
-            if (!string.IsNullOrEmpty(encriptionKey))
+            catch (Exception ex)
             {
-                byteData = _encryption.Decrypt(byteData, encriptionKey);
+                _logger.Error($"{ex.Message}" , ex);
+                
+                throw;
             }
-            return System.Text.Encoding.UTF8.GetString(byteData);
+           
         }
     }
 }
