@@ -11,7 +11,7 @@ namespace ZNxt.Net.Core.Web.Sample
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseUrls("http://*:801");
+                .UseStartup<Startup>();
+                //.UseUrls("http://*:801");
     }
 }

@@ -357,17 +357,24 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 JObject moduleObject = new JObject();
                 moduleObject[CommonConst.CommonField.NAME] = request.Name;
                 moduleObject[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER] = "collections";
-                
+
+                foreach (var fileItem in _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(new JObject()
+                {
+                    [CommonConst.CommonField.MODULE_NAME] = request.Name,
+
+                }.ToString())))
+                {
+                    DeleteFileEntry(fileItem);
+                }
                 // UninstallWWWRoot
                 CleanDBCollection(request.Name, CommonConst.Collection.STATIC_CONTECT);
 
                 // Uninstall Dlls
                 CleanDBCollection(request.Name, CommonConst.Collection.DLLS);
 
-                // Server routes Dlls
+                // Uninstall Server routes 
                 CleanDBCollection(request.Name, CommonConst.Collection.SERVER_ROUTES);
 
-                InstallDlls(request);
                 _routing.ReLoadRoutes();
                 return _responseBuilder.Success();
             }
