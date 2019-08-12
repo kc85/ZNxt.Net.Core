@@ -1,8 +1,8 @@
 ﻿
 echo OFF
-set http_base_url=https://localhost:44373
+rem set http_base_url=https://localhost:44373
 
-rem  http_base_url=http://ec2-13-233-76-129.ap-south-1.compute.amazonaws.com:801
+set  http_base_url=http://ec2-13-233-144-71.ap-south-1.compute.amazonaws.com
 
 wget -S -O uninstall_response.json --post-data "{\"Name\":\"ZNxt.Net.Core.Module.Base\"}" %http_base_url%/api/moduleinstaller/uninstall
 
