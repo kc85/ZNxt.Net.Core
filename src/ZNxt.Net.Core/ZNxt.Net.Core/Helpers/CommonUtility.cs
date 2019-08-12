@@ -55,7 +55,7 @@ namespace ZNxt.Net.Core.Helpers
         }
         public static List<string> IsDefaultPages(string url)
         {
-            List<string> defultPages = new List<string> { $"{url}index.z", $"{url}index.html", $"{url}home.z", $"{url}home.html" };
+            List<string> defultPages = new List<string> {  $"{url}index.html", $"{url}home.html",$"{url}index.z", $"{url}home.z"};
             var fi = new FileInfo(url);
             if (string.IsNullOrEmpty(fi.Extension))
             {
