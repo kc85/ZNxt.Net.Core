@@ -2,7 +2,7 @@
 echo OFF
 rem set http_base_url=https://localhost:44373
 
-set  http_base_url=http://ec2-13-233-144-71.ap-south-1.compute.amazonaws.com
+set  http_base_url=http://znxt.fashion
 
 
 

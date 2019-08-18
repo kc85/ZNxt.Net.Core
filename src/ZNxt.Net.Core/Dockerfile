@@ -9,8 +9,10 @@ COPY ZNxt.Net.Core.DB.Mongo/ZNxt.Net.Core.DB.Mongo.csproj ZNxt.Net.Core.DB.Mongo
 COPY ZNxt.Net.Core/ZNxt.Net.Core.csproj ZNxt.Net.Core/
 COPY ZNxt.Net.Core.Web/ZNxt.Net.Core.Web.csproj ZNxt.Net.Core.Web/
 COPY ZNxt.Net.Core.Web.ContentHandler/ZNxt.Net.Core.Web.ContentHandler.csproj ZNxt.Net.Core.Web.ContentHandler/
+
 RUN dotnet restore ZNxt.Net.Core.Web.Sample/ZNxt.Net.Core.Web.Sample.csproj
 COPY . .
+
 WORKDIR /src/ZNxt.Net.Core.Web.Sample
 RUN dotnet build ZNxt.Net.Core.Web.Sample.csproj -c Release -o /app
 
