@@ -12,16 +12,20 @@ namespace ZNxt.ECommerce.Web.Services.Api
     {
 
         private readonly IResponseBuilder _responseBuilder;
-        public ECommPingController(IResponseBuilder responseBuilder)
+        private readonly IViewEngine _viewEngine;
+        public ECommPingController(IResponseBuilder responseBuilder, IViewEngine viewEngine)
         {
 
             _responseBuilder = responseBuilder;
+            _viewEngine = viewEngine;
         }
         [Route("/ecommping", CommonConst.ActionMethods.GET)]
         public JObject Ping()
         {
-
-            return _responseBuilder.Success();
+            var data = _viewEngine.Compile($"Hello-- { DateTime.Now.ToString()} @Raw((1 + 1).ToString())", "aa", null);
+            var dataResponse = new JObject();
+            dataResponse["data"] = data;
+            return _responseBuilder.Success(dataResponse);
         }
     }
 }
