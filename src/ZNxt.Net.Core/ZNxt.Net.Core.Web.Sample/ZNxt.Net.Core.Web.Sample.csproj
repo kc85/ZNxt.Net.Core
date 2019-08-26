@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
   </ItemGroup>
@@ -16,6 +17,12 @@
     <ProjectReference Include="..\ZNxt.Net.Core.Web.ContentHandler\ZNxt.Net.Core.Web.ContentHandler.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core.Web\ZNxt.Net.Core.Web.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ZNxtFashion.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
