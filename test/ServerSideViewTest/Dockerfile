@@ -4,7 +4,7 @@ WORKDIR /app
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY ServerSideViewTest/ServerSideViewTest.csproj ServerSideViewTest/
-RUN dotnet restore ServerSideViewTest/ServerSideViewTest.csproj
+RUN dotnet restore ServerSideViewTest.csproj
 COPY . .
 WORKDIR /src/ServerSideViewTest
 RUN dotnet build ServerSideViewTest.csproj -c Release -o /app
