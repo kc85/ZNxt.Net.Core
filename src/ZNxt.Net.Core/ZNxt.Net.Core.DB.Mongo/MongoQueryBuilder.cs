@@ -30,7 +30,19 @@ namespace ZNxt.Net.Core.DB.Mongo
 
                 sbQuery.Append("[");
                 sbQuery.Append("{");
-                sbQuery.Append($"{filter.Field.Name}:'{filter.Field.Value}'");
+                if (filter.Field.Value.GetType() == typeof(string))
+                {
+                    sbQuery.Append($"{filter.Field.Name}:'{filter.Field.Value}'");
+                }
+                else if (filter.Field.Value.GetType() == typeof(bool))
+                {
+                    sbQuery.Append($"{filter.Field.Name}:{filter.Field.Value.ToString().ToLower()}");
+                }
+
+                else
+                {
+                    sbQuery.Append($"{filter.Field.Name}:{filter.Field.Value}");
+                }
                 sbQuery.Append("}");
                 sbQuery.Append("]");
             }

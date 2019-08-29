@@ -44,6 +44,7 @@
             public const string CONTENT_TYPE = "content_type";
             public const string FILE_SIZE = "file_size";
             public const string MODULE_NAME = "module_name";
+            public const string MODULE_ENDPOINT = "module_endpoint";
             public const string ÌS_OVERRIDE = "is_override";
             public const string OVERRIDE_BY = "override_by";
             public const string HTTP_RESPONE_CODE = "code";

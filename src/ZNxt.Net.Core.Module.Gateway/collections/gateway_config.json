@@ -1,0 +1,12 @@
+﻿[
+  {
+    "key": "frontend_url",
+    "data": "http://znxt.fashion",
+    "isactive" :  true
+  },
+  {
+    "key": "backend_url",
+    "data": "http://admin.znxt.fashion",
+    "isactive": true
+  }
+]

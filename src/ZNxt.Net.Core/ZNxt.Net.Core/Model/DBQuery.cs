@@ -8,6 +8,13 @@ namespace ZNxt.Net.Core.Model
         public FilterQuery Filters { get; set; }
         public List<Field> Fields { get; set; }
         public List<SortField> SortBy { get; set; }
+        public DBQuery()
+        {
+            Fields = new List<Field>();
+            SortBy = new List<SortField>();
+            Filters = new FilterQuery();
+
+        }
     }
 
     public class FilterQuery : List<Filter>
@@ -19,7 +26,7 @@ namespace ZNxt.Net.Core.Model
     {
         public FilterField Field { get; set; }
         public FilterCondition Condition { get; set; }
-        public Filter(string field, string value, FilterCondition condition = FilterCondition.AND)
+        public Filter(string field, object value, FilterCondition condition = FilterCondition.AND)
         {
             this.Field = new FilterField(field, value);
             this.Condition = condition;
@@ -44,12 +51,12 @@ namespace ZNxt.Net.Core.Model
     }
     public class FilterField : Field
     {
-        public FilterField(string name, string value): base(name)
+        public FilterField(string name, object value): base(name)
         {
             this.Value = value;
         }
 
-        public string Value { get; set; }
+        public object Value { get; set; }
     }
 
     public class SortField : Field

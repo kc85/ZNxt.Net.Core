@@ -22,6 +22,12 @@ namespace ZNxt.Net.Core.Helpers
         {
             return CreateReponse(CommonConst._1_SUCCESS, data, extraData);
         }
+        public JObject BadRequest(string error)
+        {
+            var errorobj = new JObject();
+            errorobj["error"] = error;
+            return BadRequest(errorobj);
+        }
         public JObject BadRequest(JToken data = null, JObject extraData = null)
         {
             return CreateReponse(CommonConst._400_BAD_REQUEST, data, extraData);

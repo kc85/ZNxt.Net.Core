@@ -20,7 +20,8 @@ namespace ZNxt.Net.Core.Web.Handlers
         private readonly IServiceResolver _serviceResolver;
         private readonly ILogger _logger;
         private readonly IResponseBuilder _responseBuilder;
-        public ApiHandler(RequestDelegate next,ILogger logger,IDBService dbService, IRouting routing, IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder)
+        private readonly IApiGatewayService _apiGatewayService;
+        public ApiHandler(RequestDelegate next,ILogger logger,IDBService dbService, IRouting routing, IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IApiGatewayService apiGatewayService)
         {
             _next = next;
             _routing = routing;
@@ -30,6 +31,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             _serviceResolver = serviceResolver;
             _logger = logger;
             _responseBuilder = responseBuilder;
+            _apiGatewayService = apiGatewayService;
         }
 
         public async Task Invoke(HttpContext context)
@@ -90,7 +92,19 @@ namespace ZNxt.Net.Core.Web.Handlers
                     await context.Response.WriteAsync(_responseBuilder.NotFound().ToString());
                 }
             }
-            await _next(context);
+            else
+            {
+                var response =  await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
+                if (response != null)
+                {
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                }
+                else
+                {
+                    await _next(context);
+                }
+            }
+           
 
         }
     }

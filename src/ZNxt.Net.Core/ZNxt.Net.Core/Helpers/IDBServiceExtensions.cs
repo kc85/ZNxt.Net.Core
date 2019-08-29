@@ -106,6 +106,21 @@ namespace ZNxt.Net.Core.Helpers
                 return false;
             }
         }
+        public static  void OverrideData(this IDBService dbProxy,JObject joData, string moduleName, string compareKey, string collection)
+        {
+            string updateOverrideFilter = "{ $and: [ { " + CommonConst.CommonField.IS_OVERRIDE + ":false }, {" + compareKey + ":'" + joData[compareKey].ToString() + "'}] } ";
+            var updateObject = new JObject();
+            updateObject[CommonConst.CommonField.ÌS_OVERRIDE] = true;
+            JArray lastOverrides = new JArray();
+            if (updateObject[CommonConst.CommonField.OVERRIDE_BY] != null)
+            {
+                lastOverrides = updateObject[CommonConst.CommonField.OVERRIDE_BY] as JArray;
+            }
+            lastOverrides.Add(moduleName);
+            updateObject[CommonConst.CommonField.OVERRIDE_BY] = lastOverrides;
+            updateObject[CommonConst.CommonField.OVERRIDE_BY] = moduleName;
+            dbProxy.Write(collection, updateObject, updateOverrideFilter);
+        }
 
         private static DBQuery QueryBuilder(Dictionary<string, string> filterInput)
         {

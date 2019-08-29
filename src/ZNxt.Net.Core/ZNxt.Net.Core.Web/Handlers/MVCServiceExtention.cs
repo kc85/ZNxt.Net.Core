@@ -42,8 +42,9 @@ public static class MVCServiceExtention
         services.AddTransient<IResponseBuilder, ResponseBuilder>();
         services.AddTransient<IAppSettingService, AppSettingService>();
         services.AddTransient<ISessionProvider, SessionProvider>();
-
-       
+        services.AddTransient<IApiGatewayService, ApiGatewayService>();
+        services.AddTransient<IInMemoryCacheService, InMemoryCacheService>();
+        services.AddMemoryCache();
 
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);

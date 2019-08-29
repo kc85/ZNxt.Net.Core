@@ -4,8 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00039</Version>
-   <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <Version>1.0.0-Beta00021</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,10 +12,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ZNxt.Net.Core" Version="1.0.2" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Update="wwwroot\**\*.*">
+    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="collections\gateway_config.json">
       <PackPath>.</PackPath>
       <Pack>true</Pack>
     </None>

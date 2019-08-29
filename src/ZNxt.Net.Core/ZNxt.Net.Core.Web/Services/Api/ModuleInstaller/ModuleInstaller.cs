@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
@@ -27,8 +28,10 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         private readonly IHttpFileUploader _httpFileUploader;
         private readonly ILogger _logger;
         private readonly IRouting _routing;
+        private readonly IApiGatewayService _apiGateway;
 
-        public ModuleInstaller(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig,ILogger logger,IRouting routing)
+
+        public ModuleInstaller(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig,ILogger logger,IRouting routing, IApiGatewayService apiGateway)
         {
             _responseBuilder = responseBuilder;
             _dbService = dbService;
@@ -39,6 +42,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             _httpFileUploader = httpFileUploader;
             _logger = logger;
             _routing = routing;
+            _apiGateway = apiGateway;
         }
         [Route("/moduleinstaller/install", CommonConst.ActionMethods.POST)]
         public JObject InstallModule()
@@ -126,7 +130,8 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                     }
                 }
             }
-            OverrideData(new JObject() { [CommonConst.CommonField.MODULE_NAME] = request.Name }, request.Name, CommonConst.CommonField.MODULE_NAME, CommonConst.Collection.SERVER_ROUTES);
+
+            _dbService.OverrideData(new JObject() { [CommonConst.CommonField.MODULE_NAME] = request.Name }, request.Name, CommonConst.CommonField.MODULE_NAME, CommonConst.Collection.SERVER_ROUTES);
 
             foreach (var route in routes)
             {
@@ -138,6 +143,11 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 data[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
                 data[CommonConst.CommonField.KEY] = $"{route.Method}:{route.Route}";
                 WriteToDB(data, request.Name, CommonConst.Collection.SERVER_ROUTES, CommonConst.CommonField.KEY);
+                data[CommonConst.CommonField.MODULE_ENDPOINT] = ApplicationConfig.AppEndpoint;
+                if (request.Name != "ZNxt.Net.Core.Module.Gateway")
+                {
+                    _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", data, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+                }
             }
         }
       
@@ -172,34 +182,20 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
         private void WriteToDB(JObject joData, string moduleName, string collection, string compareKey)
         {
-            OverrideData(joData, moduleName, compareKey, collection);
+            _dbService.OverrideData(joData, moduleName, compareKey, collection);
             if (!_dbService.Write(collection, joData))
             {
                 _logger.Error(string.Format("Error while uploading file data {0}", joData.ToString()), null);
             }
         }
-        private void OverrideData(JObject joData, string moduleName, string compareKey, string collection)
-        {
-            string updateOverrideFilter = "{ $and: [ { " + CommonConst.CommonField.IS_OVERRIDE + ":false }, {" + compareKey + ":'" + joData[compareKey].ToString() + "'}] } ";
-            var updateObject = new JObject();
-            updateObject[CommonConst.CommonField.ÌS_OVERRIDE] = true;
-            JArray lastOverrides = new JArray();
-            if (updateObject[CommonConst.CommonField.OVERRIDE_BY] != null)
-            {
-                lastOverrides = updateObject[CommonConst.CommonField.OVERRIDE_BY] as JArray;
-            }
-            lastOverrides.Add(moduleName);
-            updateObject[CommonConst.CommonField.OVERRIDE_BY] = lastOverrides;
-            updateObject[CommonConst.CommonField.OVERRIDE_BY] = moduleName;
-            _dbService.Write(collection, updateObject, updateOverrideFilter);
-        }
+       
 
         private void InstallWWWRoot(ModuleInstallRequest request)
         {
 
             var wwwrootFilter = @"{name: /^content\/wwwroot/, " + CommonConst.CommonField.MODULE_NAME + ": '" + request.Name + "', " + CommonConst.CommonField.VERSION + ": '" + request.Version + "'}";
-           
-                OverrideData(new JObject() { [CommonConst.CommonField.MODULE_NAME] = request.Name }, request.Name, CommonConst.CommonField.MODULE_NAME, CommonConst.Collection.STATIC_CONTECT);
+
+            _dbService.OverrideData(new JObject() { [CommonConst.CommonField.MODULE_NAME] = request.Name }, request.Name, CommonConst.CommonField.MODULE_NAME, CommonConst.Collection.STATIC_CONTECT);
 
             foreach (var item in _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(wwwrootFilter)))
             {
