@@ -371,6 +371,11 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 // Uninstall Server routes 
                 CleanDBCollection(request.Name, CommonConst.Collection.SERVER_ROUTES);
 
+                if (request.Name != "ZNxt.Net.Core.Module.Gateway")
+                {
+                    _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/gateway/uninstallmodule", "", moduleObject, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+                }
+
                 _routing.ReLoadRoutes();
                 return _responseBuilder.Success();
             }

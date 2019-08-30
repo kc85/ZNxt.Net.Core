@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Interfaces;
@@ -42,7 +43,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                 var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
                 if (type != null)
                 {
-                    
+
                     _logger.Debug(string.Format("Executing route:{0}", route.ToString()));
                     var controller = _serviceResolver.Resolve(type);
                     var method = controller.GetType().GetMethods().FirstOrDefault(f => f.Name == route.ExecuteMethod);
@@ -52,7 +53,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                         object response = null;
                         if (method.ReturnType.BaseType == typeof(Task))
                         {
-                            response = await(dynamic)method.Invoke(controller, null);
+                            response = await (dynamic)method.Invoke(controller, null);
                         }
                         else
                         {
@@ -64,10 +65,10 @@ namespace ZNxt.Net.Core.Web.Handlers
                             {
                                 await context.Response.WriteAsync((response as string));
                             }
-                            else if(method.ReturnType == typeof(byte[]))
+                            else if (method.ReturnType == typeof(byte[]))
                             {
                                 var byteResponse = response as byte[];
-                                await context.Response.Body.WriteAsync(byteResponse,0, byteResponse.Length);
+                                await context.Response.Body.WriteAsync(byteResponse, 0, byteResponse.Length);
                             }
                             else
                             {
@@ -94,15 +95,33 @@ namespace ZNxt.Net.Core.Web.Handlers
             }
             else
             {
-                var response =  await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
-                if (response != null)
+                try
                 {
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                    route = await _apiGatewayService.GetRouteAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
+                    if (route != null)
+                    {
+                        _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
+                        context.Response.ContentType = route.ContentType;
+                        var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
+                        if (response != null)
+                        {
+                            await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                        }
+                        else
+                        {
+                            await _next(context);
+                        }
+                    }
+                    else
+                    {
+                        await _next(context);
+                    }
                 }
-                else
+                catch (KeyNotFoundException)
                 {
                     await _next(context);
                 }
+
             }
            
 

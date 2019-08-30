@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Net.Core", "ZNxt.Net.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.Module.Gateway", "..\ZNxt.Net.Core.Module.Gateway\ZNxt.Net.Core.Module.Gateway.csproj", "{591F8B7A-4B5F-4B23-932E-800AF16B8AC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.Module.UI.Base", "..\ZNxt.Net.Core.Module.UI.Base\ZNxt.Net.Core.Module.UI.Base.csproj", "{6322C303-8F27-42B4-B706-246A55BA1D5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{591F8B7A-4B5F-4B23-932E-800AF16B8AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591F8B7A-4B5F-4B23-932E-800AF16B8AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591F8B7A-4B5F-4B23-932E-800AF16B8AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6322C303-8F27-42B4-B706-246A55BA1D5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6322C303-8F27-42B4-B706-246A55BA1D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6322C303-8F27-42B4-B706-246A55BA1D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6322C303-8F27-42B4-B706-246A55BA1D5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{EC540F1A-D4CE-440F-9D79-51FFB2C59BC8} = {4DD2FD32-7A35-4F98-B58E-FFE6EBBC9B49}
 		{6CD87FAD-463F-4E78-AF4C-783E6CC8819D} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 		{591F8B7A-4B5F-4B23-932E-800AF16B8AC8} = {F22C0707-89F1-450D-92A1-34AA0373508E}
+		{6322C303-8F27-42B4-B706-246A55BA1D5A} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE125D3-A749-4F04-9D6C-9B9632AE1D4C}

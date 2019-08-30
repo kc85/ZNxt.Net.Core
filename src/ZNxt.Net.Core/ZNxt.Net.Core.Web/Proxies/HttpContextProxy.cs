@@ -46,7 +46,7 @@ namespace ZNxt.Net.Core.Web.Proxies
 
         public string GetHeader(string key)
         {
-            throw new NotImplementedException();
+            return _httpContextAccessor.HttpContext.Request.Headers[key];
         }
 
         public Dictionary<string, string> GetHeaders()

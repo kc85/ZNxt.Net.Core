@@ -82,6 +82,26 @@ namespace ZNxt.Net.Core.Module.Gateway.Services.Api
             return _responseBuilder.Success();
         }
 
+        [Route("/gateway/uninstallmodule", CommonConst.ActionMethods.POST)]
+        public JObject UninstallRoute()
+        {
+            var routeObj = _httpContextProxy.GetRequestBody<JObject>();
+            var moduleName = routeObj[CommonConst.CommonField.MODULE_NAME];
+            if (moduleName == null)
+            {
+                _responseBuilder.BadRequest("module_name missing");
+            }
+            CleanDBCollection(moduleName.ToString(), GATEWAY_ROUTE_COLLECTION);
+            CleanDBCollection(moduleName.ToString(), GATEWAY_MODULE_ENDPOINT);
+
+            return _responseBuilder.Success();
+        }
+        protected void CleanDBCollection(string moduleName, string collection)
+        {
+            string cleanupFilter = "{ " + CommonConst.CommonField.MODULE_NAME + ":'" + moduleName + "'}";
+
+            _dbService.Delete(collection, new RawQuery(cleanupFilter));
+        }
         private void WriteToDB(JObject joData, string moduleName, string collection, string compareKey)
         {
             _dbService.OverrideData(joData, moduleName, compareKey, collection);
