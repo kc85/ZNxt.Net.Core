@@ -64,7 +64,7 @@ namespace ZNxt.Net.Core.Web.Services
         {
             foreach (var header in _httpContextProxy.GetHeaders())
             {
-                request.Headers.Add(header.Key, header.Value);
+               // request.Headers.Add(header.Key, header.Value);
             }
             if (headres != null)
             {

@@ -86,7 +86,7 @@ namespace ZNxt.Net.Core.Module.Gateway.Services.Api
         public JObject UninstallRoute()
         {
             var routeObj = _httpContextProxy.GetRequestBody<JObject>();
-            var moduleName = routeObj[CommonConst.CommonField.MODULE_NAME];
+            var moduleName = routeObj[CommonConst.CommonField.NAME];
             if (moduleName == null)
             {
                 _responseBuilder.BadRequest("module_name missing");
