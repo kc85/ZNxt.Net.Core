@@ -1,8 +1,8 @@
 ﻿
 echo OFF
-set http_base_url=https://localhost:44373
+rem set http_base_url=https://localhost:44373
 
-rem set  http_base_url=http://znxt.fashion
+ set  http_base_url=http://gateway.znxt.fashion
 
 wget -S -O uninstall_response.json --post-data "{\"Name\":\"ZNxt.Net.Core.Module.Gateway\"}" %http_base_url%/api/moduleinstaller/uninstall
 

@@ -9,7 +9,6 @@
     <None Remove="wwwroot\appinstall\img\loader.gif" />
     <None Remove="wwwroot\appinstall\index.html" />
     <None Remove="wwwroot\appinstall\js\appinstall.js" />
-    <None Remove="wwwroot\frontend\image.png" />
     <None Remove="wwwroot\index.html" />
     <None Remove="znxtsettings.json.config" />
   </ItemGroup>
@@ -23,13 +22,6 @@
     </Content>
     <Content Include="wwwroot\appinstall\js\appinstall.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="wwwroot\frontend\image.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="wwwroot\frontend\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="znxtsettings.json.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -55,293 +47,29 @@
   </ItemGroup>
   
 <ItemGroup>
-  <None Update="wwwroot\frontend\css\addons\datatables.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\css\scrolling-nav.css">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\addons\datatables.min.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\css\znxt.css">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\bootstrap.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\index.html">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\bootstrap.min.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\js\scrolling-nav.js">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\lightgallery.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\vendor\bootstrap\css\bootstrap.min.css">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\mdb.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\vendor\bootstrap\js\bootstrap.bundle.min.js">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\mdb.min.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\vendor\jquery-easing\jquery.easing.min.js">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\style.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\css\style.min.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\css\zpic.css">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\lg.eot">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\lg.svg">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\lg.ttf">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\lg.woff">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Bold.eot">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Bold.ttf">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Bold.woff">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Bold.woff2">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Light.eot">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Light.ttf">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Light.woff">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Light.woff2">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Medium.eot">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Medium.ttf">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Medium.woff">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Medium.woff2">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Regular.eot">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Regular.ttf">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Regular.woff">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Regular.woff2">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Thin.eot">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Thin.ttf">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Thin.woff">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\font\roboto\Roboto-Thin.woff2">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\gallery.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\gallery_list.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\lightbox\default-skin.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\lightbox\default-skin.svg">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\lightbox\preloader.gif">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\loading.gif">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\myphotologo.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\01.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\02.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\03.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\04.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\05.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\06.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\07.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\08.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\overlays\09.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\sample.jpg">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\svg\arrow_left.svg">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\svg\arrow_right.svg">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\img\video-play.png">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\index.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\index_1.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\index_ecomm.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\index_product_search.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\addons\datatables.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\addons\datatables.min.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\bootstrap.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\bootstrap.min.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\ecomm_index_routing.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\jquery-3.3.1.min.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\lightgallery-all.min.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\mdb.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\mdb.min.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\chart.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\enhanced-modals.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\forms-free.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\jquery.easing.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\scrolling-navbar.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\velocity.min.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\waves.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\modules\wow.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\js\popper.min.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\manifest.json">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\product_details - Copy.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\product_details.z">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\sw.js">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\common\common_css.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\common\common_js.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\common\footer.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\common\header.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\about.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\carousel.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\carousel_backup.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\detail_features.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\dialogs.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\feature.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\gallery.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\more_detail.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\product.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\search_product_result.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\blocks\index\trading_products.zb">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-  <None Update="wwwroot\frontend\template\index_template.zt">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  <None Update="wwwroot\frontend\vendor\jquery\jquery.min.js">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
 </ItemGroup>
 
