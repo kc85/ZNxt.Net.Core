@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00030</Version>
+    <Version>1.0.0-Beta00034</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +20,14 @@
 
   <ItemGroup>
     <None Update="collections\gateway_config.json">
+      <PackPath>.</PackPath>
+      <Pack>true</Pack>
+    </None>
+    <None Update="wwwroot\gateway\index_g.html">
+      <PackPath>.</PackPath>
+      <Pack>true</Pack>
+    </None>
+    <None Update="wwwroot\gateway\index.html">
       <PackPath>.</PackPath>
       <Pack>true</Pack>
     </None>

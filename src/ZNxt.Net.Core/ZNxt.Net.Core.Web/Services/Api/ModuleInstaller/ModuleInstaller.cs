@@ -229,7 +229,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 var id = fileData[CommonConst.CommonField.DISPLAY_ID].ToString();
 
                 var appUIFolder = GetAppFromUIFolder(fileData[CommonConst.CommonField.FILE_PATH].ToString());
-                if (string.IsNullOrEmpty(appUIFolder))
+                if (!string.IsNullOrEmpty(appUIFolder))
                 {
                     fileData[CommonConst.CommonField.FILE_PATH] = fileData[CommonConst.CommonField.FILE_PATH].ToString().Replace($"/{appUIFolder}", "");
                 }
