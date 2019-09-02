@@ -32,7 +32,7 @@ namespace ZNxt.Net.Core.Module.Gateway.Services.Api
         [Route("/gateway/config", CommonConst.ActionMethods.GET)]
         public JObject GetConfig()
         {
-            var data = _dbService.Get(GATEWAY_CONFIG_COLLECTION, new RawQuery("{'isactive' : true, 'is_override': false } "), new List<string>() { "key", "data" });
+            var data = _dbService.Get(GATEWAY_CONFIG_COLLECTION, new RawQuery("{'isactive' : true, 'is_override': false } "), new List<string>() { "key", "data", "ui_folder" });
             return _responseBuilder.Success(data);
         }
 

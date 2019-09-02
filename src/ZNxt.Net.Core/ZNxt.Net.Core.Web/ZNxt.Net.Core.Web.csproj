@@ -9,7 +9,6 @@
     <None Remove="wwwroot\appinstall\img\loader.gif" />
     <None Remove="wwwroot\appinstall\index.html" />
     <None Remove="wwwroot\appinstall\js\appinstall.js" />
-    <None Remove="wwwroot\index.html" />
     <None Remove="znxtsettings.json.config" />
   </ItemGroup>
 
@@ -47,28 +46,28 @@
   </ItemGroup>
   
 <ItemGroup>
-  <None Update="wwwroot\frontend\css\scrolling-nav.css">
+  <None Update="wwwroot\css\scrolling-nav.css">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\css\znxt.css">
+  <None Update="wwwroot\css\znxt.css">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\index.html">
+  <None Update="wwwroot\index.html">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\js\scrolling-nav.js">
+  <None Update="wwwroot\js\scrolling-nav.js">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\vendor\bootstrap\css\bootstrap.min.css">
+  <None Update="wwwroot\vendor\bootstrap\css\bootstrap.min.css">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\vendor\bootstrap\js\bootstrap.bundle.min.js">
+  <None Update="wwwroot\vendor\bootstrap\js\bootstrap.bundle.min.js">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\vendor\jquery-easing\jquery.easing.min.js">
+  <None Update="wwwroot\vendor\jquery-easing\jquery.easing.min.js">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
-  <None Update="wwwroot\frontend\vendor\jquery\jquery.min.js">
+  <None Update="wwwroot\vendor\jquery\jquery.min.js">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </None>
 </ItemGroup>

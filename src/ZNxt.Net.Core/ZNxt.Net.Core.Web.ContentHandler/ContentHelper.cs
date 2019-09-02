@@ -103,18 +103,19 @@ namespace ZNxt.Net.Core.Web.ContentHandler
         }
         public static string MappedUriPath(string url)
         {
-            if (url.IndexOf(ApplicationConfig.AppBackendPath) == 0)
-            {
-                var path = url.Remove(0, ApplicationConfig.AppBackendPath.Length);
-                path = string.Format("/{0}{1}", CommonConst.CommonValue.APP_BACKEND_FOLDERPATH, path);
-                return path;
-            }
-            else
-            {
-                var path = string.Format("/{0}{1}", CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH, url);
+            //if (url.IndexOf(ApplicationConfig.AppBackendPath) == 0)
+            //{
+            //    var path = url.Remove(0, ApplicationConfig.AppBackendPath.Length);
+            //    path = string.Format("/{0}{1}", CommonConst.CommonValue.APP_BACKEND_FOLDERPATH, path);
+            //    return path;
+            //}
+            //else
+            //{
+            //    var path = string.Format("/{0}{1}", CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH, url);
 
-                return path;
-            }
+            //    return path;
+            //}
+            return url;
         }
 
         public static string UnmappedUriPath(string path)

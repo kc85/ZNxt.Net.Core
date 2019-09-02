@@ -2,11 +2,19 @@
   {
     "key": "frontend_url",
     "data": "http://znxt.fashion",
-    "isactive" :  true
+    "ui_folder": "frontend",
+    "isactive": true
   },
   {
-    "key": "backend_url",
     "data": "http://admin.znxt.fashion",
+    "isactive": true,
+    "key": "backend_url",
+    "ui_folder": "backend"
+  },
+  {
+    "key": "gatway_url",
+    "data": "http://gateway.znxt.fashion",
+    "ui_folder": "gateway",
     "isactive": true
   }
 ]

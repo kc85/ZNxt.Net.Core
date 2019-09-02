@@ -30,7 +30,11 @@ namespace ZNxt.Net.Core.Web.Services
                 {
 
                     await BuildRequestUrl(request, method, route, querystring, baseUrl);
-                    BuildRequestBody(requestBody, request);
+
+                    if (method == CommonConst.ActionMethods.POST || method == CommonConst.ActionMethods.PUT || method == CommonConst.ActionMethods.DELETE)
+                    {
+                        BuildRequestBody(requestBody, request);
+                    }
                     BuildHeaders(headres, request);
                     var httpresponse = await client.SendAsync(request);
 
@@ -96,6 +100,7 @@ namespace ZNxt.Net.Core.Web.Services
         public async  Task<RoutingModel> GetRouteAsync(string method, string route)
         {
             JToken routeData = await GetRouteData(method, route);
+
             if (routeData != null)
             {
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<RoutingModel>(routeData.ToString());

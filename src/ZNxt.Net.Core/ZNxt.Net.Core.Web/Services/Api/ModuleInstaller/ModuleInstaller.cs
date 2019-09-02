@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using ZNxt.Net.Core.Config;
@@ -29,7 +30,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         private readonly ILogger _logger;
         private readonly IRouting _routing;
         private readonly IApiGatewayService _apiGateway;
-
+        private JArray appGatewayConfig = new JArray();
 
         public ModuleInstaller(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig,ILogger logger,IRouting routing, IApiGatewayService apiGateway)
         {
@@ -43,12 +44,32 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             _logger = logger;
             _routing = routing;
             _apiGateway = apiGateway;
+            
+        }
+
+        private async Task GetAppGatewayConfig()
+        {
+            try
+            {
+                var data = await _apiGateway.CallAsync(CommonConst.ActionMethods.GET, "/gateway/config", "", null, null, ApplicationConfig.ApiGatewayEndpoint);
+                if (data != null && data[CommonConst.CommonField.DATA]!=null)
+                {
+                    appGatewayConfig = data[CommonConst.CommonField.DATA] as JArray;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error while GetAppGatewayConfig. {ex.Message}", ex);
+            }
+
+            //appGatewayConfig = 
         }
         [Route("/moduleinstaller/install", CommonConst.ActionMethods.POST)]
         public JObject InstallModule()
         {
             try
             {
+                GetAppGatewayConfig().GetAwaiter().GetResult();
                 var request = _httpContextProxy.GetRequestBody<ModuleInstallRequest>();
                 if (request == null)
                 {
@@ -206,8 +227,57 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 var fileData = JObjectHelper.GetJObjectDbDataFromFile(fileName, contentType, "content/wwwroot", request.Name, fileSize);
                 fileData[CommonConst.CommonField.VERSION] = request.Version;
                 var id = fileData[CommonConst.CommonField.DISPLAY_ID].ToString();
-                WriteToDB(fileData, request.Name, CommonConst.Collection.STATIC_CONTECT, CommonConst.CommonField.FILE_PATH);
-                _keyValueStorage.Put<string>(CommonConst.Collection.STATIC_CONTECT, id, _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId));
+
+                var appUIFolder = GetAppFromUIFolder(fileData[CommonConst.CommonField.FILE_PATH].ToString());
+                if (string.IsNullOrEmpty(appUIFolder))
+                {
+                    fileData[CommonConst.CommonField.FILE_PATH] = fileData[CommonConst.CommonField.FILE_PATH].ToString().Replace($"/{appUIFolder}", "");
+                }
+                var appUIFolderUrl = GetUIAppUrl(appUIFolder);
+                if (string.IsNullOrEmpty(appUIFolderUrl))
+                {
+                    WriteToDB(fileData, request.Name, CommonConst.Collection.STATIC_CONTECT, CommonConst.CommonField.FILE_PATH);
+                    _keyValueStorage.Put<string>(CommonConst.Collection.STATIC_CONTECT, id, _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId));
+                }
+                else
+                {
+                    fileData[CommonConst.CommonField.DATA] = _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId);
+                    _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installpage", "", fileData, null, appUIFolderUrl).GetAwaiter().GetResult();
+                }
+            }
+        }
+        private string GetUIAppUrl(string folder)
+        {
+            var appUrl = appGatewayConfig.FirstOrDefault(f => f["ui_folder"].ToString() == folder);
+            if (appUrl != null)
+            {
+                return appUrl[CommonConst.CommonField.DATA].ToString();
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+        private string GetAppFromUIFolder(string path)
+        {
+            if (path.IndexOf("/") != -1)
+            {
+                var folder = path.Remove(0, 1);
+                var index = folder.IndexOf("/");
+                if (index != -1)
+                {
+                    folder = folder.Substring(0, index);
+                    return folder;
+                }
+                else
+                {
+                    return string.Empty;
+
+                }
+            }
+            else
+            {
+                return string.Empty;
             }
         }
 
