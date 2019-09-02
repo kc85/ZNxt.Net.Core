@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00034</Version>
+    <Version>1.0.0-Beta00001</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,19 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
+    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="collections\gateway_config.json">
-      <PackPath>.</PackPath>
-      <Pack>true</Pack>
-    </None>
-    <None Update="wwwroot\gateway\index_g.html">
-      <PackPath>.</PackPath>
-      <Pack>true</Pack>
-    </None>
-    <None Update="wwwroot\gateway\index.html">
+    <None Update="wwwroot\backend\index.html">
       <PackPath>.</PackPath>
       <Pack>true</Pack>
     </None>
