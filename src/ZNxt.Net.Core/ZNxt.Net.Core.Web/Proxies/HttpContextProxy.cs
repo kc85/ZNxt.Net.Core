@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json.Linq;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
+using System.Linq;
 
 namespace ZNxt.Net.Core.Web.Proxies
 {
@@ -33,11 +34,27 @@ namespace ZNxt.Net.Core.Web.Proxies
 
         public string TransactionId => throw new NotImplementedException();
 
-        public UserModel User { get {
+        public UserModel User
+        {
+            get
+            {
 
-                //_httpContextAccessor.HttpContext.User;
+                if (_httpContextAccessor.HttpContext.User != null)
+                {
+                    var user =  new UserModel()
+                    {
+                        name = _httpContextAccessor.HttpContext.User.Identity.Name,
+                    
+                    };
+
+                    user.claims = _httpContextAccessor.HttpContext.User.Claims.Select(f => { return new Claim(f.Issuer, f.Value); }).ToList();
+                    
+                    return user;
+                }
                 return null;
-            } }
+            }
+        }
+
 
         public string GetFormData(string key)
         {

@@ -1,0 +1,164 @@
+2019-09-03 20:08:34.372 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 20:08:34.482 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 20:08:34.505 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 20:08:34.505 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 20:08:34.506 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 20:08:34.506 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 20:08:34.506 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 20:08:34.506 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 20:08:35.496 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 20:08:35.501 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 20:08:35.501 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 20:08:35.501 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 20:08:35.501 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 20:08:35.502 +05:30 [DBG] Error Url: /home/error
+2019-09-03 20:08:35.502 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 20:08:38.770 +05:30 [INF] AuthenticationScheme: idsrv was challenged.
+2019-09-03 20:08:42.629 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 20:14:28.899 +05:30 [FTL] Application startup exception
+System.Exception: need to configure key material
+   at ZNxt.Identity.Startup.ConfigureServices(IServiceCollection services) in C:\Users\Khanin\Google Drive\Code\ZNxt.Identity\src\ZNxt.Identity\Startup.cs:line 64
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.Initialize()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2019-09-03 20:19:52.313 +05:30 [FTL] Application startup exception
+Internal.Cryptography.CryptoThrowHelper+WindowsCryptographicException: The system cannot find the file specified
+   at Internal.Cryptography.Pal.CertificatePal.FromBlobOrFile(Byte[] rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate2..ctor(String fileName, String password)
+   at ZNxt.Identity.Startup.ConfigureServices(IServiceCollection services) in C:\Users\Khanin\Google Drive\Code\ZNxt.Identity\src\ZNxt.Identity\Startup.cs:line 64
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.Initialize()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2019-09-03 20:20:17.116 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 20:20:17.195 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 20:20:17.211 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 20:20:17.211 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 20:20:17.211 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 20:20:17.212 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 20:20:17.212 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 20:20:17.212 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 20:20:17.994 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 20:20:18.005 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 20:20:18.006 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 20:20:18.006 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 20:20:18.006 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 20:20:18.007 +05:30 [DBG] Error Url: /home/error
+2019-09-03 20:20:18.007 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 20:20:18.430 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:20:33.802 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 20:20:33.899 +05:30 [INF] {"Username":"alice","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Failure","EventType":"Failure","Id":1001,"Message":"invalid credentials","ActivityId":"0HLPGFO4L8J5E:00000002","TimeStamp":"2019-09-03T14:50:33.0000000Z","ProcessId":13052,"LocalIpAddress":"127.0.0.1:1055","RemoteIpAddress":"::1","$type":"UserLoginFailureEvent"}
+2019-09-03 20:20:43.296 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 20:20:43.318 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:22:22.269 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 20:22:22.361 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 20:22:22.380 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 20:22:22.380 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 20:22:22.380 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 20:22:22.380 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 20:22:22.380 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 20:22:22.381 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 20:22:23.574 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 20:22:23.580 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 20:22:23.581 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 20:22:23.581 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 20:22:23.581 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 20:22:23.581 +05:30 [DBG] Error Url: /home/error
+2019-09-03 20:22:23.581 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 20:22:24.127 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:22:28.231 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 20:22:28.320 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:24:29.741 +05:30 [FTL] Application startup exception
+System.IO.FileNotFoundException: The configuration file 'znxtsettings.json.config' was not found and is not optional. The physical path is 'C:\Users\Khanin\Google Drive\Code\ZNxt.Identity\src\ZNxt.Identity\bin\Debug\netcoreapp2.2\znxtsettings.json.config'.
+   at Microsoft.Extensions.Configuration.FileConfigurationProvider.Load(Boolean reload)
+   at Microsoft.Extensions.Configuration.FileConfigurationProvider.Load()
+   at Microsoft.Extensions.Configuration.ConfigurationRoot..ctor(IList`1 providers)
+   at Microsoft.Extensions.Configuration.ConfigurationBuilder.Build()
+   at ZNxt.Net.Core.Helpers.CommonUtility.GetWebAppConfig()
+   at ZNxt.Net.Core.Helpers.CommonUtility.GetAppConfigValue(String key)
+   at ZNxt.Net.Core.Config.ApplicationConfig.get_DataBaseName()
+   at ZNxt.Net.Core.DB.Mongo.MongoDBServiceConfig..ctor()
+   at MVCServiceExtention.AddZNxtApp(IServiceCollection services)
+   at ZNxt.Identity.Startup.ConfigureServices(IServiceCollection services) in C:\Users\Khanin\Google Drive\Code\ZNxt.Identity\src\ZNxt.Identity\Startup.cs:line 79
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Hosting.ConventionBasedStartup.ConfigureServices(IServiceCollection services)
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.EnsureApplicationServices()
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.Initialize()
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.AspNetCore.Hosting.Internal.WebHost.BuildApplication()
+2019-09-03 20:24:50.107 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 20:24:50.205 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 20:24:50.226 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 20:24:50.226 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 20:24:50.226 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 20:24:50.226 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 20:24:50.226 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 20:24:50.226 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 20:24:50.976 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 20:24:50.980 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 20:24:50.980 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 20:24:50.980 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 20:24:50.980 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 20:24:50.980 +05:30 [DBG] Error Url: /home/error
+2019-09-03 20:24:50.980 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 20:24:51.282 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:25:50.664 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 20:25:50.765 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 20:25:50.798 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 20:25:50.799 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 20:25:50.800 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 20:25:50.801 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 20:25:50.802 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 20:25:50.804 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 20:25:53.180 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 20:25:53.184 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 20:25:53.184 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 20:25:53.184 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 20:25:53.185 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 20:25:53.186 +05:30 [DBG] Error Url: /home/error
+2019-09-03 20:25:53.186 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 20:25:53.403 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:27:20.803 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 20:27:20.893 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 20:27:20.921 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 20:27:20.922 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 20:27:20.922 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 20:27:20.922 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 20:27:20.922 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 20:27:20.922 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 20:27:22.647 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 20:27:22.653 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 20:27:22.654 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 20:27:22.654 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 20:27:22.654 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 20:27:22.654 +05:30 [DBG] Error Url: /home/error
+2019-09-03 20:27:22.654 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 20:27:22.904 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:29:39.927 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 20:29:40.045 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 20:29:40.059 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 20:29:40.059 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 20:29:40.059 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 20:29:40.059 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 20:29:40.059 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 20:29:40.059 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 20:29:42.252 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 20:29:42.254 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 20:29:42.255 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 20:29:42.255 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 20:29:42.255 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 20:29:42.255 +05:30 [DBG] Error Url: /home/error
+2019-09-03 20:29:42.255 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 20:29:42.486 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 20:31:27.971 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 20:31:28.101 +05:30 [INF] {"Username":"alice","Provider":null,"ProviderUserId":null,"SubjectId":"818727","DisplayName":"alice","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLPGFTCR5U5O:00000002","TimeStamp":"2019-09-03T15:01:28.0000000Z","ProcessId":13192,"LocalIpAddress":"127.0.0.1:31989","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-09-03 20:31:28.140 +05:30 [DBG] Augmenting SignInContext
+2019-09-03 20:31:28.144 +05:30 [DBG] Adding idp claim with value: local
+2019-09-03 20:31:28.144 +05:30 [DBG] Adding amr claim with value: pwd
+2019-09-03 20:31:28.185 +05:30 [INF] AuthenticationScheme: idsrv signed in.
