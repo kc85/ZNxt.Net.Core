@@ -31,7 +31,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             _httpFileUploader = httpFileUploader;
             _logger = logger;
         }
-        [Route("/ui/installpage", CommonConst.ActionMethods.POST)]
+        [Route("/ui/installpage", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject Install()
         {
             try

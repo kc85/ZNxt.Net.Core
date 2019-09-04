@@ -64,7 +64,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
             //appGatewayConfig = 
         }
-        [Route("/moduleinstaller/install", CommonConst.ActionMethods.POST)]
+        [Route("/moduleinstaller/install", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject InstallModule()
         {
             try
@@ -305,7 +305,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
         }
 
-        [Route("/moduleinstaller/upload", CommonConst.ActionMethods.POST)]
+        [Route("/moduleinstaller/upload", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject UploadModule()
         {
             List<string> ingoreFiles = new List<string>() { "NuGet.exe" };
@@ -409,7 +409,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             }.ToString()));
         }
 
-        [Route("/moduleinstaller/uninstall", CommonConst.ActionMethods.POST)]
+        [Route("/moduleinstaller/uninstall", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject UninstallModule()
         {
             try

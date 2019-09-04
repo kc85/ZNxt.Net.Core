@@ -3,10 +3,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Policy;
+using ZNxt.Net.Core.Model;
+using ZNxt.Net.Core.Consts;
+using System.Net;
 
 namespace ZNxt.Net.Core.Web.Handlers
 {
@@ -40,57 +47,65 @@ namespace ZNxt.Net.Core.Web.Handlers
             var route = _routing.GetRoute(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
             if (route != null)
             {
+                if (AuthorizedRoute(route)) { 
                 var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
-                if (type != null)
-                {
-
-                    _logger.Debug(string.Format("Executing route:{0}", route.ToString()));
-                    var controller = _serviceResolver.Resolve(type);
-                    var method = controller.GetType().GetMethods().FirstOrDefault(f => f.Name == route.ExecuteMethod);
-                    if (method != null)
+                    if (type != null)
                     {
-                        context.Response.ContentType = route.ContentType;
-                        object response = null;
-                        if (method.ReturnType.BaseType == typeof(Task))
+                        _logger.Debug(string.Format("Executing route:{0}", route.ToString()));
+                        var controller = _serviceResolver.Resolve(type);
+                        var method = controller.GetType().GetMethods().FirstOrDefault(f => f.Name == route.ExecuteMethod);
+                        if (method != null)
                         {
-                            response = await (dynamic)method.Invoke(controller, null);
-                        }
-                        else
-                        {
-                            response = method.Invoke(controller, null);
-                        }
-                        if (response != null)
-                        {
-                            if (method.ReturnType == typeof(string))
+                            context.Response.ContentType = route.ContentType;
+                            object response = null;
+                            if (method.ReturnType.BaseType == typeof(Task))
                             {
-                                await context.Response.WriteAsync((response as string));
-                            }
-                            else if (method.ReturnType == typeof(byte[]))
-                            {
-                                var byteResponse = response as byte[];
-                                await context.Response.Body.WriteAsync(byteResponse, 0, byteResponse.Length);
+                                response = await (dynamic)method.Invoke(controller, null);
                             }
                             else
                             {
-                                await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                                response = method.Invoke(controller, null);
+                            }
+                            if (response != null)
+                            {
+                                if (method.ReturnType == typeof(string))
+                                {
+                                    await context.Response.WriteAsync((response as string));
+                                }
+                                else if (method.ReturnType == typeof(byte[]))
+                                {
+                                    var byteResponse = response as byte[];
+                                    await context.Response.Body.WriteAsync(byteResponse, 0, byteResponse.Length);
+                                }
+                                else
+                                {
+                                    await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                                }
+                            }
+                            else
+                            {
+                                await context.Response.Body.WriteAsync(new byte[] { });
                             }
                         }
                         else
                         {
-                            await context.Response.Body.WriteAsync(new byte[] { });
+                            _logger.Error($"Method not found for route : {route.ToString()}");
+                            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                            await context.Response.WriteAsync(_responseBuilder.NotFound().ToString());
                         }
                     }
                     else
                     {
-                        _logger.Error($"Method not found for route : {route.ToString()}");
+
+                        _logger.Error($"Type not found for route : {route.ToString()}");
+                        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                         await context.Response.WriteAsync(_responseBuilder.NotFound().ToString());
                     }
-                    return;
                 }
                 else
                 {
-                    _logger.Error($"Type not found for route : {route.ToString()}");
-                    await context.Response.WriteAsync(_responseBuilder.NotFound().ToString());
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    await context.Response.WriteAsync(_responseBuilder.Unauthorized().ToString());
                 }
             }
             else
@@ -117,14 +132,27 @@ namespace ZNxt.Net.Core.Web.Handlers
                         await _next(context);
                     }
                 }
-                catch (KeyNotFoundException)
+                catch (Exception ex)
                 {
+                    _logger.Error($"Error Executing remote route. {route.ToString() } . {ex.Message}", ex);
                     await _next(context);
                 }
 
             }
            
 
+        }
+
+        private bool AuthorizedRoute(RoutingModel route)
+        {
+            if (!route.auth_users.Where(f => f == CommonConst.CommonValue.ACCESS_ALL).Any())
+            {
+                return _httpContextProxy.User !=null &&_httpContextProxy.User.claims.Where(f => route.auth_users.IndexOf(f.Value) != -1).Any();
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 

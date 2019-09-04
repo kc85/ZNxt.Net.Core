@@ -16,7 +16,7 @@ namespace ZNxt.Net.Core.Module.Gateway.Services.Api
 
             _responseBuilder = responseBuilder;
         }
-        [Route("/gatewayping", CommonConst.ActionMethods.GET)]
+        [Route("/gateway/ping", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject Ping()
         {
 

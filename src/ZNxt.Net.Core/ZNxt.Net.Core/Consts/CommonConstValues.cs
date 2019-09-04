@@ -49,6 +49,8 @@
             public const string FINISH_WITH_ERROR = "finish_with_error";
             public const string INPROGRESS = "inprogress";
             public const string APPINSTALLSTATUS = "AppInstallStatus";
+            public const string ACCESS_ALL = "*";
+            public const string ACCESS_NONE = "";
 
         }
     }

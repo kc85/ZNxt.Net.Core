@@ -13,7 +13,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.Ping
         {
             _responseBuilder = responseBuilder;
         }
-        [Route("/ping", CommonConst.ActionMethods.GET)]
+        [Route("/ping", CommonConst.ActionMethods.GET,CommonConst.CommonValue.ACCESS_ALL)]
         public async Task<JObject> Ping()
         {
             return await Task.FromResult<JObject>(_responseBuilder.Success());

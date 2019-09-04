@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.DB.Mongo;
@@ -45,12 +46,27 @@ public static class MVCServiceExtention
         services.AddTransient<IApiGatewayService, ApiGatewayService>();
         services.AddTransient<IInMemoryCacheService, InMemoryCacheService>();
         services.AddMemoryCache();
+        AddAuthentication(services);
 
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);
 
         InitRoutingDepedencies(services, serviceProvider);
     }
+
+    private static void AddAuthentication(IServiceCollection services)
+    {
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        services.AddAuthentication().AddJwtBearer(options =>
+        {
+
+            options.Authority = "";
+            options.Audience = "ZNxtCoreAppApi";
+            options.TokenValidationParameters.NameClaimType = "name";
+            options.RequireHttpsMetadata = false;
+        });
+    }
+
     private static void SetAppInstallStatus(ServiceProvider serviceProvider)
     {
         try

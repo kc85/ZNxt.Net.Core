@@ -12,7 +12,7 @@ namespace ZNxt.Net.Core.Model
         public string ContentType { get; set; }
         public List<string> AuthUsers { get; set; } 
 
-        public Route(string routePath, string method = CommonConst.ActionMethods.GET, string contentType = CommonConst.CONTENT_TYPE_APPLICATION_JSON, string authUsers = "*")
+        public Route(string routePath, string method = CommonConst.ActionMethods.GET, string authUsers = CommonConst.CommonValue.ACCESS_NONE, string contentType = CommonConst.CONTENT_TYPE_APPLICATION_JSON)
         {
             this.Method = method;
             this.RoutePath = routePath;

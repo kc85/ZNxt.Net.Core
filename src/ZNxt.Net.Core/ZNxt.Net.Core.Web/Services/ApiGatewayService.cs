@@ -45,7 +45,7 @@ namespace ZNxt.Net.Core.Web.Services
                     }
                     else
                     {
-                        throw new Exception("Error while calling route ");
+                        throw new Exception($"Error while calling route http code : {httpresponse.StatusCode}");
                     }
                 }
             }

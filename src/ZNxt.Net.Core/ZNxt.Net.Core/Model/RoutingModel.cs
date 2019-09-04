@@ -19,6 +19,12 @@ namespace ZNxt.Net.Core.Model
         {
             auth_users = new List<string>();
             ContentType = CommonConst.CONTENT_TYPE_APPLICATION_JSON;
+            Method = string.Empty;
+            Route = string.Empty;
+            ExecuteType = string.Empty;
+            ExecultAssembly = string.Empty;
+            ExecuteMethod = string.Empty;
+            module = string.Empty;
         }
 
         public string GetJson()

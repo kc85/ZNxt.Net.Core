@@ -162,3 +162,266 @@ System.IO.FileNotFoundException: The configuration file 'znxtsettings.json.confi
 2019-09-03 20:31:28.144 +05:30 [DBG] Adding idp claim with value: local
 2019-09-03 20:31:28.144 +05:30 [DBG] Adding amr claim with value: pwd
 2019-09-03 20:31:28.185 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-09-03 21:26:10.869 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:26:10.981 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:26:10.999 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:26:10.999 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:26:10.999 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:26:10.999 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:26:10.999 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:26:10.999 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:26:13.201 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:26:13.206 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:26:13.206 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:26:13.206 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:26:13.207 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:26:13.207 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:26:13.207 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:26:13.237 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:26:13.265 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:26:13.455 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 21:26:40.436 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:26:40.436 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:26:40.531 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:26:40.531 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:26:49.389 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:26:49.390 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.206 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.207 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.596 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.597 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.600 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.600 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.600 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.601 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.601 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.601 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.601 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:09.601 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:16.991 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 21:27:16.994 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:16.994 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:17.103 +05:30 [INF] {"Username":"alice","Provider":null,"ProviderUserId":null,"SubjectId":"818727","DisplayName":"alice","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLPGGSVDMAQG:00000005","TimeStamp":"2019-09-03T15:57:17.0000000Z","ProcessId":13128,"LocalIpAddress":"127.0.0.1:5763","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-09-03 21:27:17.141 +05:30 [DBG] Augmenting SignInContext
+2019-09-03 21:27:17.145 +05:30 [DBG] Adding idp claim with value: local
+2019-09-03 21:27:17.146 +05:30 [DBG] Adding amr claim with value: pwd
+2019-09-03 21:27:17.157 +05:30 [INF] idsrv was not authenticated. Failure message: Unprotect ticket failed
+2019-09-03 21:27:17.170 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-09-03 21:30:28.897 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:30:28.977 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:30:28.996 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:30:28.997 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:30:28.997 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:30:28.997 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:30:28.997 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:30:28.997 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:30:30.327 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:30:30.330 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:30:30.330 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:30:30.330 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:30:30.331 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:30:30.331 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:30:30.331 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:30:55.015 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:30:55.107 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:30:55.135 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:30:55.135 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:30:55.136 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:30:55.136 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:30:55.136 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:30:55.136 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:30:57.307 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:30:57.310 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:30:57.310 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:30:57.311 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:30:57.311 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:30:57.311 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:30:57.311 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:30:57.579 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 21:32:19.383 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 21:32:19.496 +05:30 [INF] {"Username":"alice","Provider":null,"ProviderUserId":null,"SubjectId":"818727","DisplayName":"alice","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLPGGVK2TIHN:00000005","TimeStamp":"2019-09-03T16:02:19.0000000Z","ProcessId":4900,"LocalIpAddress":"127.0.0.1:33142","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-09-03 21:32:19.533 +05:30 [DBG] Augmenting SignInContext
+2019-09-03 21:32:19.536 +05:30 [DBG] Adding idp claim with value: local
+2019-09-03 21:32:19.537 +05:30 [DBG] Adding amr claim with value: pwd
+2019-09-03 21:32:19.557 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-09-03 21:33:15.347 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:33:15.411 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:33:15.425 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:33:15.425 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:33:15.425 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:33:15.425 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:33:15.425 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:33:15.425 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:33:16.651 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:33:16.653 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:33:16.653 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:33:16.653 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:33:16.654 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:33:16.654 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:33:16.654 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:36:00.575 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:36:00.763 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:36:00.813 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:36:00.813 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:36:00.813 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:36:00.813 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:36:00.814 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:36:00.814 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:36:02.940 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:36:02.943 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:36:02.943 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:36:02.943 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:36:02.943 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:36:02.943 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:36:02.943 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:36:03.190 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 21:37:09.099 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 21:41:08.636 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:41:08.700 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:41:08.713 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:41:08.713 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:41:08.713 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:41:08.713 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:41:08.713 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:41:08.713 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:41:09.981 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:41:09.984 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:41:09.984 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:41:09.984 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:41:09.984 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:41:09.984 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:41:09.985 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:41:30.639 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:41:30.761 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:41:30.782 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:41:30.782 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:41:30.783 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:41:30.783 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:41:30.783 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:41:30.784 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:41:32.838 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:41:32.843 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:41:32.843 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:41:32.843 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:41:32.843 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:41:32.843 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:41:32.843 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:41:33.118 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-03 21:41:39.454 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-03 21:41:39.560 +05:30 [INF] {"Username":"alice","Provider":null,"ProviderUserId":null,"SubjectId":"818727","DisplayName":"alice","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLPGH5HFUQ09:00000003","TimeStamp":"2019-09-03T16:11:39.0000000Z","ProcessId":11616,"LocalIpAddress":"127.0.0.1:43308","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-09-03 21:41:39.599 +05:30 [DBG] Augmenting SignInContext
+2019-09-03 21:41:39.604 +05:30 [DBG] Adding idp claim with value: local
+2019-09-03 21:41:39.605 +05:30 [DBG] Adding amr claim with value: pwd
+2019-09-03 21:41:39.628 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-09-03 21:43:59.632 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-03 21:43:59.736 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-03 21:43:59.759 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-03 21:43:59.759 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-03 21:43:59.759 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-03 21:43:59.759 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-03 21:43:59.759 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-03 21:43:59.760 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-03 21:44:01.895 +05:30 [DBG] Login Url: /Account/Login
+2019-09-03 21:44:01.898 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-03 21:44:01.898 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-03 21:44:01.898 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-03 21:44:01.898 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-03 21:44:01.898 +05:30 [DBG] Error Url: /home/error
+2019-09-03 21:44:01.898 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-03 21:44:02.217 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-04 07:54:44.062 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-04 07:54:44.148 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-04 07:54:44.162 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-04 07:54:44.162 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-04 07:54:44.162 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-04 07:54:44.163 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-04 07:54:44.163 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-04 07:54:44.163 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-04 07:54:45.776 +05:30 [DBG] Login Url: /Account/Login
+2019-09-04 07:54:45.780 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-04 07:54:45.780 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-04 07:54:45.780 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-04 07:54:45.780 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-04 07:54:45.780 +05:30 [DBG] Error Url: /home/error
+2019-09-04 07:54:45.780 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-04 07:54:45.798 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 07:54:45.835 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 07:54:45.997 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-04 08:00:37.298 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-04 08:00:37.382 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-04 08:00:37.406 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-04 08:00:37.407 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-04 08:00:37.407 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-04 08:00:37.407 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-04 08:00:37.407 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-04 08:00:37.408 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-04 08:00:39.552 +05:30 [DBG] Login Url: /Account/Login
+2019-09-04 08:00:39.556 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-04 08:00:39.556 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-04 08:00:39.556 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-04 08:00:39.556 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-04 08:00:39.557 +05:30 [DBG] Error Url: /home/error
+2019-09-04 08:00:39.557 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-04 08:00:39.580 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:39.613 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:39.820 +05:30 [INF] Homepage is disabled in production. Returning 404.
+2019-09-04 08:00:43.866 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:43.866 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:47.223 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:47.223 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:47.275 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:59.548 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:00:59.549 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:01.147 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:10.645 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:10.646 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.014 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.014 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.014 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.014 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.022 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.022 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.022 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.022 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.022 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:11.024 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:20.172 +05:30 [DBG] CORS request made for path: /Account/Login from origin: null but was ignored because path was not for an allowed IdentityServer CORS endpoint
+2019-09-04 08:01:20.175 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:20.175 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:20.267 +05:30 [INF] {"Username":"alice","Provider":null,"ProviderUserId":null,"SubjectId":"818727","DisplayName":"alice","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLPGRVG2HM6F:00000002","TimeStamp":"2019-09-04T02:31:20.0000000Z","ProcessId":9696,"LocalIpAddress":"127.0.0.1:23559","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-09-04 08:01:20.305 +05:30 [DBG] Augmenting SignInContext
+2019-09-04 08:01:20.308 +05:30 [DBG] Adding idp claim with value: local
+2019-09-04 08:01:20.308 +05:30 [DBG] Adding amr claim with value: pwd
+2019-09-04 08:01:20.318 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-04 08:01:20.336 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-09-04 08:08:38.443 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-04 08:08:38.514 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-04 08:08:38.529 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-04 08:08:38.529 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-04 08:08:38.529 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-04 08:08:38.529 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-04 08:08:38.530 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-04 08:08:38.530 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-04 08:08:40.045 +05:30 [DBG] Login Url: /Account/Login
+2019-09-04 08:08:40.049 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-04 08:08:40.049 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-04 08:08:40.049 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-04 08:08:40.049 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-04 08:08:40.049 +05:30 [DBG] Error Url: /home/error
+2019-09-04 08:08:40.049 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-04 08:09:13.062 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-04 08:09:13.160 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-04 08:09:13.182 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-04 08:09:13.182 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-04 08:09:13.182 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-04 08:09:13.183 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-04 08:09:13.183 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-04 08:09:13.183 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-04 08:09:14.785 +05:30 [DBG] Login Url: /Account/Login
+2019-09-04 08:09:14.788 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-04 08:09:14.788 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-04 08:09:14.788 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-04 08:09:14.788 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-04 08:09:14.788 +05:30 [DBG] Error Url: /home/error
+2019-09-04 08:09:14.788 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-04 08:09:14.998 +05:30 [INF] Homepage is disabled in production. Returning 404.

@@ -22,7 +22,7 @@ namespace ZNxt.Identity
         {
             return new ApiResource[]
             {
-                new ApiResource("api1", "My API #1")
+                new ApiResource("ZNxtCoreAppApi", "My API #1")
             };
         }
 

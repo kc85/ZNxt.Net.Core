@@ -29,14 +29,14 @@ namespace ZNxt.Net.Core.Module.Gateway.Services.Api
             _httpContextProxy = httpContextProxy;
             _logger = logger;
         }
-        [Route("/gateway/config", CommonConst.ActionMethods.GET)]
+        [Route("/gateway/config", CommonConst.ActionMethods.GET,CommonConst.CommonValue.ACCESS_ALL)]
         public JObject GetConfig()
         {
             var data = _dbService.Get(GATEWAY_CONFIG_COLLECTION, new RawQuery("{'isactive' : true, 'is_override': false } "), new List<string>() { "key", "data", "ui_folder" });
             return _responseBuilder.Success(data);
         }
 
-        [Route("/gateway/routes", CommonConst.ActionMethods.GET)]
+        [Route("/gateway/routes", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject GetRoute()
         {
 
@@ -55,7 +55,7 @@ namespace ZNxt.Net.Core.Module.Gateway.Services.Api
             return _responseBuilder.Success(routeData);
 
         }
-        [Route("/gateway/installroute", CommonConst.ActionMethods.POST)]
+        [Route("/gateway/installroute", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject InstallRoute()
         {
             var routeObj = _httpContextProxy.GetRequestBody<JObject>();
@@ -82,7 +82,7 @@ namespace ZNxt.Net.Core.Module.Gateway.Services.Api
             return _responseBuilder.Success();
         }
 
-        [Route("/gateway/uninstallmodule", CommonConst.ActionMethods.POST)]
+        [Route("/gateway/uninstallmodule", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject UninstallRoute()
         {
             var routeObj = _httpContextProxy.GetRequestBody<JObject>();

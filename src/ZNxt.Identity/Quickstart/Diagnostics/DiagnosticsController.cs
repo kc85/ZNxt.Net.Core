@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -21,7 +22,7 @@ namespace IdentityServer4.Quickstart.UI
             {
                 return NotFound();
             }
-
+          // var accessToken =  await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken); 
             var model = new DiagnosticsViewModel(await HttpContext.AuthenticateAsync());
             return View(model);
         }
