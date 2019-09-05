@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Interfaces
@@ -47,5 +48,7 @@ namespace ZNxt.Net.Core.Interfaces
         Dictionary<string, string> GetHeaders();
         
         UserModel User { get; }
+
+        Task<string> GetAccessTokenAync();
     }
 }

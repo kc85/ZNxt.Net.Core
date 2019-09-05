@@ -14,6 +14,8 @@ using System.Security.Policy;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Consts;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using ZNxt.Net.Core.Config;
 
 namespace ZNxt.Net.Core.Web.Handlers
 {
@@ -29,7 +31,8 @@ namespace ZNxt.Net.Core.Web.Handlers
         private readonly ILogger _logger;
         private readonly IResponseBuilder _responseBuilder;
         private readonly IApiGatewayService _apiGatewayService;
-        public ApiHandler(RequestDelegate next,ILogger logger,IDBService dbService, IRouting routing, IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IApiGatewayService apiGatewayService)
+        private readonly IInMemoryCacheService _inMemoryCacheService;
+        public ApiHandler(RequestDelegate next, ILogger logger, IDBService dbService, IRouting routing, IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService)
         {
             _next = next;
             _routing = routing;
@@ -40,15 +43,17 @@ namespace ZNxt.Net.Core.Web.Handlers
             _logger = logger;
             _responseBuilder = responseBuilder;
             _apiGatewayService = apiGatewayService;
+            _inMemoryCacheService = inMemoryCacheService;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IAuthorizationService authorizationService)
         {
             var route = _routing.GetRoute(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
             if (route != null)
             {
-                if (AuthorizedRoute(route)) { 
-                var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
+                if (AuthorizedRoute(context, route, authorizationService))
+                {
+                    var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
                     if (type != null)
                     {
                         _logger.Debug(string.Format("Executing route:{0}", route.ToString()));
@@ -139,15 +144,41 @@ namespace ZNxt.Net.Core.Web.Handlers
                 }
 
             }
-           
-
         }
 
-        private bool AuthorizedRoute(RoutingModel route)
+        private bool AuthorizedRoute(HttpContext context, RoutingModel route, IAuthorizationService authorizationService)
         {
+
             if (!route.auth_users.Where(f => f == CommonConst.CommonValue.ACCESS_ALL).Any())
             {
-                return _httpContextProxy.User !=null &&_httpContextProxy.User.claims.Where(f => route.auth_users.IndexOf(f.Value) != -1).Any();
+                try
+                {
+                    var accessToken = _httpContextProxy.GetAccessTokenAync().GetAwaiter().GetResult();
+                    if (!string.IsNullOrEmpty(accessToken))
+                    {
+                        UserModel userModel = _inMemoryCacheService.Get<UserModel>(accessToken);
+                        if (userModel == null)
+                        {
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/userinfo", "", null, null, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
+                            if (response["user"] != null)
+                            {
+                                userModel = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
+                                _inMemoryCacheService.Put<UserModel>(accessToken, userModel);
+                            }
+                        }
+                        if (userModel != null)
+                        {
+                            return userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
+                        }
+
+                    }
+                    return false;
+
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    return false;
+                }
             }
             else
             {

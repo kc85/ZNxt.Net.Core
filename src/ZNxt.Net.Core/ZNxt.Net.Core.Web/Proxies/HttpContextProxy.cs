@@ -7,6 +7,8 @@ using Newtonsoft.Json.Linq;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ZNxt.Net.Core.Web.Proxies
 {
@@ -46,17 +48,34 @@ namespace ZNxt.Net.Core.Web.Proxies
                         name = _httpContextAccessor.HttpContext.User.Identity.Name,
 
                     };
+                    user.roles.Add("user");
+                    // need to get the roles from claims 
                     var claims = new List<Claim>();
                     foreach (var claim in _httpContextAccessor.HttpContext.User.Claims)
                     {
                         claims.Add(new Claim(claim.Type, claim.Value));
                     }
                     user.claims = claims;
+                    
                     user.id = user.user_id = user.claims.FirstOrDefault(f => f.Key == "sub").Value;
                     return user;
                 }
                 return null;
             }
+        }
+
+        public  async Task<string> GetAccessTokenAync()
+        {
+            var accessToken = string.Empty;
+            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
+            {
+                accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].First().Replace("Bearer ", "");
+            }
+            else
+            {
+                 accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+            }
+            return accessToken;
         }
 
         public string GetFormData(string key)

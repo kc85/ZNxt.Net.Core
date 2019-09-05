@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using ZNxt.Net.Core.Config;
@@ -22,7 +25,7 @@ public static class MVCServiceExtention
     public static void AddZNxtApp(this IServiceCollection services)
     {
         // services.AddScoped<IDBServiceConfig>(new Func<IServiceProvider, IDBServiceConfig>(f => { return new MongoDBServiceConfig("DotNetCoreTest", "mongodb://localhost:27017"); }));
-
+        services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         services.AddTransient<IServiceResolver, ServiceResolver>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IEncryption, EncryptionService>();
@@ -46,25 +49,50 @@ public static class MVCServiceExtention
         services.AddTransient<IApiGatewayService, ApiGatewayService>();
         services.AddTransient<IInMemoryCacheService, InMemoryCacheService>();
         services.AddMemoryCache();
-        AddAuthentication(services);
-
+        AddIdentityServer(services);
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);
 
         InitRoutingDepedencies(services, serviceProvider);
     }
 
-    private static void AddAuthentication(IServiceCollection services)
+    private static void AddIdentityServer(IServiceCollection services)
     {
+        var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
+        var appName = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_NAME_CONFIG_KEY);
+        var appSecret = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY);
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication().AddJwtBearer(options =>
         {
 
-            options.Authority = "";
+            options.Authority = ssourl;
             options.Audience = "ZNxtCoreAppApi";
             options.TokenValidationParameters.NameClaimType = "name";
             options.RequireHttpsMetadata = false;
         });
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultChallengeScheme = "oidc";
+            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = "oidc";
+
+        })   .AddOpenIdConnect("oidc", options =>
+             {
+                 options.Authority = ssourl;
+                 options.ClientId = appName;
+                 options.ClientSecret = appSecret;
+                 options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+                 options.Scope.Add("openid");
+                 options.Scope.Add("profile");
+                 options.Scope.Add("ZNxtCoreAppApi");
+                 options.SignedOutRedirectUri = "/";
+                 options.TokenValidationParameters.NameClaimType = "name";
+                 options.SaveTokens = true;
+                 options.GetClaimsFromUserInfoEndpoint = true;
+                 options.RequireHttpsMetadata = false;
+             })
+            .AddCookie();
     }
 
     private static void SetAppInstallStatus(ServiceProvider serviceProvider)
@@ -124,6 +152,7 @@ public static class MVCApplicationBuilderExtensions
     {
         app.UseHttpProxyHandler();
         app.Map("/api", HandlerAPI);
+        app.UseMvcWithDefaultRoute();
         app.MapWhen(context => true, HandlerStaticContant);
     }
     private static void HandlerStaticContant(IApplicationBuilder app)

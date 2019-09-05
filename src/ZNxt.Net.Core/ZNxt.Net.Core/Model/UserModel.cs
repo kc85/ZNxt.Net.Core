@@ -15,9 +15,12 @@ namespace ZNxt.Net.Core.Model
         public string phone_validation_required { get; set; }
         public List<Claim> claims { get; set; }
 
+        public List<string> roles { get; set; }
+
         public UserModel()
         {
             claims = new List<Claim>();
+            roles = new List<string>();
         }
     }
 }

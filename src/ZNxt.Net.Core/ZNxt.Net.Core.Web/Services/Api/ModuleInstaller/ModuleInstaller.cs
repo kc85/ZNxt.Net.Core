@@ -69,13 +69,16 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         {
             try
             {
-                GetAppGatewayConfig().GetAwaiter().GetResult();
+                
                 var request = _httpContextProxy.GetRequestBody<ModuleInstallRequest>();
                 if (request == null)
                 {
                     return _responseBuilder.BadRequest();
                 }
-
+                if (request.Name != "ZNxt.Net.Core.Module.Gateway")
+                {
+                    GetAppGatewayConfig().GetAwaiter().GetResult();
+                }
                 JObject moduleObject = new JObject();
                 moduleObject[CommonConst.CommonField.NAME] = request.Name;
                 moduleObject[CommonConst.CommonField.VERSION] = request.Version;

@@ -51,6 +51,9 @@
             public const string APPINSTALLSTATUS = "AppInstallStatus";
             public const string ACCESS_ALL = "*";
             public const string ACCESS_NONE = "";
+            public const string SSOURL_CONFIG_KEY = "SSOUrl";
+            public const string APP_NAME_CONFIG_KEY = "AppName";
+            public const string APP_SECRET_CONFIG_KEY = "AppSecret";
 
         }
     }

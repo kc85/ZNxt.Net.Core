@@ -45,7 +45,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                 }
                 else
                 {
-
+                    await _next(context);
                 }
             }
             else

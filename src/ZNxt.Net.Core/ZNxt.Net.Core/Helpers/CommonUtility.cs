@@ -77,6 +77,11 @@ namespace ZNxt.Net.Core.Helpers
             return GetBase64(Encoding.ASCII.GetBytes(data));
         }
 
+        public static void GetAppConfigValue(object sSOUrl)
+        {
+            throw new NotImplementedException();
+        }
+
         public static string GetStringFromBase64(string base64Encoded)
         {
             byte[] data = System.Convert.FromBase64String(base64Encoded);

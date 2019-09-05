@@ -45,14 +45,14 @@ namespace ZNxt.Identity
                 .AddTestUsers(TestUsers.Users);
 
             // in-memory, code config
-            //builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
-            //builder.AddInMemoryApiResources(Config.GetApis());
-            //builder.AddInMemoryClients(Config.GetClients());
+            builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
+            builder.AddInMemoryApiResources(Config.GetApis());
+            builder.AddInMemoryClients(Config.GetClients());
 
             // in-memory, json config
-            builder.AddInMemoryIdentityResources(Configuration.GetSection("IdentityResources"));
-            builder.AddInMemoryApiResources(Configuration.GetSection("ApiResources"));
-            builder.AddInMemoryClients(Configuration.GetSection("clients"));
+            //builder.AddInMemoryIdentityResources(Configuration.GetSection("IdentityResources"));
+            //builder.AddInMemoryApiResources(Configuration.GetSection("ApiResources"));
+            //builder.AddInMemoryClients(Configuration.GetSection("clients"));
 
             if (Environment.IsDevelopment())
             {

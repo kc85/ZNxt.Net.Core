@@ -9,6 +9,7 @@ using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 using System.Linq;
 using ZNxt.Net.Core.Model;
+using System.Net.Http.Headers;
 
 namespace ZNxt.Net.Core.Web.Services
 {
@@ -35,7 +36,7 @@ namespace ZNxt.Net.Core.Web.Services
                     {
                         BuildRequestBody(requestBody, request);
                     }
-                    BuildHeaders(headres, request);
+                    await BuildHeaders(headres, request);
                     var httpresponse = await client.SendAsync(request);
 
                     if (httpresponse.IsSuccessStatusCode)
@@ -45,7 +46,14 @@ namespace ZNxt.Net.Core.Web.Services
                     }
                     else
                     {
-                        throw new Exception($"Error while calling route http code : {httpresponse.StatusCode}");
+                        if (httpresponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        {
+                            throw new UnauthorizedAccessException();
+                        }
+                        else
+                        {
+                            throw new Exception($"Error while calling route http code : {httpresponse.StatusCode}");
+                        }
                     }
                 }
             }
@@ -62,9 +70,18 @@ namespace ZNxt.Net.Core.Web.Services
             {
                 querystring = _httpContextProxy.GetQueryString();
             }
-            request.RequestUri = new Uri($"{baseUrl}/api{route}?{querystring}");
+            if (route.IndexOf("~/") == 0)
+            {
+                
+                request.RequestUri = new Uri($"{baseUrl}{route.Remove(0, 1)}?{querystring}");
+            }
+            else
+            {
+                request.RequestUri = new Uri($"{baseUrl}/api{route}?{querystring}");
+            }
+
         }
-        private void BuildHeaders(Dictionary<string, string> headres, HttpRequestMessage request)
+        private async Task BuildHeaders(Dictionary<string, string> headres, HttpRequestMessage request)
         {
             foreach (var header in _httpContextProxy.GetHeaders())
             {
@@ -75,6 +92,14 @@ namespace ZNxt.Net.Core.Web.Services
                 foreach (var header in headres)
                 {
                     request.Headers.Add(header.Key, header.Value);
+                }
+            }
+            if (!request.Headers.Contains("Authorization"))
+            {
+                var accessToken = await _httpContextProxy.GetAccessTokenAync();
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    request.Headers.Add("Authorization", $"Bearer {accessToken}");
                 }
             }
         }
