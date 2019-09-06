@@ -1,7 +1,7 @@
 ﻿[
   {
     "key": "frontend_url",
-    "data": "http://znxt.fashion",
+    "data": "http://s2ftechnologies.com",
     "ui_folder": "frontend",
     "isactive": true
   },
@@ -13,7 +13,7 @@
   },
   {
     "key": "gatway_url",
-    "data": "http://gateway.znxt.fashion",
+    "data": "http://s2ftechnologies.com",
     "ui_folder": "gateway",
     "isactive": true
   }
