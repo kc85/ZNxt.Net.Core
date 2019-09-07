@@ -52,7 +52,7 @@ namespace ZNxt.Identity
                     ClientName = "s2ftechnologies",
 
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                    ClientSecrets = { new Secret("0FEC10B6E11042B1A76D508F93508460".Sha256()) },
+                    ClientSecrets = { new Secret("MySecret".Sha256()) },
                     RedirectUris = { "http://s2ftechnologies.com/signin-oidc","http://www.s2ftechnologies.com/signin-oidc" ,"www.s2ftechnologies.com/signin-oidc" },
                     FrontChannelLogoutUri = "http://s2ftechnologies.com/signout-oidc",
                     PostLogoutRedirectUris = { "http://s2ftechnologies.com/signout-callback-oidc" },
