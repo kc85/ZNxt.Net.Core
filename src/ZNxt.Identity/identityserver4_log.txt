@@ -2713,3 +2713,44 @@ System.InvalidOperationException: Collection was modified; enumeration operation
 2019-09-07 15:50:16.956 +05:30 [DBG] Error Url: /home/error
 2019-09-07 15:50:16.956 +05:30 [DBG] Error Id Parameter: errorId
 2019-09-07 15:50:48.443 +05:30 [INF] AuthenticationScheme: idsrv was challenged.
+2019-09-07 18:30:15.229 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-07 18:30:15.314 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-07 18:30:15.330 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-07 18:30:15.330 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-07 18:30:15.330 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-07 18:30:15.331 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-07 18:30:15.331 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-07 18:30:15.331 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-07 18:30:17.211 +05:30 [DBG] Login Url: /Account/Login
+2019-09-07 18:30:17.215 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-07 18:30:17.216 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-07 18:30:17.216 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-07 18:30:17.216 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-07 18:30:17.216 +05:30 [DBG] Error Url: /home/error
+2019-09-07 18:30:17.216 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-07 18:30:43.523 +05:30 [INF] AuthenticationScheme: idsrv was challenged.
+2019-09-07 18:30:46.309 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-09-07 18:35:41.873 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-07 18:35:41.951 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-07 18:35:41.972 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-07 18:35:41.972 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-07 18:35:41.973 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-07 18:35:41.973 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-07 18:35:41.973 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-07 18:35:41.973 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-07 18:35:43.754 +05:30 [DBG] Login Url: /Account/Login
+2019-09-07 18:35:43.757 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-07 18:35:43.757 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-07 18:35:43.757 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-07 18:35:43.757 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-07 18:35:43.757 +05:30 [DBG] Error Url: /home/error
+2019-09-07 18:35:43.757 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-07 18:36:05.027 +05:30 [INF] AuthenticationScheme: idsrv was challenged.
+2019-09-07 18:36:07.209 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-09-07 18:36:13.442 +05:30 [INF] AuthenticationScheme: idsrv.external signed in.
+2019-09-07 18:36:13.492 +05:30 [DBG] External claims: ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 115559040204585310230","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname: Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname: Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: choudhury.khanin@gmail.com"]
+2019-09-07 18:36:13.551 +05:30 [DBG] Augmenting SignInContext
+2019-09-07 18:36:13.555 +05:30 [DBG] Adding amr claim with value: external
+2019-09-07 18:36:13.563 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-09-07 18:36:13.573 +05:30 [INF] AuthenticationScheme: idsrv.external signed out.
+2019-09-07 18:36:13.605 +05:30 [INF] {"Username":null,"Provider":"Google","ProviderUserId":"115559040204585310230","SubjectId":"b37212eb951c5108c829e7a8716cc880f35f993342dc5620a1d87a3338110032","DisplayName":"Khanin Choudhury","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLPJIGBL2N2S:00000004","TimeStamp":"2019-09-07T13:06:13.0000000Z","ProcessId":13180,"LocalIpAddress":"127.0.0.1:37171","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}

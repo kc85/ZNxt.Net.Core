@@ -73,8 +73,8 @@ namespace ZNxt.Identity
                     // register your IdentityServer with Google at https://console.developers.google.com
                     // enable the Google+ API
                     // set the redirect URI to http://localhost:5000/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
+                    options.ClientId = "592081696184-3056k8j98cfliger0398q08nmi50cfjs.apps.googleusercontent.com";
+                    options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
                 });
             services.AddZNxtApp();
         }
