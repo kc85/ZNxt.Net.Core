@@ -16,15 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="C:\Users\Khanin\.nuget\packages\znxt.net.core.web\1.0.1\contentFiles\any\netcoreapp2.2\znxtsettings.json.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\Khanin\.nuget\packages\znxt.net.core.web\1.0.2\contentFiles\any\netcoreapp2.2\znxtsettings.json.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="C:\Users\Khanin\.nuget\packages\znxt.net.core.web\1.0.3\contentFiles\any\netcoreapp2.2\znxtsettings.json.config">
+    <Content Update="znxtsettings.json.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
 
 </Project>
