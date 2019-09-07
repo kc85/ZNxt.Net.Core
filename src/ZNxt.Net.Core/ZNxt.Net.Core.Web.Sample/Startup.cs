@@ -10,6 +10,7 @@ namespace ZNxt.Net.Core.Web.Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddZNxtApp();
+            services.AddZNxtIdentityServer();
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -19,6 +20,7 @@ namespace ZNxt.Net.Core.Web.Sample
             }
             app.UseAuthentication();
             app.UseZNxtApp();
+            
         }
     }
 

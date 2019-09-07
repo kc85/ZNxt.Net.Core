@@ -49,14 +49,12 @@ public static class MVCServiceExtention
         services.AddTransient<IApiGatewayService, ApiGatewayService>();
         services.AddTransient<IInMemoryCacheService, InMemoryCacheService>();
         services.AddMemoryCache();
-        AddIdentityServer(services);
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);
-
         InitRoutingDepedencies(services, serviceProvider);
     }
 
-    private static void AddIdentityServer(IServiceCollection services)
+    public static void AddZNxtIdentityServer(this IServiceCollection services)
     {
         var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
         var appName = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_NAME_CONFIG_KEY);

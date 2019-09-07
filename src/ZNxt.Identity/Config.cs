@@ -45,6 +45,20 @@ namespace ZNxt.Identity
 
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" }
+                },
+                new Client
+                {
+                    ClientId = "s2ftechnologies",
+                    ClientName = "s2ftechnologies",
+
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    ClientSecrets = { new Secret("MySecret".Sha256()) },
+
+                    RedirectUris = { "http://s2ftechnologies.com/signin-oidc" },
+                    FrontChannelLogoutUri = "http://s2ftechnologies.com/signout-oidc",
+                    PostLogoutRedirectUris = { "http://s2ftechnologies.com/signout-callback-oidc" },
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" }
                 }
             };
         }
