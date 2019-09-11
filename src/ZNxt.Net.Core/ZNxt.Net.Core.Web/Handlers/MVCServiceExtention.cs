@@ -59,6 +59,34 @@ public static class MVCServiceExtention
         var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
         var appName = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_NAME_CONFIG_KEY);
         var appSecret = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY);
+        
+        services.AddAuthentication(options =>
+        {
+            options.DefaultChallengeScheme = "oidc";
+            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = "oidc";
+
+        }).AddOpenIdConnect("oidc", options =>
+        {
+            options.Authority = ssourl;
+            options.ClientId = appName;
+            options.ClientSecret = appSecret;
+            options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+            options.Scope.Add("openid");
+            options.Scope.Add("profile");
+            options.Scope.Add("ZNxtCoreAppApi");
+            options.SignedOutRedirectUri = "/";
+            options.TokenValidationParameters.NameClaimType = "name";
+            options.SaveTokens = true;
+            options.GetClaimsFromUserInfoEndpoint = true;
+            options.RequireHttpsMetadata = false;
+        })
+            .AddCookie();
+    }
+
+    public static void AddZNxtBearerAuthentication(this IServiceCollection services)
+    {
+        var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication().AddJwtBearer(options =>
         {
@@ -68,29 +96,6 @@ public static class MVCServiceExtention
             options.TokenValidationParameters.NameClaimType = "name";
             options.RequireHttpsMetadata = false;
         });
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultChallengeScheme = "oidc";
-            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultAuthenticateScheme = "oidc";
-
-        })   .AddOpenIdConnect("oidc", options =>
-             {
-                 options.Authority = ssourl;
-                 options.ClientId = appName;
-                 options.ClientSecret = appSecret;
-                 options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
-                 options.Scope.Add("openid");
-                 options.Scope.Add("profile");
-                 options.Scope.Add("ZNxtCoreAppApi");
-                 options.SignedOutRedirectUri = "/";
-                 options.TokenValidationParameters.NameClaimType = "name";
-                 options.SaveTokens = true;
-                 options.GetClaimsFromUserInfoEndpoint = true;
-                 options.RequireHttpsMetadata = false;
-             })
-            .AddCookie();
     }
 
     private static void SetAppInstallStatus(ServiceProvider serviceProvider)

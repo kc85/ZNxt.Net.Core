@@ -64,12 +64,11 @@ namespace ZNxt.Identity
                 var cert = new X509Certificate2(fileName, "abc@123");
                 builder.AddSigningCredential(cert);
             }
-
+            
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
                     // register your IdentityServer with Google at https://console.developers.google.com
                     // enable the Google+ API
                     // set the redirect URI to http://localhost:5000/signin-google
@@ -77,6 +76,7 @@ namespace ZNxt.Identity
                     options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
                 });
             services.AddZNxtApp();
+            services.AddZNxtBearerAuthentication();
         }
 
         public void Configure(IApplicationBuilder app)

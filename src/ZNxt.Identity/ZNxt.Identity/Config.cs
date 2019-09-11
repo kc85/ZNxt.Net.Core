@@ -35,29 +35,27 @@ namespace ZNxt.Identity
                 {
                     ClientId = "ZNxtCoreApp",
                     ClientName = "ZNxtCoreApp",
-
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     ClientSecrets = { new Secret("MySecret".Sha256()) },
-
                     RedirectUris = { "https://localhost:44373/signin-oidc" },
                     FrontChannelLogoutUri = "https://localhost:44373/signout-oidc",
                     PostLogoutRedirectUris = { "https://localhost:44373/signout-callback-oidc" },
-
                     AllowOfflineAccess = true,
+                    RequireConsent = false,
                     AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" }
                 },
                 new Client
                 {
                     ClientId = "s2ftechnologies",
                     ClientName = "s2ftechnologies",
-
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     ClientSecrets = { new Secret("MySecret".Sha256()) },
                     RedirectUris = { "http://s2ftechnologies.com/signin-oidc","http://www.s2ftechnologies.com/signin-oidc" ,"www.s2ftechnologies.com/signin-oidc" },
                     FrontChannelLogoutUri = "http://s2ftechnologies.com/signout-oidc",
                     PostLogoutRedirectUris = { "http://s2ftechnologies.com/signout-callback-oidc" },
                     AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" }
+                    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" },
+                    RequireConsent = false,
                 }
             };
         }
