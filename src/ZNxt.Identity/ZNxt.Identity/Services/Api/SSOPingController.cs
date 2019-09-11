@@ -21,7 +21,7 @@ namespace ZNxt.Identity.Services.Api
             _httpContextProxy = httpContextProxy;
 
         }
-        [Route("/sso/ping", CommonConst.ActionMethods.GET)]
+        [Route("/sso/baseping", CommonConst.ActionMethods.GET)]
         public async Task<JObject> Ping()
         {
 

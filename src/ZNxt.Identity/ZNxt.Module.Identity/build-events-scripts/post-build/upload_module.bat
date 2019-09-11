@@ -1,6 +1,6 @@
 ﻿
 echo OFF
- set http_base_url=https://localhost:44373
+ set http_base_url=http://localhost:5000
 
 rem set  http_base_url=http://znxt.fashion/
 
