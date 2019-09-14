@@ -87,6 +87,8 @@ namespace ZNxt.Identity
             }
 
             app.UseIdentityServer();
+            AccountOptions.ShowLogoutPrompt = false;
+            AccountOptions.AutomaticRedirectAfterSignOut = true;
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
             app.UseZNxtApp();

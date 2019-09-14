@@ -6,13 +6,13 @@
     "isactive": true
   },
   {
-    "data": "http://admin.znxt.fashion",
+    "data": "http://s2ftechnologies.com",
     "isactive": true,
     "key": "backend_url",
     "ui_folder": "backend"
   },
   {
-    "key": "gatway_url",
+    "key": "gateway_url",
     "data": "http://s2ftechnologies.com",
     "ui_folder": "gateway",
     "isactive": true

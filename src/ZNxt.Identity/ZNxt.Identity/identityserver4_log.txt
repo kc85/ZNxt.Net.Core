@@ -3629,3 +3629,46 @@ System.InvalidOperationException: Collection was modified; enumeration operation
 2019-09-11 22:25:03.841 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
 2019-09-11 22:25:03.841 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
 2019-09-11 22:25:03.841 +05:30 [DBG] Start key discovery request
+2019-09-12 20:23:49.302 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-09-12 20:23:49.385 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-09-12 20:23:49.402 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-09-12 20:23:49.402 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-09-12 20:23:49.402 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-09-12 20:23:49.403 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-09-12 20:23:49.404 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-09-12 20:23:49.405 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-09-12 20:23:51.180 +05:30 [DBG] Login Url: /Account/Login
+2019-09-12 20:23:51.183 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-09-12 20:23:51.183 +05:30 [DBG] Logout Url: /Account/Logout
+2019-09-12 20:23:51.183 +05:30 [DBG] ConsentUrl Url: /consent
+2019-09-12 20:23:51.183 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-09-12 20:23:51.183 +05:30 [DBG] Error Url: /home/error
+2019-09-12 20:23:51.183 +05:30 [DBG] Error Id Parameter: errorId
+2019-09-12 20:24:02.292 +05:30 [INF] AuthenticationScheme: idsrv was challenged.
+2019-09-12 20:24:04.690 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-09-12 20:26:21.865 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-09-12 20:27:08.817 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-09-12 20:27:19.508 +05:30 [INF] AuthenticationScheme: idsrv.external signed in.
+2019-09-12 20:28:23.943 +05:30 [DBG] External claims: ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 115559040204585310230","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname: Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname: Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: choudhury.khanin@gmail.com"]
+2019-09-12 20:29:42.929 +05:30 [DBG] Augmenting SignInContext
+2019-09-12 20:29:42.933 +05:30 [DBG] Adding amr claim with value: external
+2019-09-12 20:29:42.945 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-09-12 20:29:51.135 +05:30 [INF] AuthenticationScheme: idsrv.external signed out.
+2019-09-12 20:30:08.907 +05:30 [INF] {"Username":null,"Provider":"Google","ProviderUserId":"115559040204585310230","SubjectId":"269b24cb445aca80b2ba98bf2145ba204b82e4bb6cdbfa2d459cc89d6ed05839","DisplayName":"Khanin Choudhury","Endpoint":"UI","ClientId":null,"Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLPNI432QSC3:00000007","TimeStamp":"2019-09-12T15:00:08.0000000Z","ProcessId":12584,"LocalIpAddress":"127.0.0.1:20470","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-09-14 16:46:42.975 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:42.975 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.009 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.078 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.078 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.079 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.081 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.086 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.086 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.088 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.088 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.088 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:43.088 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:44.727 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:44.728 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:44.788 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-09-14 16:46:44.788 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
