@@ -102,27 +102,31 @@ public static class MVCServiceExtention
     {
         try
         {
-            var db = serviceProvider.GetService<IDBService>();
-            if (db.IsConnected)
-            {
-                var appSetting = serviceProvider.GetService<IAppSettingService>();
-                ApplicationConfig.AppInstallStatus = AppInstallStatus.Init;
-                var appstatus = appSetting.GetAppSettingData(CommonConst.CommonValue.APPINSTALLSTATUS);
-                Enum.TryParse(typeof(AppInstallStatus), appstatus, true, out object status);
-                if (status != null)
-                {
-                    ApplicationConfig.AppInstallStatus = (AppInstallStatus)status;
-                }
-                if (ApplicationConfig.AppInstallStatus != AppInstallStatus.Finish)
-                {
-                    CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH = "appinstall";
-                }
-            }
-            else
-            {
-                ApplicationConfig.AppInstallStatus = ZNxt.Net.Core.Enums.AppInstallStatus.DBNotSet;
-                CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH = "appinstall";
-            }
+            ApplicationConfig.AppInstallStatus = AppInstallStatus.Finish;
+           
+            // Skip installation process.
+
+            //var db = serviceProvider.GetService<IDBService>();
+            //if (db.IsConnected)
+            //{
+            //    var appSetting = serviceProvider.GetService<IAppSettingService>();
+            //    ApplicationConfig.AppInstallStatus = AppInstallStatus.Init;
+            //    var appstatus = appSetting.GetAppSettingData(CommonConst.CommonValue.APPINSTALLSTATUS);
+            //    Enum.TryParse(typeof(AppInstallStatus), appstatus, true, out object status);
+            //    if (status != null)
+            //    {
+            //        ApplicationConfig.AppInstallStatus = (AppInstallStatus)status;
+            //    }
+            //    if (ApplicationConfig.AppInstallStatus != AppInstallStatus.Finish)
+            //    {
+            //        CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH = "appinstall";
+            //    }
+            //}
+            //else
+            //{
+            //    ApplicationConfig.AppInstallStatus = ZNxt.Net.Core.Enums.AppInstallStatus.DBNotSet;
+            //    CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH = "appinstall";
+            //}
         }
         catch (Exception)
         {

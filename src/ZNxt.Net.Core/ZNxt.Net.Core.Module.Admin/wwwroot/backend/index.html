@@ -1,101 +1,402 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-
+<html lang="en" ng-app="ZNxtAppAdmin">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>ZNxt.App : Admin</title>
+    <title>Admin </title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="./vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="./vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="./vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="./vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="css/scrolling-nav.css" rel="stylesheet">
-	<link href="css/znxt.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="./vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="./vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="./vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="./vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
 
-  </head>
+    <!-- Custom Theme Style -->
+    <link href="./build/css/custom.min.css" rel="stylesheet">
+    <link href="./css/znxtappbackend.css" rel="stylesheet">
 
-  <body id="page-top">
-     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-        <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">ZNxt.App <sup><small><i>Beta</i></small></sup></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <!-- jQuery -->
+    <script src="./vendors/jquery/dist/jquery.min.js"></script>
+
+</head>
+
+<body class="nav-md" ng-controller="ZNxtAppAdmin.Main">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.z" class="site_title">
+                            <i class="fa fa-paw"></i>
+                            <span>ZNxtApp</span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="{{userpic_s}}" alt="{{user.name}}" class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2>{{user.name}}</h2>
+                        </div>
+                    </div>
+
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <ul class="nav side-menu" id="root_menu">
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="../signup/logout.z">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- /menu footer buttons -->
+                    
+                  
+                    
+                    <script>
+
+                        //var __userData =  @GetSessionData("_session_user");
+                        //var menu_response =  @ExecuteAction("/api/get_backend_menu", null)
+                        var __userData = {};
+                        var menu_response = {};
+                    
+                        var __menus = [];//menu_response.data;
+
+                        function buildMenu(parentElement, parent_link) {
+
+                            var menuData = __menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(parent_link) != -1) || (parent_link == d.parent_links) }).sort(function (a, b) { return a.index < b.index; });
+                            for (var menu_index in menuData) {
+                                var menu_item = menuData[menu_index];
+                                var hasChild = (__menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(menu_item.key) != -1) }).length != 0);
+                                var li_ele = document.createElement("li");
+
+                                if (hasChild) {
+                                    li_ele.innerHTML = " <a href='#level2_1'><i class='fa " + menu_item.icon + "'></i> " + menu_item.label + "<span class='fa fa-chevron-down'></span></a>";
+                                    var ul_ele = document.createElement("ul");
+
+                                    li_ele.appendChild(ul_ele)
+                                    ul_ele.setAttribute("class", "nav child_menu");
+                                    buildMenu(ul_ele, menu_item.key);
+                                }
+                                else {
+                                    if (menu_item.parent_links == undefined) {
+                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> <i class='fa " + menu_item.icon + "'></i>" + menu_item.label + "</a>";
+                                    }
+                                    else {
+                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> " + menu_item.label + "</a>";
+                                    }
+                                }
+                                parentElement.appendChild(li_ele);
+                            }
+                        }
+
+                        var ele = document.getElementById("root_menu")
+                        buildMenu(ele, undefined);
+
+
+                        function locationHashChanged() {
+                            var path = location.hash.replace("#!", "");
+                            var menu_item = __menus.filter(function (d) { return d.href == path })[0];
+                            if (menu_item !== undefined) {
+                                $("#mainBodyPages > div").hide();
+                                $("#mainBodyPages").find("#" + menu_item.key).show();
+                                return $("#mainBodyPages").find("#" + menu_item.key).length != 0;
+                            }
+                            return false;
+                        }
+                        window.onhashchange = locationHashChanged;
+
+                    </script>
+                    <!-- /sidebar menu -->
+                </div>
+            </div>
+
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle">
+                                <i class="fa fa-bars"></i>
+                            </a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" onerror="this.src = './images/img.jpg'" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{{userpic_s}}" alt="">
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li>
+                                        <a href="#!my_profile" ng-click="showUserProfile()"> Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="badge bg-red pull-right">50%</span>
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">Help</a>
+                                    </li>
+                                    <li>
+                                        <a href="./../signup/logout.z">
+                                            <i class="fa fa-sign-out pull-right"></i> Log Out
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li role="presentation" class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">6</span>
+                                </a>
+                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>{{user.name}}</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="./images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="./images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="./images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="text-center">
+                                            <a>
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <script>
+                //var authorized = @Authorized("sys_admin,user").ToString().ToLower();
+                var authorized = true;
+                if (!authorized) {
+                    window.location = "../signup/login.z?rurl=" + window.location
+                }
+                else {
+                    $("body").show();
+                }
+
+            </script>
+            <div class="right_col" role="main">
+
+                <div id="mainBodyPages">
+                    <div style='display:none;' id='default_home_dashboard_page' ng-include="'./app/default_home/home.html'"></div>
+                </div>
+                <div class="errorMessagefooter">
+                    <div class="alert alert-danger alert-dismissible fade in ng-hide" role="alert" ng-show="showError">
+                        <button type="button" class="close" aria-label="Close" ng-click="closeError()">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Error!</strong> {{errorMesage}}
+                    </div>
+
+                    <div class="alert alert-success alert-dismissible fade in ng-hide" role="alert" ng-show="showSuccess">
+                        <button type="button" class="close" aria-label="Close" ng-click="closeSuccess()">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Success:</strong> {{successMesage}}
+                    </div>
+
+                    <div class="alert alert-info alert-dismissible fade in ng-hide" role="alert" ng-show="showDebug">
+                        <button type="button" class="close" aria-label="Close" ng-click="closeDebug()">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Debug:</strong> {{debugMesage}}
+                    </div>
+                    <div class="progress ng-hide" ng-show="showProgress">
+                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span> Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+
+                (function () {
+
+                    __menus.forEach(function (d) {
+                        if (d.config.templateUrl != "#") {
+                            if (d.display_area == "main_body") {
+                                $("#mainBodyPages").append("<div style='display:none;' id='" + d.key + "' ng-include=\"'" + d.config.templateUrl + "'\"></div>");
+                            }
+                        }
+                    });
+
+                    var changed = locationHashChanged();
+                    if (!changed) {
+                        $("#mainBodyPages").find("#default_home_dashboard_page").show();
+                    }
+
+                })();
+            </script>
+
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    2019(c)<a href="https://ZNxt.App">ZNxt.App</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+
         </div>
-                
-    </nav>
+    </div>
 
-       <header class="bg-primary text-white">
-        <div class="container text-center">
-            <h1>Welcome to ZNxt.App Admin <sup><small><i>Beta</i></small></sup></h1>
-            <p class="lead">Next generation application development framework, Free and Open Source </p>
-            <p class="lead"> <a href="https://github.com/kc85/znxtapp.core" style="color:#fff" target="_blank"> 
-                View on GitHub</a> 
+    <!-- Bootstrap -->
+    <script src="./vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Angular js  -->
+    <script src="./vendors/angularjs/angular.min.js"></script>
+    <!-- Angular js route  -->
+    <script src="./vendors/angularjs/angular-route.js"></script>
+    <!-- Angular js anamiation  -->
+    <script src="./vendors/angularjs/angular-animate.js"></script>
+    <script src="./vendors/angularjs/angular-resource.min.js"></script>
 
-            </p>
-        </div>
-    </header>
+    <!-- Get  js -->
+    <script src="./api/getjs?path=/backend/app"></script>
 
-    <footer class="page-footer text-center font-small navbar-dark bg-dark " style="color:#fff">
-        <!-- Social icons -->
+    <!-- FastClick -->
+    <script src="./vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="./vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="./vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="./vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="./vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="./vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="./vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="./vendors/Flot/jquery.flot.js"></script>
+    <script src="./vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="./vendors/Flot/jquery.flot.time.js"></script>
+    <script src="./vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="./vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="./vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="./vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="./vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="./vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="./vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="./vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="./vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="./vendors/moment/min/moment.min.js"></script>
+    <script src="./vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- Dropzone.js -->
+    <script src="./vendors/dropzone/dist/min/dropzone.min.js"></script>
 
+    <!-- Custom Theme Scripts -->
+    <script src="./build/js/custom.min.js"></script>
 
-        <div class="pb-4" style="padding-top:20px">
-            <a href="https://www.facebook.com/znxtapp.znxtapp.5" target="_blank">
-                <i class="fa fa-facebook mr-3"></i>
-            </a>
-            <a href="https://twitter.com/ZNxtApp1" target="_blank">
-                <i class="fa fa-twitter mr-3"></i>
-            </a>
-            <a href="https://www.youtube.com/#" target="_blank">
-                <i class="fa fa-youtube mr-3"></i>
-            </a>
-            <a href="https://plus.google.com/117023252106428476016" target="_blank">
-                <i class="fa fa-google-plus mr-3"></i>
-            </a>
-            <a href="https://in.pinterest.com/znxt/" target="_blank">
-                <i class="fa fa-pinterest mr-3"></i>
-            </a>
-            <a href="https://github.com/kc85/znxtapp.core" target="_blank">
-                <i class="fa fa-github mr-3"></i>
-            </a>
-        </div>
-
-        <!-- Social icons -->
-        <!--Copyright-->
-        <div class="footer-copyright py-3">
-            © 2019 Copyright:
-            <a href="#" target="_blank"> ZNxt.App</a> |
-            <a href="#" target="_blank"> Terms and conditions </a> | 
-             <a href="#" target="_blank"> Privacy policy</a>
-        </div>
-        <!--/.Copyright-->
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131807453-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-131807453-1');
-</script>
-
-    </footer>
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom JavaScript for this theme -->
-    <script src="js/scrolling-nav.js"></script>
-
-  </body>
-
+</body>
 </html>
+

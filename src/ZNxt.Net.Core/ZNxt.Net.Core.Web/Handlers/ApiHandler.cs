@@ -49,7 +49,7 @@ namespace ZNxt.Net.Core.Web.Handlers
         public async Task Invoke(HttpContext context, IAuthorizationService authorizationService)
         {
             var route = _routing.GetRoute(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
-            if (route != null)
+            if (route != null && !string.IsNullOrEmpty(route.ExecultAssembly) && !string.IsNullOrEmpty(route.ExecuteType))
             {
                 if (AuthorizedRoute(context, route, authorizationService))
                 {

@@ -1,0 +1,20 @@
+﻿ <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.z" class="site_title">
+                <i class="fa fa-paw"></i>
+                <span>@Model["app_name"]</span>
+              </a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="{{userpic_s}}"  alt="{{user.name}}" class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>{{user.name}}</h2>
+              </div>
+            </div>

@@ -1,0 +1,89 @@
+﻿<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+  <div class="menu_section">
+    <ul class="nav side-menu" id="root_menu">
+    
+    </ul>
+  </div>
+
+</div>
+<!-- /menu footer buttons -->
+<div class="sidebar-footer hidden-small">
+  <a data-toggle="tooltip" data-placement="top" title="Settings">
+    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+  </a>
+  <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+    <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+  </a>
+  <a data-toggle="tooltip" data-placement="top" title="Lock">
+    <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+  </a>
+  <a data-toggle="tooltip" data-placement="top" title="Logout" href="../signup/logout.z">
+    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+  </a>
+</div>
+<!-- /menu footer buttons -->
+
+ @if(@GetSessionData("_session_user") != null)
+      {
+<script>
+
+
+    var __userData =  @GetSessionData("_session_user");
+
+
+</script>
+      }
+
+<script>
+    
+   
+
+
+    var menu_response  =  @ExecuteAction("/api/get_backend_menu",null)
+    var __menus = menu_response.data;
+
+  function buildMenu(parentElement, parent_link) {
+
+      var menuData = __menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(parent_link) != -1) || (parent_link == d.parent_links) }).sort(function(a,b){ return  a.index < b.index;});
+      for (var menu_index in menuData) {
+          var menu_item = menuData[menu_index];
+          var hasChild = (__menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(menu_item.key) != -1) }).length != 0);
+          var li_ele = document.createElement("li");
+
+          if (hasChild) {
+              li_ele.innerHTML = " <a href='#level2_1'><i class='fa " + menu_item.icon + "'></i> " + menu_item.label + "<span class='fa fa-chevron-down'></span></a>";
+              var ul_ele = document.createElement("ul");
+
+              li_ele.appendChild(ul_ele)
+              ul_ele.setAttribute("class", "nav child_menu");
+              buildMenu(ul_ele, menu_item.key);
+          }
+          else {
+              if(menu_item.parent_links==undefined){
+                  li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> <i class='fa " + menu_item.icon + "'></i>" + menu_item.label + "</a>";
+              }
+              else{
+                  li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> " + menu_item.label + "</a>";
+              }
+          }
+          parentElement.appendChild(li_ele);
+      }
+  }
+
+  var ele = document.getElementById("root_menu")
+  buildMenu(ele,undefined);
+
+
+  function locationHashChanged() {
+      var path = location.hash.replace("#!","");
+      var menu_item =  __menus.filter(function(d){ return d.href == path})[0];
+      if(menu_item !== undefined){
+          $("#mainBodyPages > div").hide();
+          $("#mainBodyPages").find("#"+ menu_item.key).show();
+          return $("#mainBodyPages").find("#"+ menu_item.key).length != 0 ;
+      }
+      return false;
+  }
+  window.onhashchange = locationHashChanged;
+
+</script>

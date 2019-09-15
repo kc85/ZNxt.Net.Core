@@ -31,39 +31,48 @@ namespace ZNxt.Net.Core.Web.Services
 
         public Assembly Load(string assemblyName)
         {
-            var assembly = GetFromAppDomain(assemblyName);
-            if (assembly == null)
+            try
             {
-                string localPath = String.Format("{0}{1}", ApplicationConfig.AppBinPath, assemblyName);
+                var assembly = GetFromAppDomain(assemblyName);
+                if (assembly == null)
+                {
+                    string localPath = String.Format("{0}{1}", ApplicationConfig.AppBinPath, assemblyName);
 
-                Byte[] assemblyBytes = null;
-                if (_loadedAssembly.ContainsKey(assemblyName))
-                {
-                    assemblyBytes = _loadedAssembly[assemblyName];
-                }
-                else if (File.Exists(localPath))
-                {
-                    assemblyBytes = File.ReadAllBytes(localPath);
-                    _loadedAssembly[assemblyName] = assemblyBytes;
-                }
-                else
-                {
-                    assemblyBytes = GetAsssemblyFromDB(assemblyName);
-                    if (assemblyBytes != null)
+                    Byte[] assemblyBytes = null;
+                    if (_loadedAssembly.ContainsKey(assemblyName))
                     {
+                        assemblyBytes = _loadedAssembly[assemblyName];
+                    }
+                    else if (File.Exists(localPath))
+                    {
+                        assemblyBytes = File.ReadAllBytes(localPath);
                         _loadedAssembly[assemblyName] = assemblyBytes;
                     }
+                    else
+                    {
+                        assemblyBytes = GetAsssemblyFromDB(assemblyName);
+                        if (assemblyBytes != null)
+                        {
+                            _loadedAssembly[assemblyName] = assemblyBytes;
+                        }
+                    }
+                    if (assemblyBytes == null)
+                    {
+                        _logger.Error(string.Format("No Assembly found :{0}", assemblyName), null);
+                    }
+                    else
+                    {
+                        assembly = Assembly.Load(assemblyBytes);
+                    }
                 }
-                if (assemblyBytes == null)
-                {
-                    _logger.Error(string.Format("No Assembly found :{0}", assemblyName), null);
-                }
-                else
-                {
-                    assembly = Assembly.Load(assemblyBytes);
-                }
+                return assembly;
             }
-            return assembly;
+            catch (Exception ex)
+            {
+                _logger.Error($"Error While loading Assembly {assemblyName}. {ex.Message}", ex);
+                throw;
+            }
+           
         }
 
         private byte[] GetAsssemblyFromDB(string assemblyName)

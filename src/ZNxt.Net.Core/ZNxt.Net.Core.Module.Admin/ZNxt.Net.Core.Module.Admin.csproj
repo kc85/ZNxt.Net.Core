@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00006</Version>
+    <Version>1.0.0-Beta00013</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="wwwroot\backend\index.html">
+    <None Update="wwwroot\**\*.*">
       <PackPath>.</PackPath>
       <Pack>true</Pack>
     </None>

@@ -106,6 +106,7 @@ namespace ZNxt.Net.Core.Web.Services
         }
         private void WriteLog(JObject logData)
         {
+            Console.WriteLine(logData.ToString());
             lock (lockObjet)
             {
                 if (_dbService.IsConnected)
