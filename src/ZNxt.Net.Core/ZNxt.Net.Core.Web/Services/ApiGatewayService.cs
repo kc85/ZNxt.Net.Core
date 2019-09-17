@@ -17,46 +17,57 @@ namespace ZNxt.Net.Core.Web.Services
     {
         private readonly IInMemoryCacheService _inMemoryCacheService;
         private readonly IHttpContextProxy _httpContextProxy;
-        public ApiGatewayService(IInMemoryCacheService inMemoryCacheService,IHttpContextProxy httpContextProxy)
+        private readonly ILogger _logger;
+        public ApiGatewayService(IInMemoryCacheService inMemoryCacheService,IHttpContextProxy httpContextProxy,ILogger logger)
         {
             _inMemoryCacheService = inMemoryCacheService;
             _httpContextProxy = httpContextProxy;
+            _logger = logger;
         }
         public async Task<JObject> CallAsync(string method, string route, string querystring = "", JObject requestBody = null, Dictionary<string, string> headres = null, string baseUrl = "")
         {
-           
-            using (var client = new HttpClient())
+            try
             {
-                using (var request = new HttpRequestMessage())
+                using (var client = new HttpClient())
                 {
-
-                    await BuildRequestUrl(request, method, route, querystring, baseUrl);
-
-                    if (method == CommonConst.ActionMethods.POST || method == CommonConst.ActionMethods.PUT || method == CommonConst.ActionMethods.DELETE)
+                    using (var request = new HttpRequestMessage())
                     {
-                        BuildRequestBody(requestBody, request);
-                    }
-                    await BuildHeaders(headres, request);
-                    var httpresponse = await client.SendAsync(request);
 
-                    if (httpresponse.IsSuccessStatusCode)
-                    {
-                        var data = await httpresponse.Content.ReadAsStringAsync();
-                        return JObject.Parse(data);
-                    }
-                    else
-                    {
-                        if (httpresponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        await BuildRequestUrl(request, method, route, querystring, baseUrl);
+
+                        if (method == CommonConst.ActionMethods.POST || method == CommonConst.ActionMethods.PUT || method == CommonConst.ActionMethods.DELETE)
                         {
-                            throw new UnauthorizedAccessException();
+                            BuildRequestBody(requestBody, request);
+                        }
+                        await BuildHeaders(headres, request);
+                        _logger.Debug($"callng  {request.Method} : {request.RequestUri}");
+                        var httpresponse = await client.SendAsync(request);
+
+                        if (httpresponse.IsSuccessStatusCode)
+                        {
+                            var data = await httpresponse.Content.ReadAsStringAsync();
+                            return JObject.Parse(data);
                         }
                         else
                         {
-                            throw new Exception($"Error while calling route http code : {httpresponse.StatusCode}");
+                            if (httpresponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                            {
+                                throw new UnauthorizedAccessException();
+                            }
+                            else
+                            {
+                                throw new Exception($"Error while calling route http code : {httpresponse.StatusCode}");
+                            }
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error callng ApiGatewayService.CallAsync {ex.Message}" , ex);
+                throw;
+            }
+            
         }
 
         private async Task BuildRequestUrl(HttpRequestMessage request, string method, string route, string querystring , string baseUrl )

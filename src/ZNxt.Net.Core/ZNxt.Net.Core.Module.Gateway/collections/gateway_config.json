@@ -6,14 +6,14 @@
     "isactive": true
   },
   {
-    "data": "http://s2ftechnologies.com",
+    "data": "http://admin.s2ftechnologies.com",
     "isactive": true,
     "key": "backend_url",
     "ui_folder": "backend"
   },
   {
     "key": "gateway_url",
-    "data": "http://s2ftechnologies.com",
+    "data": "http://gateway.s2ftechnologies.com",
     "ui_folder": "gateway",
     "isactive": true
   }
