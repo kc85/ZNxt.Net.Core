@@ -192,7 +192,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 var id = fileData[CommonConst.CommonField.DISPLAY_ID].ToString();
                 var collectionName = new FileInfo(fileName).Name.Replace(CommonConst.CONFIG_FILE_EXTENSION, "");
                 var parent = new FileInfo(fileName).Directory.Name;
-               
+                _logger.Debug($"InstallCollection File : {fileName}, Collection {collectionName}, Parent: { parent}");
 
                 foreach (JObject joData in JObjectHelper.GetJArrayFromString(CommonUtility.GetStringFromBase64(_keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId))))
                 {
@@ -209,6 +209,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                     }
                     else
                     {
+                        _logger.Debug($"Callling remote /ui/installcollection file : {fileName}, Collection {collectionName}, Parent: { parent}, url {url}");
                         joData[CommonConst.CommonValue.COLLECTION] = collectionName;
                         _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installcollection", "", joData, null, url).GetAwaiter().GetResult();
 
