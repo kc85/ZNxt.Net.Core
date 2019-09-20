@@ -33,6 +33,18 @@ namespace ZNxt.Net.Core.Helpers
         }
         public static JArray GetJArrayFromString(string data)
         {
+            try
+            {
+                return GetJArray(data);
+            }
+            catch (Exception ex)
+            {
+                return GetJArray(data.Remove(0, 1));
+            }
+        }
+
+        private static JArray GetJArray(string data)
+        {
             JArray arrData = new JArray();
             arrData = JArray.Parse(data);
             return arrData;

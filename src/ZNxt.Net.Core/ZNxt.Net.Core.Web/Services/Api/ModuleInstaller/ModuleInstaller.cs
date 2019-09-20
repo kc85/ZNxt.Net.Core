@@ -194,7 +194,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 var parent = new FileInfo(fileName).Directory.Name;
                
 
-                foreach (JObject joData in JObjectHelper.GetJArrayFromString(Encoding.UTF8.GetString(Convert.FromBase64String(_keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId)))))
+                foreach (JObject joData in JObjectHelper.GetJArrayFromString(CommonUtility.GetStringFromBase64(_keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId))))
                 {
                     joData[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
                     joData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
