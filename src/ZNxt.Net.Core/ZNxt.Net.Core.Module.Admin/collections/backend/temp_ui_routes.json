@@ -1,0 +1,35 @@
+[
+   {
+      "key":"advance",
+      "label":"Advance",
+      "href":"#",
+      "icon":"fa-gear",
+      "url":"#",
+      "config":{
+         "templateUrl":"#"
+      },
+      "auth_users":[
+        "sys_admin"
+      ],
+      "index":90
+   },
+  {
+    "key": "adv_developer",
+    "label": "Developer",
+    "href": "/adv_developer",
+    "icon": "fa-paw",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/developer/developer.html"
+    },
+    "parent_links": [
+      "advance"
+    ],
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 90
+  }
+
+]

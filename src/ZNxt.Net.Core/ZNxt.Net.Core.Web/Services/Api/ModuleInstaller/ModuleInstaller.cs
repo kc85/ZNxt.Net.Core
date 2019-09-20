@@ -178,7 +178,8 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
         private void InstallCollections(ModuleInstallRequest request)
         {
-            var collectionFilter = @"{name: /^content\/collections/, " + CommonConst.CommonField.MODULE_NAME + ": '" + request.Name + "', " + CommonConst.CommonField.VERSION + ": '" + request.Version + "'}";
+            const string collection = "collections";
+            var collectionFilter = @"{name: /^content\/"+ collection + "/, " + CommonConst.CommonField.MODULE_NAME + ": '" + request.Name + "', " + CommonConst.CommonField.VERSION + ": '" + request.Version + "'}";
             
             foreach (var item in _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(collectionFilter)))
             {
@@ -190,8 +191,10 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 var fileData = JObjectHelper.GetJObjectDbDataFromFile(fileName, contentType, "content/wwwroot", request.Name, fileSize);
                 var id = fileData[CommonConst.CommonField.DISPLAY_ID].ToString();
                 var collectionName = new FileInfo(fileName).Name.Replace(CommonConst.CONFIG_FILE_EXTENSION, "");
+                var parent = new FileInfo(fileName).Directory.Name;
+               
 
-                foreach (JObject joData in JObjectHelper.GetJArrayFromString(Encoding.UTF8.GetString(Convert.FromBase64String(_keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId))).Remove(0,1)))
+                foreach (JObject joData in JObjectHelper.GetJArrayFromString(Encoding.UTF8.GetString(Convert.FromBase64String(_keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId)))))
                 {
                     joData[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
                     joData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
@@ -199,7 +202,17 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                     joData[CommonConst.CommonField.VERSION] = request.Version;
                     joData[CommonConst.CommonField.ÌS_OVERRIDE] = false;
                     joData[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
-                    WriteToDB(joData, request.Name, collectionName, CommonConst.CommonField.DATA_KEY);
+                    var url = GetUIAppUrl(parent);
+                    if (string.IsNullOrEmpty(url))
+                    {
+                        WriteToDB(joData, request.Name, collectionName, CommonConst.CommonField.DATA_KEY);
+                    }
+                    else
+                    {
+                        joData[CommonConst.CommonValue.COLLECTION] = collectionName;
+                        _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installcollection", "", joData, null, url).GetAwaiter().GetResult();
+
+                    }
                 }
             }
         }

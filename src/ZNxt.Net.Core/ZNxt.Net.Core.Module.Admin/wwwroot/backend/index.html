@@ -22,7 +22,7 @@
     <!-- bootstrap-progressbar -->
     <link href="./vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="./vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <link href="./vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
     <!-- bootstrap-daterangepicker -->
     <link href="./vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="./vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
@@ -33,10 +33,13 @@
 
     <!-- jQuery -->
     <script src="./vendors/jquery/dist/jquery.min.js"></script>
+    <script src="./api/admin/menu"></script>
+    <script src="./api/admin/user"></script>
+
 
 </head>
 
-<body class="nav-md" ng-controller="ZNxtAppAdmin.Main">
+<body class="nav-md" ng-controller="ZNxtAppAdmin.Main" style="display:none">
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col">
@@ -95,57 +98,7 @@
                     
                     <script>
 
-                        //var __userData =  @GetSessionData("_session_user");
-                        //var menu_response =  @ExecuteAction("/api/get_backend_menu", null)
-                        var __userData = {};
-                        var menu_response = {};
                     
-                        var __menus = [];//menu_response.data;
-
-                        function buildMenu(parentElement, parent_link) {
-
-                            var menuData = __menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(parent_link) != -1) || (parent_link == d.parent_links) }).sort(function (a, b) { return a.index < b.index; });
-                            for (var menu_index in menuData) {
-                                var menu_item = menuData[menu_index];
-                                var hasChild = (__menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(menu_item.key) != -1) }).length != 0);
-                                var li_ele = document.createElement("li");
-
-                                if (hasChild) {
-                                    li_ele.innerHTML = " <a href='#level2_1'><i class='fa " + menu_item.icon + "'></i> " + menu_item.label + "<span class='fa fa-chevron-down'></span></a>";
-                                    var ul_ele = document.createElement("ul");
-
-                                    li_ele.appendChild(ul_ele)
-                                    ul_ele.setAttribute("class", "nav child_menu");
-                                    buildMenu(ul_ele, menu_item.key);
-                                }
-                                else {
-                                    if (menu_item.parent_links == undefined) {
-                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> <i class='fa " + menu_item.icon + "'></i>" + menu_item.label + "</a>";
-                                    }
-                                    else {
-                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> " + menu_item.label + "</a>";
-                                    }
-                                }
-                                parentElement.appendChild(li_ele);
-                            }
-                        }
-
-                        var ele = document.getElementById("root_menu")
-                        buildMenu(ele, undefined);
-
-
-                        function locationHashChanged() {
-                            var path = location.hash.replace("#!", "");
-                            var menu_item = __menus.filter(function (d) { return d.href == path })[0];
-                            if (menu_item !== undefined) {
-                                $("#mainBodyPages > div").hide();
-                                $("#mainBodyPages").find("#" + menu_item.key).show();
-                                return $("#mainBodyPages").find("#" + menu_item.key).length != 0;
-                            }
-                            return false;
-                        }
-                        window.onhashchange = locationHashChanged;
-
                     </script>
                     <!-- /sidebar menu -->
                 </div>
@@ -268,14 +221,17 @@
             <!-- /top navigation -->
             <!-- page content -->
             <script>
-                //var authorized = @Authorized("sys_admin,user").ToString().ToLower();
-                var authorized = true;
-                if (!authorized) {
-                    window.location = "../signup/login.z?rurl=" + window.location
-                }
-                else {
-                    $("body").show();
-                }
+                
+                  $.ajax({
+                        type: "GET",
+                        url: "./api/auth/ping",
+                        success: function (responseData) {
+                           $("body").show();
+                        },
+                        error: function (request, status, error) {
+                           window.location = "./auth/signin"
+                        }
+                    });
 
             </script>
             <div class="right_col" role="main">
@@ -315,19 +271,67 @@
             <script>
 
                 (function () {
+                    
+                     
+                        function buildMenu(parentElement, parent_link) {
 
-                    __menus.forEach(function (d) {
-                        if (d.config.templateUrl != "#") {
-                            if (d.display_area == "main_body") {
-                                $("#mainBodyPages").append("<div style='display:none;' id='" + d.key + "' ng-include=\"'" + d.config.templateUrl + "'\"></div>");
+                            var menuData = __menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(parent_link) != -1) || (parent_link == d.parent_links) }).sort(function (a, b) { return a.index < b.index; });
+                            for (var menu_index in menuData) {
+                                var menu_item = menuData[menu_index];
+                                var hasChild = (__menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(menu_item.key) != -1) }).length != 0);
+                                var li_ele = document.createElement("li");
+
+                                if (hasChild) {
+                                    li_ele.innerHTML = " <a href='#level2_1'><i class='fa " + menu_item.icon + "'></i> " + menu_item.label + "<span class='fa fa-chevron-down'></span></a>";
+                                    var ul_ele = document.createElement("ul");
+
+                                    li_ele.appendChild(ul_ele)
+                                    ul_ele.setAttribute("class", "nav child_menu");
+                                    buildMenu(ul_ele, menu_item.key);
+                                }
+                                else {
+                                    if (menu_item.parent_links == undefined) {
+                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> <i class='fa " + menu_item.icon + "'></i>" + menu_item.label + "</a>";
+                                    }
+                                    else {
+                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> " + menu_item.label + "</a>";
+                                    }
+                                }
+                                parentElement.appendChild(li_ele);
                             }
                         }
-                    });
 
-                    var changed = locationHashChanged();
-                    if (!changed) {
-                        $("#mainBodyPages").find("#default_home_dashboard_page").show();
-                    }
+                        
+
+                        function locationHashChanged() {
+                            var path = location.hash.replace("#!", "");
+                            var menu_item = __menus.filter(function (d) { return d.href == path })[0];
+                            if (menu_item !== undefined) {
+                                $("#mainBodyPages > div").hide();
+                                $("#mainBodyPages").find("#" + menu_item.key).show();
+                                return $("#mainBodyPages").find("#" + menu_item.key).length != 0;
+                            }
+                            return false;
+                        }
+                    window.onhashchange = locationHashChanged;
+
+                     var ele = document.getElementById("root_menu")
+                            buildMenu(ele, undefined);
+
+                            __menus.forEach(function (d) {
+                                if (d.config.templateUrl != "#") {
+                                    if (d.display_area == "main_body") {
+                                        $("#mainBodyPages").append("<div style='display:none;' id='" + d.key + "' ng-include=\"'" + d.config.templateUrl + "'\"></div>");
+                                    }
+                                }
+                            });
+
+                            var changed = locationHashChanged();
+                            if (!changed) {
+                                $("#mainBodyPages").find("#default_home_dashboard_page").show();
+                            }
+
+
 
                 })();
             </script>
@@ -356,7 +360,7 @@
     <script src="./vendors/angularjs/angular-resource.min.js"></script>
 
     <!-- Get  js -->
-    <script src="./api/getjs?path=/backend/app"></script>
+    <script src="./api/admin/js?path=/app"></script>
 
     <!-- FastClick -->
     <script src="./vendors/fastclick/lib/fastclick.js"></script>

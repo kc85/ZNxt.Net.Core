@@ -9,7 +9,7 @@ using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Helpers;
 namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 {
-    public class InstallPage
+    public class InstallRemoteData
     {
         private readonly IDBService _dbService;
         private readonly IResponseBuilder _responseBuilder;
@@ -20,7 +20,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         private readonly IHttpFileUploader _httpFileUploader;
         private readonly ILogger _logger;
 
-        public InstallPage(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig, ILogger logger, IRouting routing, IApiGatewayService apiGateway)
+        public InstallRemoteData(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig, ILogger logger, IRouting routing, IApiGatewayService apiGateway)
         {
             _responseBuilder = responseBuilder;
             _dbService = dbService;
@@ -32,7 +32,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             _logger = logger;
         }
         [Route("/ui/installpage", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
-        public JObject Install()
+        public JObject InstallPage()
         {
             try
             {
@@ -59,6 +59,34 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 return _responseBuilder.ServerError();
             }
         }
+        [Route("/ui/installcollection", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        public JObject InstallCollection()
+        {
+            try
+            {
+                var request = _httpContextProxy.GetRequestBody<JObject>();
+                if (request == null)
+                {
+                    return _responseBuilder.BadRequest();
+                }
+                var id = request[CommonConst.CommonField.DISPLAY_ID].ToString();
+
+                var collectionName = request[CommonConst.CommonValue.COLLECTION].ToString();
+                var moduleName = request[CommonConst.CommonField.MODULE_NAME].ToString();
+                request.Remove(CommonConst.CommonValue.COLLECTION);
+                WriteToDB(request, moduleName, collectionName, CommonConst.CommonField.KEY);
+                return _responseBuilder.Success();
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return _responseBuilder.ServerError();
+            }
+        }
+        // TODO : Uninstall remote module 
+
         private void WriteToDB(JObject joData, string moduleName, string collection, string compareKey)
         {
             _dbService.OverrideData(joData, moduleName, compareKey, collection);

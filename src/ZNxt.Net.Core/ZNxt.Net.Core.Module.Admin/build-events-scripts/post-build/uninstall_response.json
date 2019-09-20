@@ -1,1 +1,1 @@
-{"code":1,"message":"SUCCESS","transaction_id":"HT6415687264962101286","debug":{"time_span":967.0,"logs":[]}}
+{"code":1,"message":"SUCCESS","transaction_id":"HT1715690044060239849","debug":{"time_span":2627.0,"logs":[{"created_datetime":1569004407,"id":"2fdafd42-a4b5-4b84-b56b-0d24334ffc90","logger":null,"type":"Debug","transaction_id":"HT1715690044060239849","message":"callng  POST : https://localhost:44373/api/gateway/uninstallmodule?","data":null,"updated_datetime":1569004407,"created_by":""}]}}
