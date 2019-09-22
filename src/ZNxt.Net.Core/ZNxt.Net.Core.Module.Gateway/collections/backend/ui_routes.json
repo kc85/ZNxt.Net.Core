@@ -1,0 +1,22 @@
+[
+  
+  {
+    "key": "adv_gateway",
+    "label": "Gateway ",
+    "href": "/adv_gateway",
+    "icon": "fa-paw",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/gateway/gateway.html"
+    },
+    "parent_links": [
+      "advance"
+    ],
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 90
+  }
+
+]

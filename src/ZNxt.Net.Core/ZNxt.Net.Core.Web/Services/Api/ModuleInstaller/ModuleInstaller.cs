@@ -209,7 +209,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                     }
                     else
                     {
-                        _logger.Debug($"Callling remote /ui/installcollection file : {fileName}, Collection {collectionName}, Parent: { parent}, url {url}");
+                        _logger.Debug($"Callling remote /ui/installcollection Flile : {fileName}, Collection {collectionName}, Parent: { parent}, url {url}");
                         joData[CommonConst.CommonValue.COLLECTION] = collectionName;
                         _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installcollection", "", joData, null, url).GetAwaiter().GetResult();
 
