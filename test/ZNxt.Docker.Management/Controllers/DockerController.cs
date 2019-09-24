@@ -32,8 +32,8 @@ namespace ZNxt.Docker.Management.Controllers
             }
             return data;
         }
-        [HttpPut]
-        public async Task<string> Put(string containerName)
+        [HttpPost]
+        public async Task<string> Post(string containerName)
         {
             try
             {
