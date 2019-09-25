@@ -10,18 +10,21 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Services
 {
-    public abstract class ApiBaseService : BaseService
+    public abstract class ApiBaseService 
     {
-        protected RoutingModel Route { get; private set; }
-        protected ISessionProvider SessionProvider { get; private set; }
-        protected IHttpContextProxy HttpProxy { get; private set; }
+        private readonly IHttpContextProxy HttpProxy;
+        private readonly ILogger Logger;
+        private readonly IDBService DBProxy;
+        private readonly IResponseBuilder _responseBuilder;
 
-        public ApiBaseService(ParamContainer paramContainer)
-            : base(paramContainer)
+        public ApiBaseService(IHttpContextProxy httpContextProxy, IDBService dBService, ILogger logger,IResponseBuilder responseBuilder)
+            
         {
-            HttpProxy = (IHttpContextProxy)paramContainer.GetKey(CommonConst.CommonValue.PARAM_HTTPREQUESTPROXY);
-            Route = (RoutingModel)paramContainer.GetKey(CommonConst.CommonValue.PARAM_ROUTE);
-            SessionProvider = (ISessionProvider)paramContainer.GetKey(CommonConst.CommonValue.PARAM_SESSION_PROVIDER);
+            HttpProxy = httpContextProxy;
+            Logger = logger;
+            DBProxy = dBService;
+            _responseBuilder = responseBuilder;
+
         }
 
         protected JObject GetPaggedData(string collection, JArray joins = null, string overrideFilters = null, Dictionary<string, int> sortColumns = null, List<string> fields = null)
@@ -86,7 +89,7 @@ namespace ZNxt.Net.Core.Services
 
             var data = GetPagedData(collection, query, pageSize, currentPage);
 
-            DoJoins(data, collection, joins);
+           DoJoins(data, collection, joins);
 
             //OK();
             return data;
@@ -128,7 +131,7 @@ namespace ZNxt.Net.Core.Services
             extraData[CommonConst.CommonField.PAGE_SIZE_KEY] = pageSize;
             extraData[CommonConst.CommonField.CURRENT_PAGE_KEY] = currentPage;
 
-            return ResponseBuilder.CreateReponse(CommonConst._1_SUCCESS, dbArrData, extraData);
+            return _responseBuilder.Success(dbArrData, extraData);
         }
 
         private void DoJoins(JObject data, string sourceCollection, JArray joins)

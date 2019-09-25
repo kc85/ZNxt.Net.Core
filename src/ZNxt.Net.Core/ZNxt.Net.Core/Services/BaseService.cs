@@ -1,10 +1,12 @@
-﻿using ZNxt.Net.Core.Consts;
+﻿using System;
+using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Services
 {
+    [Obsolete]
     public abstract class BaseService
     {
         protected IDBService DBProxy { get; private set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ZNxt.Net.Core.Model
 {
+    [Obsolete]
     public class ParamContainer
     {
         private readonly Dictionary<string, Func<object>> _keys = new Dictionary<string, Func<object>>();

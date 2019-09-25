@@ -4,14 +4,15 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Services
 {
-    public abstract class ViewBaseService : ApiBaseService
+    [System.Obsolete]
+    public abstract class ViewBaseService //: ApiBaseService
     {
-        protected IStaticContentHandler ContentHandler;
+        //protected IStaticContentHandler ContentHandler;
 
-        public ViewBaseService(ParamContainer paramContainer)
-            : base(paramContainer)
-        {
-            ContentHandler = (IStaticContentHandler)paramContainer.GetKey(CommonConst.CommonValue.PARAM_CONTENT_HANDLER);
-        }
+        //public ViewBaseService(ParamContainer paramContainer)
+        //    : base(paramContainer)
+        //{
+        //    ContentHandler = (IStaticContentHandler)paramContainer.GetKey(CommonConst.CommonValue.PARAM_CONTENT_HANDLER);
+        //}
     }
 }
