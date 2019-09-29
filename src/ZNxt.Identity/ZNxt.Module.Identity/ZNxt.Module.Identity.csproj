@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00007</Version>
+    <Version>1.0.0-Beta00010</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,11 +12,20 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ZNxt.Net.Core" Version="1.0.6" />
+    <PackageReference Include="ZNxt.Net.Core" Version="1.0.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\frontend\" />
+    <None Update="wwwroot\**\*.*">
+      <PackPath>.</PackPath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="collections\**\*.*">
+      <PackPath>.</PackPath>
+      <Pack>true</Pack>
+    </None>
   </ItemGroup>
 
 </Project>

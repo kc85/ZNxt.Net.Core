@@ -1,0 +1,78 @@
+﻿<div ng-controller="ZNxtAppAdmin.userprofileCtrl">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>{{user.name}}<small>Type : {{user.user_type}}</small></h2>
+                    <ul class="nav navbar-right panel_toolbox" ng-hide="isShowMyProfile">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link" ng-click="closeDetails();"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                        <div class="profile_img">
+                            <div id="crop-avatar">
+                                <!-- Current avatar -->
+                                <img class="img-responsive avatar-view"  src="{{user_profile_image}}" alt="Avatar" title="Change the avatar">
+                                <form name="userProfileImagefrm">
+                                    <!--<button type="button" class="btn btn-sm" onclick="document.getElementById('user_pic_change').click();"> Change Photo</button>-->
+                                    <input type="file"  id="user_pic_change" class="btn" data-input="false" file-model="userProfileImage">
+                               </form>
+                        </div>
+                        <br />
+                        </div>
+                        <ul class="list-unstyled user_data">
+                            <li>
+                                <i class="fa fa-map-marker user-profile-icon"></i> Phone #: {{user.phone}}
+                            </li>
+                            <li>
+                                <i class="fa fa-map-marker user-profile-icon"></i> Email : {{user.email}}
+                            </li>
+                            <li>
+                                <i class="fa fa-map-marker user-profile-icon"></i>
+                                {{defaultAddress.street}},{{defaultAddress.city}},{{defaultAddress.state}}<br />
+                            </li>
+                            <li>
+                                <i class="fa fa-briefcase user-profile-icon"></i> Gender: {{user.user_info[0].gender}}
+                            </li>
+                        </ul>
+                        <hr />
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="javascript:;" ng-click="clickMenu()"><i class="fa fa-home"></i> Info</a>
+                                    </li>
+                                    <li ng-repeat="menu in userProfileMenus">
+                                        <a href="javascript:;" ng-click="clickMenu(menu)"><i class="fa {{menu.icon}}"></i> {{menu.label}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                        <div ng-include="'app/users/userprofile/home_widgets.html'" ng-hide="showOtherTabs">
+                        </div>
+                        <div ng-include="menu.config.templateUrl" ng-repeat="menu in userProfileMenus" ng-show="menu.isShow == true">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

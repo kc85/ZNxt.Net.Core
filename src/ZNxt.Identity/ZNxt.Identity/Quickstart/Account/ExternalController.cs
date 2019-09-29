@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using ZNxt.Identity.Services;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -26,12 +27,13 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly ILogger<ExternalController> _logger;
         private readonly IEventService _events;
-
+        private readonly IZNxtUserService _ZNxtUserService;
         public ExternalController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IEventService events,
-            ILogger<ExternalController> logger,
+            ILogger<ExternalController> logger, 
+            IZNxtUserService ZNxtUserService,
             TestUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -42,6 +44,7 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _logger = logger;
             _events = events;
+            _ZNxtUserService = ZNxtUserService;
         }
 
         /// <summary>
@@ -109,6 +112,7 @@ namespace IdentityServer4.Quickstart.UI
                 // simply auto-provisions new external user
                 user = AutoProvisionUser(provider, providerUserId, claims);
             }
+            _ZNxtUserService.CreateUser(user);
 
             // this allows us to collect any additonal claims or properties
             // for the specific prtotocols used and store them in the local auth cookie.
@@ -247,5 +251,7 @@ namespace IdentityServer4.Quickstart.UI
         private void ProcessLoginCallbackForSaml2p(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
         {
         }
+
+        
     }
 }

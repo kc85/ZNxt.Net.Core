@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using ZNxt.Identity.Services;
 
 namespace ZNxt.Identity
 {
@@ -75,6 +76,7 @@ namespace ZNxt.Identity
                     options.ClientId = "592081696184-3056k8j98cfliger0398q08nmi50cfjs.apps.googleusercontent.com";
                     options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
                 });
+            services.AddTransient<IZNxtUserService, ZNxtUserService>();
             services.AddZNxtApp();
             services.AddZNxtBearerAuthentication();
         }

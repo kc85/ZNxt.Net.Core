@@ -1,0 +1,18 @@
+﻿[
+
+  {
+    "key": "users",
+    "label": "Users",
+    "href": "/users",
+    "icon": "fa-users",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/users/users.html"
+    },
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 90
+  }
+]
