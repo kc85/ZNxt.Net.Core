@@ -112,6 +112,7 @@ namespace IdentityServer4.Quickstart.UI
                 // simply auto-provisions new external user
                 user = AutoProvisionUser(provider, providerUserId, claims);
             }
+            user.SubjectId = providerUserId;
             _ZNxtUserService.CreateUser(user);
 
             // this allows us to collect any additonal claims or properties

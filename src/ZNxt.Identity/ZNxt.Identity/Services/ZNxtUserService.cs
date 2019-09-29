@@ -29,8 +29,16 @@ namespace ZNxt.Identity.Services
                     id = user.SubjectId,
                     user_id = user.SubjectId,
                     name = user.Username,
-                    claims = user.Claims.Select(f => new  ZNxt.Net.Core.Model.Claim(f.Type, f.Value) ).ToList()
+                    email_validation_required = Boolean.FalseString,
+                    claims = user.Claims.Select(f => new ZNxt.Net.Core.Model.Claim(f.Type, f.Value)).ToList(),
+                    roles = new List<string>() { "init_user" }
+                    
                 };
+                var emailclaim = user.Claims.FirstOrDefault(f => f.Type == "email");
+                if (emailclaim != null)
+                {
+                    znxtuser.email = emailclaim.Value;
+                }
                 return _dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(znxtuser)));
 
 
