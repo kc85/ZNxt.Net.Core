@@ -1,7 +1,7 @@
-# ZNxt
+# ZNxt.App
 
-ZNxt is an open source, cross platform, highly scalable, micro-services based application development framework.
-ZNxt designed on .net core 2.2 and can run on standalone on under container. 
+ZNxt.App is an open source, cross platform, highly scalable, micro-services based application development framework.
+ZNxt.App designed on .net core 2.2 and can run on standalone on under container. 
 Its has build it support of authentication, authorization, micro front end, dynamic module injection. 
 
 

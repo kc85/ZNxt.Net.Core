@@ -1,0 +1,82 @@
+# pull source code 
+git pull origin master 
+
+# build ZNxt.Net.Core
+sudo docker build -t znxtapp ./src/ZNxt.Net.Core
+
+#build SSO 
+sudo docker build -t znxtsso ./src/ZNxt.Identity/ZNxt.Identity
+
+
+#Run ZNxt Gateway 
+
+sudo docker run -d -p 806:80 -p 4436:443 -v /ZNxtApp/ZNxt_s2f_gateway:/app/ZNxtApp/ZNxt_s2f_gateway -e ASPNETCORE_URLS="https://+443;http://+80" -e ASPNETCORE_HTTPS_PORT=443 -e ASPNETCORE_Kestrel__Certificates__Default__Password="abc@123" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ZNxtFashion.pfx -v /home/ubuntu/.aspnet/https:/https/ -e ConnectionString=mongodb://172.31.2.1:27071 -e DataBaseName=ZNxt_s2f_gateway -e AppEndpoint=http://gateway.s2ftecnologies.com -e ApiGatewayEndpoint=http://gateway.s2ftecnologies.com -e SSOUrl=http://sso.s2ftechnologies.com -e AppName=s2ftechnologies -e AppSecret=MySecret --restart=always --name s2fapp-gateway-run  znxtapp:latest
+
+
+
+#Run ZNxt SSO
+
+sudo docker run -p 807:80 -p 4437:443 -v /ZNxtApp/ZNxt_s2f_sso:/app/ZNxtApp/ZNxt_s2f_sso -e ASPNETCORE_URLS="https://+443;http://+80" -e ASPNETCORE_HTTPS_PORT=443 -e ASPNETCORE_Kestrel__Certificates__Default__Password="abc@123" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ZNxtFashion.pfx -v /home/ubuntu/.aspnet/https:/https/ -e ConnectionString=mongodb://172.31.2.1:27071 -e DataBaseName=ZNxt_s2f_sso  -e AppEndpoint=http://sso.s2ftechnologies.com -e ApiGatewayEndpoint=http://gateway.s2ftechnologies.com -e SSOUrl=http://sso.s2ftechnologies.com -e ASPNETCORE_ENVIRONMENT=Development -e AppName=sso.s2ftechnologies -e AppSecret=MySecret --restart=always --name s2fsso-run  znxtsso:latest 
+
+
+
+#Run ZNxt Admin
+
+sudo docker run -d -p 805:80 -p 4435:443 -v /ZNxtApp/ZNxt_s2f_admin:/app/ZNxtApp/ZNxt_s2f_admin -e ASPNETCORE_URLS="https://+443;http://+80" -e ASPNETCORE_HTTPS_PORT=443 -e ASPNETCORE_Kestrel__Certificates__Default__Password="abc@123" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ZNxtFashion.pfx -v /home/ubuntu/.aspnet/https:/https/ -e ConnectionString=mongodb://172.31.2.1:27071 -e DataBaseName=ZNxt_s2f_admin -e AppEndpoint=http://admin.s2ftechnologies.com -e ApiGatewayEndpoint=http://gateway.s2ftechnologies.com -e AppName=s2ftechnologies -e AppSecret=MySecret -e SSOUrl=http://sso.s2ftechnologies.com --restart=always --name s2fapp-admin-run  znxtapp:latest
+
+
+
+#Run ZNxt Frontend UI 
+
+sudo docker run -d -p 804:80 -p 4434:443 -v /ZNxtApp/ZNxt_s2f:/app/ZNxtApp/ZNxt_s2f -e ASPNETCORE_URLS="https://+443;http://+80" -e ASPNETCORE_HTTPS_PORT=443 -e ASPNETCORE_Kestrel__Certificates__Default__Password="abc@123" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/ZNxtFashion.pfx -v /home/ubuntu/.aspnet/https:/https/ -e ConnectionString=mongodb://172.31.2.1:27071 -e DataBaseName=ZNxt_s2f -e AppEndpoint=http://s2ftechnologies.com -e ApiGatewayEndpoint=http://gateway.s2ftechnologies.com -e SSOUrl=http://sso.s2ftechnologies.com -e AppName=s2ftechnologies -e AppSecret=MySecret --restart=always --name s2fapp-run  znxtapp:latest 
+
+
+
+#Restart containers 
+
+sudo docker restart s2fapp-gateway-run
+sudo docker restart s2fapp-admin-run
+sudo docker restart s2fapp-run
+sudo docker restart s2fsso-run
+
+
+
+#Remove containers
+
+sudo docker rm -f  s2fapp-gateway-run
+sudo docker rm -f  s2fapp-admin-run
+sudo docker rm -f  s2fapp-run
+sudo docker rm -f  s2fsso-run
+
+#Docker push 
+sudo docker tag znxtapp:latest choudhurykhanin/znxtapp:tagname
+sudo docker push choudhurykhanin/znxtapp:tagname
+
+sudo docker tag znxtsso:latest choudhurykhanin/znxtsso:tagname
+sudo docker push choudhurykhanin/znxtsso:tagname
+
+#Run docker management 
+sudo dotnet run ~/ZNxt.Net.Core/test/ZNxt.Docker.Management/ZNxt.Docker.Management.csproj
+
+
+#Apache Configs
+<VirtualHost *:80>
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:803/
+    ProxyPassReverse / http://127.0.0.1:803/
+    ServerName admin.znxt.fashion
+    ServerAlias www.admin.znxt.fashion
+    ErrorLog ${APACHE_LOG_DIR}helloapp-error.log
+    CustomLog ${APACHE_LOG_DIR}helloapp-access.log common
+</VirtualHost>
+
+# Restart Apache 
+$/etc/apache2/sites-available$ sudo /etc/init.d/apache2 restart
+# activate proxy config
+/etc/apache2/sites-available$ sudo a2ensite znxtfashion-admin.conf
+
+
+
+
+
+ 
