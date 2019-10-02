@@ -32,10 +32,10 @@
             if ($scope.loadingUseData == false) {
                 $scope.loadingUseData = true;
                 $scope.isError = false;
-                var getUserInfoUrl = "./api/admin/users?pagesize=1&currentpage=1&filter={'user_id':'" + $scope.user.user_id + "'}";
+                var getUserInfoUrl = "./api/sso/users?pagesize=1&currentpage=1&filter={'user_id':'" + $scope.user.user_id + "'}";
 
                 if ($scope.isShowMyProfile == true) {
-                    getUserInfoUrl = "./api/user/userinfo?user_id=" + userData.user_id + "";
+                    getUserInfoUrl = "./api/sso/userinfo?user_id=" + userData.user_id + "";
                 }
                 dataService.get(getUserInfoUrl).then(function (response) {
                     $scope.loadingUseData = false;
@@ -64,7 +64,7 @@
         function setUserInfoData(user) {
             $scope.user = user;
             $scope.user_profile_image = "";
-            if (user.user_info[0] != undefined) {
+            if (user.user_info != undefined && user.user_info[0] != undefined) {
                 if (user.user_info[0].user_pic_l != undefined) {
                     $scope.user_profile_image = user.user_info[0].user_pic_l.replace("/frontend/", "../");
                 }
@@ -81,7 +81,7 @@
             if ($scope.userProfileImage != undefined) {
                 console.log($scope.userProfileImage);
 
-                var uploadUserImageUrl = "./api/admin/userpic/update?user_id=" + $scope.user.user_id;
+                var uploadUserImageUrl = "./api/sso/userpic/update?user_id=" + $scope.user.user_id;
 
                 if ($scope.isShowMyProfile) {
                     uploadUserImageUrl = "./api/userpic/update?user_id=" + $scope.user.user_id;

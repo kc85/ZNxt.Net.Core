@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using static ZNxt.Net.Core.Consts.CommonConst;
 
@@ -31,7 +32,8 @@ namespace ZNxt.Identity.Services
                     name = user.Username,
                     email_validation_required = Boolean.FalseString,
                     claims = user.Claims.Select(f => new ZNxt.Net.Core.Model.Claim(f.Type, f.Value)).ToList(),
-                    roles = new List<string>() { "init_user" }
+                    roles = new List<string>() { "init_user" },
+                    user_type = user.ProviderName
                     
                 };
                 var emailclaim = user.Claims.FirstOrDefault(f => f.Type == "email");
@@ -39,7 +41,19 @@ namespace ZNxt.Identity.Services
                 {
                     znxtuser.email = emailclaim.Value;
                 }
-                return _dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(znxtuser)));
+                if(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(znxtuser))))
+                {
+                    var userInfo = new JObject();
+                    userInfo[CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
+                    userInfo[CommonField.USER_ID] = znxtuser.user_id;
+                    var result = _dBService.WriteData(Collection.USER_INFO, userInfo);
+                    
+                    return result;
+                }
+                else
+                {
+                    return false;
+                }
 
 
             }
