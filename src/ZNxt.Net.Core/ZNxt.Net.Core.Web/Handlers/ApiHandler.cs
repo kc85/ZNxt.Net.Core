@@ -168,6 +168,13 @@ namespace ZNxt.Net.Core.Web.Handlers
                         }
                         if (userModel != null)
                         {
+                            var identity = new ClaimsIdentity();
+                            foreach (var claim in userModel.claims)
+                            {
+                                identity.AddClaim(new System.Security.Claims.Claim(claim.Key, claim.Value));
+                            }
+                            context.User = new ClaimsPrincipal(identity);
+                            var u = _httpContextProxy.User;
                             return userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
                         }
 

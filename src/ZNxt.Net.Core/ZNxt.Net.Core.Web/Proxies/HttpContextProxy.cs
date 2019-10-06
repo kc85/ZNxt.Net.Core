@@ -41,7 +41,7 @@ namespace ZNxt.Net.Core.Web.Proxies
             get
             {
 
-                if (_httpContextAccessor.HttpContext.User != null && _httpContextAccessor.HttpContext.User.Identity != null && _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                if (_httpContextAccessor.HttpContext.User != null && _httpContextAccessor.HttpContext.User.Identity != null)
                 {
                     var user = new UserModel()
                     {
@@ -49,14 +49,17 @@ namespace ZNxt.Net.Core.Web.Proxies
 
                     };
                     user.roles.Add("user");
-                    // need to get the roles from claims 
                     var claims = new List<Claim>();
                     foreach (var claim in _httpContextAccessor.HttpContext.User.Claims)
                     {
                         claims.Add(new Claim(claim.Type, claim.Value));
+                        if(claim.Type == "roles")
+                        {
+                            user.roles = JArray.Parse(claim.Value).Select(f => f.ToString()).ToList();
+                        }
                     }
                     user.claims = claims;
-                    
+
                     user.id = user.user_id = user.claims.FirstOrDefault(f => f.Key == "sub").Value;
                     return user;
                 }

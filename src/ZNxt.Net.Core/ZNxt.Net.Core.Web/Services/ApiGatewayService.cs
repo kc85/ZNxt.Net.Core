@@ -83,7 +83,10 @@ namespace ZNxt.Net.Core.Web.Services
             }
             if (route.IndexOf("~/") == 0)
             {
-                
+                if (querystring.IndexOf("?") == 0)
+                {
+                    querystring = querystring.Remove(0, 1);
+                }
                 request.RequestUri = new Uri($"{baseUrl}{route.Remove(0, 1)}?{querystring}");
             }
             else

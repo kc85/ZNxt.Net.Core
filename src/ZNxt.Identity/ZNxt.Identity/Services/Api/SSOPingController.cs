@@ -21,7 +21,7 @@ namespace ZNxt.Identity.Services.Api
             _httpContextProxy = httpContextProxy;
 
         }
-        [Route("/sso/baseping", CommonConst.ActionMethods.GET)]
+        [Route("/sso/ping", CommonConst.ActionMethods.GET)]
         public async Task<JObject> Ping()
         {
 
@@ -36,16 +36,23 @@ namespace ZNxt.Identity.Services.Api
                 return await Task.FromResult<JObject>(_responseBuilder.Unauthorized());
 
             }
-
         }
-        [Route("/sso/accesstoken", CommonConst.ActionMethods.GET,CommonConst.CommonValue.ACCESS_ALL)]
-        public async Task<JObject> Accesstoken()
+        [Route("/sso/auth/ping", CommonConst.ActionMethods.GET,"user")]
+        public async Task<JObject> AuthPing()
         {
 
-            var accesstoke = await _httpContextProxy.GetAccessTokenAync();
-            return await Task.FromResult<JObject>(_responseBuilder.Success(accesstoke));
+
+            var user = _httpContextProxy.User;
+            if (user != null)
+            {
+                return await Task.FromResult<JObject>(_responseBuilder.Success(Newtonsoft.Json.JsonConvert.SerializeObject(user)));
+            }
+            else
+            {
+                return await Task.FromResult<JObject>(_responseBuilder.Unauthorized());
+
+            }
         }
-       
 
     }
 }
