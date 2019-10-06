@@ -27,13 +27,11 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly ILogger<ExternalController> _logger;
         private readonly IEventService _events;
-        private readonly IUserNotifierService _userNotifierService;
         public ExternalController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IEventService events,
             ILogger<ExternalController> logger,
-            IUserNotifierService userNotifierService,
             ZNxtUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -44,7 +42,6 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _logger = logger;
             _events = events;
-            _userNotifierService = userNotifierService;
         }
 
         /// <summary>
@@ -110,8 +107,7 @@ namespace IdentityServer4.Quickstart.UI
                 // this might be where you might initiate a custom workflow for user registration
                 // in this sample we don't show how that would be done, as our sample implementation
                 // simply auto-provisions new external user
-                user = AutoProvisionUser(provider, providerUserId, claims);
-                await _userNotifierService.SendWelcomeEmailAsync(user);
+                user = await AutoProvisionUserAsync(provider, providerUserId, claims);
             }
             
             // this allows us to collect any additonal claims or properties
@@ -220,9 +216,9 @@ namespace IdentityServer4.Quickstart.UI
             return (user, provider, providerUserId, claims);
         }
 
-        private ZNxt.Net.Core.Model.UserModel AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
+        private async Task<ZNxt.Net.Core.Model.UserModel> AutoProvisionUserAsync(string provider, string providerUserId, IEnumerable<Claim> claims)
         {
-            var user = _users.AutoProvisionUser(provider, providerUserId, claims.ToList());
+            var user = await _users.AutoProvisionUserAsync(provider, providerUserId, claims.ToList());
             return user;
         }
 

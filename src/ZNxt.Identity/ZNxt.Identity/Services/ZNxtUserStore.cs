@@ -19,14 +19,14 @@ namespace ZNxt.Identity.Services
             _ZNxtUserService = ZNxtUserService;
         }
 
-        public UserModel AutoProvisionUser(string provider, string userId, List<System.Security.Claims.Claim> claims)
+        public async Task<UserModel> AutoProvisionUserAsync(string provider, string userId, List<System.Security.Claims.Claim> claims)
         {
             provider = provider.ToLower();
             var name = claims.FirstOrDefault(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             var firstname = claims.FirstOrDefault(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
             var lastname = claims.FirstOrDefault(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname");
             var emailaddress = claims.FirstOrDefault(f => f.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
-            var privideuserid = $"{provider.Substring(0,3)}{userId}";
+            var privideuserid = $"{provider.Substring(0, 3)}{userId}";
             var user = new UserModel()
             {
                 id = privideuserid,
@@ -37,7 +37,7 @@ namespace ZNxt.Identity.Services
                 email_validation_required = Boolean.FalseString.ToLower(),
                 claims = claims.Select(f => new Net.Core.Model.Claim(f.Type, f.Value)).ToList()
             };
-            _ZNxtUserService.CreateUser(user);
+            await _ZNxtUserService.CreateUserAsync(user);
             return user;
         }
         //

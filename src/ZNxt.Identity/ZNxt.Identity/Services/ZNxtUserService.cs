@@ -18,35 +18,50 @@ namespace ZNxt.Identity.Services
     public class ZNxtUserService : IZNxtUserService
     {
         private readonly IDBService _dBService;
-        public ZNxtUserService(IDBService dBService)
+        private readonly IUserNotifierService _userNotifierService;
+        private readonly ILogger _logger;
+
+        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService,ILogger logger)
         {
+
+            _userNotifierService = userNotifierService;
             _dBService = dBService;
+            _logger = logger;
         }
-        public bool CreateUser(ZNxt.Net.Core.Model.UserModel user)
+        public async Task<bool> CreateUserAsync(ZNxt.Net.Core.Model.UserModel user)
         {
             if (user != null && !IsExists(user.user_id))
             { 
                 user.roles = new List<string>() { "init_user" };
-                if(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user))))
+                var userObject = JObject.Parse(JsonConvert.SerializeObject(user));
+                userObject[CommonField.IS_ENABLED] = Boolean.TrueString.ToLower();
+                if (_dBService.WriteData(Collection.USERS, userObject))
                 {
                     var userInfo = new JObject();
                     userInfo[CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
                     userInfo[CommonField.USER_ID] = user.user_id;
                     var result = _dBService.WriteData(Collection.USER_INFO, userInfo);
-                    
+                    if (result)
+                    {
+                        await _userNotifierService.SendWelcomeEmailAsync(user);
+                    }
+                    else
+                    {
+                        userObject[CommonField.IS_ENABLED] = Boolean.FalseString.ToLower();
+                        _dBService.Write(Collection.USERS, userObject, "{user_id: '" + user.user_id + "'}");
+                        _logger.Error($"Error while creating user user_id : {user.user_id} Type: {user.user_type}, email:{user.email}");
+                    }
                     return result;
                 }
                 else
                 {
                     return false;
                 }
-
-
             }
             return false;
         }
 
-        public bool CreateUser(ClaimsPrincipal subject)
+        public async Task<bool> CreateUserAsync(ClaimsPrincipal subject)
         {
             var subjectId = subject.GetSubjectId();
             if (!IsExists(subjectId))
@@ -60,7 +75,7 @@ namespace ZNxt.Identity.Services
                     email = subject.GetSubjectId()
                    
                 };
-                return _dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user)));
+                return await Task.FromResult(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user))));
             }
             return false;
         }
