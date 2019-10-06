@@ -84,16 +84,24 @@ namespace ZNxt.Net.Core.Web.Services
 
         private byte[] GetAsssemblyFromDB(string assemblyName)
         {
-            _logger.Info(string.Format("Loading Assemmbly:{0}, from Download ", assemblyName));
-
-            var dataResponse = _dbProxy.Get(CommonConst.Collection.DLLS, new RawQuery( GetFilter(assemblyName)));
-
-            if (dataResponse.Count > 0)
+            try
             {
-                var id = dataResponse[0][CommonConst.CommonField.DISPLAY_ID].ToString();
-                var assemblyData = _keyValueStorage.Get<string>(CommonConst.Collection.DLLS, id);
-                return System.Convert.FromBase64String(assemblyData);
+                _logger.Info(string.Format("Loading Assemmbly:{0}, from Download ", assemblyName));
+
+                var dataResponse = _dbProxy.Get(CommonConst.Collection.DLLS, new RawQuery(GetFilter(assemblyName)));
+
+                if (dataResponse.Count > 0)
+                {
+                    var id = dataResponse[0][CommonConst.CommonField.DISPLAY_ID].ToString();
+                    var assemblyData = _keyValueStorage.Get<string>(CommonConst.Collection.DLLS, id);
+                    return System.Convert.FromBase64String(assemblyData);
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error on GetAsssemblyFromDB {assemblyName}, Error: {ex.Message}", ex);
+            }
+
             return null;
         }
 
