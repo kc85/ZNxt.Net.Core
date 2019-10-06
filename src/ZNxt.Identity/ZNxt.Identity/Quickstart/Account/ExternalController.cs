@@ -22,29 +22,29 @@ namespace IdentityServer4.Quickstart.UI
     [AllowAnonymous]
     public class ExternalController : Controller
     {
-        private readonly TestUserStore _users;
+        private readonly ZNxtUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly ILogger<ExternalController> _logger;
         private readonly IEventService _events;
-        private readonly IZNxtUserService _ZNxtUserService;
+        private readonly IUserNotifierService _userNotifierService;
         public ExternalController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IEventService events,
-            ILogger<ExternalController> logger, 
-            IZNxtUserService ZNxtUserService,
-            TestUserStore users = null)
+            ILogger<ExternalController> logger,
+            IUserNotifierService userNotifierService,
+            ZNxtUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-            _users = users ?? new TestUserStore(TestUsers.Users);
+            _users = users;
 
             _interaction = interaction;
             _clientStore = clientStore;
             _logger = logger;
             _events = events;
-            _ZNxtUserService = ZNxtUserService;
+            _userNotifierService = userNotifierService;
         }
 
         /// <summary>
@@ -111,10 +111,9 @@ namespace IdentityServer4.Quickstart.UI
                 // in this sample we don't show how that would be done, as our sample implementation
                 // simply auto-provisions new external user
                 user = AutoProvisionUser(provider, providerUserId, claims);
+                await _userNotifierService.SendWelcomeEmailAsync(user);
             }
-            user.SubjectId = providerUserId;
-            _ZNxtUserService.CreateUser(user);
-
+            
             // this allows us to collect any additonal claims or properties
             // for the specific prtotocols used and store them in the local auth cookie.
             // this is typically used to store data needed for signout from those protocols.
@@ -125,7 +124,7 @@ namespace IdentityServer4.Quickstart.UI
             ProcessLoginCallbackForSaml2p(result, additionalLocalClaims, localSignInProps);
 
             // issue authentication cookie for user
-            await HttpContext.SignInAsync(user.SubjectId, user.Username, provider, localSignInProps, additionalLocalClaims.ToArray());
+            await HttpContext.SignInAsync(user.user_id, user.name, provider, localSignInProps, additionalLocalClaims.ToArray());
 
             // delete temporary cookie used during external authentication
             await HttpContext.SignOutAsync(IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme);
@@ -135,7 +134,7 @@ namespace IdentityServer4.Quickstart.UI
 
             // check if external login is in the context of an OIDC request
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.SubjectId, user.Username, true, context?.ClientId));
+            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.user_id,user.name, true, context?.ClientId));
 
             if (context != null)
             {
@@ -197,7 +196,7 @@ namespace IdentityServer4.Quickstart.UI
             }
         }
 
-        private (TestUser user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
+        private (ZNxt.Net.Core.Model.UserModel user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
         {
             var externalUser = result.Principal;
 
@@ -221,7 +220,7 @@ namespace IdentityServer4.Quickstart.UI
             return (user, provider, providerUserId, claims);
         }
 
-        private TestUser AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
+        private ZNxt.Net.Core.Model.UserModel AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
         {
             var user = _users.AutoProvisionUser(provider, providerUserId, claims.ToList());
             return user;

@@ -1,0 +1,53 @@
+[
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "text_local_sms_gateway_key",
+    "data": "oc2ZHEx262Y-7y1YGbOqxJ1xyTUXCZkuyoL2hCQvCC"
+  },
+
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "text_local_sms_gateway_endpoint",
+    "data": "https://api.textlocal.in/send/"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "sms_from",
+    "data": "TXTLCL"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "from_email_id",
+    "data": "ZNxtApp@gmail.com",
+    "is_override": false,
+    "override_by": "none"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "smtp_server",
+    "data": "smtp.gmail.com",
+    "is_override": false,
+    "override_by": "none"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "smtp_server_user",
+    "data": "ZNxtApp@gmail.com",
+    "is_override": false,
+    "override_by": "none"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "smtp_server_password",
+    "data": "****",
+    "is_override": false,
+    "override_by": "none"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "smtp_server_port",
+    "data": "587",
+    "is_override": false,
+    "override_by": "none"
+  }
+]

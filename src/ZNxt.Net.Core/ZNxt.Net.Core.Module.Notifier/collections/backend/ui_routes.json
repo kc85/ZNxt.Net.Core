@@ -1,0 +1,21 @@
+[
+  {
+    "key": "adv_notifier",
+    "label": "Notifier",
+    "href": "/adv_notifier",
+    "icon": "fa-paw",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/notifier/notifier.html"
+    },
+    "parent_links": [
+      "advance"
+    ],
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 90
+  }
+
+]

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using ZNxt.Identity.Services;
+using IdentityServer4.Services;
 
 namespace ZNxt.Identity
 {
@@ -77,6 +78,9 @@ namespace ZNxt.Identity
                     options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
                 });
             services.AddTransient<IZNxtUserService, ZNxtUserService>();
+            services.AddTransient<IProfileService, ZNxtProfileService>();
+            services.AddTransient<ZNxtUserStore>();
+            services.AddTransient<IUserNotifierService, UserNotifierService>();
             services.AddZNxtApp();
             services.AddZNxtBearerAuthentication();
         }

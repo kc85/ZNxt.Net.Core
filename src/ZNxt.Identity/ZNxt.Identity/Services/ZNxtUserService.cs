@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZNxt.Identity.Models;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
+using ZNxt.Net.Core.Model;
 using static ZNxt.Net.Core.Consts.CommonConst;
 
 namespace ZNxt.Identity.Services
@@ -20,32 +22,16 @@ namespace ZNxt.Identity.Services
         {
             _dBService = dBService;
         }
-        public bool CreateUser(TestUser user)
+        public bool CreateUser(ZNxt.Net.Core.Model.UserModel user)
         {
-            if (user != null && !IsExists(user.SubjectId))
-            {
-                var znxtuser = new ZNxt.Net.Core.Model.UserModel()
-
-                {
-                    id = user.SubjectId,
-                    user_id = user.SubjectId,
-                    name = user.Username,
-                    email_validation_required = Boolean.FalseString,
-                    claims = user.Claims.Select(f => new ZNxt.Net.Core.Model.Claim(f.Type, f.Value)).ToList(),
-                    roles = new List<string>() { "init_user" },
-                    user_type = user.ProviderName
-                    
-                };
-                var emailclaim = user.Claims.FirstOrDefault(f => f.Type == "email");
-                if (emailclaim != null)
-                {
-                    znxtuser.email = emailclaim.Value;
-                }
-                if(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(znxtuser))))
+            if (user != null && !IsExists(user.user_id))
+            { 
+                user.roles = new List<string>() { "init_user" };
+                if(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user))))
                 {
                     var userInfo = new JObject();
                     userInfo[CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
-                    userInfo[CommonField.USER_ID] = znxtuser.user_id;
+                    userInfo[CommonField.USER_ID] = user.user_id;
                     var result = _dBService.WriteData(Collection.USER_INFO, userInfo);
                     
                     return result;
@@ -78,9 +64,38 @@ namespace ZNxt.Identity.Services
             }
             return false;
         }
-        public bool IsExists(string subjectId)
+        public bool IsExists(string userid)
         {
-            return _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{" + CommonField.DISPLAY_ID + ": '" + subjectId + "'}")).Any();
+            return _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "'}")).Any();
         }
+        public UserModel GetUser(string userid)
+        {
+            var user =  _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "'}"));
+            if (user.Any())
+            {
+                var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
+                return userModel;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+        public PasswordSaltModel GetPassword(string userid)
+        {
+            var user = _dBService.Get($"{Collection.USERS}-pass", new Net.Core.Model.RawQuery("{user_id: '" + userid + "'}"));
+            if (user.Any())
+            {
+                var userModel = JsonConvert.DeserializeObject<PasswordSaltModel>(user.First().ToString());
+                return userModel;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
     }
 }

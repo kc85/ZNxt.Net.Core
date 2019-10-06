@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ZNxt.Net.Core.Interfaces
 {
+    [System.Obsolete]
     public interface ISMSService
     {
         bool Send(string toNumber, string text, bool putInQueue = true);
