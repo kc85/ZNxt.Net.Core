@@ -26,7 +26,14 @@ namespace ZNxt.Net.Core.Web.Services
         {
             _logger.Info(string.Format("GetType: {0}, executeType: {1}", assemblyName, executeType));
             var assembly = Load(assemblyName.Trim());
-            return assembly.GetType(executeType.Trim());
+            if (assembly != null)
+            {
+                return assembly.GetType(executeType.Trim());
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public Assembly Load(string assemblyName)
