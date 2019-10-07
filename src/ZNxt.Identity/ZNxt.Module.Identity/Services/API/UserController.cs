@@ -4,28 +4,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Module.Identity.Services.API
 {
-   public  class UserController : ZNxt.Net.Core.Services.ApiBaseService
+    public class UserController : ZNxt.Net.Core.Services.ApiBaseService
     {
         private readonly IResponseBuilder _responseBuilder;
         private readonly IHttpContextProxy _httpContextProxy;
         private readonly ILogger _logger;
         private readonly IDBService _dBService;
-        public UserController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler)
+        private readonly IApiGatewayService _apiGatewayService;
+        public UserController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService)
          : base(httpContextProxy, dBService, logger, responseBuilder)
         {
             _responseBuilder = responseBuilder;
             _httpContextProxy = httpContextProxy;
             _logger = logger;
             _dBService = dBService;
+            _apiGatewayService = apiGatewayService;
         }
-       
+
         [Route("/sso/users", CommonConst.ActionMethods.GET, "user")]
-        public  JObject Users()
+        public JObject Users()
         {
             return GetPaggedData(CommonConst.Collection.USERS);
         }
@@ -45,7 +48,6 @@ namespace ZNxt.Module.Identity.Services.API
             }
             else
             {
-                throw new NotSupportedException();
                 return _responseBuilder.NotFound();
             }
         }
@@ -70,7 +72,6 @@ namespace ZNxt.Module.Identity.Services.API
             else
             {
 
-                throw new NotSupportedException();
                 _logger.Debug("_httpContextProxy.User is null");
                 return _responseBuilder.Unauthorized();
             }
@@ -82,11 +83,11 @@ namespace ZNxt.Module.Identity.Services.API
             {
                 var model = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
                 var userResponse = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(model));
-                return _responseBuilder.Success(userResponse);
+                return userResponse;
             }
             else
             {
-                return _responseBuilder.NotFound();
+                return null;
             }
         }
 
@@ -110,30 +111,134 @@ namespace ZNxt.Module.Identity.Services.API
             }
         }
 
-        //[Route("/sso/js/user", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL, "application/javascript")]
-        //public string GetUserJs()
-        //{
+        [Route("/sso/js/user", CommonConst.ActionMethods.GET, "user", "application/javascript")]
+        public string GetUserJs()
+        {
 
-        //    try
-        //    {
-        //        _logger.Debug("Calling Get User");
-        //        var response = new StringBuilder();
-        //        var user = _httpContextProxy.User;
-        //        var userModel = new JObject();
-        //        var userData = UserInfoByUserId(user.user_id);
-        //        if (userData != null)
-        //        {
-        //            var model = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(userData.ToString());
-        //            userModel = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(model));
-        //        }
-        //        response.AppendLine($"var __userData = {userModel.ToString() };");
-        //        return response.ToString();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Error(string.Format("Error in GetJs {0}", ex.Message), ex);
-        //        return $"/****Error {ex.Message} , {ex.StackTrace }****/";
-        //    }
-        //}
+            try
+            {
+                _logger.Debug("Calling Get User");
+                var response = new StringBuilder();
+                var user = _httpContextProxy.User;
+                if (user != null)
+                {
+                    var userModel = new JObject();
+                    var userData = UserInfoByUserId(user.user_id);
+                    if (userData != null)
+                    {
+                        var model = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(userData.ToString());
+                        userModel = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(model));
+                    }
+                    response.AppendLine($"var __userData = {userModel.ToString() };");
+                }
+                else
+                {
+                    response.AppendLine($"var __userData = {_responseBuilder.Unauthorized().ToString() };");
+                }
+                return response.ToString();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(string.Format("Error in GetJs {0}", ex.Message), ex);
+                return $"/****Error {ex.Message} , {ex.StackTrace }****/";
+            }
+        }
+
+        public bool AcceptTnc(UserModel userModel)
+        {
+            return AddRoles(userModel.user_id, "phone_verification_required", "init_user");
+        }
+
+        private bool AddRoles(string user_id,string addrole, string removerole,JObject updateProprty = null)
+        {
+            var user = UserInfoByUserId(user_id);
+            if (!string.IsNullOrEmpty(removerole)) {
+                var initUser = (user["roles"] as JArray).FirstOrDefault(f => f.ToString() == removerole);
+                if (initUser != null)
+                {
+                    (user["roles"] as JArray).Remove(initUser);
+                }
+            }
+            if (!string.IsNullOrEmpty(addrole)) {
+                (user["roles"] as JArray).Add(addrole);
+            }
+            if (updateProprty != null)
+            {
+                foreach (var item in updateProprty)
+                {
+                    user[item.Key] = item.Value;
+                }
+            }
+              return _dBService.Write(CommonConst.Collection.USERS, user, "{'user_id' : '" + user_id + "'}",true, MergeArrayHandling.Replace);
+        }
+
+        [Route("/sso/entermobile", CommonConst.ActionMethods.POST, "user")]
+        public JObject EnterPhone()
+        {
+
+            try
+            {
+                var mobileNo = _httpContextProxy.GetQueryString("mobile");
+                var otpReqeust = new JObject()
+                {
+                    ["To"] = mobileNo,
+                    ["Message"] = "Validate your phone numer OTP is {{OTP}} ",
+                    ["Type"] = "SMS",
+                    ["OTPType"] = "mobile_number_validation",
+                    ["SecurityToken"] = ""
+                };
+                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", null, otpReqeust).GetAwaiter().GetResult();
+
+                if (result["code"].ToString() == "1")
+                {
+                    return _responseBuilder.Success();
+                }
+                else
+                {
+                    return _responseBuilder.ServerError();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(string.Format("Error in EnterPhone {0}", ex.Message), ex);
+                return _responseBuilder.ServerError();
+            }
+        }
+        [Route("/sso/validatemobile", CommonConst.ActionMethods.POST, "user")]
+        public JObject ValidatePhone()
+        {
+            try
+            {
+                var request = _httpContextProxy.GetRequestBody<JObject>();
+                var validateRequest = new JObject()
+                {
+                    ["To"] = request["mobile"],
+                    ["OTP"] = request["OTP"],
+                    ["OTPType"] = "mobile_number_validation",
+                    ["SecurityToken"] = ""
+                };
+
+                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/validate", null, request).GetAwaiter().GetResult();
+                if (result["code"].ToString() == "1")
+                {
+                    AddRoles(_httpContextProxy.User.user_id, "", "phone_verification_required", new JObject() {
+                        ["phone_validation_required"] = false,
+                        ["mobile_no"] = request["mobile"]
+                    });
+                    return _responseBuilder.Success();
+                }
+                else
+                {
+                    return _responseBuilder.ServerError();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(string.Format("Error in ValidatePhone {0}", ex.Message), ex);
+                return _responseBuilder.ServerError();
+            }
+        }
     }
 }

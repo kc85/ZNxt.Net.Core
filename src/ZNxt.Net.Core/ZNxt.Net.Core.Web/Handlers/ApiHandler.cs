@@ -117,26 +117,49 @@ namespace ZNxt.Net.Core.Web.Handlers
             {
                 try
                 {
+
                     route = await _apiGatewayService.GetRouteAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
                     if (route != null)
                     {
-                        _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
-                        context.Response.ContentType = route.ContentType;
-                        var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
-                        if (response != null)
+                        try
                         {
-                            await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+                            _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
+                            context.Response.ContentType = route.ContentType;
+                            var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
+                            if (response != null)
+                            {
+                                if (response["content_type"] != null && response["data"] != null)
+                                {
+                                    await context.Response.WriteAsync(response["data"].ToString());
+                                }
+                                else
+                                {
+                                    await context.Response.WriteAsync(response.ToString());
+                                }
+                            }
+                            else
+                            {
+                                await _next(context);
+                            }
                         }
-                        else
+                        catch (UnauthorizedAccessException ex)
                         {
-                            await _next(context);
+                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            _logger.Error($"UnauthorizedAccessException remote route. {route.ToString() } . {ex.Message}", ex);
                         }
+                        catch (Exception ex)
+                        {
+                            _logger.Error($"Error Executing remote route. {route.ToString() } . {ex.Message}", ex);
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        }
+                        
                     }
                     else
                     {
                         await _next(context);
                     }
                 }
+                
                 catch (Exception ex)
                 {
                     _logger.Error($"Error Executing remote route. {route.ToString() } . {ex.Message}", ex);
@@ -175,7 +198,15 @@ namespace ZNxt.Net.Core.Web.Handlers
                             }
                             context.User = new ClaimsPrincipal(identity);
                             var u = _httpContextProxy.User;
-                            return userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
+                            _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f=> $"{f.Key}:{f.Value}"))}");
+                            
+                            var hasaccess =  userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
+                            if (!hasaccess)
+                            {
+                                _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
+                            }
+
+                            return hasaccess;
                         }
 
                     }

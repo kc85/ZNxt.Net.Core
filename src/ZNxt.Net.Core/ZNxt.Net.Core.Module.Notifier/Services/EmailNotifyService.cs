@@ -10,12 +10,12 @@ using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Net.Core.Module.Notifier.Services
 {
-    class EmailService : IEmailService
+    class EmailNotifyService : IEmailNotifyService
     {
         private readonly IDBService _dbService;
         private readonly ILogger _logger;
         private readonly IAppSettingService _appSettingService;
-        public EmailService(IDBService dBService, IAppSettingService appSettingService, ILogger logger)
+        public EmailNotifyService(IDBService dBService, IAppSettingService appSettingService, ILogger logger)
         {
             _logger = logger;
             _dbService = dBService;

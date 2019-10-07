@@ -59,7 +59,6 @@ namespace ZNxt.Net.Core.Web.Proxies
                         }
                     }
                     user.claims = claims;
-
                     user.id = user.user_id = user.claims.FirstOrDefault(f => f.Key == "sub").Value;
                     return user;
                 }

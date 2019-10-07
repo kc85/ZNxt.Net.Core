@@ -16,7 +16,10 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
         private readonly IDBService _dbService;
         private readonly IHttpContextProxy _httpContextProxy;
         private readonly ILogger _logger;
-        private readonly IEmailService _emailService;
+        private readonly IEmailNotifyService _emailService;
+        private readonly ISMSNotifyService _smsService;
+        private readonly IOTPNotifyService _oTPNotifyService;
+
         private readonly IAppSettingService _appSettingService;
 
         public NotifierController(IResponseBuilder responseBuilder, IDBService dbService, IHttpContextProxy httpContextProxy, IAppSettingService appSettingService,ILogger logger)
@@ -27,7 +30,9 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
             _httpContextProxy = httpContextProxy;
             _logger = logger;
             _appSettingService = appSettingService;
-            _emailService = new EmailService(dbService, appSettingService, logger) ;
+            _emailService = new EmailNotifyService(dbService, appSettingService, logger) ;
+            _smsService = new SMSNotifyService(dbService, appSettingService, logger);
+            _oTPNotifyService = new OTPNotifyService(dbService, appSettingService, _smsService, _emailService, logger);
         }
         [Route("/notifier/send", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject Send()
@@ -38,14 +43,93 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
             {
                 return _responseBuilder.BadRequest();
             }
-
-            if(_emailService.Send(model.To.Split(';').ToList(), _appSettingService.GetAppSettingData(CommonConst.CommonField.FROM_EMAIL_ID), model.CC.Split(';').ToList(), model.Message, model.Subject))
+            var to = model.To.Split(';').ToList();
+            var message = model.Message;
+            if (model.Type == "SMS")
             {
-                return _responseBuilder.Success();
+                JObject dataresponse  =  new JObject();
+                foreach (var res in _smsService.Send(to, message))
+                {
+                    dataresponse[res.Key] = res.Value;
+                }
+                return _responseBuilder.Success(dataresponse);
             }
             else
             {
-                return _responseBuilder.ServerError();
+                if (_emailService.Send(to, _appSettingService.GetAppSettingData(CommonConst.CommonField.FROM_EMAIL_ID), model.CC.Split(';').ToList(), message, model.Subject))
+                {
+                    return _responseBuilder.Success();
+                }
+                else
+                {
+                    return _responseBuilder.ServerError();
+                }
+            }
+        }
+        [Route("/notifier/otp/send", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        public JObject SendOTP()
+        {
+
+            var model = _httpContextProxy.GetRequestBody<OTPModel>();
+            if (model == null)
+            {
+                return _responseBuilder.BadRequest();
+            }
+            var message = model.Message;
+            if (model.Type == "SMS")
+            {
+                if (_oTPNotifyService.SendSMS(model.To, model.Message, model.OTPType, model.SecurityToken))
+                {
+                    return _responseBuilder.Success();
+                }
+                else
+                {
+                    return _responseBuilder.ServerError();
+                }
+            }
+            else
+            {
+                if (_oTPNotifyService.SendEmail( model.To, model.Message, model.Subject, model.OTPType, model.SecurityToken))
+                {
+                    return _responseBuilder.Success();
+                }
+                else
+                {
+                    return _responseBuilder.ServerError();
+                }
+            }
+        }
+        [Route("/notifier/otp/validate", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        public JObject ValidateOTP()
+        {
+
+            var model = _httpContextProxy.GetRequestBody<OTPModel>();
+            if (model == null)
+            {
+                return _responseBuilder.BadRequest();
+            }
+            var message = model.Message;
+            if (model.Type == "SMS")
+            {
+                if (_oTPNotifyService.ValidateSMS(model.To, model.OTP, model.OTPType, model.SecurityToken))
+                {
+                    return _responseBuilder.Success();
+                }
+                else
+                {
+                    return _responseBuilder.ServerError();
+                }
+            }
+            else
+            {
+                if (_oTPNotifyService.ValidateEmail(model.To, model.OTP, model.OTPType, model.SecurityToken))
+                {
+                    return _responseBuilder.Success();
+                }
+                else
+                {
+                    return _responseBuilder.ServerError();
+                }
             }
         }
     }

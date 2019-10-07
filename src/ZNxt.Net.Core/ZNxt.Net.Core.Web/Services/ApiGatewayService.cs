@@ -28,7 +28,14 @@ namespace ZNxt.Net.Core.Web.Services
         {
             try
             {
-                using (var client = new HttpClient())
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback =
+                    (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
+                using (var client = new HttpClient(handler))
                 {
                     using (var request = new HttpRequestMessage())
                     {
@@ -43,13 +50,25 @@ namespace ZNxt.Net.Core.Web.Services
                         _logger.Debug($"callng  {request.Method} : {request.RequestUri}");
                         var httpresponse = await client.SendAsync(request);
 
+
                         if (httpresponse.IsSuccessStatusCode)
                         {
                             var data = await httpresponse.Content.ReadAsStringAsync();
-                            return JObject.Parse(data);
+                            if (httpresponse.Content.Headers.ContentType.MediaType.IndexOf("application/json") !=-1)
+                            {
+                                return JObject.Parse(data);
+                            }
+                            else
+                            {
+                                var response = new JObject();
+                                response["content_type"] = httpresponse.Content.Headers.ContentType.MediaType;
+                                response["data"] = data;
+                                return response;
+                            }
                         }
                         else
                         {
+                            _logger.Error($"Http status:{httpresponse.StatusCode }, url : {request.RequestUri}, Headers:{string.Join(",", request.Headers.Select(f=> $"{f.Key}:{f.Value}"))}. Body:{ requestBody}");
                             if (httpresponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 throw new UnauthorizedAccessException();
@@ -81,19 +100,18 @@ namespace ZNxt.Net.Core.Web.Services
             {
                 querystring = _httpContextProxy.GetQueryString();
             }
-            if (route.IndexOf("~/") == 0)
+            if ( !string.IsNullOrEmpty(querystring) && querystring.IndexOf("?") != 0)
             {
-                if (querystring.IndexOf("?") == 0)
-                {
-                    querystring = querystring.Remove(0, 1);
-                }
-                request.RequestUri = new Uri($"{baseUrl}{route.Remove(0, 1)}?{querystring}");
+                querystring = $"?{querystring}";
+            }
+            if (route.IndexOf("~/") == 0)
+            {   
+                request.RequestUri = new Uri($"{baseUrl}{route.Remove(0, 1)}{querystring}");
             }
             else
             {
-                request.RequestUri = new Uri($"{baseUrl}/api{route}?{querystring}");
+                request.RequestUri = new Uri($"{baseUrl}/api{route}{querystring}");
             }
-
         }
         private async Task BuildHeaders(Dictionary<string, string> headres, HttpRequestMessage request)
         {
@@ -128,7 +146,7 @@ namespace ZNxt.Net.Core.Web.Services
             else
             {
                 var requestBodyString = _httpContextProxy.GetRequestBody();
-                if (string.IsNullOrEmpty(requestBodyString))
+                if (!string.IsNullOrEmpty(requestBodyString))
                 {
                     var stringContent = new StringContent(requestBodyString, Encoding.UTF8, "application/json");
                     request.Content = stringContent;
