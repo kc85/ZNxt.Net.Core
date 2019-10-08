@@ -8033,3 +8033,550 @@ Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime
 2019-10-07 22:17:31.180 +05:30 [INF] Profile service returned the following claim types: sub http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress roles
 2019-10-07 22:17:31.180 +05:30 [DBG] End userinfo request
 2019-10-07 22:17:31.712 +05:30 [INF] Successfully validated the token.
+2019-10-08 16:27:08.738 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-08 16:27:08.877 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-08 16:27:08.940 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-08 16:27:08.940 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-08 16:27:08.940 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-08 16:27:08.941 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-08 16:27:08.941 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-08 16:27:08.941 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-08 16:27:12.915 +05:30 [DBG] Login Url: /Account/Login
+2019-10-08 16:27:12.920 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-08 16:27:12.920 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-08 16:27:12.921 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-08 16:27:12.921 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-08 16:27:12.921 +05:30 [DBG] Error Url: /home/error
+2019-10-08 16:27:12.921 +05:30 [DBG] Error Id Parameter: errorId
+2019-10-08 16:27:12.946 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:27:13.013 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:27:17.792 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-08 16:27:17.801 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-08 16:27:17.801 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-08 16:27:17.808 +05:30 [DBG] Start discovery request
+2019-10-08 16:27:18.012 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-08 16:27:18.013 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-08 16:27:18.013 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-08 16:27:18.021 +05:30 [DBG] Start key discovery request
+2019-10-08 16:27:18.230 +05:30 [INF] Failed to validate the token.
+Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo: '[PII is hidden]', Current time: '[PII is hidden]'.
+   at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ValidateTokenPayload(JwtSecurityToken jwtToken, TokenValidationParameters validationParameters)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.ValidateToken(String token, TokenValidationParameters validationParameters, SecurityToken& validatedToken)
+   at Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler.HandleAuthenticateAsync()
+2019-10-08 16:27:18.379 +05:30 [INF] Bearer was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo: '[PII is hidden]', Current time: '[PII is hidden]'.
+2019-10-08 16:27:18.411 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2019-10-08 16:28:02.902 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-08 16:28:02.902 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-08 16:28:02.902 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-08 16:28:02.903 +05:30 [DBG] Start discovery request
+2019-10-08 16:28:03.009 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-08 16:28:03.009 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-08 16:28:03.010 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-08 16:28:03.010 +05:30 [DBG] Start key discovery request
+2019-10-08 16:28:03.092 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:03.092 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:03.092 +05:30 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2019-10-08 16:28:03.102 +05:30 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2019-10-08 16:28:03.102 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2019-10-08 16:28:03.110 +05:30 [DBG] Start authorize request
+2019-10-08 16:28:03.120 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:03.128 +05:30 [DBG] No user present in authorize request
+2019-10-08 16:28:03.136 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 16:28:03.166 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:03.191 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 16:28:03.193 +05:30 [DBG] No PKCE used.
+2019-10-08 16:28:03.251 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 16:28:03.275 +05:30 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","AllowedRedirectUris":["https://localhost:44373/signin-oidc"],"SubjectId":"anonymous","ResponseType":"code id_token","ResponseMode":"form_post","GrantType":"hybrid","RequestedScopes":"openid profile ZNxtCoreAppApi","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkRvcclZRCVoVuB-_8jcBax5gD54qqsjkN5PmBOiEX_in-3laGW7arW5hOtqog07Ngv78gvw776VHuQyFQkSxlL0CynBVwxj7Rs1b9ynforf0t2ySYmSaq4bfGROp8H3ssLSv-rb2MHtMsGSbDGMYp3qgBC62DkSB47jJlZ4QBstG6U8bjNwncyYqKtTWVAMKcIzdGCWuChDqIv2ACzMMCYffvFeSWYGqSiHnBZFcCTQI0tmZZMcfgLdWyEs4MNl_0Gs-flkkALJGoH-QEhQxpRo","UiLocales":null,"Nonce":"637061290830502493.ZmM5MDU3MmEtYjQzYi00MzMxLThjMTQtZGFhNWU0MDQ1YjMzMjk5NDlkNmYtNzhmYS00Y2YwLWEwOTAtNmViOWE3ZjljOTEy","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"ZNxtCoreApp","redirect_uri":"https://localhost:44373/signin-oidc","response_type":"code id_token","scope":"openid profile ZNxtCoreAppApi","response_mode":"form_post","nonce":"637061290830502493.ZmM5MDU3MmEtYjQzYi00MzMxLThjMTQtZGFhNWU0MDQ1YjMzMjk5NDlkNmYtNzhmYS00Y2YwLWEwOTAtNmViOWE3ZjljOTEy","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkRvcclZRCVoVuB-_8jcBax5gD54qqsjkN5PmBOiEX_in-3laGW7arW5hOtqog07Ngv78gvw776VHuQyFQkSxlL0CynBVwxj7Rs1b9ynforf0t2ySYmSaq4bfGROp8H3ssLSv-rb2MHtMsGSbDGMYp3qgBC62DkSB47jJlZ4QBstG6U8bjNwncyYqKtTWVAMKcIzdGCWuChDqIv2ACzMMCYffvFeSWYGqSiHnBZFcCTQI0tmZZMcfgLdWyEs4MNl_0Gs-flkkALJGoH-QEhQxpRo","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2019-10-08 16:28:03.311 +05:30 [INF] Showing login: User is not authenticated
+2019-10-08 16:28:03.327 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:03.327 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:03.408 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:03.409 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 16:28:03.409 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:03.409 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 16:28:03.409 +05:30 [DBG] No PKCE used.
+2019-10-08 16:28:03.410 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 16:28:03.419 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:05.971 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:05.972 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:05.990 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-10-08 16:28:12.358 +05:30 [INF] AuthenticationScheme: idsrv.external signed in.
+2019-10-08 16:28:12.365 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:12.365 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:12.383 +05:30 [DBG] External claims: ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 115559040204585310230","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname: Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname: Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: choudhury.khanin@gmail.com"]
+2019-10-08 16:28:12.417 +05:30 [DBG] Augmenting SignInContext
+2019-10-08 16:28:12.421 +05:30 [DBG] Adding amr claim with value: external
+2019-10-08 16:28:12.425 +05:30 [INF] idsrv was not authenticated. Failure message: Ticket expired
+2019-10-08 16:28:12.427 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-10-08 16:28:12.442 +05:30 [INF] AuthenticationScheme: idsrv.external signed out.
+2019-10-08 16:28:12.442 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 16:28:12.442 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:12.442 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 16:28:12.443 +05:30 [DBG] No PKCE used.
+2019-10-08 16:28:12.443 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 16:28:12.478 +05:30 [INF] {"Username":null,"Provider":"Google","ProviderUserId":"115559040204585310230","SubjectId":"goo115559040204585310230","DisplayName":"Khanin Choudhury","Endpoint":"UI","ClientId":"ZNxtCoreApp","Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLQBRP2SMQ7Q:00000005","TimeStamp":"2019-10-08T10:58:12.0000000Z","ProcessId":3292,"LocalIpAddress":"127.0.0.1:3167","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-10-08 16:28:12.481 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:12.542 +05:30 [DBG] Request path /connect/authorize/callback matched to endpoint type Authorize
+2019-10-08 16:28:12.544 +05:30 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint
+2019-10-08 16:28:12.544 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint for /connect/authorize/callback
+2019-10-08 16:28:12.553 +05:30 [DBG] Start authorize callback request
+2019-10-08 16:28:12.562 +05:30 [DBG] User in authorize request: goo115559040204585310230
+2019-10-08 16:28:12.562 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 16:28:12.562 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:12.562 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 16:28:12.562 +05:30 [DBG] No PKCE used.
+2019-10-08 16:28:12.562 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 16:28:12.563 +05:30 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","AllowedRedirectUris":["https://localhost:44373/signin-oidc"],"SubjectId":"goo115559040204585310230","ResponseType":"code id_token","ResponseMode":"form_post","GrantType":"hybrid","RequestedScopes":"openid profile ZNxtCoreAppApi","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkRvcclZRCVoVuB-_8jcBax5gD54qqsjkN5PmBOiEX_in-3laGW7arW5hOtqog07Ngv78gvw776VHuQyFQkSxlL0CynBVwxj7Rs1b9ynforf0t2ySYmSaq4bfGROp8H3ssLSv-rb2MHtMsGSbDGMYp3qgBC62DkSB47jJlZ4QBstG6U8bjNwncyYqKtTWVAMKcIzdGCWuChDqIv2ACzMMCYffvFeSWYGqSiHnBZFcCTQI0tmZZMcfgLdWyEs4MNl_0Gs-flkkALJGoH-QEhQxpRo","UiLocales":null,"Nonce":"637061290830502493.ZmM5MDU3MmEtYjQzYi00MzMxLThjMTQtZGFhNWU0MDQ1YjMzMjk5NDlkNmYtNzhmYS00Y2YwLWEwOTAtNmViOWE3ZjljOTEy","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":"9b1ee63d7ee411c69f1620d02bc5295c","Raw":{"client_id":"ZNxtCoreApp","redirect_uri":"https://localhost:44373/signin-oidc","response_type":"code id_token","scope":"openid profile ZNxtCoreAppApi","response_mode":"form_post","nonce":"637061290830502493.ZmM5MDU3MmEtYjQzYi00MzMxLThjMTQtZGFhNWU0MDQ1YjMzMjk5NDlkNmYtNzhmYS00Y2YwLWEwOTAtNmViOWE3ZjljOTEy","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkRvcclZRCVoVuB-_8jcBax5gD54qqsjkN5PmBOiEX_in-3laGW7arW5hOtqog07Ngv78gvw776VHuQyFQkSxlL0CynBVwxj7Rs1b9ynforf0t2ySYmSaq4bfGROp8H3ssLSv-rb2MHtMsGSbDGMYp3qgBC62DkSB47jJlZ4QBstG6U8bjNwncyYqKtTWVAMKcIzdGCWuChDqIv2ACzMMCYffvFeSWYGqSiHnBZFcCTQI0tmZZMcfgLdWyEs4MNl_0Gs-flkkALJGoH-QEhQxpRo","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2019-10-08 16:28:12.580 +05:30 [DBG] Client is configured to not require consent, no consent is required
+2019-10-08 16:28:12.593 +05:30 [DBG] Creating Hybrid Flow response.
+2019-10-08 16:28:12.648 +05:30 [DBG] Creating Implicit Flow response.
+2019-10-08 16:28:12.667 +05:30 [DBG] Getting claims for identity token for subject: goo115559040204585310230 and client: ZNxtCoreApp
+2019-10-08 16:28:12.671 +05:30 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2019-10-08 16:28:12.716 +05:30 [INF] {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","Endpoint":"Authorize","SubjectId":"goo115559040204585310230","Scopes":"openid profile ZNxtCoreAppApi","GrantType":"hybrid","Tokens":[{"TokenType":"id_token","TokenValue":"****YwVw","$type":"Token"},{"TokenType":"code","TokenValue":"****0039","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HLQBRP2SMQ7P:00000005","TimeStamp":"2019-10-08T10:58:12.0000000Z","ProcessId":3292,"LocalIpAddress":"127.0.0.1:3167","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+2019-10-08 16:28:12.719 +05:30 [DBG] Authorize endpoint response
+{"SubjectId":"goo115559040204585310230","ClientId":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkRvcclZRCVoVuB-_8jcBax5gD54qqsjkN5PmBOiEX_in-3laGW7arW5hOtqog07Ngv78gvw776VHuQyFQkSxlL0CynBVwxj7Rs1b9ynforf0t2ySYmSaq4bfGROp8H3ssLSv-rb2MHtMsGSbDGMYp3qgBC62DkSB47jJlZ4QBstG6U8bjNwncyYqKtTWVAMKcIzdGCWuChDqIv2ACzMMCYffvFeSWYGqSiHnBZFcCTQI0tmZZMcfgLdWyEs4MNl_0Gs-flkkALJGoH-QEhQxpRo","Scope":"openid profile ZNxtCoreAppApi","Error":null,"ErrorDescription":null,"$type":"AuthorizeResponseLog"}
+2019-10-08 16:28:12.745 +05:30 [DBG] Augmenting SignInContext
+2019-10-08 16:28:12.745 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-10-08 16:28:13.099 +05:30 [DBG] Request path /connect/token matched to endpoint type Token
+2019-10-08 16:28:13.112 +05:30 [DBG] Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+2019-10-08 16:28:13.112 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+2019-10-08 16:28:13.123 +05:30 [DBG] Start token request.
+2019-10-08 16:28:13.133 +05:30 [DBG] Start client validation
+2019-10-08 16:28:13.143 +05:30 [DBG] Start parsing Basic Authentication secret
+2019-10-08 16:28:13.148 +05:30 [DBG] Start parsing for secret in post body
+2019-10-08 16:28:13.173 +05:30 [DBG] Parser found secret: PostBodySecretParser
+2019-10-08 16:28:13.174 +05:30 [DBG] Secret id found: ZNxtCoreApp
+2019-10-08 16:28:13.174 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:13.187 +05:30 [DBG] Secret validator success: HashedSharedSecretValidator
+2019-10-08 16:28:13.187 +05:30 [DBG] Client validation success
+2019-10-08 16:28:13.188 +05:30 [INF] {"ClientId":"ZNxtCoreApp","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HLQBRP2SMQ7O:00000005","TimeStamp":"2019-10-08T10:58:13.0000000Z","ProcessId":3292,"LocalIpAddress":"127.0.0.1:3167","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+2019-10-08 16:28:13.197 +05:30 [DBG] Start token request validation
+2019-10-08 16:28:13.212 +05:30 [DBG] Start validation of authorization code token request
+2019-10-08 16:28:13.235 +05:30 [DBG] Validation of authorization code token request success
+2019-10-08 16:28:13.239 +05:30 [INF] Token request validation success, {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","GrantType":"authorization_code","Scopes":null,"AuthorizationCode":"8c92a55f9f47f7b1d13f6de3994cbd405b87eef0800790e86380a3801ba90039","RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"ZNxtCoreApp","client_secret":"***REDACTED***","code":"8c92a55f9f47f7b1d13f6de3994cbd405b87eef0800790e86380a3801ba90039","grant_type":"authorization_code","redirect_uri":"https://localhost:44373/signin-oidc"},"$type":"TokenRequestValidationLog"}
+2019-10-08 16:28:13.261 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:13.282 +05:30 [DBG] Getting claims for access token for client: ZNxtCoreApp
+2019-10-08 16:28:13.283 +05:30 [DBG] Getting claims for access token for subject: goo115559040204585310230
+2019-10-08 16:28:13.300 +05:30 [DBG] Claim types from profile service that were filtered: ["sub"]
+2019-10-08 16:28:13.307 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:13.308 +05:30 [DBG] Getting claims for identity token for subject: goo115559040204585310230 and client: ZNxtCoreApp
+2019-10-08 16:28:13.308 +05:30 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2019-10-08 16:28:13.320 +05:30 [INF] {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":null,"Endpoint":"Token","SubjectId":"goo115559040204585310230","Scopes":"openid profile ZNxtCoreAppApi","GrantType":"authorization_code","Tokens":[{"TokenType":"id_token","TokenValue":"****EazA","$type":"Token"},{"TokenType":"access_token","TokenValue":"****IbEw","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HLQBRP2SMQ7O:00000005","TimeStamp":"2019-10-08T10:58:13.0000000Z","ProcessId":3292,"LocalIpAddress":"127.0.0.1:3167","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+2019-10-08 16:28:13.322 +05:30 [DBG] Token request success.
+2019-10-08 16:28:13.346 +05:30 [DBG] Request path /connect/userinfo matched to endpoint type Userinfo
+2019-10-08 16:28:13.350 +05:30 [DBG] Endpoint enabled: Userinfo, successfully created handler: IdentityServer4.Endpoints.UserInfoEndpoint
+2019-10-08 16:28:13.350 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.UserInfoEndpoint for /connect/userinfo
+2019-10-08 16:28:13.360 +05:30 [DBG] Start userinfo request
+2019-10-08 16:28:13.365 +05:30 [DBG] Bearer token found in header
+2019-10-08 16:28:13.390 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:13.395 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 16:28:13.397 +05:30 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2019-10-08 16:28:13.400 +05:30 [DBG] Token validation success
+{"ClientId":null,"ClientName":null,"ValidateLifetime":true,"AccessTokenType":"Jwt","ExpectedScope":"openid","TokenHandle":null,"JwtId":null,"Claims":{"nbf":1570532293,"exp":1570535893,"iss":"http://localhost:5000","aud":["http://localhost:5000/resources","ZNxtCoreAppApi"],"client_id":"ZNxtCoreApp","sub":"goo115559040204585310230","auth_time":1570532292,"idp":"Google","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress":"choudhury.khanin@gmail.com","roles":"[\"user\",\"init_user\",\"phone_verification_required\"]","scope":["openid","profile","ZNxtCoreAppApi"],"amr":"external"},"$type":"TokenValidationLog"}
+2019-10-08 16:28:13.410 +05:30 [DBG] Creating userinfo response
+2019-10-08 16:28:13.416 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 16:28:13.422 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 16:28:13.427 +05:30 [DBG] Requested claim types: sub name family_name given_name middle_name nickname preferred_username profile picture website gender birthdate zoneinfo locale updated_at
+2019-10-08 16:28:13.428 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 16:28:13.431 +05:30 [INF] Profile service returned the following claim types: sub http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress roles
+2019-10-08 16:28:13.432 +05:30 [DBG] End userinfo request
+2019-10-08 16:28:13.665 +05:30 [INF] Successfully validated the token.
+2019-10-08 16:48:07.573 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-08 16:48:07.671 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-08 16:48:07.690 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-08 16:48:07.690 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-08 16:48:07.690 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-08 16:48:07.690 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-08 16:48:07.690 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-08 16:48:07.690 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-08 16:48:09.547 +05:30 [DBG] Login Url: /Account/Login
+2019-10-08 16:48:09.550 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-08 16:48:09.550 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-08 16:48:09.550 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-08 16:48:09.551 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-08 16:48:09.551 +05:30 [DBG] Error Url: /home/error
+2019-10-08 16:48:09.551 +05:30 [DBG] Error Id Parameter: errorId
+2019-10-08 16:48:09.888 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-08 16:48:09.896 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-08 16:48:09.896 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-08 16:48:09.905 +05:30 [DBG] Start discovery request
+2019-10-08 16:48:10.060 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-08 16:48:10.061 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-08 16:48:10.061 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-08 16:48:10.068 +05:30 [DBG] Start key discovery request
+2019-10-08 16:48:10.171 +05:30 [INF] Successfully validated the token.
+2019-10-08 16:54:19.976 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-08 16:54:20.123 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-08 16:54:20.153 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-08 16:54:20.153 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-08 16:54:20.154 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-08 16:54:20.154 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-08 16:54:20.155 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-08 16:54:20.155 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-08 16:54:23.105 +05:30 [DBG] Login Url: /Account/Login
+2019-10-08 16:54:23.111 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-08 16:54:23.112 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-08 16:54:23.112 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-08 16:54:23.112 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-08 16:54:23.112 +05:30 [DBG] Error Url: /home/error
+2019-10-08 16:54:23.112 +05:30 [DBG] Error Id Parameter: errorId
+2019-10-08 16:54:51.715 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-08 16:54:51.722 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-08 16:54:51.723 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-08 16:54:51.730 +05:30 [DBG] Start discovery request
+2019-10-08 16:54:51.878 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-08 16:54:51.879 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-08 16:54:51.879 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-08 16:54:51.885 +05:30 [DBG] Start key discovery request
+2019-10-08 16:54:52.027 +05:30 [INF] Successfully validated the token.
+2019-10-08 17:02:11.192 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-08 17:02:11.318 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-08 17:02:11.407 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-08 17:02:11.408 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-08 17:02:11.408 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-08 17:02:11.408 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-08 17:02:11.408 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-08 17:02:11.409 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-08 17:02:13.887 +05:30 [DBG] Login Url: /Account/Login
+2019-10-08 17:02:13.891 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-08 17:02:13.891 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-08 17:02:13.891 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-08 17:02:13.892 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-08 17:02:13.892 +05:30 [DBG] Error Url: /home/error
+2019-10-08 17:02:13.892 +05:30 [DBG] Error Id Parameter: errorId
+2019-10-08 17:02:20.471 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-08 17:02:20.477 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-08 17:02:20.477 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-08 17:02:20.483 +05:30 [DBG] Start discovery request
+2019-10-08 17:02:20.621 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-08 17:02:20.622 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-08 17:02:20.622 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-08 17:02:20.628 +05:30 [DBG] Start key discovery request
+2019-10-08 17:02:20.744 +05:30 [INF] Successfully validated the token.
+2019-10-08 17:06:17.569 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-08 17:06:17.665 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-08 17:06:17.687 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-08 17:06:17.687 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-08 17:06:17.687 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-08 17:06:17.688 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-08 17:06:17.688 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-08 17:06:17.688 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-08 17:06:20.386 +05:30 [DBG] Login Url: /Account/Login
+2019-10-08 17:06:20.396 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-08 17:06:20.396 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-08 17:06:20.396 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-08 17:06:20.396 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-08 17:06:20.396 +05:30 [DBG] Error Url: /home/error
+2019-10-08 17:06:20.396 +05:30 [DBG] Error Id Parameter: errorId
+2019-10-08 17:07:32.762 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-08 17:07:32.894 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-08 17:07:32.925 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-08 17:07:32.925 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-08 17:07:32.925 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-08 17:07:32.926 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-08 17:07:32.926 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-08 17:07:32.926 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-08 17:07:36.232 +05:30 [DBG] Login Url: /Account/Login
+2019-10-08 17:07:36.243 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-08 17:07:36.243 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-08 17:07:36.244 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-08 17:07:36.244 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-08 17:07:36.244 +05:30 [DBG] Error Url: /home/error
+2019-10-08 17:07:36.244 +05:30 [DBG] Error Id Parameter: errorId
+2019-10-08 17:07:45.092 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-08 17:07:45.100 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-08 17:07:45.101 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-08 17:07:45.108 +05:30 [DBG] Start discovery request
+2019-10-08 17:07:45.399 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-08 17:07:45.401 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-08 17:07:45.401 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-08 17:07:45.411 +05:30 [DBG] Start key discovery request
+2019-10-08 17:07:45.571 +05:30 [INF] Successfully validated the token.
+2019-10-08 17:09:49.834 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-08 17:09:49.834 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-08 17:09:49.834 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-08 17:09:49.834 +05:30 [DBG] Start discovery request
+2019-10-08 17:09:49.907 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-08 17:09:49.907 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-08 17:09:49.907 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-08 17:09:49.907 +05:30 [DBG] Start key discovery request
+2019-10-08 17:09:49.990 +05:30 [DBG] Request path /connect/endsession matched to endpoint type Endsession
+2019-10-08 17:09:49.994 +05:30 [DBG] Endpoint enabled: Endsession, successfully created handler: IdentityServer4.Endpoints.EndSessionEndpoint
+2019-10-08 17:09:49.995 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.EndSessionEndpoint for /connect/endsession
+2019-10-08 17:09:50.007 +05:30 [DBG] Processing signout request for goo115559040204585310230
+2019-10-08 17:09:50.018 +05:30 [DBG] Start end session request validation
+2019-10-08 17:09:50.029 +05:30 [DBG] Start identity token validation
+2019-10-08 17:09:50.065 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:09:50.065 +05:30 [DBG] Client found: ZNxtCoreApp / ZNxtCoreApp
+2019-10-08 17:09:50.099 +05:30 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2019-10-08 17:09:50.117 +05:30 [DBG] Token validation success
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","ValidateLifetime":false,"AccessTokenType":null,"ExpectedScope":null,"TokenHandle":null,"JwtId":null,"Claims":{"nbf":1570532293,"exp":1570532593,"iss":"http://localhost:5000","aud":"ZNxtCoreApp","nonce":"637061290830502493.ZmM5MDU3MmEtYjQzYi00MzMxLThjMTQtZGFhNWU0MDQ1YjMzMjk5NDlkNmYtNzhmYS00Y2YwLWEwOTAtNmViOWE3ZjljOTEy","iat":1570532293,"at_hash":"-L5Aa7w_a1POPOCJ69VlZg","sid":"9b1ee63d7ee411c69f1620d02bc5295c","sub":"goo115559040204585310230","auth_time":1570532292,"idp":"Google","amr":"external"},"$type":"TokenValidationLog"}
+2019-10-08 17:09:50.154 +05:30 [INF] End session request validation success
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","SubjectId":"goo115559040204585310230","PostLogOutUri":"https://localhost:44373/signout-callback-oidc","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkTPxPSoppumPBc821vHn2lULDmo1sgE8XlfGJ0_XBqn3AugddBlYbqwLnd5jNxWDYj7atlM5d0O3wu8eB9ZNLS0Se0eFYmgz-c4vw4C72I-Y_99Mvei2MPGD9Y2Vyj2lJuYHMxhLZ6tt0zvyN5-224e","Raw":{"post_logout_redirect_uri":"https://localhost:44373/signout-callback-oidc","id_token_hint":"***REDACTED***","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkTPxPSoppumPBc821vHn2lULDmo1sgE8XlfGJ0_XBqn3AugddBlYbqwLnd5jNxWDYj7atlM5d0O3wu8eB9ZNLS0Se0eFYmgz-c4vw4C72I-Y_99Mvei2MPGD9Y2Vyj2lJuYHMxhLZ6tt0zvyN5-224e","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"EndSessionRequestValidationLog"}
+2019-10-08 17:09:50.154 +05:30 [DBG] Success validating end session request from ZNxtCoreApp
+2019-10-08 17:09:50.291 +05:30 [INF] AuthenticationScheme: idsrv signed out.
+2019-10-08 17:09:50.313 +05:30 [INF] {"SubjectId":"goo115559040204585310230","DisplayName":"Khanin Choudhury","Category":"Authentication","Name":"User Logout Success","EventType":"Success","Id":1002,"Message":null,"ActivityId":"0HLQBSFL6N350:0000000A","TimeStamp":"2019-10-08T11:39:50.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"UserLogoutSuccessEvent"}
+2019-10-08 17:09:50.423 +05:30 [DBG] Request path /connect/endsession/callback matched to endpoint type Endsession
+2019-10-08 17:09:50.435 +05:30 [DBG] Endpoint enabled: Endsession, successfully created handler: IdentityServer4.Endpoints.EndSessionCallbackEndpoint
+2019-10-08 17:09:50.435 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.EndSessionCallbackEndpoint for /connect/endsession/callback
+2019-10-08 17:09:50.446 +05:30 [DBG] Processing signout callback request
+2019-10-08 17:09:50.473 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:09:50.474 +05:30 [DBG] Client front-channel logout URLs: https://localhost:44373/signout-oidc?sid=9b1ee63d7ee411c69f1620d02bc5295c&iss=http%3A%2F%2Flocalhost%3A5000
+2019-10-08 17:09:50.475 +05:30 [DBG] No client back-channel logout URLs
+2019-10-08 17:09:50.475 +05:30 [INF] Successful signout callback.
+2019-10-08 17:09:50.480 +05:30 [DBG] Client front-channel iframe urls: ["https://localhost:44373/signout-oidc?sid=9b1ee63d7ee411c69f1620d02bc5295c&iss=http%3A%2F%2Flocalhost%3A5000"]
+2019-10-08 17:09:50.486 +05:30 [DBG] No client back-channel iframe urls
+2019-10-08 17:09:54.124 +05:30 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2019-10-08 17:09:54.131 +05:30 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2019-10-08 17:09:54.132 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2019-10-08 17:09:54.140 +05:30 [DBG] Start authorize request
+2019-10-08 17:09:54.147 +05:30 [DBG] No user present in authorize request
+2019-10-08 17:09:54.155 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:09:54.161 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:09:54.184 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:09:54.191 +05:30 [DBG] No PKCE used.
+2019-10-08 17:09:54.266 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:09:54.272 +05:30 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","AllowedRedirectUris":["https://localhost:44373/signin-oidc"],"SubjectId":"anonymous","ResponseType":"code id_token","ResponseMode":"form_post","GrantType":"hybrid","RequestedScopes":"openid profile ZNxtCoreAppApi","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQDvVtUlkU90jWspbZOEoor_PrINaGJThCvCotocbrky_xcqPEwjNPcZku0vX33g8ZVB0gLklmtIQBTdzUQpEqBTxiFgHUnTo4e2VR8Ze-i6clLtShgddzgXiyI3HlzQTHeUQRh67_QdknOVG4gTPSzIBSfL90xkagGJ3PAmAHYjaKYDwoP7BqKe0__Uecxbu4utdVLQq3IieKh48bsiE4ApuypFwA-c1McA2dW5y_DD7ALGzw-DpFso2j1QcMIYNfxFt2_ai0xpfZMD6L6Ly88","UiLocales":null,"Nonce":"637061315941108369.YzlmNWMwNzYtYTY3My00OTc4LWJmMDYtMDkzZWMzNjE3ZjA0NjRlMGIxOTMtZTE5NS00MWY3LWJkYWMtM2M1Y2NjYWI5NTU5","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"ZNxtCoreApp","redirect_uri":"https://localhost:44373/signin-oidc","response_type":"code id_token","scope":"openid profile ZNxtCoreAppApi","response_mode":"form_post","nonce":"637061315941108369.YzlmNWMwNzYtYTY3My00OTc4LWJmMDYtMDkzZWMzNjE3ZjA0NjRlMGIxOTMtZTE5NS00MWY3LWJkYWMtM2M1Y2NjYWI5NTU5","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQDvVtUlkU90jWspbZOEoor_PrINaGJThCvCotocbrky_xcqPEwjNPcZku0vX33g8ZVB0gLklmtIQBTdzUQpEqBTxiFgHUnTo4e2VR8Ze-i6clLtShgddzgXiyI3HlzQTHeUQRh67_QdknOVG4gTPSzIBSfL90xkagGJ3PAmAHYjaKYDwoP7BqKe0__Uecxbu4utdVLQq3IieKh48bsiE4ApuypFwA-c1McA2dW5y_DD7ALGzw-DpFso2j1QcMIYNfxFt2_ai0xpfZMD6L6Ly88","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2019-10-08 17:09:54.288 +05:30 [INF] Showing login: User is not authenticated
+2019-10-08 17:09:54.329 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:09:54.329 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:09:54.330 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:09:54.330 +05:30 [DBG] No PKCE used.
+2019-10-08 17:09:54.330 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:09:54.335 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:09:57.685 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-10-08 17:10:05.341 +05:30 [INF] AuthenticationScheme: idsrv.external signed in.
+2019-10-08 17:10:05.364 +05:30 [DBG] External claims: ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 115559040204585310230","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname: Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname: Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: choudhury.khanin@gmail.com"]
+2019-10-08 17:10:05.396 +05:30 [DBG] Augmenting SignInContext
+2019-10-08 17:10:05.400 +05:30 [DBG] Adding amr claim with value: external
+2019-10-08 17:10:05.406 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-10-08 17:10:05.407 +05:30 [INF] AuthenticationScheme: idsrv.external signed out.
+2019-10-08 17:10:05.407 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:10:05.407 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:05.407 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:10:05.407 +05:30 [DBG] No PKCE used.
+2019-10-08 17:10:05.408 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:10:05.412 +05:30 [INF] {"Username":null,"Provider":"Google","ProviderUserId":"115559040204585310230","SubjectId":"goo115559040204585310230","DisplayName":"Khanin Choudhury","Endpoint":"UI","ClientId":"ZNxtCoreApp","Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLQBSFL6N350:00000011","TimeStamp":"2019-10-08T11:40:05.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-10-08 17:10:05.415 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:05.422 +05:30 [DBG] Request path /connect/authorize/callback matched to endpoint type Authorize
+2019-10-08 17:10:05.426 +05:30 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint
+2019-10-08 17:10:05.426 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint for /connect/authorize/callback
+2019-10-08 17:10:05.441 +05:30 [DBG] Start authorize callback request
+2019-10-08 17:10:05.450 +05:30 [DBG] User in authorize request: goo115559040204585310230
+2019-10-08 17:10:05.450 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:10:05.450 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:05.450 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:10:05.450 +05:30 [DBG] No PKCE used.
+2019-10-08 17:10:05.451 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:10:05.451 +05:30 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","AllowedRedirectUris":["https://localhost:44373/signin-oidc"],"SubjectId":"goo115559040204585310230","ResponseType":"code id_token","ResponseMode":"form_post","GrantType":"hybrid","RequestedScopes":"openid profile ZNxtCoreAppApi","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQDvVtUlkU90jWspbZOEoor_PrINaGJThCvCotocbrky_xcqPEwjNPcZku0vX33g8ZVB0gLklmtIQBTdzUQpEqBTxiFgHUnTo4e2VR8Ze-i6clLtShgddzgXiyI3HlzQTHeUQRh67_QdknOVG4gTPSzIBSfL90xkagGJ3PAmAHYjaKYDwoP7BqKe0__Uecxbu4utdVLQq3IieKh48bsiE4ApuypFwA-c1McA2dW5y_DD7ALGzw-DpFso2j1QcMIYNfxFt2_ai0xpfZMD6L6Ly88","UiLocales":null,"Nonce":"637061315941108369.YzlmNWMwNzYtYTY3My00OTc4LWJmMDYtMDkzZWMzNjE3ZjA0NjRlMGIxOTMtZTE5NS00MWY3LWJkYWMtM2M1Y2NjYWI5NTU5","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":"a37fd60a7153a19b10e907d9c2f284bb","Raw":{"client_id":"ZNxtCoreApp","redirect_uri":"https://localhost:44373/signin-oidc","response_type":"code id_token","scope":"openid profile ZNxtCoreAppApi","response_mode":"form_post","nonce":"637061315941108369.YzlmNWMwNzYtYTY3My00OTc4LWJmMDYtMDkzZWMzNjE3ZjA0NjRlMGIxOTMtZTE5NS00MWY3LWJkYWMtM2M1Y2NjYWI5NTU5","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQDvVtUlkU90jWspbZOEoor_PrINaGJThCvCotocbrky_xcqPEwjNPcZku0vX33g8ZVB0gLklmtIQBTdzUQpEqBTxiFgHUnTo4e2VR8Ze-i6clLtShgddzgXiyI3HlzQTHeUQRh67_QdknOVG4gTPSzIBSfL90xkagGJ3PAmAHYjaKYDwoP7BqKe0__Uecxbu4utdVLQq3IieKh48bsiE4ApuypFwA-c1McA2dW5y_DD7ALGzw-DpFso2j1QcMIYNfxFt2_ai0xpfZMD6L6Ly88","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2019-10-08 17:10:05.470 +05:30 [DBG] Client is configured to not require consent, no consent is required
+2019-10-08 17:10:05.480 +05:30 [DBG] Creating Hybrid Flow response.
+2019-10-08 17:10:05.526 +05:30 [DBG] Creating Implicit Flow response.
+2019-10-08 17:10:05.542 +05:30 [DBG] Getting claims for identity token for subject: goo115559040204585310230 and client: ZNxtCoreApp
+2019-10-08 17:10:05.546 +05:30 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2019-10-08 17:10:05.587 +05:30 [INF] {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","Endpoint":"Authorize","SubjectId":"goo115559040204585310230","Scopes":"openid profile ZNxtCoreAppApi","GrantType":"hybrid","Tokens":[{"TokenType":"id_token","TokenValue":"****sBhg","$type":"Token"},{"TokenType":"code","TokenValue":"****c03c","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HLQBSFL6N350:00000012","TimeStamp":"2019-10-08T11:40:05.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+2019-10-08 17:10:05.590 +05:30 [DBG] Authorize endpoint response
+{"SubjectId":"goo115559040204585310230","ClientId":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQDvVtUlkU90jWspbZOEoor_PrINaGJThCvCotocbrky_xcqPEwjNPcZku0vX33g8ZVB0gLklmtIQBTdzUQpEqBTxiFgHUnTo4e2VR8Ze-i6clLtShgddzgXiyI3HlzQTHeUQRh67_QdknOVG4gTPSzIBSfL90xkagGJ3PAmAHYjaKYDwoP7BqKe0__Uecxbu4utdVLQq3IieKh48bsiE4ApuypFwA-c1McA2dW5y_DD7ALGzw-DpFso2j1QcMIYNfxFt2_ai0xpfZMD6L6Ly88","Scope":"openid profile ZNxtCoreAppApi","Error":null,"ErrorDescription":null,"$type":"AuthorizeResponseLog"}
+2019-10-08 17:10:05.616 +05:30 [DBG] Augmenting SignInContext
+2019-10-08 17:10:05.616 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-10-08 17:10:05.871 +05:30 [DBG] Request path /connect/token matched to endpoint type Token
+2019-10-08 17:10:05.883 +05:30 [DBG] Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+2019-10-08 17:10:05.884 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+2019-10-08 17:10:05.904 +05:30 [DBG] Start token request.
+2019-10-08 17:10:05.917 +05:30 [DBG] Start client validation
+2019-10-08 17:10:05.934 +05:30 [DBG] Start parsing Basic Authentication secret
+2019-10-08 17:10:05.942 +05:30 [DBG] Start parsing for secret in post body
+2019-10-08 17:10:05.954 +05:30 [DBG] Parser found secret: PostBodySecretParser
+2019-10-08 17:10:05.955 +05:30 [DBG] Secret id found: ZNxtCoreApp
+2019-10-08 17:10:05.955 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:05.972 +05:30 [DBG] Secret validator success: HashedSharedSecretValidator
+2019-10-08 17:10:05.972 +05:30 [DBG] Client validation success
+2019-10-08 17:10:05.973 +05:30 [INF] {"ClientId":"ZNxtCoreApp","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HLQBSFL6N350:00000013","TimeStamp":"2019-10-08T11:40:05.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+2019-10-08 17:10:05.987 +05:30 [DBG] Start token request validation
+2019-10-08 17:10:06.015 +05:30 [DBG] Start validation of authorization code token request
+2019-10-08 17:10:06.055 +05:30 [DBG] Validation of authorization code token request success
+2019-10-08 17:10:06.060 +05:30 [INF] Token request validation success, {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","GrantType":"authorization_code","Scopes":null,"AuthorizationCode":"05de71b1a087e4b71882e37e0060ae384dec126289dc8e1570c78ada5308c03c","RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"ZNxtCoreApp","client_secret":"***REDACTED***","code":"05de71b1a087e4b71882e37e0060ae384dec126289dc8e1570c78ada5308c03c","grant_type":"authorization_code","redirect_uri":"https://localhost:44373/signin-oidc"},"$type":"TokenRequestValidationLog"}
+2019-10-08 17:10:06.084 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:06.107 +05:30 [DBG] Getting claims for access token for client: ZNxtCoreApp
+2019-10-08 17:10:06.108 +05:30 [DBG] Getting claims for access token for subject: goo115559040204585310230
+2019-10-08 17:10:06.117 +05:30 [DBG] Claim types from profile service that were filtered: ["sub"]
+2019-10-08 17:10:06.127 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:06.127 +05:30 [DBG] Getting claims for identity token for subject: goo115559040204585310230 and client: ZNxtCoreApp
+2019-10-08 17:10:06.127 +05:30 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2019-10-08 17:10:06.141 +05:30 [INF] {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":null,"Endpoint":"Token","SubjectId":"goo115559040204585310230","Scopes":"openid profile ZNxtCoreAppApi","GrantType":"authorization_code","Tokens":[{"TokenType":"id_token","TokenValue":"****xGGw","$type":"Token"},{"TokenType":"access_token","TokenValue":"****nqQA","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HLQBSFL6N350:00000013","TimeStamp":"2019-10-08T11:40:06.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+2019-10-08 17:10:06.143 +05:30 [DBG] Token request success.
+2019-10-08 17:10:06.162 +05:30 [DBG] Request path /connect/userinfo matched to endpoint type Userinfo
+2019-10-08 17:10:06.166 +05:30 [DBG] Endpoint enabled: Userinfo, successfully created handler: IdentityServer4.Endpoints.UserInfoEndpoint
+2019-10-08 17:10:06.166 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.UserInfoEndpoint for /connect/userinfo
+2019-10-08 17:10:06.177 +05:30 [DBG] Start userinfo request
+2019-10-08 17:10:06.183 +05:30 [DBG] Bearer token found in header
+2019-10-08 17:10:06.205 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:06.206 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:10:06.208 +05:30 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2019-10-08 17:10:06.209 +05:30 [DBG] Token validation success
+{"ClientId":null,"ClientName":null,"ValidateLifetime":true,"AccessTokenType":"Jwt","ExpectedScope":"openid","TokenHandle":null,"JwtId":null,"Claims":{"nbf":1570534806,"exp":1570538406,"iss":"http://localhost:5000","aud":["http://localhost:5000/resources","ZNxtCoreAppApi"],"client_id":"ZNxtCoreApp","sub":"goo115559040204585310230","auth_time":1570534805,"idp":"Google","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress":"choudhury.khanin@gmail.com","roles":"[\"user\",\"init_user\"]","scope":["openid","profile","ZNxtCoreAppApi"],"amr":"external"},"$type":"TokenValidationLog"}
+2019-10-08 17:10:06.221 +05:30 [DBG] Creating userinfo response
+2019-10-08 17:10:06.228 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 17:10:06.233 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 17:10:06.238 +05:30 [DBG] Requested claim types: sub name family_name given_name middle_name nickname preferred_username profile picture website gender birthdate zoneinfo locale updated_at
+2019-10-08 17:10:06.238 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 17:10:06.240 +05:30 [INF] Profile service returned the following claim types: sub http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress roles
+2019-10-08 17:10:06.241 +05:30 [DBG] End userinfo request
+2019-10-08 17:10:06.391 +05:30 [INF] Successfully validated the token.
+2019-10-08 17:14:26.801 +05:30 [DBG] Request path /connect/endsession matched to endpoint type Endsession
+2019-10-08 17:14:26.802 +05:30 [DBG] Endpoint enabled: Endsession, successfully created handler: IdentityServer4.Endpoints.EndSessionEndpoint
+2019-10-08 17:14:26.802 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.EndSessionEndpoint for /connect/endsession
+2019-10-08 17:14:26.802 +05:30 [DBG] Processing signout request for goo115559040204585310230
+2019-10-08 17:14:26.803 +05:30 [DBG] Start end session request validation
+2019-10-08 17:14:26.803 +05:30 [DBG] Start identity token validation
+2019-10-08 17:14:26.803 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:26.803 +05:30 [DBG] Client found: ZNxtCoreApp / ZNxtCoreApp
+2019-10-08 17:14:26.813 +05:30 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2019-10-08 17:14:26.814 +05:30 [DBG] Token validation success
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","ValidateLifetime":false,"AccessTokenType":null,"ExpectedScope":null,"TokenHandle":null,"JwtId":null,"Claims":{"nbf":1570534806,"exp":1570535106,"iss":"http://localhost:5000","aud":"ZNxtCoreApp","nonce":"637061315941108369.YzlmNWMwNzYtYTY3My00OTc4LWJmMDYtMDkzZWMzNjE3ZjA0NjRlMGIxOTMtZTE5NS00MWY3LWJkYWMtM2M1Y2NjYWI5NTU5","iat":1570534806,"at_hash":"9m4mx2NJqeR-e7_jbBshDQ","sid":"a37fd60a7153a19b10e907d9c2f284bb","sub":"goo115559040204585310230","auth_time":1570534805,"idp":"Google","amr":"external"},"$type":"TokenValidationLog"}
+2019-10-08 17:14:26.814 +05:30 [INF] End session request validation success
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","SubjectId":"goo115559040204585310230","PostLogOutUri":"https://localhost:44373/signout-callback-oidc","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQNsv4m6xTUcZmUCUpvBCnwzMvWt77Q0SNG3dIXgZR1LGptoCDBBnLkfMctYrfki21bntewryWziaWlwf8WnzhYhW8la7fmQrFbC1SslLq1wlDn3IbrbTnKCVMiILkGT4OC_QL8VG5g54yjkhA7dIP1","Raw":{"post_logout_redirect_uri":"https://localhost:44373/signout-callback-oidc","id_token_hint":"***REDACTED***","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQNsv4m6xTUcZmUCUpvBCnwzMvWt77Q0SNG3dIXgZR1LGptoCDBBnLkfMctYrfki21bntewryWziaWlwf8WnzhYhW8la7fmQrFbC1SslLq1wlDn3IbrbTnKCVMiILkGT4OC_QL8VG5g54yjkhA7dIP1","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"EndSessionRequestValidationLog"}
+2019-10-08 17:14:26.815 +05:30 [DBG] Success validating end session request from ZNxtCoreApp
+2019-10-08 17:14:26.898 +05:30 [INF] AuthenticationScheme: idsrv signed out.
+2019-10-08 17:14:26.898 +05:30 [INF] {"SubjectId":"goo115559040204585310230","DisplayName":"Khanin Choudhury","Category":"Authentication","Name":"User Logout Success","EventType":"Success","Id":1002,"Message":null,"ActivityId":"0HLQBSFL6N354:00000004","TimeStamp":"2019-10-08T11:44:26.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"UserLogoutSuccessEvent"}
+2019-10-08 17:14:26.979 +05:30 [DBG] Request path /connect/endsession/callback matched to endpoint type Endsession
+2019-10-08 17:14:26.983 +05:30 [DBG] Endpoint enabled: Endsession, successfully created handler: IdentityServer4.Endpoints.EndSessionCallbackEndpoint
+2019-10-08 17:14:26.984 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.EndSessionCallbackEndpoint for /connect/endsession/callback
+2019-10-08 17:14:26.984 +05:30 [DBG] Processing signout callback request
+2019-10-08 17:14:26.986 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:26.986 +05:30 [DBG] Client front-channel logout URLs: https://localhost:44373/signout-oidc?sid=a37fd60a7153a19b10e907d9c2f284bb&iss=http%3A%2F%2Flocalhost%3A5000
+2019-10-08 17:14:26.986 +05:30 [DBG] No client back-channel logout URLs
+2019-10-08 17:14:26.986 +05:30 [INF] Successful signout callback.
+2019-10-08 17:14:26.986 +05:30 [DBG] Client front-channel iframe urls: ["https://localhost:44373/signout-oidc?sid=a37fd60a7153a19b10e907d9c2f284bb&iss=http%3A%2F%2Flocalhost%3A5000"]
+2019-10-08 17:14:26.987 +05:30 [DBG] No client back-channel iframe urls
+2019-10-08 17:14:30.466 +05:30 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2019-10-08 17:14:30.469 +05:30 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2019-10-08 17:14:30.469 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2019-10-08 17:14:30.469 +05:30 [DBG] Start authorize request
+2019-10-08 17:14:30.469 +05:30 [DBG] No user present in authorize request
+2019-10-08 17:14:30.470 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:14:30.470 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:30.470 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:14:30.470 +05:30 [DBG] No PKCE used.
+2019-10-08 17:14:30.470 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:14:30.471 +05:30 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","AllowedRedirectUris":["https://localhost:44373/signin-oidc"],"SubjectId":"anonymous","ResponseType":"code id_token","ResponseMode":"form_post","GrantType":"hybrid","RequestedScopes":"openid profile ZNxtCoreAppApi","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQYIBNn5g2AdyXQjxnSYAjKrRYaGpzJpH9lTcpvVMxqzMgyDgKFCOIZ6SqmDairyXNxRR9hCXZtUhppYY70oaPWLHg9oPqPjT1UmNrgLhZHTqAuCO89582fOx5p_U0M2HyUkP42iajoMc2S090uQXj-gxiEc_D27atBMELhIVuVIsjZgMCMW0qJEffkKTQCDk8vyJJ15YMIE4_fL1LXkgp7rM8ok5EoqMM4osDTHlj67AXLG79sCdNPOsRDXPTA4ogUx2S0YnoeXq9SAjQSVAtq","UiLocales":null,"Nonce":"637061318704467956.M2MxYjhiMzktNjk1NS00ZDFmLTk1MmMtZGFjMWVjZGM4MzE1MDIxM2Q4NzUtZDNjZC00ZTI2LTgyMDktNzk2ZDVmMjdmMTgx","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"ZNxtCoreApp","redirect_uri":"https://localhost:44373/signin-oidc","response_type":"code id_token","scope":"openid profile ZNxtCoreAppApi","response_mode":"form_post","nonce":"637061318704467956.M2MxYjhiMzktNjk1NS00ZDFmLTk1MmMtZGFjMWVjZGM4MzE1MDIxM2Q4NzUtZDNjZC00ZTI2LTgyMDktNzk2ZDVmMjdmMTgx","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQYIBNn5g2AdyXQjxnSYAjKrRYaGpzJpH9lTcpvVMxqzMgyDgKFCOIZ6SqmDairyXNxRR9hCXZtUhppYY70oaPWLHg9oPqPjT1UmNrgLhZHTqAuCO89582fOx5p_U0M2HyUkP42iajoMc2S090uQXj-gxiEc_D27atBMELhIVuVIsjZgMCMW0qJEffkKTQCDk8vyJJ15YMIE4_fL1LXkgp7rM8ok5EoqMM4osDTHlj67AXLG79sCdNPOsRDXPTA4ogUx2S0YnoeXq9SAjQSVAtq","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2019-10-08 17:14:30.471 +05:30 [INF] Showing login: User is not authenticated
+2019-10-08 17:14:30.481 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:14:30.481 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:30.481 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:14:30.481 +05:30 [DBG] No PKCE used.
+2019-10-08 17:14:30.482 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:14:30.482 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:32.985 +05:30 [INF] AuthenticationScheme: Google was challenged.
+2019-10-08 17:14:39.706 +05:30 [INF] AuthenticationScheme: idsrv.external signed in.
+2019-10-08 17:14:39.721 +05:30 [DBG] External claims: ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier: 115559040204585310230","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name: Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname: Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname: Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress: choudhury.khanin@gmail.com"]
+2019-10-08 17:14:39.724 +05:30 [DBG] Augmenting SignInContext
+2019-10-08 17:14:39.724 +05:30 [DBG] Adding amr claim with value: external
+2019-10-08 17:14:39.724 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-10-08 17:14:39.725 +05:30 [INF] AuthenticationScheme: idsrv.external signed out.
+2019-10-08 17:14:39.725 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:14:39.725 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.725 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:14:39.725 +05:30 [DBG] No PKCE used.
+2019-10-08 17:14:39.725 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:14:39.725 +05:30 [INF] {"Username":null,"Provider":"Google","ProviderUserId":"115559040204585310230","SubjectId":"goo115559040204585310230","DisplayName":"Khanin Choudhury","Endpoint":"UI","ClientId":"ZNxtCoreApp","Category":"Authentication","Name":"User Login Success","EventType":"Success","Id":1000,"Message":null,"ActivityId":"0HLQBSFL6N354:0000000B","TimeStamp":"2019-10-08T11:44:39.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"UserLoginSuccessEvent"}
+2019-10-08 17:14:39.726 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.732 +05:30 [DBG] Request path /connect/authorize/callback matched to endpoint type Authorize
+2019-10-08 17:14:39.734 +05:30 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint
+2019-10-08 17:14:39.734 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeCallbackEndpoint for /connect/authorize/callback
+2019-10-08 17:14:39.734 +05:30 [DBG] Start authorize callback request
+2019-10-08 17:14:39.735 +05:30 [DBG] User in authorize request: goo115559040204585310230
+2019-10-08 17:14:39.735 +05:30 [DBG] Start authorize request protocol validation
+2019-10-08 17:14:39.735 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.735 +05:30 [DBG] Checking for PKCE parameters
+2019-10-08 17:14:39.735 +05:30 [DBG] No PKCE used.
+2019-10-08 17:14:39.735 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-08 17:14:39.736 +05:30 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","AllowedRedirectUris":["https://localhost:44373/signin-oidc"],"SubjectId":"goo115559040204585310230","ResponseType":"code id_token","ResponseMode":"form_post","GrantType":"hybrid","RequestedScopes":"openid profile ZNxtCoreAppApi","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQYIBNn5g2AdyXQjxnSYAjKrRYaGpzJpH9lTcpvVMxqzMgyDgKFCOIZ6SqmDairyXNxRR9hCXZtUhppYY70oaPWLHg9oPqPjT1UmNrgLhZHTqAuCO89582fOx5p_U0M2HyUkP42iajoMc2S090uQXj-gxiEc_D27atBMELhIVuVIsjZgMCMW0qJEffkKTQCDk8vyJJ15YMIE4_fL1LXkgp7rM8ok5EoqMM4osDTHlj67AXLG79sCdNPOsRDXPTA4ogUx2S0YnoeXq9SAjQSVAtq","UiLocales":null,"Nonce":"637061318704467956.M2MxYjhiMzktNjk1NS00ZDFmLTk1MmMtZGFjMWVjZGM4MzE1MDIxM2Q4NzUtZDNjZC00ZTI2LTgyMDktNzk2ZDVmMjdmMTgx","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":"70966153fb4ca909e7b53cc563eaaeb4","Raw":{"client_id":"ZNxtCoreApp","redirect_uri":"https://localhost:44373/signin-oidc","response_type":"code id_token","scope":"openid profile ZNxtCoreAppApi","response_mode":"form_post","nonce":"637061318704467956.M2MxYjhiMzktNjk1NS00ZDFmLTk1MmMtZGFjMWVjZGM4MzE1MDIxM2Q4NzUtZDNjZC00ZTI2LTgyMDktNzk2ZDVmMjdmMTgx","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQYIBNn5g2AdyXQjxnSYAjKrRYaGpzJpH9lTcpvVMxqzMgyDgKFCOIZ6SqmDairyXNxRR9hCXZtUhppYY70oaPWLHg9oPqPjT1UmNrgLhZHTqAuCO89582fOx5p_U0M2HyUkP42iajoMc2S090uQXj-gxiEc_D27atBMELhIVuVIsjZgMCMW0qJEffkKTQCDk8vyJJ15YMIE4_fL1LXkgp7rM8ok5EoqMM4osDTHlj67AXLG79sCdNPOsRDXPTA4ogUx2S0YnoeXq9SAjQSVAtq","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2019-10-08 17:14:39.738 +05:30 [DBG] Client is configured to not require consent, no consent is required
+2019-10-08 17:14:39.738 +05:30 [DBG] Creating Hybrid Flow response.
+2019-10-08 17:14:39.738 +05:30 [DBG] Creating Implicit Flow response.
+2019-10-08 17:14:39.738 +05:30 [DBG] Getting claims for identity token for subject: goo115559040204585310230 and client: ZNxtCoreApp
+2019-10-08 17:14:39.739 +05:30 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2019-10-08 17:14:39.749 +05:30 [INF] {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","Endpoint":"Authorize","SubjectId":"goo115559040204585310230","Scopes":"openid profile ZNxtCoreAppApi","GrantType":"hybrid","Tokens":[{"TokenType":"id_token","TokenValue":"****wOUw","$type":"Token"},{"TokenType":"code","TokenValue":"****5848","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HLQBSFL6N354:0000000C","TimeStamp":"2019-10-08T11:44:39.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+2019-10-08 17:14:39.749 +05:30 [DBG] Authorize endpoint response
+{"SubjectId":"goo115559040204585310230","ClientId":"ZNxtCoreApp","RedirectUri":"https://localhost:44373/signin-oidc","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQYIBNn5g2AdyXQjxnSYAjKrRYaGpzJpH9lTcpvVMxqzMgyDgKFCOIZ6SqmDairyXNxRR9hCXZtUhppYY70oaPWLHg9oPqPjT1UmNrgLhZHTqAuCO89582fOx5p_U0M2HyUkP42iajoMc2S090uQXj-gxiEc_D27atBMELhIVuVIsjZgMCMW0qJEffkKTQCDk8vyJJ15YMIE4_fL1LXkgp7rM8ok5EoqMM4osDTHlj67AXLG79sCdNPOsRDXPTA4ogUx2S0YnoeXq9SAjQSVAtq","Scope":"openid profile ZNxtCoreAppApi","Error":null,"ErrorDescription":null,"$type":"AuthorizeResponseLog"}
+2019-10-08 17:14:39.749 +05:30 [DBG] Augmenting SignInContext
+2019-10-08 17:14:39.750 +05:30 [INF] AuthenticationScheme: idsrv signed in.
+2019-10-08 17:14:39.865 +05:30 [DBG] Request path /connect/token matched to endpoint type Token
+2019-10-08 17:14:39.868 +05:30 [DBG] Endpoint enabled: Token, successfully created handler: IdentityServer4.Endpoints.TokenEndpoint
+2019-10-08 17:14:39.868 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.TokenEndpoint for /connect/token
+2019-10-08 17:14:39.868 +05:30 [DBG] Start token request.
+2019-10-08 17:14:39.868 +05:30 [DBG] Start client validation
+2019-10-08 17:14:39.869 +05:30 [DBG] Start parsing Basic Authentication secret
+2019-10-08 17:14:39.870 +05:30 [DBG] Start parsing for secret in post body
+2019-10-08 17:14:39.870 +05:30 [DBG] Parser found secret: PostBodySecretParser
+2019-10-08 17:14:39.870 +05:30 [DBG] Secret id found: ZNxtCoreApp
+2019-10-08 17:14:39.871 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.871 +05:30 [DBG] Secret validator success: HashedSharedSecretValidator
+2019-10-08 17:14:39.871 +05:30 [DBG] Client validation success
+2019-10-08 17:14:39.871 +05:30 [INF] {"ClientId":"ZNxtCoreApp","AuthenticationMethod":"SharedSecret","Category":"Authentication","Name":"Client Authentication Success","EventType":"Success","Id":1010,"Message":null,"ActivityId":"0HLQBSFL6N354:0000000D","TimeStamp":"2019-10-08T11:44:39.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"ClientAuthenticationSuccessEvent"}
+2019-10-08 17:14:39.871 +05:30 [DBG] Start token request validation
+2019-10-08 17:14:39.871 +05:30 [DBG] Start validation of authorization code token request
+2019-10-08 17:14:39.874 +05:30 [DBG] Validation of authorization code token request success
+2019-10-08 17:14:39.874 +05:30 [INF] Token request validation success, {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","GrantType":"authorization_code","Scopes":null,"AuthorizationCode":"88b3b4262bbf777bed023692e29065e0cd63d59d11ab556c7b188fd043875848","RefreshToken":null,"UserName":null,"AuthenticationContextReferenceClasses":null,"Tenant":null,"IdP":null,"Raw":{"client_id":"ZNxtCoreApp","client_secret":"***REDACTED***","code":"88b3b4262bbf777bed023692e29065e0cd63d59d11ab556c7b188fd043875848","grant_type":"authorization_code","redirect_uri":"https://localhost:44373/signin-oidc"},"$type":"TokenRequestValidationLog"}
+2019-10-08 17:14:39.874 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.875 +05:30 [DBG] Getting claims for access token for client: ZNxtCoreApp
+2019-10-08 17:14:39.875 +05:30 [DBG] Getting claims for access token for subject: goo115559040204585310230
+2019-10-08 17:14:39.877 +05:30 [DBG] Claim types from profile service that were filtered: ["sub"]
+2019-10-08 17:14:39.887 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.888 +05:30 [DBG] Getting claims for identity token for subject: goo115559040204585310230 and client: ZNxtCoreApp
+2019-10-08 17:14:39.888 +05:30 [DBG] In addition to an id_token, an access_token was requested. No claims other than sub are included in the id_token. To obtain more user claims, either use the user info endpoint or set AlwaysIncludeUserClaimsInIdToken on the client configuration.
+2019-10-08 17:14:39.898 +05:30 [INF] {"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","RedirectUri":null,"Endpoint":"Token","SubjectId":"goo115559040204585310230","Scopes":"openid profile ZNxtCoreAppApi","GrantType":"authorization_code","Tokens":[{"TokenType":"id_token","TokenValue":"****dtyQ","$type":"Token"},{"TokenType":"access_token","TokenValue":"****N65g","$type":"Token"}],"Category":"Token","Name":"Token Issued Success","EventType":"Success","Id":2000,"Message":null,"ActivityId":"0HLQBSFL6N354:0000000D","TimeStamp":"2019-10-08T11:44:39.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"TokenIssuedSuccessEvent"}
+2019-10-08 17:14:39.898 +05:30 [DBG] Token request success.
+2019-10-08 17:14:39.911 +05:30 [DBG] Request path /connect/userinfo matched to endpoint type Userinfo
+2019-10-08 17:14:39.914 +05:30 [DBG] Endpoint enabled: Userinfo, successfully created handler: IdentityServer4.Endpoints.UserInfoEndpoint
+2019-10-08 17:14:39.914 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.UserInfoEndpoint for /connect/userinfo
+2019-10-08 17:14:39.914 +05:30 [DBG] Start userinfo request
+2019-10-08 17:14:39.914 +05:30 [DBG] Bearer token found in header
+2019-10-08 17:14:39.922 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.922 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:39.926 +05:30 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2019-10-08 17:14:39.926 +05:30 [DBG] Token validation success
+{"ClientId":null,"ClientName":null,"ValidateLifetime":true,"AccessTokenType":"Jwt","ExpectedScope":"openid","TokenHandle":null,"JwtId":null,"Claims":{"nbf":1570535079,"exp":1570538679,"iss":"http://localhost:5000","aud":["http://localhost:5000/resources","ZNxtCoreAppApi"],"client_id":"ZNxtCoreApp","sub":"goo115559040204585310230","auth_time":1570535079,"idp":"Google","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name":"Khanin Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname":"Khanin","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname":"Choudhury","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress":"choudhury.khanin@gmail.com","roles":"[\"user\"]","scope":["openid","profile","ZNxtCoreAppApi"],"amr":"external"},"$type":"TokenValidationLog"}
+2019-10-08 17:14:39.940 +05:30 [DBG] Creating userinfo response
+2019-10-08 17:14:39.940 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 17:14:39.940 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 17:14:39.941 +05:30 [DBG] Requested claim types: sub name family_name given_name middle_name nickname preferred_username profile picture website gender birthdate zoneinfo locale updated_at
+2019-10-08 17:14:39.941 +05:30 [DBG] Scopes in access token: openid profile ZNxtCoreAppApi
+2019-10-08 17:14:39.943 +05:30 [INF] Profile service returned the following claim types: sub http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress roles
+2019-10-08 17:14:39.943 +05:30 [DBG] End userinfo request
+2019-10-08 17:14:40.126 +05:30 [INF] Successfully validated the token.
+2019-10-08 17:14:43.546 +05:30 [DBG] Request path /connect/endsession matched to endpoint type Endsession
+2019-10-08 17:14:43.547 +05:30 [DBG] Endpoint enabled: Endsession, successfully created handler: IdentityServer4.Endpoints.EndSessionEndpoint
+2019-10-08 17:14:43.547 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.EndSessionEndpoint for /connect/endsession
+2019-10-08 17:14:43.548 +05:30 [DBG] Processing signout request for goo115559040204585310230
+2019-10-08 17:14:43.548 +05:30 [DBG] Start end session request validation
+2019-10-08 17:14:43.548 +05:30 [DBG] Start identity token validation
+2019-10-08 17:14:43.548 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:43.549 +05:30 [DBG] Client found: ZNxtCoreApp / ZNxtCoreApp
+2019-10-08 17:14:43.556 +05:30 [DBG] Calling into custom token validator: IdentityServer4.Validation.DefaultCustomTokenValidator
+2019-10-08 17:14:43.556 +05:30 [DBG] Token validation success
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","ValidateLifetime":false,"AccessTokenType":null,"ExpectedScope":null,"TokenHandle":null,"JwtId":null,"Claims":{"nbf":1570535079,"exp":1570535379,"iss":"http://localhost:5000","aud":"ZNxtCoreApp","nonce":"637061318704467956.M2MxYjhiMzktNjk1NS00ZDFmLTk1MmMtZGFjMWVjZGM4MzE1MDIxM2Q4NzUtZDNjZC00ZTI2LTgyMDktNzk2ZDVmMjdmMTgx","iat":1570535079,"at_hash":"EC5RrFIMINI5I6V8yOn3Tw","sid":"70966153fb4ca909e7b53cc563eaaeb4","sub":"goo115559040204585310230","auth_time":1570535079,"idp":"Google","amr":"external"},"$type":"TokenValidationLog"}
+2019-10-08 17:14:43.556 +05:30 [INF] End session request validation success
+{"ClientId":"ZNxtCoreApp","ClientName":"ZNxtCoreApp","SubjectId":"goo115559040204585310230","PostLogOutUri":"https://localhost:44373/signout-callback-oidc","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQJ2APmGD_oCAj3h8lJ0fTw_ZdBrv7g-7WV-O0IdzB6qUJVLlMGXhOCTMoGmLvEHDI-Nv0W43zDPxzhFbdz---2a7tkd9aaKKEz-jR0_RZ4eRmqCn27heUgEb0a9vGDoBy7agRuqTRqcAQtJje-IF7i","Raw":{"post_logout_redirect_uri":"https://localhost:44373/signout-callback-oidc","id_token_hint":"***REDACTED***","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkQJ2APmGD_oCAj3h8lJ0fTw_ZdBrv7g-7WV-O0IdzB6qUJVLlMGXhOCTMoGmLvEHDI-Nv0W43zDPxzhFbdz---2a7tkd9aaKKEz-jR0_RZ4eRmqCn27heUgEb0a9vGDoBy7agRuqTRqcAQtJje-IF7i","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"EndSessionRequestValidationLog"}
+2019-10-08 17:14:43.556 +05:30 [DBG] Success validating end session request from ZNxtCoreApp
+2019-10-08 17:14:43.565 +05:30 [INF] AuthenticationScheme: idsrv signed out.
+2019-10-08 17:14:43.566 +05:30 [INF] {"SubjectId":"goo115559040204585310230","DisplayName":"Khanin Choudhury","Category":"Authentication","Name":"User Logout Success","EventType":"Success","Id":1002,"Message":null,"ActivityId":"0HLQBSFL6N354:00000010","TimeStamp":"2019-10-08T11:44:43.0000000Z","ProcessId":10352,"LocalIpAddress":"127.0.0.1:41650","RemoteIpAddress":"::1","$type":"UserLogoutSuccessEvent"}
+2019-10-08 17:14:43.663 +05:30 [DBG] Request path /connect/endsession/callback matched to endpoint type Endsession
+2019-10-08 17:14:43.667 +05:30 [DBG] Endpoint enabled: Endsession, successfully created handler: IdentityServer4.Endpoints.EndSessionCallbackEndpoint
+2019-10-08 17:14:43.667 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.EndSessionCallbackEndpoint for /connect/endsession/callback
+2019-10-08 17:14:43.667 +05:30 [DBG] Processing signout callback request
+2019-10-08 17:14:43.668 +05:30 [DBG] client configuration validation for client ZNxtCoreApp succeeded.
+2019-10-08 17:14:43.668 +05:30 [DBG] Client front-channel logout URLs: https://localhost:44373/signout-oidc?sid=70966153fb4ca909e7b53cc563eaaeb4&iss=http%3A%2F%2Flocalhost%3A5000
+2019-10-08 17:14:43.668 +05:30 [DBG] No client back-channel logout URLs
+2019-10-08 17:14:43.668 +05:30 [INF] Successful signout callback.
+2019-10-08 17:14:43.668 +05:30 [DBG] Client front-channel iframe urls: ["https://localhost:44373/signout-oidc?sid=70966153fb4ca909e7b53cc563eaaeb4&iss=http%3A%2F%2Flocalhost%3A5000"]
+2019-10-08 17:14:43.668 +05:30 [DBG] No client back-channel iframe urls

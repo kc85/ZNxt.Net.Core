@@ -1,9 +1,9 @@
 ﻿
 echo OFF
 
- set http_base_url=https://localhost:44373
+rem set http_base_url=https://localhost:44373
 
-rem set http_base_url=http://s2ftechnologies.com
+ set http_base_url=http://s2ftechnologies.com
 
 wget -S -O uninstall_response.json --post-data "{\"Name\":\"ZNxt.Net.Core.Module.Notifier\"}" %http_base_url%/api/moduleinstaller/uninstall
 

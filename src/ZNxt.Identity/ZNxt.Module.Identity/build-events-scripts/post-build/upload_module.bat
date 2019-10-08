@@ -1,8 +1,8 @@
 ﻿
 echo OFF
-  set http_base_url=http://localhost:5000
+rem  set http_base_url=http://localhost:5000
 
-rem set  http_base_url=http://sso.s2ftechnologies.com/
+set  http_base_url=http://sso.s2ftechnologies.com/
 
 wget -S -O uninstall_response.json --post-data "{\"Name\":\"ZNxt.Module.Identity\"}" %http_base_url%/api/moduleinstaller/uninstall
 

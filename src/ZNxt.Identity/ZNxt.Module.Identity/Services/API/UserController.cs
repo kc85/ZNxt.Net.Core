@@ -182,7 +182,7 @@ namespace ZNxt.Module.Identity.Services.API
                 var otpReqeust = new JObject()
                 {
                     ["To"] = mobileNo,
-                    ["Message"] = "Validate your phone numer OTP is {{OTP}} ",
+                    ["Message"] = "Validate your mobile number OTP is {{OTP}} ",
                     ["Type"] = "SMS",
                     ["OTPType"] = "mobile_number_validation",
                     ["SecurityToken"] = ""
@@ -219,7 +219,7 @@ namespace ZNxt.Module.Identity.Services.API
                     ["SecurityToken"] = ""
                 };
 
-                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/validate", null, request).GetAwaiter().GetResult();
+                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/validate", null, validateRequest).GetAwaiter().GetResult();
                 if (result["code"].ToString() == "1")
                 {
                     AddRoles(_httpContextProxy.User.user_id, "", "phone_verification_required", new JObject() {
