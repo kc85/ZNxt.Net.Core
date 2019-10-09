@@ -53,13 +53,15 @@ namespace ZNxt.Net.Core.Web.Proxies
                     foreach (var claim in _httpContextAccessor.HttpContext.User.Claims)
                     {
                         claims.Add(new Claim(claim.Type, claim.Value));
-                        if(claim.Type == "roles")
+                        if (claim.Type == "roles")
                         {
                             user.roles = JArray.Parse(claim.Value).Select(f => f.ToString()).ToList();
                         }
                     }
                     user.claims = claims;
-                    user.id = user.user_id = user.claims.FirstOrDefault(f => f.Key == "sub").Value;
+                    var userid = user.claims.FirstOrDefault(f => f.Key == "sub");
+                    if (userid != null)
+                        user.id = user.user_id = userid.Value;
                     return user;
                 }
                 return null;

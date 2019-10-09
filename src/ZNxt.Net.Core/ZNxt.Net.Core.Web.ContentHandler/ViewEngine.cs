@@ -59,7 +59,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             }
 
             var engine = new RazorLightEngineBuilder()
-                .UseFileSystemProject(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData))
+                .UseEmbeddedResourcesProject(this.GetType())
             .UseMemoryCachingProvider()
             .Build();
 
