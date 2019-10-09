@@ -1,18 +1,10 @@
-﻿
-@{
-    DisableEncoding = true;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title></title>
 </head>
 <body>
-    @for(var i = 0 ; i < 10; i++)
-    {
-        <p>  Line   @i  </p>
-    }
+   Hello
 </body>
 </html>

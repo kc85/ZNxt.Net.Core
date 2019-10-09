@@ -128,7 +128,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             }
             else
             {
-                path = path.Remove(0, CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH.Length + 1);
+                //path = path.Remove(0, CommonConst.CommonValue.APP_FRONTEND_FOLDERPATH.Length + 1);
                 return path;
             }
         }

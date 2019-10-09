@@ -1,7 +1,9 @@
-﻿namespace ZNxt.Net.Core.Interfaces
+﻿using System.Collections.Generic;
+
+namespace ZNxt.Net.Core.Interfaces
 {
     public interface IViewEngine
     {
-        string Compile(string inputTemplete, string key, object dataModel);
+        string Compile(string inputTemplete, string key, Dictionary<string, dynamic> dataModel);
     }
 }

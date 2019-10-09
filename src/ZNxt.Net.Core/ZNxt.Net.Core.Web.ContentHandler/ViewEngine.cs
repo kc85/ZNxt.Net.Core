@@ -12,7 +12,6 @@ namespace ZNxt.Net.Core.Web.ContentHandler
     {
         private static readonly object _lock = new object();
         private static RazorTemplateEngine _viewEngine;
-        private readonly bool isDevEnv = false;
 
         public RazorTemplateEngine()
         {
@@ -36,32 +35,35 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             }
         }
 
-        public string Compile(string inputTemplete, string key, object dataModel)
+        public string Compile(string inputTemplete, string key, Dictionary<string, dynamic> dataModel)
         {
-
-                if (dataModel is Dictionary<string, dynamic>)
+            if (dataModel == null)
+            {
+                dataModel = new Dictionary<string, dynamic>();
+            }
+            if (dataModel is Dictionary<string, dynamic>)
+            {
+                StringBuilder headerAppender = new StringBuilder();
+                headerAppender.AppendLine("@{");
+                foreach (var item in (dataModel as Dictionary<string, dynamic>))
                 {
-                    StringBuilder headerAppender = new StringBuilder();
-                    headerAppender.AppendLine("@{");
-                    foreach (var item in (dataModel as Dictionary<string, dynamic>))
+                    if (item.Key == CommonConst.CommonValue.METHODS)
                     {
-                        if (item.Key == CommonConst.CommonValue.METHODS)
+                        foreach (var itemMethod in (item.Value as Dictionary<string, dynamic>))
                         {
-                            foreach (var itemMethod in (item.Value as Dictionary<string, dynamic>))
-                            {
-                                headerAppender.AppendLine(string.Format("dynamic {0} = @Model[\"{1}\"][\"{0}\"];", itemMethod.Key, CommonConst.CommonValue.METHODS));
-                            }
+                            headerAppender.AppendLine(string.Format("dynamic {0} = @Model[\"{1}\"][\"{0}\"];", itemMethod.Key, CommonConst.CommonValue.METHODS));
                         }
                     }
-                    inputTemplete = headerAppender.AppendLine("}").AppendLine(inputTemplete).ToString();
                 }
+                inputTemplete = headerAppender.AppendLine("}").AppendLine(inputTemplete).ToString();
+            }
 
-              var engine = new RazorLightEngineBuilder()
-              .UseMemoryCachingProvider()
-              .Build();
+            var engine = new RazorLightEngineBuilder()
+                .UseFileSystemProject(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData))
+            .UseMemoryCachingProvider()
+            .Build();
 
-            return  engine.CompileRenderAsync(key, inputTemplete, dataModel).GetAwaiter().GetResult();
-            
+            return engine.CompileRenderStringAsync<Dictionary<string, dynamic>>(key, inputTemplete, dataModel).GetAwaiter().GetResult();
         }
     }
 }

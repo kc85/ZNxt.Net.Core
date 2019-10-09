@@ -1,1 +1,1 @@
-{"code":1,"message":"SUCCESS","transaction_id":"HT7415674351988553884","debug":{"time_span":608.0,"logs":[]}}
+{"code":1,"message":"SUCCESS","transaction_id":"HT2515706219301786087","debug":{"time_span":1634.0,"logs":[{"created_datetime":1570621930,"id":"95060379-2372-4826-abe2-14360970ac37","logger":null,"type":"Debug","transaction_id":"HT2515706219301786087","message":"callng  POST : http://gateway.s2ftechnologies.com/api/gateway/uninstallmodule","data":null,"updated_datetime":1570621930,"created_by":""}]}}

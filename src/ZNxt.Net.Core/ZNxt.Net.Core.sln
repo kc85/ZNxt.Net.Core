@@ -31,7 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Net.Core.Module.Gatewa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Net.Core.Module.Admin", "ZNxt.Net.Core.Module.Admin\ZNxt.Net.Core.Module.Admin.csproj", "{CF28EAD8-EEB5-41B8-8FD8-F9AC01CB5E77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.Module.Notifier", "ZNxt.Net.Core.Module.Notifier\ZNxt.Net.Core.Module.Notifier.csproj", "{CF7B8A11-4575-4586-8F33-F815AB96B239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Net.Core.Module.Notifier", "ZNxt.Net.Core.Module.Notifier\ZNxt.Net.Core.Module.Notifier.csproj", "{CF7B8A11-4575-4586-8F33-F815AB96B239}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorLight", "RazorLight\RazorLight.csproj", "{195D1692-CAE2-4833-BD14-FBFF1A3992E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticContentTest", "StaticContentTest\StaticContentTest.csproj", "{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +95,14 @@ Global
 		{CF7B8A11-4575-4586-8F33-F815AB96B239}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7B8A11-4575-4586-8F33-F815AB96B239}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF7B8A11-4575-4586-8F33-F815AB96B239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{195D1692-CAE2-4833-BD14-FBFF1A3992E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{195D1692-CAE2-4833-BD14-FBFF1A3992E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{195D1692-CAE2-4833-BD14-FBFF1A3992E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{195D1692-CAE2-4833-BD14-FBFF1A3992E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +113,7 @@ Global
 		{1E87EB6C-8E2C-44D9-B850-B5C82AA984C6} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 		{CF28EAD8-EEB5-41B8-8FD8-F9AC01CB5E77} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 		{CF7B8A11-4575-4586-8F33-F815AB96B239} = {F22C0707-89F1-450D-92A1-34AA0373508E}
+		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7} = {4DD2FD32-7A35-4F98-B58E-FFE6EBBC9B49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE125D3-A749-4F04-9D6C-9B9632AE1D4C}
