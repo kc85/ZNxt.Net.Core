@@ -17,7 +17,7 @@ WORKDIR /src/ZNxt.Net.Core.Web.Sample
 RUN dotnet build ZNxt.Net.Core.Web.Sample.csproj -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish ZNxt.Net.Core.Web.Sample.csproj -c Release -o /app
+RUN dotnet publish ZNxt.Net.Core.Web.Sample.csproj -r linux-x64 -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
