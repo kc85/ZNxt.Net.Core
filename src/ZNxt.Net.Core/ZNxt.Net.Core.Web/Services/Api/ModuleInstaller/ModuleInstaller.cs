@@ -15,6 +15,7 @@ using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Web.Services.Api.ModuleInstaller.Models;
+using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 {
@@ -30,9 +31,10 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         private readonly ILogger _logger;
         private readonly IRouting _routing;
         private readonly IApiGatewayService _apiGateway;
+        private readonly string _moduleInstallationKey = string.Empty;
         private JArray appGatewayConfig = new JArray();
 
-        public ModuleInstaller(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig,ILogger logger,IRouting routing, IApiGatewayService apiGateway)
+        public ModuleInstaller(IDBService dbService, IHttpFileUploader httpFileUploader, IKeyValueStorage keyValueStorage, IServiceResolver serviceResolver, IResponseBuilder responseBuilder, IHttpContextProxy httpContextProxy, IDBServiceConfig dbConfig, ILogger logger, IRouting routing, IApiGatewayService apiGateway)
         {
             _responseBuilder = responseBuilder;
             _dbService = dbService;
@@ -44,7 +46,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             _logger = logger;
             _routing = routing;
             _apiGateway = apiGateway;
-            
+            _moduleInstallationKey = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY).Sha256Hash();
         }
 
         private async Task GetAppGatewayConfig()
@@ -61,8 +63,6 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             {
                 _logger.Error($"Error while GetAppGatewayConfig. {ex.Message}", ex);
             }
-
-            //appGatewayConfig = 
         }
         [Route("/moduleinstaller/install", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject InstallModule()
@@ -74,6 +74,11 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 if (request == null)
                 {
                     return _responseBuilder.BadRequest();
+                }
+                if(request.InstallationKey != _moduleInstallationKey)
+                {
+                    _logger.Error("Installation key validation fail");
+                    return _responseBuilder.Unauthorized();
                 }
                 if (request.Name != "ZNxt.Net.Core.Module.Gateway")
                 {
@@ -436,7 +441,11 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 {
                     return _responseBuilder.BadRequest();
                 }
-
+                if (request.InstallationKey != _moduleInstallationKey)
+                {
+                    _logger.Error("Installation key validation fail");
+                    return _responseBuilder.Unauthorized();
+                }
                 JObject moduleObject = new JObject();
                 moduleObject[CommonConst.CommonField.NAME] = request.Name;
                 moduleObject[CommonConst.MODULE_INSTALL_COLLECTIONS_FOLDER] = "collections";

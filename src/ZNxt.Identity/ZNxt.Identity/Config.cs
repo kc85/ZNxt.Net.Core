@@ -3,7 +3,12 @@
 
 
 using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using ZNxt.Net.Core.Config;
+using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Identity
 {
@@ -28,38 +33,44 @@ namespace ZNxt.Identity
 
         public static IEnumerable<Client> GetClients()
         {
+            var appSecret = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY);
+            var relyingPartyUrls = CommonUtility.GetAppConfigValue("RelyingPartyUrls");
+            relyingPartyUrls.Split(",");
+            var redirectUrisPrefix = relyingPartyUrls.Split(",").ToList();
+            if(redirectUrisPrefix.Count == 0)
+            {
+                redirectUrisPrefix.Add("https://localhost:44373");
+            }
+            var redirectUris = new List<string>() ;
+            redirectUris.AddRange(redirectUrisPrefix.Select(f => $"{f}/signin-oidc"));
+            var postLogoutRedirectUris = redirectUrisPrefix.Select(f => $"{f}/signout-callback-oidc").ToList();
+            var frontChannelLogoutUri = $"{redirectUrisPrefix.First()}/signout-oidc";
+
             return new[]
             {
-                // MVC client using hybrid flow
+                //// MVC client using hybrid flow
+                //new Client
+                //{
+                //    ClientId = "ZNxtCoreApp",
+                //    ClientName = "ZNxtCoreApp",
+                //    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                //    ClientSecrets = { new Secret(appSecret.Sha256()) },
+                //    RedirectUris = { "https://localhost:44373/signin-oidc" },
+                //    FrontChannelLogoutUri = "https://localhost:44373/signout-oidc",
+                //    PostLogoutRedirectUris = { "https://localhost:44373/signout-callback-oidc" },
+                //    AllowOfflineAccess = true,
+                //    RequireConsent = false,
+                //    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" }
+                //},
                 new Client
                 {
-                    ClientId = "ZNxtCoreApp",
-                    ClientName = "ZNxtCoreApp",
+                    ClientId = "ZNxtApp",
+                    ClientName = "ZNxtApp",
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                    ClientSecrets = { new Secret("MySecret".Sha256()) },
-                    RedirectUris = { "https://localhost:44373/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:44373/signout-oidc",
-                    PostLogoutRedirectUris = { "https://localhost:44373/signout-callback-oidc" },
-                    AllowOfflineAccess = true,
-                    RequireConsent = false,
-                    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" }
-                },
-                new Client
-                {
-                    ClientId = "s2ftechnologies",
-                    ClientName = "s2ftechnologies",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                    ClientSecrets = { new Secret("MySecret".Sha256()) },
-                    RedirectUris = {
-                        "http://s2ftechnologies.com/signin-oidc",
-                        "http://www.s2ftechnologies.com/signin-oidc" ,
-                        "www.s2ftechnologies.com/signin-oidc",
-                            "http://admin.s2ftechnologies.com/signin-oidc",
-                        "http://www.admin.s2ftechnologies.com/signin-oidc" ,
-                        "www.admin.s2ftechnologies.com/signin-oidc"
-                    },
-                    FrontChannelLogoutUri = "http://s2ftechnologies.com/signout-oidc",
-                    PostLogoutRedirectUris = { "http://s2ftechnologies.com/signout-callback-oidc" },
+                    ClientSecrets = { new Secret(appSecret.Sha256()) },
+                    RedirectUris = redirectUris,
+                    FrontChannelLogoutUri = frontChannelLogoutUri,
+                    PostLogoutRedirectUris = postLogoutRedirectUris,
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" },
                     RequireConsent = false,

@@ -74,6 +74,7 @@ sudo dotnet run ~/ZNxt.Net.Core/test/ZNxt.Docker.Management/ZNxt.Docker.Manageme
 $/etc/apache2/sites-available$ sudo /etc/init.d/apache2 restart
 # activate proxy config
 /etc/apache2/sites-available$ sudo a2ensite znxtfashion-admin.conf
+a2dissite 000-default
 
 
 

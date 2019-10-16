@@ -179,5 +179,15 @@ namespace ZNxt.Net.Core.Helpers
         {
             return value.ToString("yyyyMMddHHmmssffff");
         }
+        public static string Sha256Hash(this string value)
+        {
+            var data = (System.Security.Cryptography.SHA256.Create()
+                      .ComputeHash(Encoding.UTF8.GetBytes(value))
+                      .Select(item => item.ToString("x2")));
+
+            return string.Join("", data);
+        }
+
+        public static bool IsRunningOnDocker { get { return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"; } }
     }
 }

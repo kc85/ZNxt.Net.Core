@@ -4,5 +4,6 @@
     {
         public string Name { get; set; }
         public string Version { get; set; }
+        public string InstallationKey { get; set; }
     }
 }

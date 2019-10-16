@@ -30,7 +30,13 @@ namespace ZNxt.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+            AddZNxtSSO(services);
+            services.AddZNxtApp();
+            services.AddZNxtBearerAuthentication();
+        }
 
+        private void AddZNxtSSO(IServiceCollection services)
+        {
             services.Configure<IISOptions>(options =>
             {
                 options.AutomaticAuthentication = false;
@@ -44,18 +50,12 @@ namespace ZNxt.Identity
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-                .AddTestUsers(TestUsers.Users);
+            .AddTestUsers(TestUsers.Users);
 
             // in-memory, code config
             builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
             builder.AddInMemoryApiResources(Config.GetApis());
             builder.AddInMemoryClients(Config.GetClients());
-
-            // in-memory, json config
-            //builder.AddInMemoryIdentityResources(Configuration.GetSection("IdentityResources"));
-            //builder.AddInMemoryApiResources(Configuration.GetSection("ApiResources"));
-            //builder.AddInMemoryClients(Configuration.GetSection("clients"));
-
             if (Environment.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();
@@ -66,14 +66,10 @@ namespace ZNxt.Identity
                 var cert = new X509Certificate2(fileName, "abc@123");
                 builder.AddSigningCredential(cert);
             }
-            
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                    // register your IdentityServer with Google at https://console.developers.google.com
-                    // enable the Google+ API
-                    // set the redirect URI to http://localhost:5000/signin-google
                     options.ClientId = "592081696184-3056k8j98cfliger0398q08nmi50cfjs.apps.googleusercontent.com";
                     options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
                 });
@@ -81,8 +77,6 @@ namespace ZNxt.Identity
             services.AddTransient<IProfileService, ZNxtProfileService>();
             services.AddTransient<ZNxtUserStore>();
             services.AddTransient<IUserNotifierService, UserNotifierService>();
-            services.AddZNxtApp();
-            services.AddZNxtBearerAuthentication();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -92,12 +86,17 @@ namespace ZNxt.Identity
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseIdentityServer();
-            AccountOptions.ShowLogoutPrompt = false;
-            AccountOptions.AutomaticRedirectAfterSignOut = true;
+            UseZNxtSSO(app);
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
             app.UseZNxtApp();
+        }
+
+        private void UseZNxtSSO(IApplicationBuilder app)
+        {
+            app.UseIdentityServer();
+            AccountOptions.ShowLogoutPrompt = false;
+            AccountOptions.AutomaticRedirectAfterSignOut = true;
         }
     }
 }

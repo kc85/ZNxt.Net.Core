@@ -57,7 +57,7 @@ public static class MVCServiceExtention
     public static void AddZNxtIdentityServer(this IServiceCollection services)
     {
         var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
-        var appName = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_NAME_CONFIG_KEY);
+        var appName = "ZNxtApp";// CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_NAME_CONFIG_KEY);
         var appSecret = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY);
         
         services.AddAuthentication(options =>
