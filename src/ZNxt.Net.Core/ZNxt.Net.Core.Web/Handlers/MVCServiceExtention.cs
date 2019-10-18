@@ -220,7 +220,10 @@ public static class MVCApplicationBuilderExtensions
     {
         app.UseHttpProxyHandler();
         app.Map("/api", HandlerAPI);
-        app.UseMvcWithDefaultRoute();
+        app.UseMvc(routes =>
+        {
+            routes.MapRoute("default", "{controller=Home}/{action=IndexHtml}/{id?}");
+        });
         app.MapWhen(context => true, HandlerStaticContant);
     }
     private static void HandlerStaticContant(IApplicationBuilder app)

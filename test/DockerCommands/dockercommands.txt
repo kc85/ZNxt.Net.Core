@@ -78,6 +78,17 @@ a2dissite 000-default
 
 
 
+############################### new ######################
+
+sudo docker run -p 806:80 -p 4436:443 -e ConnectionString=mongodb://172.31.22.56:27071 -e DataBaseName=ZNxt_QA_gateway -e AppEndpoint=http://gateway.s2ftecnologies.com -e ApiGatewayEndpoint=http://gateway.s2ftecnologies.com -e SSOUrl=http://sso.s2ftechnologies.com -e  AppSecret=MySecret --restart=always --name s2fapp-gateway-run  znxtapp:latest
+
+
+sudo docker run -p 807:80 -p 4437:443 -e ConnectionString=mongodb://172.31.22.56:27071 -e DataBaseName=ZNxt_QA_SSO -e AppEndpoint=http://sso.s2ftecnologies.com -e ApiGatewayEndpoint=http://gateway.s2ftecnologies.com -e IsSSO=true -e  AppSecret=MySecret -e RelyingPartyUrls=http://s2ftechnologies.com,http://admin.s2ftechnologies.com,https://localhost:44373 --restart=always --name s2fapp-sso-run  znxtapp:latest
+
+
+sudo docker run -p 804:80 -p 4434:443 -e ConnectionString=mongodb://172.31.22.56:27071 -e DataBaseName=ZNxt_QA_UI -e AppEndpoint=http://s2ftecnologies.com -e ApiGatewayEndpoint=http://gateway.s2ftecnologies.com -e SSOUrl=http://sso.s2ftechnologies.com -e  AppSecret=MySecret --restart=always --name s2fapp-frontend-run  znxtapp:latest
+
+
 
 
  

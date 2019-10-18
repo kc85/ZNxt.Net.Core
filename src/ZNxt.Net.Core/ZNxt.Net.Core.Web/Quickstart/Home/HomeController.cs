@@ -13,19 +13,22 @@ namespace IdentityServer4.Quickstart.UI
 {
     [SecurityHeaders]
     [AllowAnonymous]
-    public class SSOHomeController : Controller
+    public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IHostingEnvironment _environment;
         private readonly ILogger _logger;
 
-        public SSOHomeController(IIdentityServerInteractionService interaction, IHostingEnvironment environment, ILogger<SSOHomeController> logger)
+        public HomeController(IIdentityServerInteractionService interaction, IHostingEnvironment environment, ILogger<HomeController> logger)
         {
             _interaction = interaction;
             _environment = environment;
             _logger = logger;
         }
-
+        public IActionResult IndexHtml()
+        {
+            return Redirect("/index.html");
+        }
         public IActionResult Index()
         {
             if (_environment.IsDevelopment())
@@ -33,9 +36,10 @@ namespace IdentityServer4.Quickstart.UI
                 // only show in development
                 return View();
             }
-
-            _logger.LogInformation("Homepage is disabled in production. Returning 404.");
-            return NotFound();
+            else
+            {
+                return Redirect("/index.html");
+            }
         }
 
         /// <summary>
