@@ -222,7 +222,7 @@ public static class MVCApplicationBuilderExtensions
         app.Map("/api", HandlerAPI);
         app.UseMvc(routes =>
         {
-            routes.MapRoute("default", "{controller=Home}/{action=IndexHtml}/{id?}");
+            routes.MapRoute("default", "{controller=Default}/{action=Index}/{id?}");
         });
         app.MapWhen(context => true, HandlerStaticContant);
     }

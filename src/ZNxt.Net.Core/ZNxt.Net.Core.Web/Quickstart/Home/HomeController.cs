@@ -25,10 +25,7 @@ namespace IdentityServer4.Quickstart.UI
             _environment = environment;
             _logger = logger;
         }
-        public IActionResult IndexHtml()
-        {
-            return Redirect("/index.html");
-        }
+        
         public IActionResult Index()
         {
             if (_environment.IsDevelopment())
