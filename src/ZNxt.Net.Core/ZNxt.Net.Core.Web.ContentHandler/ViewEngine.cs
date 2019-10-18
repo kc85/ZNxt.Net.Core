@@ -63,7 +63,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             .UseMemoryCachingProvider()
             .Build();
 
-            return engine.CompileRenderStringAsync<Dictionary<string, dynamic>>(key, inputTemplete, dataModel).GetAwaiter().GetResult();
+            return engine.CompileRenderAsync(key, inputTemplete, dataModel).GetAwaiter().GetResult();
         }
     }
 }

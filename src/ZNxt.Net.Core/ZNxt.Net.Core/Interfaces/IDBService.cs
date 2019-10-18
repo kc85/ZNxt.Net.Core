@@ -6,6 +6,8 @@ namespace ZNxt.Net.Core.Interfaces
 {
     public interface IDBService
     {
+        void Init(string dbName = null, string connectionString = null);
+
         bool IsConnected{ get; }
         bool WriteData(string collection, JObject data);
 
@@ -28,6 +30,8 @@ namespace ZNxt.Net.Core.Interfaces
         JObject GetPageData(string collection, IDBQueryBuilder query, List<string> fields = null, Dictionary<string, int> sortColumns = null, int pageSize = 10, int currentPage = 1);
 
         bool DropDB();
+        bool DropCollection(string collection);
+
     }
 
     public enum SortBy

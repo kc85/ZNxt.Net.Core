@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using ZNxt.Net.Core.Config;
+
 namespace ZNxt.Net.Core.Web.Sample
 {
     public class Program
@@ -10,7 +15,20 @@ namespace ZNxt.Net.Core.Web.Sample
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();//.UseUrls("http://*:80");
+              .UseKestrel(options =>
+              {
+                  var fileName = "ZNxtIdentitySigning.pfx";
+                  var cert = new X509Certificate2(fileName, "abc@123");
+
+                  options.Listen(IPAddress.Any, ApplicationConfig.HttpPort);
+                  options.Listen(IPAddress.Any, ApplicationConfig.HttpsPort, listenOptions =>
+                  {
+                      listenOptions.UseHttps(cert);
+                  });
+              })
+              .UseStartup<Startup>();
+
     }
 }

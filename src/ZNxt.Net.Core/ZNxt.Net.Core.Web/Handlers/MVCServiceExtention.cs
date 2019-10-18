@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using IdentityServer4.Quickstart.UI;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
+using ZNxt.Identity;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.DB.Mongo;
@@ -19,6 +22,12 @@ using ZNxt.Net.Core.Web.Helper;
 using ZNxt.Net.Core.Web.Proxies;
 using ZNxt.Net.Core.Web.Services;
 using ZNxt.Net.Core.Web.Services.Api.Installer;
+using Microsoft.AspNetCore.Hosting;
+using System.Security.Cryptography.X509Certificates;
+using IdentityServer4;
+using ZNxt.Identity.Services;
+using IdentityServer4.Services;
+using IdentityServer4.Configuration;
 
 public static class MVCServiceExtention
 {
@@ -30,9 +39,8 @@ public static class MVCServiceExtention
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IEncryption, EncryptionService>();
         services.AddSingleton<UserAccontHelper, UserAccontHelper>();
-
         services.AddSingleton<IDBServiceConfig>(new MongoDBServiceConfig());
-        services.AddSingleton<IKeyValueStorage, FileKeyValueFileStorage>();
+        services.AddSingleton<IKeyValueStorage, MongoDBKeyValueService>();
         services.AddTransient<IDBService, MongoDBService>();
         services.AddSingleton<IRouting, Routing>();
         services.AddTransient<IAssemblyLoader, AssemblyLoader>();
@@ -56,6 +64,8 @@ public static class MVCServiceExtention
 
     public static void AddZNxtIdentityServer(this IServiceCollection services)
     {
+        if (ApplicationConfig.IsSSO)
+            return;
         var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
         var appName = "ZNxtApp";// CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_NAME_CONFIG_KEY);
         var appSecret = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY);
@@ -151,6 +161,57 @@ public static class MVCServiceExtention
             }
         }
     }
+    public static void AddZNxtSSO(this IServiceCollection services, IHostingEnvironment environment)
+    {
+        if (!ApplicationConfig.IsSSO)
+            return;
+        services.Configure<IISOptions>(options =>
+        {
+            options.AutomaticAuthentication = false;
+            options.AuthenticationDisplayName = "Windows";
+        });
+
+        var builder = services.AddIdentityServer(options =>
+        {
+            options.Events.RaiseErrorEvents = true;
+            options.Events.RaiseInformationEvents = true;
+            options.Events.RaiseFailureEvents = true;
+            options.Events.RaiseSuccessEvents = true;
+            options.UserInteraction = new UserInteractionOptions()
+            {
+                LogoutUrl = "/account/logout",
+                LoginUrl = "/account/login",
+                LoginReturnUrlParameter = "returnUrl"
+            };
+        })
+        .AddTestUsers(TestUsers.Users);
+
+        // in-memory, code config
+        builder.AddInMemoryIdentityResources(SSOConfig.GetIdentityResources());
+        builder.AddInMemoryApiResources(SSOConfig.GetApis());
+        builder.AddInMemoryClients(SSOConfig.GetClients());
+        if (environment.IsDevelopment())
+        {
+            builder.AddDeveloperSigningCredential();
+        }
+        else
+        {
+            var fileName = Path.Combine(environment.ContentRootPath, "ZNxtIdentitySigning.pfx");
+            var cert = new X509Certificate2(fileName, "abc@123");
+            builder.AddSigningCredential(cert);
+        }
+        services.AddAuthentication()
+            .AddGoogle(options =>
+            {
+                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                options.ClientId = "592081696184-3056k8j98cfliger0398q08nmi50cfjs.apps.googleusercontent.com";
+                options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
+            });
+        services.AddTransient<IZNxtUserService, ZNxtUserService>();
+        services.AddTransient<IProfileService, ZNxtProfileService>();
+        services.AddTransient<ZNxtUserStore>();
+        services.AddTransient<IUserNotifierService, UserNotifierService>();
+    }
 }
 
 public static class MVCApplicationBuilderExtensions
@@ -171,6 +232,15 @@ public static class MVCApplicationBuilderExtensions
     {
         app.UseApiHandler();
 
+    }
+    public static void UseZNxtSSO(this IApplicationBuilder app)
+    {
+
+        if (!ApplicationConfig.IsSSO)
+            return;
+        app.UseIdentityServer();
+        AccountOptions.ShowLogoutPrompt = false;
+        AccountOptions.AutomaticRedirectAfterSignOut = true;
     }
 }
 

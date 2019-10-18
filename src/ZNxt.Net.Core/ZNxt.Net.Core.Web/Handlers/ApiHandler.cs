@@ -1,16 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Policy;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Consts;
 using System.Net;
@@ -176,10 +171,11 @@ namespace ZNxt.Net.Core.Web.Handlers
             {
                 try
                 {
+                    UserModel userModel = null;
                     var accessToken = _httpContextProxy.GetAccessTokenAync().GetAwaiter().GetResult();
                     if (!string.IsNullOrEmpty(accessToken))
                     {
-                        UserModel userModel = _inMemoryCacheService.Get<UserModel>(accessToken);
+                         userModel = _inMemoryCacheService.Get<UserModel>(accessToken);
                         if (userModel == null)
                         {
                             var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/userinfo", "", null, null, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
@@ -189,26 +185,29 @@ namespace ZNxt.Net.Core.Web.Handlers
                                 _inMemoryCacheService.Put<UserModel>(accessToken, userModel);
                             }
                         }
-                        if (userModel != null)
+                    }
+                    else
+                    {
+                        userModel = _httpContextProxy.User;
+                    }
+                    if (userModel != null)
+                    {
+                        var identity = new ClaimsIdentity();
+                        foreach (var claim in userModel.claims)
                         {
-                            var identity = new ClaimsIdentity();
-                            foreach (var claim in userModel.claims)
-                            {
-                                identity.AddClaim(new System.Security.Claims.Claim(claim.Key, claim.Value));
-                            }
-                            context.User = new ClaimsPrincipal(identity);
-                            var u = _httpContextProxy.User;
-                            _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f=> $"{f.Key}:{f.Value}"))}");
-                            
-                            var hasaccess =  userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
-                            if (!hasaccess)
-                            {
-                                _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
-                            }
+                            identity.AddClaim(new System.Security.Claims.Claim(claim.Key, claim.Value));
+                        }
+                        context.User = new ClaimsPrincipal(identity);
+                        var u = _httpContextProxy.User;
+                        _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f => $"{f.Key}:{f.Value}"))}");
 
-                            return hasaccess;
+                        var hasaccess = userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
+                        if (!hasaccess)
+                        {
+                            _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
                         }
 
+                        return hasaccess;
                     }
                     return false;
 

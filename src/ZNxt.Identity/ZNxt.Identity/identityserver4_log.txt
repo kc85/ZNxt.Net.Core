@@ -8710,3 +8710,60 @@ Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime
 2019-10-16 21:08:04.329 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
 2019-10-16 21:08:04.329 +05:30 [DBG] Start key discovery request
 2019-10-16 21:08:04.359 +05:30 [INF] Successfully validated the token.
+2019-10-17 11:49:09.700 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-17 11:49:09.791 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-17 11:49:09.814 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-17 11:49:09.814 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-17 11:49:09.815 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-17 11:49:09.815 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-17 11:49:09.815 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-17 11:49:09.815 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-17 11:49:11.767 +05:30 [DBG] Login Url: /Account/Login
+2019-10-17 11:49:11.773 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-17 11:49:11.773 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-17 11:49:11.773 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-17 11:49:11.773 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-17 11:49:11.773 +05:30 [DBG] Error Url: /home/error
+2019-10-17 11:49:11.774 +05:30 [DBG] Error Id Parameter: errorId
+2019-10-17 11:49:35.253 +05:30 [DBG] Request path /.well-known/openid-configuration matched to endpoint type Discovery
+2019-10-17 11:49:35.260 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryEndpoint
+2019-10-17 11:49:35.261 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryEndpoint for /.well-known/openid-configuration
+2019-10-17 11:49:35.270 +05:30 [DBG] Start discovery request
+2019-10-17 11:49:35.393 +05:30 [DBG] Request path /.well-known/openid-configuration/jwks matched to endpoint type Discovery
+2019-10-17 11:49:35.394 +05:30 [DBG] Endpoint enabled: Discovery, successfully created handler: IdentityServer4.Endpoints.DiscoveryKeyEndpoint
+2019-10-17 11:49:35.394 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.DiscoveryKeyEndpoint for /.well-known/openid-configuration/jwks
+2019-10-17 11:49:35.399 +05:30 [DBG] Start key discovery request
+2019-10-17 11:49:35.486 +05:30 [DBG] Request path /connect/authorize matched to endpoint type Authorize
+2019-10-17 11:49:35.505 +05:30 [DBG] Endpoint enabled: Authorize, successfully created handler: IdentityServer4.Endpoints.AuthorizeEndpoint
+2019-10-17 11:49:35.505 +05:30 [INF] Invoking IdentityServer endpoint: IdentityServer4.Endpoints.AuthorizeEndpoint for /connect/authorize
+2019-10-17 11:49:35.512 +05:30 [DBG] Start authorize request
+2019-10-17 11:49:35.532 +05:30 [DBG] No user present in authorize request
+2019-10-17 11:49:35.540 +05:30 [DBG] Start authorize request protocol validation
+2019-10-17 11:49:35.569 +05:30 [DBG] client configuration validation for client ZNxtApp succeeded.
+2019-10-17 11:49:35.588 +05:30 [DBG] Checking for PKCE parameters
+2019-10-17 11:49:35.592 +05:30 [DBG] No PKCE used.
+2019-10-17 11:49:35.684 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-17 11:49:35.715 +05:30 [DBG] ValidatedAuthorizeRequest
+{"ClientId":"ZNxtApp","ClientName":"ZNxtApp","RedirectUri":"https://localhost:44373/signin-oidc","AllowedRedirectUris":["https://localhost:44373/signin-oidc","http://s2ftechnologies.com/signin-oidc"],"SubjectId":"anonymous","ResponseType":"code id_token","ResponseMode":"form_post","GrantType":"hybrid","RequestedScopes":"openid profile ZNxtCoreAppApi","State":"CfDJ8LEg8Ji_2D9En5ejcXDoQkRgRTMS8ofYTojCig-QHTgPYXQDUCODbJBFCyHl-XClMnbH-QeDKqkGipCCht5Svg5bKOm-rlbGaPbo_UUYmaXoqCYB-9bDSFUWm4SNFn2Xn51AQOZJo2p5U1l_tYnXM5lG29SrDIILyHnoAdMR7LNswM1fjQVXUcecyALf4q4YUebjtmD6u1YeGzmRauT3xlPzpjJzeGmDbm8XEYrgANz6gNd5157cWz8-vS3XYcjBmnKfRH-kp1Aq5SpBZtaPeCuvQk2mJ3f-Fv7RN0fgOE9o","UiLocales":null,"Nonce":"637068899754461509.NTg3Y2YyZTYtMTViYi00YWMzLTk1MmUtMDVlY2I1YmUzMzY3N2VmMGJkNjktNjM1ZC00ZmU4LWExOGYtODY3ZjVkYjcxZDA0","AuthenticationContextReferenceClasses":null,"DisplayMode":null,"PromptMode":null,"MaxAge":null,"LoginHint":null,"SessionId":null,"Raw":{"client_id":"ZNxtApp","redirect_uri":"https://localhost:44373/signin-oidc","response_type":"code id_token","scope":"openid profile ZNxtCoreAppApi","response_mode":"form_post","nonce":"637068899754461509.NTg3Y2YyZTYtMTViYi00YWMzLTk1MmUtMDVlY2I1YmUzMzY3N2VmMGJkNjktNjM1ZC00ZmU4LWExOGYtODY3ZjVkYjcxZDA0","state":"CfDJ8LEg8Ji_2D9En5ejcXDoQkRgRTMS8ofYTojCig-QHTgPYXQDUCODbJBFCyHl-XClMnbH-QeDKqkGipCCht5Svg5bKOm-rlbGaPbo_UUYmaXoqCYB-9bDSFUWm4SNFn2Xn51AQOZJo2p5U1l_tYnXM5lG29SrDIILyHnoAdMR7LNswM1fjQVXUcecyALf4q4YUebjtmD6u1YeGzmRauT3xlPzpjJzeGmDbm8XEYrgANz6gNd5157cWz8-vS3XYcjBmnKfRH-kp1Aq5SpBZtaPeCuvQk2mJ3f-Fv7RN0fgOE9o","x-client-SKU":"ID_NETSTANDARD2_0","x-client-ver":"5.3.0.0"},"$type":"AuthorizeRequestValidationLog"}
+2019-10-17 11:49:35.747 +05:30 [INF] Showing login: User is not authenticated
+2019-10-17 11:49:35.899 +05:30 [DBG] Start authorize request protocol validation
+2019-10-17 11:49:35.900 +05:30 [DBG] client configuration validation for client ZNxtApp succeeded.
+2019-10-17 11:49:35.900 +05:30 [DBG] Checking for PKCE parameters
+2019-10-17 11:49:35.900 +05:30 [DBG] No PKCE used.
+2019-10-17 11:49:35.901 +05:30 [DBG] Calling into custom validator: IdentityServer4.Validation.DefaultCustomAuthorizeRequestValidator
+2019-10-17 11:49:35.906 +05:30 [DBG] client configuration validation for client ZNxtApp succeeded.
+2019-10-17 15:50:49.039 +05:30 [INF] Starting IdentityServer4 version 2.5.0.0
+2019-10-17 15:50:49.249 +05:30 [INF] You are using the in-memory version of the persisted grant store. This will store consent decisions, authorization codes, refresh and reference tokens in memory only. If you are using any of those features in production, you want to switch to a different store implementation.
+2019-10-17 15:50:49.297 +05:30 [INF] Using the default authentication scheme idsrv for IdentityServer
+2019-10-17 15:50:49.297 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for authentication
+2019-10-17 15:50:49.297 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-in
+2019-10-17 15:50:49.297 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for sign-out
+2019-10-17 15:50:49.298 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for challenge
+2019-10-17 15:50:49.298 +05:30 [DBG] Using idsrv as default ASP.NET Core scheme for forbid
+2019-10-17 15:50:51.455 +05:30 [DBG] Login Url: /Account/Login
+2019-10-17 15:50:51.463 +05:30 [DBG] Login Return Url Parameter: ReturnUrl
+2019-10-17 15:50:51.463 +05:30 [DBG] Logout Url: /Account/Logout
+2019-10-17 15:50:51.463 +05:30 [DBG] ConsentUrl Url: /consent
+2019-10-17 15:50:51.464 +05:30 [DBG] Consent Return Url Parameter: returnUrl
+2019-10-17 15:50:51.464 +05:30 [DBG] Error Url: /home/error
+2019-10-17 15:50:51.464 +05:30 [DBG] Error Id Parameter: errorId

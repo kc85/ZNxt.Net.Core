@@ -69,13 +69,13 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
         {
             try
             {
-                
+
                 var request = _httpContextProxy.GetRequestBody<ModuleInstallRequest>();
                 if (request == null)
                 {
                     return _responseBuilder.BadRequest();
                 }
-                if(request.InstallationKey != _moduleInstallationKey)
+                if (request.InstallationKey != _moduleInstallationKey)
                 {
                     _logger.Error("Installation key validation fail");
                     return _responseBuilder.Unauthorized();
@@ -164,18 +164,27 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
             foreach (var route in routes)
             {
-                var data =  JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(route));
-                data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
-                data[CommonConst.CommonField.MODULE_NAME] = request.Name;
-                data[CommonConst.CommonField.VERSION] = request.Version;
-                data[CommonConst.CommonField.ÌS_OVERRIDE] = false;
-                data[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
-                data[CommonConst.CommonField.KEY] = $"{route.Method}:{route.Route}";
-                WriteToDB(data, request.Name, CommonConst.Collection.SERVER_ROUTES, CommonConst.CommonField.KEY);
-                data[CommonConst.CommonField.MODULE_ENDPOINT] = ApplicationConfig.AppEndpoint;
-                if (request.Name != "ZNxt.Net.Core.Module.Gateway")
+                try
                 {
-                    _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", data, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+
+
+                    var data = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(route));
+                    data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
+                    data[CommonConst.CommonField.MODULE_NAME] = request.Name;
+                    data[CommonConst.CommonField.VERSION] = request.Version;
+                    data[CommonConst.CommonField.ÌS_OVERRIDE] = false;
+                    data[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
+                    data[CommonConst.CommonField.KEY] = $"{route.Method}:{route.Route}";
+                    WriteToDB(data, request.Name, CommonConst.Collection.SERVER_ROUTES, CommonConst.CommonField.KEY);
+                    data[CommonConst.CommonField.MODULE_ENDPOINT] = ApplicationConfig.AppEndpoint;
+                    if (request.Name != "ZNxt.Net.Core.Module.Gateway")
+                    {
+                        _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", data, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error($"Error InstallRoutes route:{route}", ex);
                 }
             }
         }
@@ -201,23 +210,30 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
                 foreach (JObject joData in JObjectHelper.GetJArrayFromString(CommonUtility.GetStringFromBase64(_keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId))))
                 {
-                    joData[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
-                    joData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
-                    joData[CommonConst.CommonField.MODULE_NAME] = request.Name;
-                    joData[CommonConst.CommonField.VERSION] = request.Version;
-                    joData[CommonConst.CommonField.ÌS_OVERRIDE] = false;
-                    joData[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
-                    var url = GetUIAppUrl(parent);
-                    if (string.IsNullOrEmpty(url))
+                    try
                     {
-                        WriteToDB(joData, request.Name, collectionName, CommonConst.CommonField.DATA_KEY);
-                    }
-                    else
-                    {
-                        _logger.Debug($"Callling remote /ui/installcollection Flile : {fileName}, Collection {collectionName}, Parent: { parent}, url {url}");
-                        joData[CommonConst.CommonValue.COLLECTION] = collectionName;
-                        _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installcollection", "", joData, null, url).GetAwaiter().GetResult();
+                        joData[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
+                        joData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
+                        joData[CommonConst.CommonField.MODULE_NAME] = request.Name;
+                        joData[CommonConst.CommonField.VERSION] = request.Version;
+                        joData[CommonConst.CommonField.ÌS_OVERRIDE] = false;
+                        joData[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
+                        var url = GetUIAppUrl(parent);
+                        if (string.IsNullOrEmpty(url))
+                        {
+                            WriteToDB(joData, request.Name, collectionName, CommonConst.CommonField.DATA_KEY);
+                        }
+                        else
+                        {
+                            _logger.Debug($"Callling remote /ui/installcollection Flile : {fileName}, Collection {collectionName}, Parent: { parent}, url {url}");
+                            joData[CommonConst.CommonValue.COLLECTION] = collectionName;
+                            _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installcollection", "", joData, null, url).GetAwaiter().GetResult();
 
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error($"Error InstallCollections collection:{joData}", ex);
                     }
                 }
             }
@@ -242,8 +258,11 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
             foreach (var item in _dbService.Get(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, new RawQuery(wwwrootFilter)))
             {
+                var fileName = string.Empty;
+                try
+                {
                 var fileSourceId = item[CommonConst.CommonField.DISPLAY_ID].ToString();
-                var fileName = item[CommonConst.CommonField.NAME].ToString();
+                 fileName = item[CommonConst.CommonField.NAME].ToString();
                 var fileSize = int.Parse(item[CommonConst.CommonField.FILE_SIZE].ToString());
                 var contentType = Mime.GetMimeType(fileName);
                 var fileData = JObjectHelper.GetJObjectDbDataFromFile(fileName, contentType, "content/wwwroot", request.Name, fileSize);
@@ -265,6 +284,11 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 {
                     fileData[CommonConst.CommonField.DATA] = _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId);
                     _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installpage", "", fileData, null, appUIFolderUrl).GetAwaiter().GetResult();
+                }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error($"Error InstallWWWRoot file:{fileName}", ex);
                 }
             }
         }

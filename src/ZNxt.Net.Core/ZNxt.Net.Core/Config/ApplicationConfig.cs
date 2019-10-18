@@ -10,7 +10,7 @@ namespace ZNxt.Net.Core.Config
     /// </summary>
     public static class ApplicationConfig
     {
-        
+
         public static AppInstallStatus AppInstallStatus
         { get; set; }
         public static string AppName
@@ -89,9 +89,9 @@ namespace ZNxt.Net.Core.Config
             }
         }
 
-       /// <summary>
-       /// System Temp Folder 
-       /// </summary>
+        /// <summary>
+        /// System Temp Folder 
+        /// </summary>
         public static string SystemTempFolder
         {
             get
@@ -133,7 +133,7 @@ namespace ZNxt.Net.Core.Config
             }
         }
 
-      
+
         /// <summary>
         /// Application Module Cache Path
         /// </summary>
@@ -174,13 +174,42 @@ namespace ZNxt.Net.Core.Config
 
         public static double SessionDuration { get { return _sessionDuration; } set { _sessionDuration = value; } }
 
-        public static string AppBinPath { get{ return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location); } }
+        public static string AppBinPath { get { return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location); } }
 
         public static string AppWWWRootPath => CommonUtility.GetAppConfigValue("WWWRootFolder");
 
         public static string AppEndpoint => CommonUtility.GetAppConfigValue("AppEndpoint");
 
         public static string ApiGatewayEndpoint => CommonUtility.GetAppConfigValue("ApiGatewayEndpoint");
+        public static bool IsSSO {
+            get {
+                return CommonUtility.GetAppConfigValue("IsSSO") == "true";
+             }
+        }
+        public static int HttpPort
+        {
+            get
+            {
+                int port = 80;
+                if(!int.TryParse(CommonUtility.GetAppConfigValue("HttpPort"), out port))
+                {
+                    port = 80;
+                }
+                return port;
+            }
+        }
+        public static int HttpsPort
+        {
+            get
+            {
+                int port = 443;
+                if(!int.TryParse(CommonUtility.GetAppConfigValue("HttpsPort"), out port))
+                {
+                    port = 443;
+                }
+                return port;
+            }
+        }
 
     }
 }

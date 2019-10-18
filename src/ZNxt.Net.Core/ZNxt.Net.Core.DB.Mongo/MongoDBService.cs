@@ -41,10 +41,18 @@ namespace ZNxt.Net.Core.DB.Mongo
                 IsConnected = false;
             }
         }
-        private void Init()
+        public void Init(string dbName = null, string connectionString = null)
         {
-            _mongoClient = new MongoClient(_DBConfig.ConnectingString);
-            _mongoDataBase = _mongoClient.GetDatabase(_DBConfig.DBName);
+            if (dbName == null)
+            {
+                dbName = _DBConfig.DBName;
+            }
+            if(connectionString == null)
+            {
+                connectionString = _DBConfig.ConnectingString;
+            }
+            _mongoClient = new MongoClient(connectionString);
+            _mongoDataBase = _mongoClient.GetDatabase(dbName);
         }
         public long Delete(string collection, FilterQuery filters)
         {
@@ -68,6 +76,11 @@ namespace ZNxt.Net.Core.DB.Mongo
             {
                 return false;
             }
+        }
+        public bool DropCollection(string collection)
+        {
+            _mongoDataBase.DropCollection(collection);
+            return true;
         }
 
         public JArray Get(string collection, DBQuery query, int? top = null, int? skip = null)

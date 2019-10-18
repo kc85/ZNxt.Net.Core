@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="RazorLight" Version="2.0.0-beta1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RazorLight\RazorLight.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
   </ItemGroup>
 
