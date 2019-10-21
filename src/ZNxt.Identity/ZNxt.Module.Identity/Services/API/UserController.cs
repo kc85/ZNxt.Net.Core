@@ -78,7 +78,9 @@ namespace ZNxt.Module.Identity.Services.API
         }
         private JObject UserInfoByUserId(string user_id)
         {
-            var user = _dBService.Get(CommonConst.Collection.USERS, new RawQuery("{'user_id':'" + user_id + "'}"));
+            _logger.Debug($"Get User by User_id {user_id}");
+            var filter = "{'user_id':'" + user_id + "'}";
+            var user = _dBService.Get(CommonConst.Collection.USERS, new RawQuery(filter));
             if (user.Count != 0)
             {
                 var model = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
@@ -87,6 +89,7 @@ namespace ZNxt.Module.Identity.Services.API
             }
             else
             {
+                _logger.Debug($"User NOT FOUND by  {filter}, Collection {CommonConst.Collection.USERS}");
                 return null;
             }
         }

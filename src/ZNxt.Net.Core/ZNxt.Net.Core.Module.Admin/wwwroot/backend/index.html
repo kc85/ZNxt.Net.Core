@@ -221,7 +221,14 @@
             <!-- /top navigation -->
             <!-- page content -->
             <script>
-                
+                if (__userData != undefined && __userData.user_id != undefined) {
+                    $("body").show();
+
+                }
+                else {
+                    window.location = "./auth/signin"
+                }
+                /*
                   $.ajax({
                         type: "GET",
                         url: "./api/auth/ping",
@@ -229,10 +236,11 @@
                            $("body").show();
                         },
                         error: function (request, status, error) {
-                           window.location = "./auth/signin"
+                           
                         }
                     });
 
+*/
             </script>
             <div class="right_col" role="main">
 

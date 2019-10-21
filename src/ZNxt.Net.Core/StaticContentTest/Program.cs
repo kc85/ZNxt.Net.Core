@@ -8,6 +8,8 @@ namespace StaticContentTest
     {
         static void Main(string[] args)
         {
+            var hash = ZNxt.Net.Core.Helpers.CommonUtility.Sha256Hash("sqaSecret");
+
             var rv = new RazorTemplateEngine();
 
             Func<string, string> getAppSetting =

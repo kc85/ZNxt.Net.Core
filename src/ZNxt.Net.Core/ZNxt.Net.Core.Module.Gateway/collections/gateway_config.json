@@ -1,19 +1,19 @@
 ﻿[
   {
     "key": "frontend_url",
-    "data": "http://s2ftechnologies.com",
+    "data": "http://sqa.s2fschool.com",
     "ui_folder": "frontend",
     "isactive": true
   },
   {
-    "data": "http://admin.s2ftechnologies.com",
+    "data": "http://sqa.admin.s2fschool.com",
     "isactive": true,
     "key": "backend_url",
     "ui_folder": "backend"
   },
   {
     "key": "gateway_url",
-    "data": "http://gateway.s2ftechnologies.com",
+    "data": "http://sqa.gateway.s2fschool.com",
     "ui_folder": "gateway",
     "isactive": true
   }
