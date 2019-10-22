@@ -68,7 +68,7 @@ namespace ZNxt.Net.Core.Web.Services
                         }
                         else
                         {
-                            _logger.Error($"Http status:{httpresponse.StatusCode }, url : {request.RequestUri}, Headers:{string.Join(",", request.Headers.Select(f=> $"{f.Key}:{f.Value}"))}. Body:{ requestBody}");
+                            _logger.Error($"Http Status:{httpresponse.StatusCode }, url : {request.RequestUri}, Headers:{string.Join(",", request.Headers.Select(f=> $"{f.Key}:{f.Value.First()}"))}. Body:{ requestBody}");
                             if (httpresponse.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 throw new UnauthorizedAccessException();
