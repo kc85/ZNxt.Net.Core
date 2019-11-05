@@ -16,5 +16,11 @@
     "data": "http://sqa.gateway.s2fschool.com",
     "ui_folder": "gateway",
     "isactive": true
+  },
+  {
+    "key": "sso_url",
+    "data": "http://sqa.sso.s2fschool.com",
+    "ui_folder": "sso",
+    "isactive": true
   }
 ]

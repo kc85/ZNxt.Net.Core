@@ -5,6 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.0-Beta00080</Version>
+    <Copyright></Copyright>
   </PropertyGroup>
 
   <ItemGroup>
