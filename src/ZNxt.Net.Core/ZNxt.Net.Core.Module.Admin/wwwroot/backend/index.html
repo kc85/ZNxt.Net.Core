@@ -88,7 +88,7 @@
                         <a data-toggle="tooltip" data-placement="top" title="Lock">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="../signup/logout.z">
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="./auth/signout">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -221,26 +221,22 @@
             <!-- /top navigation -->
             <!-- page content -->
             <script>
-                if (__userData != undefined && __userData.user_id != undefined) {
-                    $("body").show();
+                try {
 
-                }
-                else {
-                    window.location = "./auth/signin"
-                }
-                /*
-                  $.ajax({
-                        type: "GET",
-                        url: "./api/auth/ping",
-                        success: function (responseData) {
-                           $("body").show();
-                        },
-                        error: function (request, status, error) {
-                           
-                        }
-                    });
 
-*/
+                    if (__userData != undefined && __userData.user_id != undefined) {
+                        $("body").show();
+
+                    }
+                    else {
+                        window.location = "./auth/signin"
+                    }
+                } catch (e) {
+                    if (e.name == "ReferenceError") {
+                         window.location = "./auth/signin"
+                    }
+                }
+
             </script>
             <div class="right_col" role="main">
 

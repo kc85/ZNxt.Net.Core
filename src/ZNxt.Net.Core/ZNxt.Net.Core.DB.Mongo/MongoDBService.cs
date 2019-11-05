@@ -18,13 +18,14 @@ namespace ZNxt.Net.Core.DB.Mongo
         private IMongoDatabase _mongoDataBase;
         private MongoClient _mongoClient;
         private IDBServiceConfig _DBConfig;
-        public Func<string> User;
+        private readonly IHttpContextProxy _httpContextProxy;
         private const string DUPLICATE_KEY_ERROR = "duplicate key error";
         public bool IsConnected { get; private set; }
-        public MongoDBService(IDBServiceConfig DBConfig)
+        public MongoDBService(IDBServiceConfig DBConfig, IHttpContextProxy httpContextProxy)
         {
             try
             {
+                _httpContextProxy = httpContextProxy;
                 _DBConfig = DBConfig;
                 if (ApplicationConfig.AppInstallStatus != Enums.AppInstallStatus.DBNotSet)
                 {
@@ -230,7 +231,8 @@ namespace ZNxt.Net.Core.DB.Mongo
         }
         private string GetUserId()
         {
-            return User != null ? User() : "";
+            var user = _httpContextProxy.User;
+            return user != null ? user.user_id  : "";
         }
 
         private List<string> GetProperties(DBQuery query)

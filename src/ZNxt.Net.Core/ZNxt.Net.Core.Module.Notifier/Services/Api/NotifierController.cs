@@ -132,5 +132,43 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
                 }
             }
         }
+
+
+        [Route("/notifier/config", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL)]
+        public JObject GetConfig()
+        {
+            JObject configs = new JObject();
+            configs["smtp_address"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER);
+            configs["smtp_port"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_PORT);
+            configs["smtp_user"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_USER);
+            configs["smtp_pass"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_PASSWORD);
+            configs["from_email"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.FROM_EMAIL_ID);
+            configs["sms_gateway_key"] = _appSettingService.GetAppSettingData("text_local_sms_gateway_key");
+            configs["sms_gateway_endpoint"] = _appSettingService.GetAppSettingData("text_local_sms_gateway_endpoint");
+            configs["sms_from"] = _appSettingService.GetAppSettingData("sms_from");
+            return _responseBuilder.Success(configs);
+           
+        }
+        [Route("/notifier/config/save", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        public JObject SaveConfig()
+        {
+            var model = _httpContextProxy.GetRequestBody<JObject>();
+            if (model == null)
+            {
+                return _responseBuilder.BadRequest();
+            }
+
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER), model["smtp_address"].ToString());
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_PORT), model["smtp_port"].ToString());
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_USER), model["smtp_user"].ToString());
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_PASSWORD), model["smtp_pass"].ToString());
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.FROM_EMAIL_ID), model["from_email"].ToString());
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData("text_local_sms_gateway_key"), model["sms_gateway_key"].ToString());
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData("text_local_sms_gateway_endpoint"), model["sms_gateway_endpoint"].ToString());
+            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData("sms_from"), model["sms_from"].ToString());
+
+            return _responseBuilder.Success();
+
+        }
     }
 }

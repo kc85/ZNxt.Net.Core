@@ -15,19 +15,20 @@ namespace ZNxt.Net.Core.Web.Services
         private static readonly object lockObjet = new object();
         public double TransactionStartTime { get; private set; }
         public string LoggerName { get; set; }
+        public string RouteData { get; set; }
 
         private readonly IHttpContextProxy _httpContextProxy;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDBService _dbService;
 
         public Logger(IHttpContextAccessor httpContextAccessor, IHttpContextProxy httpContextProxy, IDBService dbService)
         {
             _dbService = dbService;
-            if (httpContextAccessor.HttpContext != null)
+            _httpContextAccessor = httpContextAccessor;
+            if (_httpContextAccessor.HttpContext != null)
             {
                 _httpContextProxy = httpContextProxy;
-                TransactionId = httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.TRANSACTION_ID];
-
-                double.TryParse(httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.CREATED_DATA_DATE_TIME], out double starttime);
+                double.TryParse(_httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.CREATED_DATA_DATE_TIME], out double starttime);
                 TransactionStartTime = starttime;
 
             }
@@ -94,6 +95,11 @@ namespace ZNxt.Net.Core.Web.Services
         }
         private JObject LoggerCommon(string message, JObject loginputData, string level)
         {
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                TransactionId = _httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.TRANSACTION_ID];
+                LoggerName = _httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.MODULE_NAME];
+            }
             var logData = new JObject();
             logData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
             logData[CommonConst.CommonField.DISPLAY_ID] = Guid.NewGuid().ToString();

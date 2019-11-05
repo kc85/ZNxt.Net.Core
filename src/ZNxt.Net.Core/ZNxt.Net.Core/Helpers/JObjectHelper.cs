@@ -122,5 +122,9 @@ namespace ZNxt.Net.Core.Helpers
         {
             return File.ReadAllText(path);
         }
+        public static  JObject ToJObject(this object obj)
+        {
+            return JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+        }
     }
 }

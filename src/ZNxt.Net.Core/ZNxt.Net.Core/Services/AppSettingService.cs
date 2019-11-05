@@ -40,7 +40,7 @@ namespace ZNxt.Net.Core.Services
         {
             lock (_lockObj)
             {
-                string filter = "{" + CommonConst.CommonField.DATA_KEY + " : '" + key + "'}";
+                string filter = "{" + CommonConst.CommonField.DATA_KEY + " : '" + key + "','is_override' : false}";
                 JObject setting = new JObject();
                 setting[CommonConst.CommonField.DATA_KEY] = key;
                 setting[CommonConst.CommonField.DISPLAY_ID] = Guid.NewGuid().ToString();
@@ -57,7 +57,7 @@ namespace ZNxt.Net.Core.Services
         {
             lock (_lockObj)
             {
-                string filter = "{" + CommonConst.CommonField.DATA_KEY + " : '" + key + "'}";
+                string filter = "{" + CommonConst.CommonField.DATA_KEY + " : '" + key + "', 'is_override' : false}";
                 JObject setting = new JObject();
                 setting[CommonConst.CommonField.DATA_KEY] = key;
                 setting[CommonConst.CommonField.DISPLAY_ID] = Guid.NewGuid().ToString();

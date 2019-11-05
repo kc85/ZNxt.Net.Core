@@ -51,6 +51,9 @@ namespace ZNxt.Net.Core.Web.Handlers
                     var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
                     if (type != null)
                     {
+                        context.Response.Headers[CommonConst.CommonField.MODULE_NAME] = route.module;
+                        context.Response.Headers[CommonConst.CommonField.ROUTE] = route.Route;
+                        
                         _logger.Debug(string.Format("Executing route:{0}", route.ToString()));
                         var controller = _serviceResolver.Resolve(type);
                         var method = controller.GetType().GetMethods().FirstOrDefault(f => f.Name == route.ExecuteMethod);
