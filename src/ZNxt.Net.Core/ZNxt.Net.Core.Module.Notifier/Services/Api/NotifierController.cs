@@ -158,14 +158,14 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
                 return _responseBuilder.BadRequest();
             }
 
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER), model["smtp_address"].ToString());
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_PORT), model["smtp_port"].ToString());
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_USER), model["smtp_user"].ToString());
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_PASSWORD), model["smtp_pass"].ToString());
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData(CommonConst.CommonField.FROM_EMAIL_ID), model["from_email"].ToString());
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData("text_local_sms_gateway_key"), model["sms_gateway_key"].ToString());
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData("text_local_sms_gateway_endpoint"), model["sms_gateway_endpoint"].ToString());
-            _appSettingService.SetAppSetting(_appSettingService.GetAppSettingData("sms_from"), model["sms_from"].ToString());
+            _appSettingService.SetAppSetting(CommonConst.CommonField.SMTP_SERVER, model["smtp_address"].ToString());
+            _appSettingService.SetAppSetting(CommonConst.CommonField.SMTP_SERVER_PORT, model["smtp_port"].ToString());
+            _appSettingService.SetAppSetting(CommonConst.CommonField.SMTP_SERVER_USER, model["smtp_user"].ToString());
+            _appSettingService.SetAppSetting(CommonConst.CommonField.SMTP_SERVER_PASSWORD, model["smtp_pass"].ToString());
+            _appSettingService.SetAppSetting(CommonConst.CommonField.FROM_EMAIL_ID, model["from_email"].ToString());
+            _appSettingService.SetAppSetting("text_local_sms_gateway_key", model["sms_gateway_key"].ToString());
+            _appSettingService.SetAppSetting("text_local_sms_gateway_endpoint", model["sms_gateway_endpoint"].ToString());
+            _appSettingService.SetAppSetting("sms_from", model["sms_from"].ToString());
 
             return _responseBuilder.Success();
 
