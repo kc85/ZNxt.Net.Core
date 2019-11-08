@@ -28,11 +28,16 @@ namespace ZNxt.Identity.Services
             _dBService = dBService;
             _logger = logger;
         }
-        public async Task<bool> CreateUserAsync(ZNxt.Net.Core.Model.UserModel user)
+        public bool CreateUser(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
+        {
+            return CreateUserAsync(user, sendEmail).GetAwaiter().GetResult();
+        }
+
+        public async Task<bool> CreateUserAsync(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
         {
             if (user != null && !IsExists(user.user_id))
-            { 
-                user.roles = new List<string>() { "user","init_user" };
+            {
+                user.roles = new List<string>() { "user", "init_user" };
                 var userObject = JObject.Parse(JsonConvert.SerializeObject(user));
                 userObject[CommonField.IS_ENABLED] = Boolean.TrueString.ToLower();
                 if (_dBService.WriteData(Collection.USERS, userObject))
@@ -43,7 +48,10 @@ namespace ZNxt.Identity.Services
                     var result = _dBService.WriteData(Collection.USER_INFO, userInfo);
                     if (result)
                     {
-                        await _userNotifierService.SendWelcomeEmailAsync(user);
+                        if (sendEmail)
+                        {
+                            await _userNotifierService.SendWelcomeEmailAsync(user);
+                        }
                     }
                     else
                     {
@@ -96,6 +104,19 @@ namespace ZNxt.Identity.Services
                 return null;
             }
 
+        }
+        public UserModel GetUserByEmail(string email)
+        {
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: '" + email + "'}"));
+            if (user.Any())
+            {
+                var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
+                return userModel;
+            }
+            else
+            {
+                return null;
+            }
         }
         public PasswordSaltModel GetPassword(string userid)
         {

@@ -120,32 +120,32 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 var assembly = Assembly.Load(Convert.FromBase64String(data));
                 fileData[CommonConst.CommonField.NAME] = assembly.FullName;
                 WriteToDB(fileData, request.Name, CommonConst.Collection.DLLS, CommonConst.CommonField.FILE_PATH);
-                InstallAuthUserGroups(InstallRoutes(request, assembly),request);
+                InstallRoutes(request, assembly);
                 _keyValueStorage.Put<string>(CommonConst.Collection.DLLS, id, data);
             }
         }
 
-        private void InstallAuthUserGroups(List<string> authUserGroups, ModuleInstallRequest request)
-        {
-            foreach (var group in authUserGroups)
-            {
-                var joData = new JObject();
-                joData[CommonConst.CommonField.KEY] = group;
-                joData[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
-                joData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
-                joData[CommonConst.CommonField.MODULE_NAME] = request.Name;
-                joData[CommonConst.CommonField.VERSION] = request.Version;
-                joData[CommonConst.CommonField.ÌS_OVERRIDE] = false;
-                joData[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
-                var url = GetSSOAppUrl();
-                if (!string.IsNullOrEmpty(url))
-                {
-                    _logger.Debug($"Callling remote /ui/installcollection install Group : {group}, Collection: user_groups,  url {url}");
-                    joData[CommonConst.CommonValue.COLLECTION] = "user_groups";
-                    _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installcollection", "", joData, null, url).GetAwaiter().GetResult();
-                }
-            }
-        }
+        //private void InstallAuthUserGroups(List<string> authUserGroups, ModuleInstallRequest request)
+        //{
+        //    foreach (var group in authUserGroups)
+        //    {
+        //        var joData = new JObject();
+        //        joData[CommonConst.CommonField.KEY] = group;
+        //        joData[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
+        //        joData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
+        //        joData[CommonConst.CommonField.MODULE_NAME] = request.Name;
+        //        joData[CommonConst.CommonField.VERSION] = request.Version;
+        //        joData[CommonConst.CommonField.ÌS_OVERRIDE] = false;
+        //        joData[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
+        //        var url = GetSSOAppUrl();
+        //        if (!string.IsNullOrEmpty(url))
+        //        {
+        //            _logger.Debug($"Callling remote /ui/installcollection install Group : {group}, Collection: user_groups,  url {url}");
+        //            joData[CommonConst.CommonValue.COLLECTION] = "user_groups";
+        //            _apiGateway.CallAsync(CommonConst.ActionMethods.POST, "/ui/installcollection", "", joData, null, url).GetAwaiter().GetResult();
+        //        }
+        //    }
+        //}
 
         private List<string> InstallRoutes(ModuleInstallRequest request, Assembly assembly)
         {

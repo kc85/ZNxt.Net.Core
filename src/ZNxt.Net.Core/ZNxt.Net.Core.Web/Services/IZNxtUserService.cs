@@ -9,8 +9,12 @@ namespace ZNxt.Identity.Services
     public interface IZNxtUserService
     {
         Task<bool> CreateUserAsync(ClaimsPrincipal subject);
-        Task<bool> CreateUserAsync(UserModel subject);
+        Task<bool> CreateUserAsync(UserModel subject, bool sendEmail = true);
+        bool CreateUser(UserModel subject, bool sendEmail = true);
+
         bool IsExists(string userid);
+
+        UserModel GetUserByEmail(string email);
 
         UserModel GetUser(string userid);
         PasswordSaltModel GetPassword(string userid);

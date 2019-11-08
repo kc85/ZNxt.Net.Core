@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Net.Core.Module.Notifi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StaticContentTest", "StaticContentTest\StaticContentTest.csproj", "{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Module.Identity", "ZNxt.Module.Identity\ZNxt.Module.Identity.csproj", "{5C8D2379-338E-4B90-8D5A-757B788732AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C8D2379-338E-4B90-8D5A-757B788732AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C8D2379-338E-4B90-8D5A-757B788732AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C8D2379-338E-4B90-8D5A-757B788732AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C8D2379-338E-4B90-8D5A-757B788732AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{CF28EAD8-EEB5-41B8-8FD8-F9AC01CB5E77} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 		{CF7B8A11-4575-4586-8F33-F815AB96B239} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 		{D1AC912C-9AD1-4F13-BA20-F26B9EDC16C7} = {4DD2FD32-7A35-4F98-B58E-FFE6EBBC9B49}
+		{5C8D2379-338E-4B90-8D5A-757B788732AF} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE125D3-A749-4F04-9D6C-9B9632AE1D4C}

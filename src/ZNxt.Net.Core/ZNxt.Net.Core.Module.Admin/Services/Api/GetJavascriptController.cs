@@ -41,7 +41,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                     _logger.Error("Path is missing in the query string");
                     return null;
                 }
-                var filterQuery = "{" + CommonConst.CommonField.FILE_PATH + ":/.js$/i}";
+                var filterQuery = "{" + CommonConst.CommonField.FILE_PATH + ":/.js$/i,'override_by' :'none'}";
                 var data = _dBService.Get(CommonConst.Collection.STATIC_CONTECT, new RawQuery(filterQuery), new List<string> { CommonConst.CommonField.FILE_PATH, CommonConst.CommonField.DISPLAY_ID });
                 _logger.Debug("Fetch value from Get JS");
 

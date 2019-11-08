@@ -1,1 +1,1 @@
-{"code":1,"message":"SUCCESS","transaction_id":"HT6315725183332537503","debug":{"time_span":1530.0,"logs":[{"created_datetime":1572518333,"id":"814d3582-f292-4501-bf5c-a73e5b6ebba5","logger":null,"type":"Debug","transaction_id":"HT6315725183332537503","message":"callng  POST : http://sqa.gateway.s2fschool.com/api/gateway/uninstallmodule","data":null,"updated_datetime":1572518333,"created_by":""}]}}
+{"code":1,"message":"SUCCESS","transaction_id":null,"debug":{"time_span":1503.0,"logs":[]}}
