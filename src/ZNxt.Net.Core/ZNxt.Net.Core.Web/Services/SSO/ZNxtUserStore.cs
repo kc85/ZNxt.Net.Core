@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Identity.Services

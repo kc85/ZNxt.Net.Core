@@ -1,0 +1,38 @@
+﻿<div ng-controller="ZNxtAppAdmin.addUserCtrl">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Create New User</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form name="frmAddUser">
+                        <div class="form-group" ng-class="{'has-error' : frmAddUser.inputName.$touched && frmAddUser.inputName.$invalid}">
+                            <label for="inputName"> Name</label>
+                            <input type="text" class="form-control" name="inputName" id="inputName" placeholder="Enter  name" ng-model="user.name" maxlength="150" ng-minlength="5" required />
+                            <span class="help-block" ng-show="frmAddUser.inputName.$touched && frmAddUser.inputName.$invalid">Name is required and min length 5 chars.</span>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error' : frmAddUser.inputEmail.$touched && frmAddUser.inputEmail.$invalid}">
+                            <label for="inputEmail"> Email </label>
+                            <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Enter User email" ng-model="user.email" required />
+                            <span class="help-block" ng-show="frmAddUser.inputEmail.$touched && frmAddUser.inputEmail.$invalid">Please enter valid email </span>
+
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <button class="btn btn-default" ng-click="createUser();" ng-class="{'disabled': frmAddUser.$invalid}">
+                                Create User
+                            </button>
+                            <button class="btn btn-default" ng-click="close()">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

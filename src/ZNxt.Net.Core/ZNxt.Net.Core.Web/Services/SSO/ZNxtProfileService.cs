@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Identity.Services
 {

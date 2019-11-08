@@ -9,6 +9,7 @@
         $scope.filterIncludeColumns = ["id", "name", "email"];
         $scope.showDetails = false;
         $scope.loadingData = false;
+        $scope.showAddUser = false;
         $scope.active = function () {
             fetchUserInfo();
         }
@@ -35,7 +36,9 @@
         $scope.$on("onHideUserDetails", function (log) {
             $scope.showDetails = false;
         });
-
+        $scope.$on("onHideAddUser", function (log) {
+            $scope.showAddUser = false;
+        });
         $scope.pageNumberChanged = function () {
             $scope.gotoPage($scope.currentPageShow);
         };
@@ -43,6 +46,10 @@
         $scope.active();
 
         $scope.$on("onUserInfoUpdate", function () {
+            $scope.active();
+        });
+        $scope.$on("onUserCreated", function () {
+            $scope.showAddUser = false;
             $scope.active();
         });
     }]);
