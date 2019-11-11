@@ -1,73 +1,103 @@
 ﻿<div ng-controller="ZNxtAppAdmin.notifierCtrl">
 
     <div class="x_title">
-        
+
         <h3> {{name}}</h3>
     </div>
     <div class="x_content">
-        <div>
-            <form name="fromNotifierConfig">
-                <div class="row">
-                    <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER.$touched && fromNotifierConfig.inputSMTP_SERVER.$invalid}">
-                        <label for="inputSMTP_SERVER"> SMTP Server Address </label>
-                        <input type="text" class="form-control" name="inputSMTP_SERVER" id="inputSMTP_SERVER" placeholder="Enter SMTP Server" ng-model="notifier.smtp_address" maxlength="150" ng-minlength="5" required />
-                        <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER.$touched && fromNotifierConfig.inputSMTP_SERVER.$invalid">SMTP Server name is required and min length 5 chars.</span>
-                    </div>
-                    <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_PORT.$touched && fromNotifierConfig.inputSMTP_SERVER_PORT.$invalid}">
-                        <label for="inputSMTP_SERVER_PORT"> Port </label>
-                        <input type="text" class="form-control" name="inputSMTP_SERVER_PORT" id="inputSMTP_SERVER_PORT" placeholder="Enter SMTP Port" ng-model="notifier.smtp_port" maxlength="5" ng-minlength="2" ng-pattern="/^[0-9]*?$/" required />
-                        <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_PORT.$touched && fromNotifierConfig.inputSMTP_SERVER_PORT.$invalid">SMTP Server port number </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_USER.$touched && fromNotifierConfig.inputSMTP_SERVER_USER.$invalid}">
-                        <label for="inputSMTP_SERVER_USER"> SMTP Server User </label>
-                        <input type="text" class="form-control" name="inputSMTP_SERVER_USER" id="inputSMTP_SERVER_USER" placeholder="Enter SMTP Server User" ng-model="notifier.smtp_user" maxlength="150" ng-minlength="2" required />
-                        <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_USER.$touched && fromNotifierConfig.inputSMTP_SERVER_USER.$invalid">SMTP Server user is required and min length 2 chars.</span>
-                    </div>
-                    <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_PASS.$touched && fromNotifierConfig.inputSMTP_SERVER_PASS.$invalid}">
-                        <label for="inputSMTP_SERVER_PASS"> Password </label>
-                        <input type="password" class="form-control" name="inputSMTP_SERVER_PASS" id="inputSMTP_SERVER_PASS" placeholder="Enter SMTP Password" ng-model="notifier.smtp_pass" maxlength="150" ng-minlength="2" required />
-                        <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_PORT.$touched && fromNotifierConfig.inputSMTP_SERVER_PORT.$invalid">SMTP Server password</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$touched && fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$invalid}">
-                        <label for="inputSMTP_SERVER_USER"> SMTP Server User </label>
-                        <input type="email" class="form-control" name="inputSMTP_SERVER_FROMEMAIL" id="inputSMTP_SERVER_FROMEMAIL" placeholder="Enter SMTP from email address" ng-model="notifier.from_email" maxlength="150" ng-minlength="2" required />
-                        <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$touched && fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$invalid">SMTP Server from email id .</span>
-                    </div>
-                    </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12" style="padding:15px 5px 0px 5px">
+            <ul class="nav nav-tabs">
+                <li ng-class="{'active' : activetab == 'emailqueue' }"><a href="JavaScript:void(0);" ng-click="changeTab('emailqueue');">Email Queue</a></li>
+                <li ng-class="{'active' : activetab == 'smsqueue'}"><a href="JavaScript:void(0);" ng-click="changeTab('smsqueue');">SMS Queue</a></li>
+                <li ng-class="{'active' : activetab == 'settings'}"><a href="JavaScript:void(0);" ng-click="changeTab('settings');">Settings</a></li>
+                <li ng-class="{'active' : activetab == 'notificationtest'}"><a href="JavaScript:void(0);" ng-click="changeTab('notificationtest');">Test</a></li>
+            </ul>
+            <br>
+            <div ng-switch="activetab">
+                <div ng-switch-when="settings" class="x_panel">
+                    <form name="fromNotifierConfig">
+                        <div class="row">
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER.$touched && fromNotifierConfig.inputSMTP_SERVER.$invalid}">
+                                <label for="inputSMTP_SERVER"> SMTP Server Address </label>
+                                <input type="text" class="form-control" name="inputSMTP_SERVER" id="inputSMTP_SERVER" placeholder="Enter SMTP Server" ng-model="notifier.smtp_address" maxlength="150" ng-minlength="5" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER.$touched && fromNotifierConfig.inputSMTP_SERVER.$invalid">SMTP Server name is required and min length 5 chars.</span>
+                            </div>
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_PORT.$touched && fromNotifierConfig.inputSMTP_SERVER_PORT.$invalid}">
+                                <label for="inputSMTP_SERVER_PORT"> Port </label>
+                                <input type="text" class="form-control" name="inputSMTP_SERVER_PORT" id="inputSMTP_SERVER_PORT" placeholder="Enter SMTP Port" ng-model="notifier.smtp_port" maxlength="5" ng-minlength="2" ng-pattern="/^[0-9]*?$/" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_PORT.$touched && fromNotifierConfig.inputSMTP_SERVER_PORT.$invalid">SMTP Server port number </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_USER.$touched && fromNotifierConfig.inputSMTP_SERVER_USER.$invalid}">
+                                <label for="inputSMTP_SERVER_USER"> SMTP Server User </label>
+                                <input type="text" class="form-control" name="inputSMTP_SERVER_USER" id="inputSMTP_SERVER_USER" placeholder="Enter SMTP Server User" ng-model="notifier.smtp_user" maxlength="150" ng-minlength="2" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_USER.$touched && fromNotifierConfig.inputSMTP_SERVER_USER.$invalid">SMTP Server user is required and min length 2 chars.</span>
+                            </div>
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_PASS.$touched && fromNotifierConfig.inputSMTP_SERVER_PASS.$invalid}">
+                                <label for="inputSMTP_SERVER_PASS"> Password </label>
+                                <input type="password" class="form-control" name="inputSMTP_SERVER_PASS" id="inputSMTP_SERVER_PASS" placeholder="Enter SMTP Password" ng-model="notifier.smtp_pass" maxlength="150" ng-minlength="2" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_PORT.$touched && fromNotifierConfig.inputSMTP_SERVER_PORT.$invalid">SMTP Server password</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-12" ng-class="{'has-error' : fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$touched && fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$invalid}">
+                                <label for="inputSMTP_SERVER_USER"> SMTP Server User </label>
+                                <input type="email" class="form-control" name="inputSMTP_SERVER_FROMEMAIL" id="inputSMTP_SERVER_FROMEMAIL" placeholder="Enter SMTP from email address" ng-model="notifier.from_email" maxlength="150" ng-minlength="2" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$touched && fromNotifierConfig.inputSMTP_SERVER_FROMEMAIL.$invalid">SMTP Server from email id .</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_ENDPOINT.$touched && fromNotifierConfig.inputSMS_ENDPOINT.$invalid}">
+                                <label for="inputSMS_ENDPOINT"> SMS End point </label>
+                                <input type="text" class="form-control" name="inputSMS_ENDPOINT" id="inputSMS_ENDPOINT" placeholder="SMS gateway endpoint " ng-model="notifier.sms_gateway_endpoint" maxlength="150" ng-minlength="2" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMS_ENDPOINT.$touched && fromNotifierConfig.inputSMS_ENDPOINT.$invalid">SMS gateway endoint required and min length 2 chars.</span>
+                            </div>
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_GATEWAY_KEY.$touched && fromNotifierConfig.inputSMS_GATEWAY_KEY.$invalid}">
+                                <label for="inputSMTP_SERVER_PASS"> SMS Gateway key  </label>
+                                <input type="password" class="form-control" name="inputSMS_GATEWAY_KEY" id="inputSMS_GATEWAY_KEY" placeholder="SMS Gateway API Key " ng-model="notifier.sms_gateway_key" maxlength="150" ng-minlength="2" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMS_GATEWAY_KEY.$touched && fromNotifierConfig.inputSMS_GATEWAY_KEY.$invalid">SMS Gatewat API Key required</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_FROM.$touched && fromNotifierConfig.inputSMS_FROM.$invalid}">
+                                <label for="inputSMS_FROM"> SMS FROM </label>
+                                <input type="text" class="form-control" name="inputSMS_FROM" id="inputSMS_FROM" placeholder="SMS From " ng-model="notifier.sms_from" maxlength="150" ng-minlength="2" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMS_FROM.$touched && fromNotifierConfig.inputSMS_FROM.$invalid">SMS from required .</span>
+                            </div>
+                        </div>
+
+                    </form>
                     <div class="row">
-                        <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_ENDPOINT.$touched && fromNotifierConfig.inputSMS_ENDPOINT.$invalid}">
-                            <label for="inputSMS_ENDPOINT"> SMS End point </label>
-                            <input type="text" class="form-control" name="inputSMS_ENDPOINT" id="inputSMS_ENDPOINT" placeholder="SMS gateway endpoint " ng-model="notifier.sms_gateway_endpoint" maxlength="150" ng-minlength="2" required />
-                            <span class="help-block" ng-show="fromNotifierConfig.inputSMS_ENDPOINT.$touched && fromNotifierConfig.inputSMS_ENDPOINT.$invalid">SMS gateway endoint required and min length 2 chars.</span>
+                        <div class="form-group col-md-6">
+                            <button class="btn btn-default" ng-click="save();" ng-class="{'disabled': fromNotifierConfig.$invalid}">
+                                Save
+                            </button>
                         </div>
-                        <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_GATEWAY_KEY.$touched && fromNotifierConfig.inputSMS_GATEWAY_KEY.$invalid}">
-                            <label for="inputSMTP_SERVER_PASS"> SMS Gateway key  </label>
-                            <input type="password" class="form-control" name="inputSMS_GATEWAY_KEY" id="inputSMS_GATEWAY_KEY" placeholder="SMS Gateway API Key " ng-model="notifier.sms_gateway_key" maxlength="150" ng-minlength="2" required />
-                            <span class="help-block" ng-show="fromNotifierConfig.inputSMS_GATEWAY_KEY.$touched && fromNotifierConfig.inputSMS_GATEWAY_KEY.$invalid">SMS Gatewat API Key required</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_FROM.$touched && fromNotifierConfig.inputSMS_FROM.$invalid}">
-                            <label for="inputSMS_FROM"> SMS FROM </label>
-                            <input type="text" class="form-control" name="inputSMS_FROM" id="inputSMS_FROM" placeholder="SMS From " ng-model="notifier.sms_from" maxlength="150" ng-minlength="2" required />
-                            <span class="help-block" ng-show="fromNotifierConfig.inputSMS_FROM.$touched && fromNotifierConfig.inputSMS_FROM.$invalid">SMS from required .</span>
-                        </div>
+
                     </div>
 
-            </form>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <button class="btn btn-default" ng-click="save();" ng-class="{'disabled': fromNotifierConfig.$invalid}">
-                        Save
-                    </button>
+                </div>
+                <div class="clearfix"></div>
+                <div ng-switch-when="emailqueue">
+                    <div ng-include="'./app/notifier/notifier_view_email.html'" class="x_panel">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div ng-switch-when="smsqueue">
+                    <div ng-include="'./app/notifier/notifier_view_sms.html'" class="x_panel">
+                    </div>
                 </div>
 
+                <div class="clearfix"></div>
+                <div ng-switch-when="notificationtest">
+                    <div ng-include="'./app/notifier/notifier_test_email.html'" class="x_panel">
+                    </div>
+                </div>
             </div>
 
         </div>
+
     </div>
 </div>

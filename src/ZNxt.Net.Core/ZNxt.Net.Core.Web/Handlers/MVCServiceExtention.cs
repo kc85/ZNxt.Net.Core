@@ -105,6 +105,7 @@ public static class MVCServiceExtention
             options.Audience = "ZNxtCoreAppApi";
             options.TokenValidationParameters.NameClaimType = "name";
             options.RequireHttpsMetadata = false;
+            
         });
     }
 

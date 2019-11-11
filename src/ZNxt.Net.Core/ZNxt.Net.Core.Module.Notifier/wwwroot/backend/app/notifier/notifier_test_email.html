@@ -1,0 +1,44 @@
+﻿<div ng-controller="ZNxtAppAdmin.notifier_test_emailCtrl">
+
+    <div class="x_title">
+
+        <h3> {{name}}</h3>
+    </div>
+    <div class="x_content">
+        <div>
+            <form name="fromNotifierEmailTest">
+                <div class="row">
+                    <div class="form-group" ng-class="{'has-error' : fromNotifierEmailTest.inputEmailSubject.$touched && fromNotifierEmailTest.inputEmailSubject.$invalid}">
+                        <label for="inputEmailSubject"> Subject </label>
+                        <input type="text" class="form-control" name="inputEmailSubject" id="inputEmailSubject" placeholder="Enter email Subject " ng-model="email.Subject" maxlength="150" ng-minlength="5" required />
+                        <span class="help-block" ng-show="fromNotifierEmailTest.inputEmailSubject.$touched && fromNotifierEmailTest.inputEmailSubject.$invalid">Email subject is required and min length 5 chars.</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12" ng-class="{'has-error' : fromNotifierEmailTest.inputEmailTo.$touched && fromNotifierEmailTest.inputEmailTo.$invalid}">
+                        <label for="inputSMTP_SERVER_USER"> Email To  </label>
+                        <input type="email" class="form-control" name="inputEmailTo" id="inputEmailTo" placeholder="Enter email address" ng-model="email.To" maxlength="150" ng-minlength="2" required />
+                        <span class="help-block" ng-show="fromNotifierEmailTest.inputEmailTo.$touched && fromNotifierEmailTest.inputEmailTo.$invalid">Invalid Email.</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12" ng-class="{'has-error' : fromNotifierEmailTest.inputEmailBody.$touched && fromNotifierEmailTest.inputEmailBody.$invalid}">
+                        <label for="inputSMTP_SERVER_PASS"> Email Body  </label>
+                        <textarea class="form-control" name="inputEmailBody" id="inputEmailBody" placeholder="SMS Gateway API Key " ng-model="email.Message" maxlength="2000" ng-minlength="2" required>
+                        </textarea>
+                        <span class="help-block" ng-show="fromNotifierEmailTest.inputEmailBody.$touched && fromNotifierEmailTest.inputEmailBody.$invalid">Body required</span>
+                    </div>
+                </div>
+
+            </form>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <button class="btn btn-default" ng-click="send();" ng-class="{'disabled': fromNotifierEmailTest.$invalid}">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

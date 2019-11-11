@@ -78,16 +78,35 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                 return $"/****Error {ex.Message} , {ex.StackTrace }****/";
             }
         }
-        [Route("/admin/menu", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL, "application/javascript")]
+        [Route("/admin/menu", CommonConst.ActionMethods.GET, "user", "application/javascript")]
         public string GetMenu()
         {
 
             try
             {
                 _logger.Debug("Calling Get Menu");
+
+                var user = _httpContextProxy.User;
+                var roles = new List<string> { "*" };
+                if(user!=null && user.roles != null)
+                {
+                    roles.AddRange(user.roles);
+                    _logger.Debug($"User {user.ToJObject()} : Roles { String.Join(",", roles.ToArray()) }");
+                }
                 var response = new StringBuilder();
                 var data = _dBService.Get("ui_routes", new RawQuery(CommonConst.Filters.IS_OVERRIDE_FILTER));
-                response.AppendLine($"var __menus = {data.ToString()};");
+                var menuData = new JArray();
+                foreach (var menu in data)
+                {
+                    _logger.Debug($"Scan menu  {menu.ToString() }");
+                    if (menu["auth_users"] != null && (menu["auth_users"] as JArray).Where(f => roles.IndexOf(f.ToString()) != -1).Any())
+                    {
+                        _logger.Debug($" menu  Added {menu.ToString() }");
+                        menuData.Add(menu);
+                    }
+                }
+                
+                response.AppendLine($"var __menus = {menuData.ToString()};");
                 return response.ToString();
             }
             catch (Exception ex)

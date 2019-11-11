@@ -5,6 +5,7 @@
     function ($scope, $location, $rootScope, dataService, userData, logger, $window) {
         $scope.name = "Notifier";
         $scope.notifier = {};
+        $scope.activetab = 'emailqueue';
 
         $scope.active = function () {
             dataService.get("./api/notifier/config").then(function (data) {
@@ -26,6 +27,9 @@
                 }
             });
         };
+        $scope.changeTab = function (tab) {
+            $scope.activetab = tab;
+        }
         $scope.active();
     }]);
 })();
