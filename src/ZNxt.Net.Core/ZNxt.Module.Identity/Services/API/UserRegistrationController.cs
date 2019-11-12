@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using ZNxt.Module.Identity.Services.API.Models;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
@@ -10,7 +9,7 @@ using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Module.Identity.Services.API
 {
-   public  class UserRegistrationController
+    public  class UserRegistrationController
     {
         private readonly IHttpContextProxy _httpContextProxy;
 

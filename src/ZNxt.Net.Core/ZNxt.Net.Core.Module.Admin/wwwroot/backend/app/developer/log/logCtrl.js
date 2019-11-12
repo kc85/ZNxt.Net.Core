@@ -11,7 +11,7 @@
         $scope.active = function () {
             if ($scope.loadingData == false) {
                 $scope.loadingData = true;
-                dataService.get("./api/admin/log?pagesize=" + $scope.pageSize + "&currentpage=" + $scope.currentPage + "&filter=" + $scope.getFilter()).then(function (response) {
+                dataService.get("./api/base/log?pagesize=" + $scope.pageSize + "&currentpage=" + $scope.currentPage + "&filter=" + $scope.getFilter()).then(function (response) {
                     if (response.data.code == 1) {
                         $scope.currentPageShow = $scope.currentPage;
                         $scope.pageData = $scope.logData = response.data;

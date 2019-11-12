@@ -50,6 +50,7 @@
             public const string INPROGRESS = "inprogress";
             public const string APPINSTALLSTATUS = "AppInstallStatus";
             public const string ACCESS_ALL = "*";
+            public const string SYS_ADMIN= "sys_admin";
             public const string ACCESS_NONE = "";
             public const string SSOURL_CONFIG_KEY = "SSOUrl";
             public const string APP_NAME_CONFIG_KEY = "AppName";

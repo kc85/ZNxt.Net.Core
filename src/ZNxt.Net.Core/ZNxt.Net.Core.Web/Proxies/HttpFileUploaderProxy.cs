@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Net.Core.Web.Proxies

@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using ZNxt.Net.Core.Consts;
-using ZNxt.Net.Core.Model;
-
-namespace ZNxt.Net.Core.Services
+﻿namespace ZNxt.Net.Core.Services
 {
     [System.Obsolete]
     public class EventSubscriberCompletedBaseService 

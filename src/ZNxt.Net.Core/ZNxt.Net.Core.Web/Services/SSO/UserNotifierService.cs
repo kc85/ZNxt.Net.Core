@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Interfaces;
@@ -63,26 +61,29 @@ namespace ZNxt.Identity.Services
             try
             {
                 _logger.Debug($"Sending welcome email to {user.email}");
+                var templete_key = "registration_with_email_otp";
                 var templeteRequest = new JObject()
                 {
-                    ["key"] = "registration_with_email_otp",
+                    ["key"] = templete_key,
                     ["userdisplayname"] = user.name,
                     ["userloginemail"] = user.email,
                     ["userlogin"] = user.email
                 };
 
                 var resultTemplete = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templeteRequest, null);
-
+                
                 if (resultTemplete["data"] != null && !string.IsNullOrEmpty(resultTemplete["data"].ToString()))
                 {
                     var emailModel = new JObject()
                     {
                         ["Subject"] = "Registration confirmation ZNxt.App",
                         ["To"] = user.email,
-                        ["Message"] = resultTemplete["data"]
+                        ["Type"] = "Email",
+                        ["Message"] = resultTemplete["data"],
+                        ["OTPType"] = templete_key,
+                        ["Duration"] = (60*24*2).ToString() // TODO : Need to move to config, right now confugure for 2 days 
                     };
-                    var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/send", "", emailModel, null);
-
+                    var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", "", emailModel, null);
                     return result["code"].ToString() == "1";
                 }
                 else

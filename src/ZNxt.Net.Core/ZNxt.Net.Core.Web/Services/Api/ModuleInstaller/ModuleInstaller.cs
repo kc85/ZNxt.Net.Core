@@ -8,14 +8,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Web.Services.Api.ModuleInstaller.Models;
-using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 {

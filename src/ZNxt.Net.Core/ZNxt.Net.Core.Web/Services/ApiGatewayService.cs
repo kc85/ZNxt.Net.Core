@@ -9,7 +9,6 @@ using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 using System.Linq;
 using ZNxt.Net.Core.Model;
-using System.Net.Http.Headers;
 using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Net.Core.Web.Services

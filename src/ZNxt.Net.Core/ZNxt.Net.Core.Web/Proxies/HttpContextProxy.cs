@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json.Linq;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ZNxt.Net.Core.Module.Notifier.Services.Api
+﻿namespace ZNxt.Net.Core.Module.Notifier.Services.Api
 {
     public class NotifyModel
     {

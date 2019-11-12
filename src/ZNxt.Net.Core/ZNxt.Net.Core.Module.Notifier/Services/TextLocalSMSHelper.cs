@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
-using System.Text;
 using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Net.Core.Module.Notifier.Services

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Net.Core.Module.Notifier.Services
 {

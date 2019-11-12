@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Enums;
 using ZNxt.Net.Core.Helpers;
@@ -18,6 +17,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
         private readonly ISMSNotifyService _smsService;
         private readonly IEmailNotifyService _emailService;
         private readonly IAppSettingService _appSettingService;
+        private const string _valid_upto = "valid_upto";
         public OTPNotifyService(
                           IDBService dbService,
                           IAppSettingService appSettingService,
@@ -32,9 +32,9 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
             _emailService = emailService;
             _appSettingService = appSettingService;
         }
-        public bool SendSMS(string phoneNumber, string smsTemplateText, string otpType, string securityToken)
+        public bool SendSMS(string phoneNumber, string smsTemplateText, string otpType, string securityToken, long otpduration)
         {
-            var otpData = CreateOTPData(otpType, securityToken);
+            var otpData = CreateOTPData(otpType, securityToken, otpduration);
             otpData[CommonConst.CommonField.PHONE] = phoneNumber;
 
             if (_dbService.Write(CommonConst.Collection.OTPs, otpData))
@@ -48,9 +48,9 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
             }
         }
 
-        public bool SendEmail(string email, string emailTemplateText, string subject, string otpType, string securityToken)
+        public bool SendEmail(string email, string emailTemplateText, string subject, string otpType, string securityToken, long otpduration)
         {
-            var otpData = CreateOTPData(otpType, securityToken);
+            var otpData = CreateOTPData(otpType, securityToken,otpduration);
             otpData[CommonConst.CommonField.EMAIL] = email;
 
             if (_dbService.Write(CommonConst.Collection.OTPs, otpData))
@@ -77,29 +77,56 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
             if (otpDataArr.Count != 0)
             {
                 var otpData = otpDataArr.First() as JObject;
-                otpData[CommonConst.CommonField.STATUS] = OTPStatus.Used.ToString();
-                if (_dbService.Update(CommonConst.Collection.OTPs, new RawQuery(filter.ToString()), otpData ) ==1)
+                if (ValidateDuration(otpData))
                 {
-                    if (!string.IsNullOrEmpty(securityToken))
+
+                    otpData[CommonConst.CommonField.STATUS] = OTPStatus.Used.ToString();
+                    if (_dbService.Update(CommonConst.Collection.OTPs, new RawQuery(filter.ToString()), otpData) == 1)
                     {
-                        return otpData[CommonConst.CommonField.SECURITY_TOKEN].ToString() == securityToken;
+                        if (!string.IsNullOrEmpty(securityToken))
+                        {
+                            return otpData[CommonConst.CommonField.SECURITY_TOKEN].ToString() == securityToken;
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
                     else
                     {
-                        return true;
+                        _logger.Error("Error updating OTP status on DB");
+                        return false;
                     }
                 }
                 else
                 {
-                    _logger.Error("Error updating OTP status on DB");
+                    _logger.Error("Validate duration fail");
                     return false;
+
                 }
             }
             else
             {
+
+                _logger.Error("No OTP found ");
                 return false;
             }
         }
+
+        private bool ValidateDuration(JObject otpData)
+        {
+            var result = false;
+
+            if (otpData[_valid_upto] != null)
+            {
+                double duration = 0;
+                double.TryParse(otpData[_valid_upto].ToString(), out duration);
+                result = (CommonUtility.GetTimestampMilliseconds(DateTime.Now) < duration);
+            }
+
+            return result;
+        }
+
         public bool ValidateEmail(string email, string otp, string otpType, string securityToken)
         {
             Dictionary<string, string> filter = new Dictionary<string, string>();
@@ -111,31 +138,41 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
             var otpData = _dbService.FirstOrDefault(CommonConst.Collection.OTPs, filter);
             if (otpData != null)
             {
-                otpData[CommonConst.CommonField.STATUS] = OTPStatus.Used.ToString();
-                if (_dbService.Write(CommonConst.Collection.OTPs, otpData, filter))
+                if (ValidateDuration(otpData))
                 {
-                    if (!string.IsNullOrEmpty(securityToken))
+                    otpData[CommonConst.CommonField.STATUS] = OTPStatus.Used.ToString();
+                    if (_dbService.Write(CommonConst.Collection.OTPs, otpData, filter))
                     {
-                        return otpData[CommonConst.CommonField.SECURITY_TOKEN].ToString() == securityToken;
+                        if (!string.IsNullOrEmpty(securityToken))
+                        {
+                            return otpData[CommonConst.CommonField.SECURITY_TOKEN].ToString() == securityToken;
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
                     else
                     {
-                        return true;
+                        _logger.Error("Error updating OTP status on DB");
+                        return false;
                     }
                 }
                 else
                 {
-                    _logger.Error("Error updating OTP status on DB");
+                    _logger.Error("Validate duration fail");
                     return false;
+
                 }
             }
             else
             {
+                _logger.Error("No OTP found ");
                 return false;
             }
         }
 
-        private JObject CreateOTPData(string otpType, string securityToken)
+        private JObject CreateOTPData(string otpType, string securityToken, long otpduration)
         {
             var otp = CommonUtility.RandomNumber(4);
             JObject otpData = new JObject();
@@ -143,7 +180,8 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
             otpData[CommonConst.CommonField.OTP] = otp;
             otpData[CommonConst.CommonField.SECURITY_TOKEN] = securityToken;
             otpData[CommonConst.CommonField.OTP_TYPE] = otpType.ToString();
-            otpData[CommonConst.CommonField.DURATION] = 15;
+            otpData[CommonConst.CommonField.DURATION] = otpduration;
+            otpData[_valid_upto] = CommonUtility.GetTimestampMilliseconds(DateTime.Now.AddMinutes(otpduration)); 
             otpData[CommonConst.CommonField.STATUS] = OTPStatus.New.ToString();
             return otpData;
         }

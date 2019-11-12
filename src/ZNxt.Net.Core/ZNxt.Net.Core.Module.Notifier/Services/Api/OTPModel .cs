@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ZNxt.Net.Core.Module.Notifier.Services.Api
+﻿namespace ZNxt.Net.Core.Module.Notifier.Services.Api
 {
     public class OTPModel
     {
@@ -18,6 +14,8 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
         public string SecurityToken { get; set; } = "";
 
         public string OTP { get; set; } = "";
+
+        public long? Duration  { get; set; } 
 
     }
 

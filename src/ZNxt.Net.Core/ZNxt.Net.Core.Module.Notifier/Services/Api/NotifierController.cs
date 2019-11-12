@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
-using ZNxt.Net.Core.Helpers;
 using System.Linq;
 
 namespace ZNxt.Net.Core.Module.Notifier.Services.Api
@@ -34,7 +30,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
             _smsService = new SMSNotifyService(dbService, appSettingService, logger);
             _oTPNotifyService = new OTPNotifyService(dbService, appSettingService, _smsService, _emailService, logger);
         }
-        [Route("/notifier/send", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        [Route("/notifier/send", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
         public JObject Send()
         {
 
@@ -66,7 +62,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
                 }
             }
         }
-        [Route("/notifier/otp/send", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        [Route("/notifier/otp/send", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
         public JObject SendOTP()
         {
 
@@ -75,10 +71,17 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
             {
                 return _responseBuilder.BadRequest();
             }
+            if (model.Duration == null)
+            {
+                var otpduration = _appSettingService.GetAppSettingData(CommonConst.CommonField.OTP_DURATION);
+                long duration = 15;
+                long.TryParse(otpduration, out duration);
+                model.Duration = duration;
+            }
             var message = model.Message;
             if (model.Type == "SMS")
             {
-                if (_oTPNotifyService.SendSMS(model.To, model.Message, model.OTPType, model.SecurityToken))
+                if (_oTPNotifyService.SendSMS(model.To, model.Message, model.OTPType, model.SecurityToken, model.Duration.Value))
                 {
                     return _responseBuilder.Success();
                 }
@@ -89,7 +92,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
             }
             else
             {
-                if (_oTPNotifyService.SendEmail( model.To, model.Message, model.Subject, model.OTPType, model.SecurityToken))
+                if (_oTPNotifyService.SendEmail( model.To, model.Message, model.Subject, model.OTPType, model.SecurityToken, model.Duration.Value))
                 {
                     return _responseBuilder.Success();
                 }
@@ -99,7 +102,8 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
                 }
             }
         }
-        [Route("/notifier/otp/validate", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+
+        [Route("/notifier/otp/validate", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
         public JObject ValidateOTP()
         {
 
@@ -134,7 +138,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
         }
 
 
-        [Route("/notifier/config", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL)]
+        [Route("/notifier/config", CommonConst.ActionMethods.GET, CommonConst.CommonValue.SYS_ADMIN)]
         public JObject GetConfig()
         {
             JObject configs = new JObject();
