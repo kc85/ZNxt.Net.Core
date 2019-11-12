@@ -24,23 +24,23 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
             _httpContextProxy = httpContextProxy;
             _logger = logger;
         }
-        [Route("/template/add", CommonConst.ActionMethods.POST, "sys_admin")]
+        [Route("/template/add", CommonConst.ActionMethods.POST, CommonConst.CommonValue.SYS_ADMIN)]
         public JObject Add()
         {
             return _responseBuilder.Success();
 
         }
-        [Route("/template/update", CommonConst.ActionMethods.POST, "sys_admin")]
+        [Route("/template/update", CommonConst.ActionMethods.POST, CommonConst.CommonValue.SYS_ADMIN)]
         public JObject Update()
         {
             return _responseBuilder.Success();
         }
-        [Route("/template/delete", CommonConst.ActionMethods.POST, "sys_admin")]
+        [Route("/template/delete", CommonConst.ActionMethods.POST, CommonConst.CommonValue.SYS_ADMIN)]
         public JObject Delete()
         {
             return _responseBuilder.Success();
         }
-        [Route("/template/process", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL, "text/html")]
+        [Route("/template/process", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN, "text/html")]
         public string Process()
         {
             try
@@ -79,7 +79,7 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
 
             }
         }
-        [Route("/template/get", CommonConst.ActionMethods.GET, "sys_admin")]
+        [Route("/template/get", CommonConst.ActionMethods.GET, CommonConst.CommonValue.SYS_ADMIN)]
         public JObject Get()
         {
             return GetPaggedData(_collection,null, "{'override_by':'none'}");

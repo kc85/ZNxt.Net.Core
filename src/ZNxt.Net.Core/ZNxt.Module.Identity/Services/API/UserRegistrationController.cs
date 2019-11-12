@@ -34,8 +34,6 @@ namespace ZNxt.Module.Identity.Services.API
         {
             try
             {
-
-
                 var request = _httpContextProxy.GetRequestBody<AdminAddUserModel>();
                 _logger.Debug("Validation model");
                 var results = new Dictionary<string, string>();

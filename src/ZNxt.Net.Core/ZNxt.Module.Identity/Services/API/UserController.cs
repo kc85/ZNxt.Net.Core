@@ -10,21 +10,11 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Module.Identity.Services.API
 {
-    public class UserController : ZNxt.Net.Core.Services.ApiBaseService
+    public class UserController : IdentityControllerBase
     {
-        private readonly IResponseBuilder _responseBuilder;
-        private readonly IHttpContextProxy _httpContextProxy;
-        private readonly ILogger _logger;
-        private readonly IDBService _dBService;
-        private readonly IApiGatewayService _apiGatewayService;
         public UserController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService)
-         : base(httpContextProxy, dBService, logger, responseBuilder)
+         : base(responseBuilder, logger, httpContextProxy, dBService, keyValueStorage, staticContentHandler, apiGatewayService)
         {
-            _responseBuilder = responseBuilder;
-            _httpContextProxy = httpContextProxy;
-            _logger = logger;
-            _dBService = dBService;
-            _apiGatewayService = apiGatewayService;
         }
 
         [Route("/sso/users", CommonConst.ActionMethods.GET, "user")]
@@ -32,11 +22,7 @@ namespace ZNxt.Module.Identity.Services.API
         {
             return GetPaggedData(CommonConst.Collection.USERS);
         }
-        [Route("/sso/user/groups", CommonConst.ActionMethods.GET, "user")]
-        public JObject UserGroups()
-        {
-            return GetPaggedData("user_groups",null, "{'override_by' : 'none'}", null, new List<string>() { "key", "name", "description", "module_name", "version" });
-        }
+
         [Route("/user/userinfo", CommonConst.ActionMethods.GET, "user")]
         public JObject UserInfoAdmin()
         {
@@ -79,82 +65,6 @@ namespace ZNxt.Module.Identity.Services.API
 
                 _logger.Debug("_httpContextProxy.User is null");
                 return _responseBuilder.Unauthorized();
-            }
-        }
-        [Route("/sso/user/addgroup", CommonConst.ActionMethods.POST, "sys_admin")]
-        public JObject AddUserGroup()
-        {
-            return AddRemoveUserGroup(true);
-        }
-        [Route("/sso/user/removegroup", CommonConst.ActionMethods.POST, "sys_admin")]
-        public JObject RemoveUserGroup()
-        {
-            return AddRemoveUserGroup(false);
-        }
-        private JObject AddRemoveUserGroup(bool isAdded)
-        {
-            var request = _httpContextProxy.GetRequestBody<JObject>();
-            if (request == null)
-            {
-                return _responseBuilder.BadRequest();
-            }
-            if (request["user_id"] == null || request["group"] == null)
-            {
-                JObject error = new JObject()
-                {
-                    ["Error"] = "user_id and group required parameter"
-                };
-                return _responseBuilder.BadRequest(error);
-            }
-            var user_id = request["user_id"].ToString();
-            var group = request["group"].ToString();
-            var user = UserInfoByUserId(user_id);
-            if (user != null)
-            {
-                if (!(user["roles"] as JArray).Where(f => f.ToString() == group).Any() && isAdded)
-                {
-                    _logger.Debug($"Adding group {group}");
-                    (user["roles"] as JArray).Add(group);
-                }
-                else if ((user["roles"] as JArray).Where(f => f.ToString() == group).Any() && !isAdded)
-                {
-                    _logger.Debug($"Removing group {group}");
-                    (user["roles"] as JArray).Remove((user["roles"] as JArray).FirstOrDefault(f => f.ToString() == group));
-                }
-                else
-                {
-                    return _responseBuilder.BadRequest(user);
-                }
-                if (_dBService.Write(CommonConst.Collection.USERS, user, "{'user_id' : '" + user_id + "'}", true, MergeArrayHandling.Replace))
-                {
-                    return _responseBuilder.Success(user);
-                }
-                else
-                {
-                    return _responseBuilder.ServerError(user);
-                }
-            }
-            else
-            {
-                return _responseBuilder.NotFound();
-            }
-        }
-
-        private JObject UserInfoByUserId(string user_id)
-        {
-            _logger.Debug($"Get User by User_id {user_id}");
-            var filter = "{'user_id':'" + user_id + "'}";
-            var user = _dBService.Get(CommonConst.Collection.USERS, new RawQuery(filter));
-            if (user.Count != 0)
-            {
-                var model = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-                var userResponse = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(model));
-                return userResponse;
-            }
-            else
-            {
-                _logger.Debug($"User NOT FOUND by  {filter}, Collection {CommonConst.Collection.USERS}");
-                return null;
             }
         }
 
@@ -213,30 +123,12 @@ namespace ZNxt.Module.Identity.Services.API
 
         public bool AcceptTnc(UserModel userModel)
         {
-            return AddRoles(userModel.user_id, "phone_verification_required", "init_user");
-        }
-
-        private bool AddRoles(string user_id,string addrole, string removerole,JObject updateProprty = null)
-        {
-            var user = UserInfoByUserId(user_id);
-            if (!string.IsNullOrEmpty(removerole)) {
-                var initUser = (user["roles"] as JArray).FirstOrDefault(f => f.ToString() == removerole);
-                if (initUser != null)
-                {
-                    (user["roles"] as JArray).Remove(initUser);
-                }
-            }
-            if (!string.IsNullOrEmpty(addrole)) {
-                (user["roles"] as JArray).Add(addrole);
-            }
-            if (updateProprty != null)
+            var user = UserInfoByUserId(userModel.user_id);
+            if (AddRemoveRole(false, "init_user", user))
             {
-                foreach (var item in updateProprty)
-                {
-                    user[item.Key] = item.Value;
-                }
+                return AddRemoveRole(true, "phone_verification_required", user);
             }
-              return _dBService.Write(CommonConst.Collection.USERS, user, "{'user_id' : '" + user_id + "'}",true, MergeArrayHandling.Replace);
+            return false;
         }
 
         [Route("/sso/entermobile", CommonConst.ActionMethods.POST, "user")]
@@ -289,11 +181,20 @@ namespace ZNxt.Module.Identity.Services.API
                 var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/validate", null, validateRequest).GetAwaiter().GetResult();
                 if (result["code"].ToString() == "1")
                 {
-                    AddRoles(_httpContextProxy.User.user_id, "", "phone_verification_required", new JObject() {
-                        ["phone_validation_required"] = false,
-                        ["mobile_no"] = request["mobile"]
-                    });
-                    return _responseBuilder.Success();
+
+                    if (AddRemoveRole(false, "phone_verification_required", UserInfoByUserId(_httpContextProxy.User.user_id)))
+                    {
+                        UpdateUserProperty(UserInfoByUserId(_httpContextProxy.User.user_id), new JObject()
+                        {
+                            ["phone_validation_required"] = false,
+                            ["mobile_no"] = request["mobile"]
+                        });
+                        return _responseBuilder.Success();
+                    }
+                    else
+                    {
+                        return _responseBuilder.ServerError();
+                    }
                 }
                 else
                 {

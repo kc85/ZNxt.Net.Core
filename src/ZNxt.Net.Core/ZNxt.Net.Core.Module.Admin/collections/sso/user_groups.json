@@ -9,7 +9,8 @@
     "key": "user",
     "name": "User",
     "description": "Default user",
-    "is_system": true
+    "is_system": true,
+    "is_default" :  true
   },
   {
     "key": "*",

@@ -8,6 +8,7 @@
         $scope.logData = {};
         $scope.pageData = {};
         $scope.showDetails = false;
+        $scope.email = {}
         $scope.active = function () {
             if ($scope.loadingData == false) {
                 $scope.loadingData = true;
@@ -21,13 +22,15 @@
             }
         }
 
-        $scope.showDetailsPage = function (log) {
+        $scope.showDetailsPage = function (email) {
+            $scope.email = email;
+            var iframe = document.getElementById('ifrm_email_preview');
+            iframe.src = 'data:text/html,' + encodeURIComponent(email.body);
             $scope.showDetails = true;
-            $scope.$broadcast("onShowEmailQueueDetails", log);
         }
-        $scope.$on("onHideEmailQueueDetails", function (log) {
+        $scope.closeDetails = function () {
             $scope.showDetails = false;
-        });
+        };
         $scope.pageNumberChanged = function () {
             $scope.gotoPage($scope.currentPageShow);
         };
