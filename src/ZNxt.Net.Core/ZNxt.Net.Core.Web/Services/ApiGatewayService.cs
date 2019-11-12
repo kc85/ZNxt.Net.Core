@@ -186,7 +186,7 @@ namespace ZNxt.Net.Core.Web.Services
             }
             else
             {
-                throw new KeyNotFoundException("Route not found");
+                throw new KeyNotFoundException($"Route not found {method}:{route}");
             }
 
         }

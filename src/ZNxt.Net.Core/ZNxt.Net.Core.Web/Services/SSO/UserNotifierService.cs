@@ -22,7 +22,7 @@ namespace ZNxt.Identity.Services
             try
             { 
                 _logger.Debug($"Sending welcome email to {user.email}");
-                var templeteRequest = new JObject()
+                var templateRequest = new JObject()
                 {
                     ["key"] = "registration_confirmation",
                     ["userdisplayname"] = user.name,
@@ -30,15 +30,15 @@ namespace ZNxt.Identity.Services
                     ["userlogin"] = user.email
                 };
 
-               var resultTemplete  = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templeteRequest, null);
+               var resultTemplate  = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
 
-                if (resultTemplete["data"] !=null && !string.IsNullOrEmpty(resultTemplete["data"].ToString()))
+                if (resultTemplate["data"] !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
                     var emailModel = new JObject()
                     {
                         ["Subject"] = "Registration confirmation ZNxt.App",
                         ["To"] = user.email,
-                        ["Message"] = resultTemplete["data"]
+                        ["Message"] = resultTemplate["data"]
                     };
                     var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/send", "", emailModel, null);
 
@@ -46,7 +46,7 @@ namespace ZNxt.Identity.Services
                 }
                 else
                 {
-                    _logger.Error($"Error while processing the templete. Request :{templeteRequest.ToString() }");
+                    _logger.Error($"Error while processing the template. Request :{templateRequest.ToString() }");
                     return false;
                 }
             }
@@ -61,26 +61,26 @@ namespace ZNxt.Identity.Services
             try
             {
                 _logger.Debug($"Sending welcome email to {user.email}");
-                var templete_key = "registration_with_email_otp";
-                var templeteRequest = new JObject()
+                var template_key = "registration_with_email_otp";
+                var templateRequest = new JObject()
                 {
-                    ["key"] = templete_key,
+                    ["key"] = template_key,
                     ["userdisplayname"] = user.name,
                     ["userloginemail"] = user.email,
                     ["userlogin"] = user.email
                 };
 
-                var resultTemplete = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templeteRequest, null);
+                var resultTemplate = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
                 
-                if (resultTemplete["data"] != null && !string.IsNullOrEmpty(resultTemplete["data"].ToString()))
+                if (resultTemplate["data"] != null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
                     var emailModel = new JObject()
                     {
                         ["Subject"] = "Registration confirmation ZNxt.App",
                         ["To"] = user.email,
                         ["Type"] = "Email",
-                        ["Message"] = resultTemplete["data"],
-                        ["OTPType"] = templete_key,
+                        ["Message"] = resultTemplate["data"],
+                        ["OTPType"] = template_key,
                         ["Duration"] = (60*24*2).ToString() // TODO : Need to move to config, right now confugure for 2 days 
                     };
                     var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", "", emailModel, null);
@@ -88,7 +88,7 @@ namespace ZNxt.Identity.Services
                 }
                 else
                 {
-                    _logger.Error($"Error while processing the templete. Request :{templeteRequest.ToString() }");
+                    _logger.Error($"Error while processing the template. Request :{templateRequest.ToString() }");
                     return false;
                 }
             }

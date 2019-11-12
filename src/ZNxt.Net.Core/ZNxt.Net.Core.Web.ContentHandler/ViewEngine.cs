@@ -33,7 +33,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             }
         }
 
-        public string Compile(string inputTemplete, string key, Dictionary<string, dynamic> dataModel)
+        public string Compile(string inputTemplate, string key, Dictionary<string, dynamic> dataModel)
         {
             if (dataModel == null)
             {
@@ -53,7 +53,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
                         }
                     }
                 }
-                inputTemplete = headerAppender.AppendLine("}").AppendLine(inputTemplete).ToString();
+                inputTemplate = headerAppender.AppendLine("}").AppendLine(inputTemplate).ToString();
             }
 
             var engine = new RazorLightEngineBuilder()
@@ -61,7 +61,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
             .UseMemoryCachingProvider()
             .Build();
 
-            return engine.CompileRenderAsync(key, inputTemplete, dataModel).GetAwaiter().GetResult();
+            return engine.CompileRenderAsync(key, inputTemplate, dataModel).GetAwaiter().GetResult();
         }
     }
 }

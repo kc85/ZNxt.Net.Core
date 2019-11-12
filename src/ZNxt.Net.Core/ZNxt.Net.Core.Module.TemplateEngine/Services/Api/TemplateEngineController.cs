@@ -52,13 +52,13 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
                     var data = _dbService.Get(_collection, new RawQuery("{'key':'" + request["key"].ToString() + "','override_by':'none'}"));
                     if (data.Count == 1 && data.First()["data"] != null)
                     {
-                        var templete = data.First()["data"].ToString();
+                        var template = data.First()["data"].ToString();
                         request.Remove("key");
                         foreach (var item in request)
                         {
-                            templete = templete.Replace("{{" + item.Key.ToString() + "}}", item.Value.ToString());
+                            template = template.Replace("{{" + item.Key.ToString() + "}}", item.Value.ToString());
                         }
-                        return templete;
+                        return template;
                     }
                     else
                     {

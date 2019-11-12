@@ -29,11 +29,11 @@ namespace ZNxt.Net.Core.Web.ContentHandler
                 data = viewEngine.Compile(data, requestUriPath, ServerPageModelHelper.SetDefaultModel(dbProxy, httpProxy, logger, viewEngine, actionExecuter, pageModel, keyValueStorage, sessionProvider,folderPath));
                 if (pageModel.ContainsKey(CommonConst.CommonValue.PAGE_TEMPLATE_PATH))
                 {
-                    FileInfo fiTemplete = new FileInfo(pageModel[CommonConst.CommonValue.PAGE_TEMPLATE_PATH]);
+                    FileInfo fiTemplate = new FileInfo(pageModel[CommonConst.CommonValue.PAGE_TEMPLATE_PATH]);
                     var templateFileData = ContentHelper.GetStringContent(dbProxy, logger, pageModel[CommonConst.CommonValue.PAGE_TEMPLATE_PATH], keyValueStorage);
                     pageModel[CommonConst.CommonValue.RENDERBODY_DATA] = data;
                     data = viewEngine.Compile(templateFileData, pageModel[CommonConst.CommonValue.PAGE_TEMPLATE_PATH],
-                        ServerPageModelHelper.SetDefaultModel(dbProxy, httpProxy, logger, viewEngine, actionExecuter, pageModel,keyValueStorage, sessionProvider,pageModel[CommonConst.CommonValue.PAGE_TEMPLATE_PATH].Replace(fiTemplete.Name, "")));
+                        ServerPageModelHelper.SetDefaultModel(dbProxy, httpProxy, logger, viewEngine, actionExecuter, pageModel,keyValueStorage, sessionProvider,pageModel[CommonConst.CommonValue.PAGE_TEMPLATE_PATH].Replace(fiTemplate.Name, "")));
                 }
                 return data;
             }
@@ -90,7 +90,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
                {
                    return sessionProvider.GetValue<JObject>(key);
                };
-            Func<string, string> includeTemplete = (string templatePath) =>
+            Func<string, string> includeTemplate = (string templatePath) =>
             {
                 FileInfo fi = new FileInfo(string.Format("c:\\{0}{1}", folderPath, templatePath));
                 string path = fi.FullName.Replace("c:", "");
@@ -170,7 +170,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
 
             model[CommonConst.CommonValue.METHODS]["ExecuteAction"] = ActionExecute;
 
-            model[CommonConst.CommonValue.METHODS]["InclueTemplate"] = includeTemplete;
+            model[CommonConst.CommonValue.METHODS]["InclueTemplate"] = includeTemplate;
 
             model[CommonConst.CommonValue.METHODS]["GetData"] = getData;
 

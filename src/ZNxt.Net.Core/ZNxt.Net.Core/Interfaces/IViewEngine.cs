@@ -4,6 +4,6 @@ namespace ZNxt.Net.Core.Interfaces
 {
     public interface IViewEngine
     {
-        string Compile(string inputTemplete, string key, Dictionary<string, dynamic> dataModel);
+        string Compile(string inputTemplate, string key, Dictionary<string, dynamic> dataModel);
     }
 }
