@@ -72,12 +72,7 @@ namespace ZNxt.Net.Core.Services
                 fields = new List<string>();
                 fields.AddRange(HttpProxy.GetQueryString("fields").Split(','));
             }
-            JObject objectFilter = JObject.Parse(filterQuery);
             DBQuery query = new DBQuery();
-            foreach(var filter in objectFilter)
-            {
-                query.Filters.Add(new Filter(filter.Key.ToString(), filter.Value.ToString()));
-            }
             foreach (var field in fields)
             {
                 query.Fields.Add(new Field(field));
@@ -87,7 +82,7 @@ namespace ZNxt.Net.Core.Services
                 query.SortBy.Add(new SortField(sort.Key, (SortType)sort.Value));
             }
 
-            var data = GetPagedData(collection, query, pageSize, currentPage);
+            var data = GetPagedData(collection, query, filterQuery, pageSize, currentPage);
 
            DoJoins(data, collection, joins);
 
@@ -114,7 +109,7 @@ namespace ZNxt.Net.Core.Services
             return collectionJoin;
         }
 
-        protected JObject GetPagedData(string collection, DBQuery query, int pageSize = 10, int currentPage = 1)
+        protected JObject GetPagedData(string collection, DBQuery query, string rawQuery, int pageSize = 10, int currentPage = 1)
         {
             int? top = null;
             int? skip = null;
@@ -122,10 +117,14 @@ namespace ZNxt.Net.Core.Services
             top = pageSize;
             skip = (pageSize * (currentPage - 1));
             Logger.Debug(string.Format("GetPageData. Top:{0} Skip:{1} Query:{2}", top, skip, query));
-            var dbArrData = DBProxy.Get(collection, query,top, skip);
+            var sort = new Dictionary<string, int>();
+            foreach (var item in query.SortBy)
+            {
+                sort[item.Name] = item.Sort == SortType.ASC ? 1 : -1;
+            }
+            var dbArrData = DBProxy.Get(collection, new RawQuery(rawQuery), query.Fields.Select(f=>f.Name).ToList(), sort, top, skip);
             JObject extraData = new JObject();
-
-            long count = DBProxy.GetCount(collection, query.Filters);
+            long count = DBProxy.GetCount(collection, new RawQuery(rawQuery));
             extraData[CommonConst.CommonField.TOTAL_RECORD_COUNT_KEY] = count;
             extraData[CommonConst.CommonField.TOTAL_PAGES_KEY] = Math.Ceiling(((double)count / pageSize));
             extraData[CommonConst.CommonField.PAGE_SIZE_KEY] = pageSize;

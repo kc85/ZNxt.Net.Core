@@ -20,7 +20,18 @@ namespace ZNxt.Module.Identity.Services.API
         [Route("/sso/users", CommonConst.ActionMethods.GET, "user")]
         public JObject Users()
         {
-            return GetPaggedData(CommonConst.Collection.USERS);
+            try
+            {
+                string filterQuery = _httpContextProxy.GetQueryString("filter");
+                _logger.Debug($"Filter: {filterQuery}");
+                return GetPaggedData(CommonConst.Collection.USERS);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return _responseBuilder.ServerError();
+            }
         }
 
         [Route("/user/userinfo", CommonConst.ActionMethods.GET, "user")]
