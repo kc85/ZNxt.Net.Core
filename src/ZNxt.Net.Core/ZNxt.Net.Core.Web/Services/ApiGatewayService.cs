@@ -10,6 +10,7 @@ using ZNxt.Net.Core.Interfaces;
 using System.Linq;
 using ZNxt.Net.Core.Model;
 using System.Net.Http.Headers;
+using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Net.Core.Web.Services
 {
@@ -133,6 +134,15 @@ namespace ZNxt.Net.Core.Web.Services
                 {
                     request.Headers.Add("Authorization", $"Bearer {accessToken}");
                 }
+            }
+
+            if (!request.Headers.Contains(CommonConst.CommonField.TRANSACTION_ID))
+            {
+                request.Headers.Add(CommonConst.CommonField.TRANSACTION_ID, _logger.TransactionId);
+            }
+            if (!request.Headers.Contains(CommonConst.CommonField.API_AUTH_TOKEN))
+            {
+                request.Headers.Add(CommonConst.CommonField.API_AUTH_TOKEN, CommonUtility.GetApiAuthKey());
             }
         }
 

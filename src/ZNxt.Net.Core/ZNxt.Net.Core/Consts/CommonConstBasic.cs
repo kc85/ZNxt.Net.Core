@@ -26,6 +26,7 @@
             public const string LAST_EXEC_ON = "last_exec_on";
             public const string STATUS = "status";
             public const string TRANSACTION_ID = "transaction_id";
+            public const string API_AUTH_TOKEN = "api_auth_token";
             public static string DATA_MODULE_NAME = "module";
             public const string UPDATED_DATE_TIME = "updated_datetime";
             public const string NAME = "name";

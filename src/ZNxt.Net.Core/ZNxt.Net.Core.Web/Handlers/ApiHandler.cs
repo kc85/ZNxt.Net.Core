@@ -11,6 +11,7 @@ using ZNxt.Net.Core.Consts;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using ZNxt.Net.Core.Config;
+using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Net.Core.Web.Handlers
 {
@@ -204,12 +205,21 @@ namespace ZNxt.Net.Core.Web.Handlers
                         var u = _httpContextProxy.User;
                         _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f => $"{f.Key}:{f.Value}"))}");
 
-                        var hasaccess = userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
-                        if (!hasaccess)
+                        var hasaccess = false;
+                        if (route.auth_users.IndexOf(CommonConst.CommonField.API_AUTH_TOKEN) != -1)
                         {
-                            _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
+                            /// Check for API  to API auth 
+                            var api_access_key = _httpContextProxy.GetHeader(CommonConst.CommonField.API_AUTH_TOKEN);
+                            hasaccess = api_access_key == CommonUtility.GetApiAuthKey();
                         }
-
+                        else
+                        {
+                            hasaccess = userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
+                            if (!hasaccess)
+                            {
+                                _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
+                            }
+                        }
                         return hasaccess;
                     }
                     return false;

@@ -1,0 +1,21 @@
+[
+  {
+    "key": "adv_template_engine",
+    "label": "Template Engine",
+    "href": "/adv_template_engine",
+    "icon": "fa-paw",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/template_engine/template_engine.html"
+    },
+    "parent_links": [
+      "advance"
+    ],
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 90
+  }
+
+]

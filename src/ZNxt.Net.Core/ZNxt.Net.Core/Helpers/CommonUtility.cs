@@ -187,6 +187,15 @@ namespace ZNxt.Net.Core.Helpers
 
             return string.Join("", data);
         }
+        private static  string _ApiAuthKey = string.Empty;
+        public static string GetApiAuthKey()
+        {
+            if (string.IsNullOrEmpty(_ApiAuthKey))
+            {
+                _ApiAuthKey = CommonUtility.Sha256Hash($"{ CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY)}{CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY)}");
+            }
+            return _ApiAuthKey;
+        }
 
         public static bool IsRunningOnDocker { get { return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"; } }
     }
