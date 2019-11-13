@@ -54,7 +54,7 @@ namespace ZNxt.Module.Identity.Services.API
                             is_enabled = true,
                             user_type = "user_pass",
                             id = ZNxt.Net.Core.Helpers.CommonUtility.GetNewID(),
-                            roles = new List<string> { "user", "init_pass_set_required" }
+                            roles = new List<string> { "init_login_email_otp" }
                         };
 
                         _logger.Debug("Calling CreateUser");

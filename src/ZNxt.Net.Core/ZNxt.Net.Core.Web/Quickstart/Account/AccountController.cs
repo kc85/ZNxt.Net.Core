@@ -16,6 +16,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ZNxt.Identity.Services;
+using ZNxt.Net.Core.Model;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -109,7 +110,7 @@ namespace IdentityServer4.Quickstart.UI
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
-                if (_users.ValidateCredentials(model.Username, model.Password))
+                if (_users.ValidateCredentials(model.Username, model.Password,model.EmailOTP))
                 {
                     var user = _users.FindByUsername(model.Username);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_id, user.user_id,user.name, clientId: context?.ClientId));
@@ -141,20 +142,27 @@ namespace IdentityServer4.Quickstart.UI
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
                     }
+                     var view =   IsPasswordSetRequired(user, model);
+                    if (view == null)
+                    {
+                        // request for a local page
+                        if (Url.IsLocalUrl(model.ReturnUrl))
+                        {
+                            return Redirect(model.ReturnUrl);
+                        }
+                        else if (string.IsNullOrEmpty(model.ReturnUrl))
+                        {
+                            return Redirect("~/");
+                        }
+                        else
+                        {
+                            // user might have clicked on a malicious link - should be logged
+                            throw new Exception("invalid return URL");
+                        }
+                    }
+                    else {
 
-                    // request for a local page
-                    if (Url.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return Redirect(model.ReturnUrl);
-                    }
-                    else if (string.IsNullOrEmpty(model.ReturnUrl))
-                    {
-                        return Redirect("~/");
-                    }
-                    else
-                    {
-                        // user might have clicked on a malicious link - should be logged
-                        throw new Exception("invalid return URL");
+                        return view;
                     }
                 }
 
@@ -167,7 +175,16 @@ namespace IdentityServer4.Quickstart.UI
             return View(vm);
         }
 
-        
+        private IActionResult IsPasswordSetRequired(UserModel user, LoginInputModel model)
+        {
+            if(user.roles.Where(f=>f == "pass_set_required").Any())
+            {
+                return RedirectToAction("index","PasswordSet", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
+            }
+            return null;
+        }
+
+
         /// <summary>
         /// Show logout page
         /// </summary>

@@ -125,6 +125,8 @@
             public const string AUTH_USERS = "auth_users";
 
             public const string SALT_KEY = "salt";
+            public const int SUCCESS_VAL = 1;
+
         }
     }
 }

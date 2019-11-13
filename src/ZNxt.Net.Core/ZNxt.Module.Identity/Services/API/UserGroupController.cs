@@ -22,6 +22,16 @@ namespace ZNxt.Module.Identity.Services.API
         {
             return GetPaggedData("user_groups", null, "{'override_by' : 'none'}", null, new List<string>() { "key", "name", "description", "module_name", "version", "is_default" });
         }
+        [Route("/sso/user/apiaddgroup", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
+        public JObject AddUserGroupFromAPI()
+        {
+            return AddRemoveUserGroup(true);
+        }
+        [Route("/sso/user/apiremovegroup", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
+        public JObject RemoveUserGroupFromAPI()
+        {
+            return AddRemoveUserGroup(false);
+        }
         [Route("/sso/user/addgroup", CommonConst.ActionMethods.POST, "sys_admin")]
         public JObject AddUserGroup()
         {

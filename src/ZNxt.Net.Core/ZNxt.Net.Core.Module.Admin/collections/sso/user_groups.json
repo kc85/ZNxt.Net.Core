@@ -10,7 +10,7 @@
     "name": "User",
     "description": "Default user",
     "is_system": true,
-    "is_default" :  true
+    "is_default": true
   },
   {
     "key": "*",
@@ -28,12 +28,6 @@
     "key": "pass_change_required",
     "name": "Password change required",
     "description": "User assign to this group for fource password change",
-    "is_system": true
-  },
-  {
-    "key": "init_pass_set_required",
-    "name": "Password set required",
-    "description": "User assign to this group for fource password set",
     "is_system": true
   },
   {

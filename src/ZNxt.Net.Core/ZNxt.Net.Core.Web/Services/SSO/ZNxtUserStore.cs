@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
@@ -12,11 +15,14 @@ namespace ZNxt.Identity.Services
     {
         private readonly IZNxtUserService _userService;
         private readonly IZNxtUserService _ZNxtUserService;
-
-        public ZNxtUserStore(IZNxtUserService userService, IZNxtUserService ZNxtUserService)
+        private readonly IApiGatewayService _apiGatewayService;
+        private readonly ILogger _logger;
+        public ZNxtUserStore(IZNxtUserService userService, IZNxtUserService ZNxtUserService,IApiGatewayService apiGatewayService,ILogger logger)
         {
             _userService = userService;
             _ZNxtUserService = ZNxtUserService;
+            _apiGatewayService = apiGatewayService;
+            _logger = logger;
         }
 
         public async Task<UserModel> AutoProvisionUserAsync(string provider, string userId, List<System.Security.Claims.Claim> claims)
@@ -74,32 +80,29 @@ namespace ZNxt.Identity.Services
         //     The username.
         public UserModel FindByUsername(string username)
         {
-            return _userService.GetUser(username);
+            return _userService.GetUserByEmail(username);
         }
        
-        public bool ValidateCredentials(string username, string password)
+        public bool ValidateCredentials(string username, string password, string emailotp)
         {
-            var user =  _userService.GetUser(username);
+            var user =  _userService.GetUserByEmail(username);
             if (user != null)
             {
-                var pass = _userService.GetPassword(user.user_id);
-                if (pass != null)
+                if (!string.IsNullOrEmpty(emailotp))
                 {
-                    var passwordwithsalt = $"{password}{user.salt}";
-                    if (pass.Password.Equals(Sha256Hash(passwordwithsalt)))
+                    if(ValidateEmailOTP(username, emailotp))
                     {
-                        return true;
+                        if (RemoveOTPValidateUserRole(user.user_id))
+                        {
+                            return AddFouceAddPassUserRole(user.user_id);
+                        }
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
                 else
                 {
-                    return false;
+                    return ValidatePassword(password, user);
                 }
-
             }
             else
             {
@@ -107,13 +110,82 @@ namespace ZNxt.Identity.Services
             }
         }
 
-        private string Sha256Hash(string value)
+        private bool AddFouceAddPassUserRole(string user_id)
         {
-          var data =   (System.Security.Cryptography.SHA256.Create()
-                    .ComputeHash(Encoding.UTF8.GetBytes(value))
-                    .Select(item => item.ToString("x2")));
+            var group = "pass_set_required";
+            var request = new JObject()
+            {
+                ["user_id"] = user_id,
+                ["group"] = group,
+            };
+            return CallGatewayPost(request, "/sso/user/apiaddgroup");
+        }
 
-            return data.First();
+        private bool RemoveOTPValidateUserRole(string user_id)
+        {
+            var group = "init_login_email_otp";
+            var request = new JObject()
+            {
+                ["user_id"] = user_id,
+                ["group"] = group,
+            };
+            return CallGatewayPost(request, "/sso/user/apiremovegroup");
+        }
+
+        private bool ValidatePassword(string password, UserModel user)
+        {
+            var pass = _userService.GetPassword(user.user_id);
+            if (pass != null)
+            {
+                var passwordwithsalt = $"{password}{user.salt}";
+                if (pass.Password.Equals(CommonUtility.Sha256Hash(passwordwithsalt)))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool ValidateEmailOTP(string username, string emailotp)
+        {
+
+            var request = new JObject()
+            {
+                ["Type"] = "Email",
+                ["To"] = username,
+                ["OTP"] = emailotp,
+                ["OTPType"] = "registration_with_email_otp",
+            };
+            return CallGatewayPost(request, "/notifier/otp/validate");
+
+        }
+        private bool CallGatewayPost(JObject request, string url)
+        {
+            try
+            {
+                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, url, "", request).GetAwaiter().GetResult();
+                if (result[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == CommonConst.CommonField.SUCCESS_VAL.ToString())
+                {
+                    return true;
+                }
+                else
+                {
+                    _logger.Error($"Fail on call : {url}", null, result);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return false;
+            }
         }
 
     }

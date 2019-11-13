@@ -1,0 +1,36 @@
+@model SetPasswordViewModel
+
+<div class="login-page">
+    <div class="page-header">
+        <h1>Set Password</h1>
+    </div>
+    <partial name="_ValidationSummary" />
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form asp-route="Login">
+                        <input type="hidden" asp-for="ReturnUrl" />
+                        <fieldset>
+                            <div>
+                                <div id="divPass" style="display:none">
+                                    <div class="form-group">
+                                        <label asp-for="Password"></label>
+                                        <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ConfirmPassword"></label>
+                                        <input type="password" class="form-control" placeholder="Password" asp-for="ConfirmPassword" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" name="button" value="login">Create Password</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

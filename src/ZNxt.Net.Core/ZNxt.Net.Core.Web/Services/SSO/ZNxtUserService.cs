@@ -35,7 +35,13 @@ namespace ZNxt.Identity.Services
         {
             if (user != null && !IsExists(user.user_id))
             {
-                user.roles = new List<string>() { "user", "init_user" };
+                if(user.roles == null)
+                {
+                    user.roles = new List<string>();
+                }
+                var roles = new List<string>() { "user", "init_user" };
+                roles.AddRange(user.roles);
+                user.roles = roles.Distinct().ToList();
                 var userObject = JObject.Parse(JsonConvert.SerializeObject(user));
                 userObject[CommonField.IS_ENABLED] = Boolean.TrueString.ToLower();
                 if (_dBService.WriteData(Collection.USERS, userObject))
