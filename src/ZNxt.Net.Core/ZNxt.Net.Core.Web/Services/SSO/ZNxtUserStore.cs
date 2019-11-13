@@ -116,7 +116,7 @@ namespace ZNxt.Identity.Services
             var user =  _userService.GetUserByEmail(username);
             if (user != null)
             {
-                if (user.roles.Where(f=>f == "registration_with_email_otp").Any())
+                if (user.roles.Where(f=>f == "init_login_email_otp").Any())
                 {
                     if(ValidateEmailOTP(username, emailotp))
                     {
