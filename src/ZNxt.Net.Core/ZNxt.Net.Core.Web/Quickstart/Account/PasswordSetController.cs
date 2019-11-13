@@ -25,5 +25,15 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
             };
             return View(viewmodel);
         }
+        [HttpPost]
+        public IActionResult Index(SetPasswordViewModel model)
+        {
+            if(model.ConfirmPassword == model.Password)
+            {
+
+            }
+
+            return View(model) ;
+        }
     }
 }

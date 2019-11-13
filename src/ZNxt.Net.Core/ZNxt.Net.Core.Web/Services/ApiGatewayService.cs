@@ -83,7 +83,7 @@ namespace ZNxt.Net.Core.Web.Services
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error callng ApiGatewayService.CallAsync {ex.Message}" , ex);
+                _logger.Error($"Error callng ApiGatewayService.CallAsync {method}:{route}?{querystring}. {ex.Message}" , ex);
                 throw;
             }
             
