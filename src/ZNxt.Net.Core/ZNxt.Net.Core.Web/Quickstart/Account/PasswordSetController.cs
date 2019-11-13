@@ -28,7 +28,7 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
         public IActionResult Index(RedirectViewModel model)
         {
             var user = _httpContextProxy.User;
-            if (user != null && user.roles.Where(f => f == "pass_set_required").Any())
+            if (user != null) //&& user.roles.Where(f => f == "pass_set_required").Any()
             {
                 var viewmodel = new SetPasswordViewModel()
                 {
@@ -45,7 +45,8 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
         public IActionResult Index(SetPasswordViewModel model)
         {
             var user = _httpContextProxy.User;
-            if (user != null && user.roles.Where(f => f == "pass_set_required").Any())
+
+            if (user != null) // && user.roles.Where(f => f == "pass_set_required").Any()
             {
                 if (model.ConfirmPassword == model.Password)
                 {
@@ -63,7 +64,7 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
         public IActionResult PasswordCreateSuccess(RedirectViewModel model)
         {
             var user = _httpContextProxy.User;
-            if (user != null && user.roles.Where(f => f == "pass_set_required").Any())
+            if (user != null) // && user.roles.Where(f => f == "pass_set_required").Any()
             {
                 if (User?.Identity.IsAuthenticated == true)
                 {
