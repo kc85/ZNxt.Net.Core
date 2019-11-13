@@ -129,19 +129,21 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
 
         public bool ValidateEmail(string email, string otp, string otpType, string securityToken)
         {
-            Dictionary<string, string> filter = new Dictionary<string, string>();
+            var filter = new JObject();
             filter[CommonConst.CommonField.OTP] = otp;
             filter[CommonConst.CommonField.EMAIL] = email;
             filter[CommonConst.CommonField.STATUS] = OTPStatus.New.ToString();
             filter[CommonConst.CommonField.OTP_TYPE] = otpType.ToString();
 
-            var otpData = _dbService.FirstOrDefault(CommonConst.Collection.OTPs, filter);
-            if (otpData != null)
+            var otpDataArr = _dbService.Get(CommonConst.Collection.OTPs, new RawQuery( filter.ToString()));
+            if (otpDataArr.Any())
             {
+                var otpData = otpDataArr.First() as JObject;
+
                 if (ValidateDuration(otpData))
                 {
                     otpData[CommonConst.CommonField.STATUS] = OTPStatus.Used.ToString();
-                    if (_dbService.Write(CommonConst.Collection.OTPs, otpData, filter))
+                    if (_dbService.Update(CommonConst.Collection.OTPs, new RawQuery(filter.ToString()),  otpData, true, MergeArrayHandling.Union) ==1)
                     {
                         if (!string.IsNullOrEmpty(securityToken))
                         {

@@ -106,34 +106,42 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
         [Route("/notifier/otp/validate", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
         public JObject ValidateOTP()
         {
+            try
+            {
+                var model = _httpContextProxy.GetRequestBody<OTPModel>();
+                if (model == null)
+                {
+                    return _responseBuilder.BadRequest();
+                }
+                var message = model.Message;
+                if (model.Type == "SMS")
+                {
+                    if (_oTPNotifyService.ValidateSMS(model.To, model.OTP, model.OTPType, model.SecurityToken))
+                    {
+                        return _responseBuilder.Success();
+                    }
+                    else
+                    {
+                        return _responseBuilder.ServerError();
+                    }
+                }
+                else
+                {
+                    if (_oTPNotifyService.ValidateEmail(model.To, model.OTP, model.OTPType, model.SecurityToken))
+                    {
+                        return _responseBuilder.Success();
+                    }
+                    else
+                    {
+                        return _responseBuilder.ServerError();
+                    }
+                }
 
-            var model = _httpContextProxy.GetRequestBody<OTPModel>();
-            if (model == null)
-            {
-                return _responseBuilder.BadRequest();
             }
-            var message = model.Message;
-            if (model.Type == "SMS")
+            catch (System.Exception ex)
             {
-                if (_oTPNotifyService.ValidateSMS(model.To, model.OTP, model.OTPType, model.SecurityToken))
-                {
-                    return _responseBuilder.Success();
-                }
-                else
-                {
-                    return _responseBuilder.ServerError();
-                }
-            }
-            else
-            {
-                if (_oTPNotifyService.ValidateEmail(model.To, model.OTP, model.OTPType, model.SecurityToken))
-                {
-                    return _responseBuilder.Success();
-                }
-                else
-                {
-                    return _responseBuilder.ServerError();
-                }
+                _logger.Error(ex.Message, ex);
+              return  _responseBuilder.ServerError();
             }
         }
 

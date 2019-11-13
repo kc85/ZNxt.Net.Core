@@ -129,7 +129,12 @@ namespace IdentityServer4.Quickstart.UI
 
                     // issue authentication cookie with subject ID and username
                     await HttpContext.SignInAsync(user.user_id, user.name, props);
+                    var passsetview = IsPasswordSetRequired(user, model);
+                    if (passsetview != null)
+                    {
+                        return passsetview;
 
+                    }
                     if (context != null)
                     {
                         if (await _clientStore.IsPkceClientAsync(context.ClientId))
@@ -142,9 +147,6 @@ namespace IdentityServer4.Quickstart.UI
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
                     }
-                     var view =   IsPasswordSetRequired(user, model);
-                    if (view == null)
-                    {
                         // request for a local page
                         if (Url.IsLocalUrl(model.ReturnUrl))
                         {
@@ -159,11 +161,7 @@ namespace IdentityServer4.Quickstart.UI
                             // user might have clicked on a malicious link - should be logged
                             throw new Exception("invalid return URL");
                         }
-                    }
-                    else {
-
-                        return view;
-                    }
+                    
                 }
 
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId:context?.ClientId));
