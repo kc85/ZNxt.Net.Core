@@ -42,6 +42,7 @@ namespace ZNxt.Identity.Services
                 var roles = new List<string>() { "user", "init_user" };
                 roles.AddRange(user.roles);
                 user.roles = roles.Distinct().ToList();
+                user.salt = CommonUtility.RandomString(10);
                 var userObject = JObject.Parse(JsonConvert.SerializeObject(user));
                 userObject[CommonField.IS_ENABLED] = Boolean.TrueString.ToLower();
                 if (_dBService.WriteData(Collection.USERS, userObject))
@@ -73,6 +74,19 @@ namespace ZNxt.Identity.Services
             return false;
         }
 
+        internal bool CreatePassword(string user_id, string password)
+        {
+            var user = GetUser(user_id);
+            var passwordhash = CommonUtility.Sha256Hash($"{password}{user.salt}");
+            _dBService.Delete($"{Collection.USERS}-pass", new Net.Core.Model.RawQuery("{user_id: '" + user_id + "'}"));
+            return _dBService.Write($"{Collection.USERS}-pass", new JObject()
+            {
+                [CommonField.DISPLAY_ID] = CommonUtility.GetNewID(),
+                ["Password"] = passwordhash,
+                ["user_id"] = user_id
+            });
+        }
+     
         public async Task<bool> CreateUserAsync(ClaimsPrincipal subject)
         {
             var subjectId = subject.GetSubjectId();

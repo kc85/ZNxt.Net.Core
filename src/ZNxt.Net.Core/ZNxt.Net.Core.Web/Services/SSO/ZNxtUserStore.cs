@@ -17,7 +17,7 @@ namespace ZNxt.Identity.Services
         private readonly IZNxtUserService _ZNxtUserService;
         private readonly IApiGatewayService _apiGatewayService;
         private readonly ILogger _logger;
-        public ZNxtUserStore(IZNxtUserService userService, IZNxtUserService ZNxtUserService,IApiGatewayService apiGatewayService,ILogger logger)
+        public ZNxtUserStore(IZNxtUserService userService,IZNxtUserService ZNxtUserService,IApiGatewayService apiGatewayService,ILogger logger)
         {
             _userService = userService;
             _ZNxtUserService = ZNxtUserService;
@@ -46,6 +46,34 @@ namespace ZNxt.Identity.Services
             await _ZNxtUserService.CreateUserAsync(user);
             return user;
         }
+
+        internal bool SetPassword(string user_id, string password)
+        {
+
+            var user = _userService.GetUser(user_id);
+            if (user != null)
+            {
+                if (user.roles.Where(f => f == "pass_set_required").Any())
+                {
+                    if ((_userService as ZNxtUserService).CreatePassword(user_id, password))
+                    {
+                        var group = "pass_set_required";
+                        var request = new JObject()
+                        {
+                            ["user_id"] = user_id,
+                            ["group"] = group,
+                        };
+                        return CallGatewayPost(request, "/sso/user/apiremovegroup");
+                    }
+
+                }
+
+            }
+            
+            return false;
+
+        }
+
         //
         // Summary:
         //     Finds the user by external provider.
@@ -88,7 +116,7 @@ namespace ZNxt.Identity.Services
             var user =  _userService.GetUserByEmail(username);
             if (user != null)
             {
-                if (!string.IsNullOrEmpty(emailotp))
+                if (user.roles.Where(f=>f == "registration_with_email_otp").Any())
                 {
                     if(ValidateEmailOTP(username, emailotp))
                     {
