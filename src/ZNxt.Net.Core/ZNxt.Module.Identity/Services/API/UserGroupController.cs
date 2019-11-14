@@ -12,8 +12,8 @@ namespace ZNxt.Module.Identity.Services.API
 {
     public class UserGroupController : IdentityControllerBase
     {
-        public UserGroupController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService)
-         : base(responseBuilder, logger, httpContextProxy,dBService,keyValueStorage,staticContentHandler,apiGatewayService)
+        public UserGroupController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService, IZNxtUserService zNxtUserService)
+         : base(responseBuilder, logger, httpContextProxy,dBService,keyValueStorage,staticContentHandler,apiGatewayService, zNxtUserService)
         {
         }
 

@@ -129,6 +129,7 @@ namespace ZNxt.Identity.Services
                          roles = new List<string>(){  "parent" }
                     },
                 };
+                _logger.Debug($"Added Dummny orgs : {userModel.orgs.Count}");
 
                 return userModel;
             }
@@ -144,6 +145,19 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
+                // TODO need to get the Orf details for external model
+                userModel.orgs = new List<UserOrgModel>()
+                {
+                    new UserOrgModel(){
+                         orgkey = "VMSW2",
+                         roles = new List<string>(){  "teacher" }
+                    },
+                    new UserOrgModel(){
+                         orgkey = "ARVV2",
+                         roles = new List<string>(){  "parent" }
+                    },
+                };
+                _logger.Debug($"Added Dummny orgs : {userModel.orgs.Count}");
                 return userModel;
             }
             else

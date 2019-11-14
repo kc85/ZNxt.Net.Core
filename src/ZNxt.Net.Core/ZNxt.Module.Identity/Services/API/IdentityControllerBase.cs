@@ -18,7 +18,8 @@ namespace ZNxt.Module.Identity.Services.API
         protected  readonly ILogger _logger;
         protected  readonly IDBService _dBService;
         protected  readonly IApiGatewayService _apiGatewayService;
-        public IdentityControllerBase(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService)
+        protected readonly IZNxtUserService _zNxtUserService;
+        public IdentityControllerBase(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService, IZNxtUserService zNxtUserService)
          : base(httpContextProxy, dBService, logger, responseBuilder)
         {
             _responseBuilder = responseBuilder;
@@ -26,21 +27,21 @@ namespace ZNxt.Module.Identity.Services.API
             _logger = logger;
             _dBService = dBService;
             _apiGatewayService = apiGatewayService;
+            _zNxtUserService = zNxtUserService;
         }
         protected JObject UserInfoByUserId(string user_id)
         {
+            
             _logger.Debug($"Get User by User_id {user_id}");
-            var filter = "{'user_id':'" + user_id + "'}";
-            var user = _dBService.Get(CommonConst.Collection.USERS, new RawQuery(filter));
-            if (user.Count != 0)
+            var user = _zNxtUserService.GetUser(user_id);
+            if (user!=null)
             {
-                var model = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-                var userResponse = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(model));
+                var userResponse = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(user));
                 return userResponse;
             }
             else
             {
-                _logger.Debug($"User NOT FOUND by  {filter}, Collection {CommonConst.Collection.USERS}");
+                _logger.Debug($"User NOT FOUND by  {user_id}");
                 return null;
             }
         }

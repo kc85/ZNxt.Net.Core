@@ -58,11 +58,11 @@ namespace ZNxt.Net.Core.Web.Proxies
                             user.roles = JArray.Parse(claim.Value).Select(f => f.ToString()).ToList();
                         }
                         if (claim.Type == CommonConst.CommonValue.ORG_KEY)
-                        {
+                        {  
                             user.orgs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserOrgModel>>(claim.Value);
                         }
                     }
-
+                    
                     var orgkey = GetHeader(CommonConst.CommonValue.ORG_KEY);
                     var org = user.orgs.FirstOrDefault(f => f.orgkey == orgkey);
                     if (org != null)

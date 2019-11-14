@@ -37,7 +37,9 @@ namespace ZNxt.Identity.Services
                     claims.Add(new Claim(item.Key, item.Value));
                 }
                 claims.Add(new Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(user.roles)));
-                claims.Add(new Claim(CommonConst.CommonValue.ORG_KEY, Newtonsoft.Json.JsonConvert.SerializeObject(user.orgs)));
+                var orgs = Newtonsoft.Json.JsonConvert.SerializeObject(user.orgs);
+                _logger.Debug($"User Orgs {orgs}");
+                claims.Add(new Claim(CommonConst.CommonValue.ORG_KEY, orgs));
 
                 context.IssuedClaims = claims;
 

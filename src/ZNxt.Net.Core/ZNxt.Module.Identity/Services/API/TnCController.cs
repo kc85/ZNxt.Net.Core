@@ -12,11 +12,11 @@ namespace ZNxt.Module.Identity.Services.API
         private readonly IResponseBuilder _responseBuilder;
 
         private readonly UserController _userController;
-        public TnCController(IHttpContextProxy httpContextProxy, IResponseBuilder responseBuilder,IDBService dBService,IKeyValueStorage keyValueStorage,IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService, ILogger logger)
+        public TnCController(IHttpContextProxy httpContextProxy, IResponseBuilder responseBuilder,IDBService dBService,IKeyValueStorage keyValueStorage,IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService, ILogger logger,IZNxtUserService zNxtUserService)
         {
             _responseBuilder = responseBuilder;
             _httpContextProxy = httpContextProxy;
-            _userController = new UserController(responseBuilder, logger, httpContextProxy, dBService, keyValueStorage, staticContentHandler, apiGatewayService);
+            _userController = new UserController(responseBuilder, logger, httpContextProxy, dBService, keyValueStorage, staticContentHandler, apiGatewayService, zNxtUserService);
         }
         [Route("/sso/tnc", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL, "text/html")]
         public string GetTnC()
