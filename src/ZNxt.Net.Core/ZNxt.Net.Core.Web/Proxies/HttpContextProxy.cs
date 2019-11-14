@@ -8,6 +8,7 @@ using ZNxt.Net.Core.Model;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using ZNxt.Net.Core.Consts;
 
 namespace ZNxt.Net.Core.Web.Proxies
 {
@@ -56,7 +57,19 @@ namespace ZNxt.Net.Core.Web.Proxies
                         {
                             user.roles = JArray.Parse(claim.Value).Select(f => f.ToString()).ToList();
                         }
+                        if (claim.Type == CommonConst.CommonValue.ORG_KEY)
+                        {
+                            user.orgs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserOrgModel>>(claim.Value);
+                        }
                     }
+
+                    var orgkey = GetHeader(CommonConst.CommonValue.ORG_KEY);
+                    var org = user.orgs.FirstOrDefault(f => f.orgkey == orgkey);
+                    if (org != null)
+                    {
+                        user.roles.AddRange(org.roles);
+                    }
+                    user.roles = user.roles.Distinct().ToList();
                     user.claims = claims;
                     var userid = user.claims.FirstOrDefault(f => f.Key == "sub");
                     if (userid != null)

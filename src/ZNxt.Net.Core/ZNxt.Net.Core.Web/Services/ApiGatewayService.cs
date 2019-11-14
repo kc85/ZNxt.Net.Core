@@ -134,7 +134,6 @@ namespace ZNxt.Net.Core.Web.Services
                     request.Headers.Add("Authorization", $"Bearer {accessToken}");
                 }
             }
-
             if (!request.Headers.Contains(CommonConst.CommonField.TRANSACTION_ID))
             {
                 request.Headers.Add(CommonConst.CommonField.TRANSACTION_ID, _logger.TransactionId);
@@ -142,6 +141,15 @@ namespace ZNxt.Net.Core.Web.Services
             if (!request.Headers.Contains(CommonConst.CommonField.API_AUTH_TOKEN))
             {
                 request.Headers.Add(CommonConst.CommonField.API_AUTH_TOKEN, CommonUtility.GetApiAuthKey());
+            }
+            if (!request.Headers.Contains(CommonConst.CommonValue.ORG_KEY))
+            {
+                var orgkey = _httpContextProxy.GetHeader(CommonConst.CommonValue.ORG_KEY);
+                if (string.IsNullOrEmpty(orgkey))
+                {
+                    orgkey = _httpContextProxy.GetQueryString(CommonConst.CommonValue.ORG_KEY);
+                }
+                request.Headers.Add(CommonConst.CommonValue.ORG_KEY, orgkey);
             }
         }
 

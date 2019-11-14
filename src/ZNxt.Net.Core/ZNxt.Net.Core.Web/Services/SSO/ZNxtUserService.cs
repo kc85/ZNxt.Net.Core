@@ -83,7 +83,8 @@ namespace ZNxt.Identity.Services
             {
                 [CommonField.DISPLAY_ID] = CommonUtility.GetNewID(),
                 ["Password"] = passwordhash,
-                ["user_id"] = user_id
+                ["user_id"] = user_id,
+                ["is_enabled"] = Boolean.TrueString.ToLower()
             });
         }
      
@@ -111,10 +112,24 @@ namespace ZNxt.Identity.Services
         }
         public UserModel GetUser(string userid)
         {
-            var user =  _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "'}"));
+            var user =  _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':'true'}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
+
+                // TODO need to get the Orf details for external model
+                userModel.orgs = new List<UserOrgModel>()
+                {
+                    new UserOrgModel(){
+                         orgkey = "VMSW2",
+                         roles = new List<string>(){  "teacher" }
+                    },
+                    new UserOrgModel(){
+                         orgkey = "ARVV2",
+                         roles = new List<string>(){  "parent" }
+                    },
+                };
+
                 return userModel;
             }
             else
@@ -125,7 +140,7 @@ namespace ZNxt.Identity.Services
         }
         public UserModel GetUserByEmail(string email)
         {
-            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: '" + email + "'}"));
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: '" + email + "','is_enabled':'true'}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
@@ -138,7 +153,7 @@ namespace ZNxt.Identity.Services
         }
         public PasswordSaltModel GetPassword(string userid)
         {
-            var user = _dBService.Get($"{Collection.USERS}-pass", new Net.Core.Model.RawQuery("{user_id: '" + userid + "'}"));
+            var user = _dBService.Get($"{Collection.USERS}-pass", new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':'true'}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<PasswordSaltModel>(user.First().ToString());

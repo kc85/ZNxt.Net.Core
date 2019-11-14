@@ -17,9 +17,10 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
     {
         private readonly ZNxtUserStore _zNxtUserStore;
         private readonly IHttpContextProxy _httpContextProxy;
-        public PasswordSetController(ZNxtUserStore zNxtUserStore, IHttpContextProxy httpContextProxy)
+        private readonly IZNxtUserService _userService;
+        public PasswordSetController(ZNxtUserStore zNxtUserStore, IZNxtUserService userService, IHttpContextProxy httpContextProxy)
         {
-            
+            _userService = userService;
             _zNxtUserStore = zNxtUserStore;
             _httpContextProxy = httpContextProxy;
         }
@@ -28,55 +29,47 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
         public IActionResult Index(RedirectViewModel model)
         {
             var user = _httpContextProxy.User;
-            if (user != null) //&& user.roles.Where(f => f == "pass_set_required").Any()
+            if (user != null)
             {
-                var viewmodel = new SetPasswordViewModel()
+                var usermodel = _userService.GetUser(user.user_id);
+                if (usermodel.roles.Where(f => f == "pass_set_required").Any())
                 {
-                    ReturnUrl = model.RedirectUrl
-                };
-                return View(viewmodel);
+
+                    var viewmodel = new SetPasswordViewModel()
+                    {
+                        ReturnUrl = model.RedirectUrl
+                    };
+                    return View(viewmodel);
+                }
+
             }
-            else
-            {
-                return Redirect(model.RedirectUrl);
-            }
+            return Redirect(model.RedirectUrl);
         }
         [HttpPost]
         public IActionResult Index(SetPasswordViewModel model)
         {
             var user = _httpContextProxy.User;
 
-            if (user != null) // && user.roles.Where(f => f == "pass_set_required").Any()
+            if (user != null)
             {
-                if (model.ConfirmPassword == model.Password)
+                var usermodel = _userService.GetUser(user.user_id);
+                if (usermodel.roles.Where(f => f == "pass_set_required").Any())
                 {
-                    if (_zNxtUserStore.SetPassword(user.user_id, model.Password))
+                    if (model.ConfirmPassword == model.Password)
                     {
-                        return RedirectToAction("PasswordCreateSuccess", "PasswordSet", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
+                        if (_zNxtUserStore.SetPassword(user.user_id, model.Password))
+                        {
+                            model.IsSuccess = true;
+                            return View(model);
+                        }
                     }
+                    ModelState.AddModelError(string.Empty, "Error while setting password");
+                    return View(model);
                 }
             }
-            ModelState.AddModelError(string.Empty, "Error while setting password");
-            return View(model) ;
+            return Redirect(model.ReturnUrl);
+
         }
 
-        [HttpGet]
-        public IActionResult PasswordCreateSuccess(RedirectViewModel model)
-        {
-            var user = _httpContextProxy.User;
-            if (user != null) // && user.roles.Where(f => f == "pass_set_required").Any()
-            {
-                if (User?.Identity.IsAuthenticated == true)
-                {
-                    HttpContext.SignOutAsync().GetAwaiter().GetResult();
-                }
-                return View(model);
-            }
-            else
-            {
-                return Redirect(model.RedirectUrl);
-            }
-        }
-    
     }
 }

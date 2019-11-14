@@ -13,5 +13,7 @@ namespace IdentityServer4.Quickstart.UI
         [Required]
         public string ConfirmPassword { get; set; }
         public string ReturnUrl { get; set; }
+        public bool IsSuccess { get; set; }
+
     }
 }

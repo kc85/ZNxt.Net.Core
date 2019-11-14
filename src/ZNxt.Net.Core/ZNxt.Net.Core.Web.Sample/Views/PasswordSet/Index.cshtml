@@ -1,89 +1,110 @@
 @model SetPasswordViewModel
 
-<div class="login-page">
-    <div class="page-header">
-        <h1>Set Password</h1>
-    </div>
-    <partial name="_ValidationSummary" />
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form asp-route="passwordset" id="frmpasswordset">
-                        <input type="hidden" asp-for="ReturnUrl" />
-                        <fieldset>
-                            <div>
-                                <div>
-                                    <div class="form-group">
-                                        <label asp-for="Password"></label>
-                                        <input type="password" class="form-control" placeholder="Password" asp-for="Password" id="password" onKeyUp="checkPasswordStrength();" autocomplete="off">
+    <div class="login-page">
+
+        @if (!Model.IsSuccess)
+        {
+            <div class="page-header">
+                <h1>Set Password</h1>
+            </div>
+            <partial name="_ValidationSummary" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form asp-route="passwordset" id="frmpasswordset">
+                                <input type="hidden" asp-for="ReturnUrl" />
+                                <fieldset>
+                                    <div>
                                         <div>
-                                            <span id="password-strength-status">
+                                            <div class="form-group">
+                                                <label asp-for="Password"></label>
+                                                <input type="password" class="form-control" placeholder="Password" asp-for="Password" id="password" onKeyUp="checkPasswordStrength();" autocomplete="off">
+                                                <div>
+                                                    <span id="password-strength-status">
+
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="ConfirmPassword"></label>
+                                                <input type="password" class="form-control" placeholder="Confirm Password" id="confirmpassword" asp-for="ConfirmPassword" onKeyUp="$('#password-match').hide();" autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" name="button" value="change" id="btnsetpass" style="display:none">Create Password</button>
+                                        </div>
+                                        <div>
+                                            <span id="password-match">
 
                                             </span>
 
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label asp-for="ConfirmPassword"></label>
-                                        <input type="password" class="form-control" placeholder="Confirm Password" id="confirmpassword" asp-for="ConfirmPassword" onKeyUp="$('#password-match').hide();" autocomplete="off">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary" name="button" value="change" id="btnsetpass" style="display:none">Create Password</button>
-                                </div>
-                                <div>
-                                    <span id="password-match">
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function checkPasswordStrength() {
+                    $("#btnsetpass").hide();
+                    $('#password-match').hide();
+                    var number = /([0-9])/;
+                    var alphabets = /([a-zA-Z])/;
+                    var special_characters = /([~,!,@@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+                    if ($('#password').val().length < 6) {
+                        $('#password-strength-status').removeClass();
+                        $('#password-strength-status').addClass('label');
+                        $('#password-strength-status').addClass('label-danger');
+                        $('#password-strength-status').addClass('weak-password');
+                        $('#password-strength-status').html("Weak (should be atleast 6 characters.)");
+                    } else {
+                        if ($('#password').val().match(number) && $('#password').val().match(alphabets) && $('#password').val().match(special_characters)) {
+                            $('#password-strength-status').removeClass();
+                            $('#password-strength-status').addClass('label');
+                            $('#password-strength-status').addClass('label-success');
+                            $('#password-strength-status').addClass('strong-password');
+                            $('#password-strength-status').html("Strong");
+                            $("#btnsetpass").show();
+                        } else {
+                            $('#password-strength-status').removeClass();
+                            $('#password-strength-status').addClass('label');
+                            $('#password-strength-status').addClass('label-warning');
+                            $('#password-strength-status').addClass('medium-password');
+                            $('#password-strength-status').html("Medium (should include alphabets, numbers and special characters.)");
+                        }
+                    }
+                }
+                $(document).ready(function () {
+                    $("#frmpasswordset").submit(function (event) {
+                        if ($('#password').val() != $('#confirmpassword').val()) {
+                            $('#password-match').html("Password and confirm password does not match ");
+                            $('#password-match').show();
+                            event.preventDefault();
+                        }
+                    });
+                });
 
-                                    </span>
-
-                                </div>
-                            </div>
-                        </fieldset>
+            </script>
+        }
+        @if (Model.IsSuccess)
+        {
+            <div class="page-header">
+                <h1>Password Created Successfully</h1>
+            </div>
+            <partial name="_ValidationSummary" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <form asp-route="passsuccessappredirect">
+                        <input type="hidden" asp-for="ReturnUrl" />
+                        Re-login to your application using new password.
+                        <br />
+                        <a href="@Model.ReturnUrl"> Click here to back to your application</a>
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-    <script>
-        function checkPasswordStrength() {
-            $("#btnsetpass").hide();
-            $('#password-match').hide();
-            var number = /([0-9])/;
-            var alphabets = /([a-zA-Z])/;
-            var special_characters = /([~,!,@@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
-            if ($('#password').val().length < 6) {
-                $('#password-strength-status').removeClass();
-                $('#password-strength-status').addClass('label');
-                $('#password-strength-status').addClass('label-danger');
-                $('#password-strength-status').addClass('weak-password');
-                $('#password-strength-status').html("Weak (should be atleast 6 characters.)");
-            } else {
-                if ($('#password').val().match(number) && $('#password').val().match(alphabets) && $('#password').val().match(special_characters)) {
-                    $('#password-strength-status').removeClass();
-                    $('#password-strength-status').addClass('label');
-                    $('#password-strength-status').addClass('label-success');
-                    $('#password-strength-status').addClass('strong-password');
-                    $('#password-strength-status').html("Strong");
-                    $("#btnsetpass").show();
-                } else {
-                    $('#password-strength-status').removeClass();
-                    $('#password-strength-status').addClass('label');
-                    $('#password-strength-status').addClass('label-warning');
-                    $('#password-strength-status').addClass('medium-password');
-                    $('#password-strength-status').html("Medium (should include alphabets, numbers and special characters.)");
-                }
-            }
         }
-        $(document).ready(function () {
-            $("#frmpasswordset").submit(function (event) {
-                if ($('#password').val() != $('#confirmpassword').val()) {
-                    $('#password-match').html("Password and confirm password does not match ");
-                    $('#password-match').show();
-                    event.preventDefault();
-                }
-            });
-        });
-
-    </script>
-</div>
+    </div>

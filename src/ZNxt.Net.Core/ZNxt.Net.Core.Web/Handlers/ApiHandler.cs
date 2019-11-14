@@ -12,6 +12,7 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Helpers;
+using System.Collections.Generic;
 
 namespace ZNxt.Net.Core.Web.Handlers
 {
@@ -182,7 +183,14 @@ namespace ZNxt.Net.Core.Web.Handlers
                          userModel = _inMemoryCacheService.Get<UserModel>(accessToken);
                         if (userModel == null)
                         {
-                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/userinfo", "", null, null, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
+                            var orgkey = string.Empty;
+                            
+                            orgkey = _httpContextProxy.GetHeader(CommonConst.CommonValue.ORG_KEY);
+                            if (string.IsNullOrEmpty(orgkey))
+                            {
+                                orgkey = _httpContextProxy.GetQueryString(CommonConst.CommonValue.ORG_KEY);
+                            }
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/userinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.ORG_KEY] = orgkey } , ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
                                 userModel = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());

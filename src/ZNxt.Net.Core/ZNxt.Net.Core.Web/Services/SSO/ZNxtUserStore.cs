@@ -14,13 +14,11 @@ namespace ZNxt.Identity.Services
     public class ZNxtUserStore 
     {
         private readonly IZNxtUserService _userService;
-        private readonly IZNxtUserService _ZNxtUserService;
         private readonly IApiGatewayService _apiGatewayService;
         private readonly ILogger _logger;
-        public ZNxtUserStore(IZNxtUserService userService,IZNxtUserService ZNxtUserService,IApiGatewayService apiGatewayService,ILogger logger)
+        public ZNxtUserStore(IZNxtUserService userService,IApiGatewayService apiGatewayService,ILogger logger)
         {
             _userService = userService;
-            _ZNxtUserService = ZNxtUserService;
             _apiGatewayService = apiGatewayService;
             _logger = logger;
         }
@@ -43,7 +41,7 @@ namespace ZNxt.Identity.Services
                 email_validation_required = Boolean.FalseString.ToLower(),
                 claims = claims.Select(f => new Net.Core.Model.Claim(f.Type, f.Value)).ToList()
             };
-            await _ZNxtUserService.CreateUserAsync(user);
+            await _userService.CreateUserAsync(user);
             return user;
         }
 
@@ -65,13 +63,9 @@ namespace ZNxt.Identity.Services
                         };
                         return CallGatewayPost(request, "/sso/user/apiremovegroup");
                     }
-
                 }
-
             }
-            
             return false;
-
         }
 
         //

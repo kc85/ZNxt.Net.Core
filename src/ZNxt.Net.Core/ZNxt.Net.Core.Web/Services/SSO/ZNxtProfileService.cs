@@ -5,6 +5,7 @@ using IdentityServer4.Services;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Identity.Services
@@ -32,6 +33,8 @@ namespace ZNxt.Identity.Services
                 claims.Add( new Claim(item.Key, item.Value));
             }
             claims.Add(new Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(user.roles)));
+            claims.Add(new Claim(CommonConst.CommonValue.ORG_KEY, Newtonsoft.Json.JsonConvert.SerializeObject(user.orgs)));
+
             context.IssuedClaims = claims;
 
             return Task.FromResult(0);

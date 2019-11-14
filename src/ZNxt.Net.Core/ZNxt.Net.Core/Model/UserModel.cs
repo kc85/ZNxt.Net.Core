@@ -18,12 +18,18 @@ namespace ZNxt.Net.Core.Model
         public List<Claim> claims { get; set; }
         public List<string> roles { get; set; }
         public List<string> temp_roles { get; set; }
-
+        public List<UserOrgModel> orgs { get; set; }
         public UserModel()
         {
             claims = new List<Claim>();
             roles = new List<string>();
             temp_roles = new List<string>();
+            orgs = new List<UserOrgModel>();
         }
+    }
+    public class UserOrgModel
+    {
+        public string orgkey { get; set; }
+        public List<string> roles { get; set; }
     }
 }
