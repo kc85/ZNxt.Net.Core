@@ -44,7 +44,7 @@ namespace ZNxt.Identity.Services
                 user.roles = roles.Distinct().ToList();
                 user.salt = CommonUtility.RandomString(10);
                 var userObject = JObject.Parse(JsonConvert.SerializeObject(user));
-                userObject[CommonField.IS_ENABLED] = Boolean.TrueString.ToLower();
+                userObject[CommonField.IS_ENABLED] = true;
                 if (_dBService.WriteData(Collection.USERS, userObject))
                 {
                     var userInfo = new JObject();
@@ -60,7 +60,7 @@ namespace ZNxt.Identity.Services
                     }
                     else
                     {
-                        userObject[CommonField.IS_ENABLED] = Boolean.FalseString.ToLower();
+                        userObject[CommonField.IS_ENABLED] = false;
                         _dBService.Write(Collection.USERS, userObject, "{user_id: '" + user.user_id + "'}");
                         _logger.Error($"Error while creating user user_id : {user.user_id} Type: {user.user_type}, email:{user.email}");
                     }
@@ -84,7 +84,7 @@ namespace ZNxt.Identity.Services
                 [CommonField.DISPLAY_ID] = CommonUtility.GetNewID(),
                 ["Password"] = passwordhash,
                 ["user_id"] = user_id,
-                ["is_enabled"] = Boolean.TrueString.ToLower()
+                ["is_enabled"] = true
             });
         }
      
@@ -112,7 +112,7 @@ namespace ZNxt.Identity.Services
         }
         public UserModel GetUser(string userid)
         {
-            var user =  _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':'true'}"));
+            var user =  _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
@@ -140,7 +140,7 @@ namespace ZNxt.Identity.Services
         }
         public UserModel GetUserByEmail(string email)
         {
-            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: '" + email + "','is_enabled':'true'}"));
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: '" + email + "','is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
@@ -153,7 +153,7 @@ namespace ZNxt.Identity.Services
         }
         public PasswordSaltModel GetPassword(string userid)
         {
-            var user = _dBService.Get($"{Collection.USERS}-pass", new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':'true'}"));
+            var user = _dBService.Get($"{Collection.USERS}-pass", new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<PasswordSaltModel>(user.First().ToString());

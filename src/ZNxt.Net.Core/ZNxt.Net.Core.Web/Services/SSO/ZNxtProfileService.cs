@@ -13,31 +13,42 @@ namespace ZNxt.Identity.Services
     public class ZNxtProfileService : IProfileService
     {
         private readonly IZNxtUserService _userService;
-        public ZNxtProfileService(IZNxtUserService userService)
+        private readonly ILogger _logger;
+        public ZNxtProfileService(IZNxtUserService userService, ILogger logger)
         {
             _userService = userService;
+            _logger = logger;
         }
         public Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var subjectId = context.Subject.GetSubjectId();
-
-            var user = _userService.GetUser(subjectId);
-
-            var claims = new List<Claim>
+            try
+            {
+                var subjectId = context.Subject.GetSubjectId();
+                _logger.Error($"Getting user by subjectId: {subjectId}");
+                var user = _userService.GetUser(subjectId);
+              
+                var claims = new List<Claim>
             {
                 new Claim(JwtClaimTypes.Subject, user.user_id),
             };
 
-            foreach (var item in user.claims)
-            {
-                claims.Add( new Claim(item.Key, item.Value));
+                foreach (var item in user.claims)
+                {
+                    claims.Add(new Claim(item.Key, item.Value));
+                }
+                claims.Add(new Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(user.roles)));
+                claims.Add(new Claim(CommonConst.CommonValue.ORG_KEY, Newtonsoft.Json.JsonConvert.SerializeObject(user.orgs)));
+
+                context.IssuedClaims = claims;
+
+                return Task.FromResult(0);
             }
-            claims.Add(new Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(user.roles)));
-            claims.Add(new Claim(CommonConst.CommonValue.ORG_KEY, Newtonsoft.Json.JsonConvert.SerializeObject(user.orgs)));
+            catch (System.Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                throw;
+            }
 
-            context.IssuedClaims = claims;
-
-            return Task.FromResult(0);
         }
 
         public Task IsActiveAsync(IsActiveContext context)

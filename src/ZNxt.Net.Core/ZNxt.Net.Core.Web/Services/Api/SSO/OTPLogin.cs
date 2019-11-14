@@ -32,7 +32,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.SSO
                 var user_name = _httpContextProxy.GetQueryString("user_name");
                 if (!string.IsNullOrEmpty(user_name))
                 {
-                    var data = _dBService.Get(CommonConst.Collection.USERS, new RawQuery("{'email': '" + user_name + "','is_enabled':'true'}"));
+                    var data = _dBService.Get(CommonConst.Collection.USERS, new RawQuery("{'email': '" + user_name + "','is_enabled':true}"));
                     if (data.Any())
                     {
                         if ((data.First()["roles"] as JArray).Where(f => f.ToString() == "init_login_email_otp").Any())
