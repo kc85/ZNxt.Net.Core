@@ -64,7 +64,7 @@ namespace ZNxt.Net.Core.Web.Proxies
                     }
                     
                     var orgkey = GetHeader(CommonConst.CommonValue.ORG_KEY);
-                    var org = user.orgs.FirstOrDefault(f => f.orgkey == orgkey);
+                    var org = user.orgs.FirstOrDefault(f => f.org_key == orgkey);
                     if (org != null)
                     {
                         user.roles.AddRange(org.roles);
