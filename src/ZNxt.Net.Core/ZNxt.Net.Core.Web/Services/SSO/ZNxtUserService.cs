@@ -130,16 +130,18 @@ namespace ZNxt.Identity.Services
 
         private void SetUserOrgs(UserModel userModel)
         {
+            var extennalOrgEndpoint = "/s2fschool/identity/user/allorgs";
             try
             {
-                var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "/s2fschool/identity/user/allorgs", $"user_id={userModel.user_id}").GetAwaiter().GetResult();
+                _logger.Debug($"Calling {extennalOrgEndpoint}");
+                var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
                 if (response[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonConst.CommonField.DATA] != null)
                 {
                     userModel.orgs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonConst.CommonField.DATA].ToString());
                 }
                 else
                 {
-                    _logger.Error("Error resonse from /s2fschool/identity/user/allorgs", null, response);
+                    _logger.Error($"Error responsefrom {extennalOrgEndpoint}", null, response);
                 }
             }
             catch (Exception ex)
