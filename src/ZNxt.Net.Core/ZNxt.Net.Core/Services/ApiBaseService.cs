@@ -57,7 +57,7 @@ namespace ZNxt.Net.Core.Services
             {
                 sortColumns = (Dictionary<string, int>)JsonConvert.DeserializeObject<Dictionary<string, int>>(sortData);
             }
-            else if (sortColumns == null)
+            if (sortColumns == null)
             {
                 sortColumns = new Dictionary<string, int>();
                 sortColumns[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = -1;
@@ -181,18 +181,19 @@ namespace ZNxt.Net.Core.Services
                         {
                             fields = null;
                         }
-                        FilterQuery filter = new FilterQuery();
+                        string filters = "{$or : {{filter}}}";
+                        var filterArr = new JArray();
                         foreach (var item in joinCoumnId.Value)
                         {
-                            //filter.Add("{ " + join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString() + ": \"" + item + "\" }");
-                            filter.Add(new Filter(join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString(), item, FilterCondition.OR));
+                            filterArr.Add(new JObject()
+                            {
+                                [join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()]= item
+                            });
                         }
-                        DBQuery query = new DBQuery() { Filters = filter };
-                        foreach (var field in fields)
-                        {
-                            query.Fields.Add(new Field(field));
-                        }
-                        JArray joinCollectionData = DBProxy.Get(join[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION].ToString(), query);
+                        filters.Replace("{{filter}}}", filterArr.ToString());
+                        RawQuery query = new RawQuery(filters);
+                        
+                        JArray joinCollectionData = DBProxy.Get(join[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION].ToString(), query, fields);
                         foreach (JObject joinData in joinCollectionData)
                         {
                             if (joinData[join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()] != null)

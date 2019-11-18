@@ -23,28 +23,28 @@
   {
     "auth_users": [ "sys_admin" ],
     "key": "from_email_id",
-    "data": "ZNxtApp@gmail.com",
+    "data": "contact@s2fschool.com",
     "is_override": false,
     "override_by": "none"
   },
   {
     "auth_users": [ "sys_admin" ],
     "key": "smtp_server",
-    "data": "smtp.gmail.com",
+    "data": "smtpout.asia.secureserver.net",
     "is_override": false,
     "override_by": "none"
   },
   {
     "auth_users": [ "sys_admin" ],
     "key": "smtp_server_user",
-    "data": "ZNxtApp@gmail.com",
+    "data": "contact@s2fschool.com",
     "is_override": false,
     "override_by": "none"
   },
   {
     "auth_users": [ "sys_admin" ],
     "key": "smtp_server_password",
-    "data": "****",
+    "data": "s**@123**",
     "is_override": false,
     "override_by": "none"
   },
