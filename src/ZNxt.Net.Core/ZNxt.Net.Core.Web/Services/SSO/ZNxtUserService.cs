@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
@@ -18,13 +19,14 @@ namespace ZNxt.Identity.Services
         private readonly IDBService _dBService;
         private readonly IUserNotifierService _userNotifierService;
         private readonly ILogger _logger;
-
-        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService,ILogger logger)
+        private readonly IApiGatewayService _apiGatewayService;
+        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService,ILogger logger,IApiGatewayService apiGatewayService)
         {
 
             _userNotifierService = userNotifierService;
             _dBService = dBService;
             _logger = logger;
+            _apiGatewayService = apiGatewayService;
         }
         public bool CreateUser(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
         {
@@ -116,21 +118,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-
-                // TODO need to get the Orf details for external model
-                userModel.orgs = new List<UserOrgModel>()
-                {
-                    new UserOrgModel(){
-                         orgkey = "VMSW2",
-                         roles = new List<string>(){  "teacher" }
-                    },
-                    new UserOrgModel(){
-                         orgkey = "ARVV2",
-                         roles = new List<string>(){  "parent" }
-                    },
-                };
-                _logger.Debug($"Added Dummny orgs : {userModel.orgs.Count}");
-
+                SetUserOrgs(userModel);
                 return userModel;
             }
             else
@@ -139,25 +127,34 @@ namespace ZNxt.Identity.Services
             }
 
         }
+
+        private void SetUserOrgs(UserModel userModel)
+        {
+            try
+            {
+                var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "/s2fschool/identity/user/allorgs", $"user_id={userModel.user_id}").GetAwaiter().GetResult();
+                if (response[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonConst.CommonField.DATA] != null)
+                {
+                    userModel.orgs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonConst.CommonField.DATA].ToString());
+                }
+                else
+                {
+                    _logger.Error("Error resonse from /s2fschool/identity/user/allorgs", null, response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+            }
+        }
+
         public UserModel GetUserByEmail(string email)
         {
             var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: '" + email + "','is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-                // TODO need to get the Orf details for external model
-                userModel.orgs = new List<UserOrgModel>()
-                {
-                    new UserOrgModel(){
-                         orgkey = "VMSW2",
-                         roles = new List<string>(){  "teacher" }
-                    },
-                    new UserOrgModel(){
-                         orgkey = "ARVV2",
-                         roles = new List<string>(){  "parent" }
-                    },
-                };
-                _logger.Debug($"Added Dummny orgs : {userModel.orgs.Count}");
+                SetUserOrgs(userModel);
                 return userModel;
             }
             else

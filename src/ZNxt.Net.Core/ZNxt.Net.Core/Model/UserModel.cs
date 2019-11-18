@@ -29,7 +29,7 @@ namespace ZNxt.Net.Core.Model
     }
     public class UserOrgModel
     {
-        public string orgkey { get; set; }
+        public string org_key { get; set; }
         public List<string> roles { get; set; }
     }
 }
