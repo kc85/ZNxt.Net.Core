@@ -83,10 +83,10 @@ namespace ZNxt.Net.Core.Services
             }
 
             var data = GetPagedData(collection, query, filterQuery, pageSize, currentPage);
-
-           DoJoins(data, collection, joins);
-
-            //OK();
+            if (data[CommonConst.CommonField.DATA] != null && (data[CommonConst.CommonField.DATA] as JArray).Count > 0)
+            {
+                DoJoins(data, collection, joins);
+            }
             return data;
         }
 
