@@ -190,7 +190,7 @@ namespace ZNxt.Net.Core.Services
                                 [join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()]= item
                             });
                         }
-                        filters.Replace("{{filter}}}", filterArr.ToString());
+                        filters = filters.Replace("{{filter}}", filterArr.ToString());
                         RawQuery query = new RawQuery(filters);
                         
                         JArray joinCollectionData = DBProxy.Get(join[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION].ToString(), query, fields);
