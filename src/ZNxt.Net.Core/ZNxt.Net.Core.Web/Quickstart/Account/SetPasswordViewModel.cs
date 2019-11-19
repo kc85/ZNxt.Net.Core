@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IdentityServer4.Quickstart.UI
 {
-    public class SetPasswordViewModel
+    public class SetPasswordViewModel: ViewModelBase
     {
         [Required]
         public string Password { get; set; }

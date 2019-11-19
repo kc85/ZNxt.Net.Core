@@ -39,11 +39,17 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
                     {
                         ReturnUrl = model.RedirectUrl
                     };
+                    SetAppName(viewmodel);
                     return View(viewmodel);
                 }
 
             }
+
             return Redirect(model.RedirectUrl);
+        }
+        private void SetAppName(ViewModelBase vm)
+        {
+            ViewData["ApplicationName"] = vm.ApplicationName = "S2F School";
         }
         [HttpPost]
         public IActionResult Index(SetPasswordViewModel model)
@@ -64,6 +70,7 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
                         }
                     }
                     ModelState.AddModelError(string.Empty, "Error while setting password");
+                    SetAppName(model);
                     return View(model);
                 }
             }

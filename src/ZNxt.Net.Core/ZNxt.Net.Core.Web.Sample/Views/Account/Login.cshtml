@@ -3,7 +3,7 @@
 <div>
     <center>
         <div class="page-header">
-            <h2>Login with ZNxt</h2>
+            <h2>Login with @Model.ApplicationName</h2>
         </div>
     </center>
     <div class="row">
@@ -14,7 +14,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
 
-                        <form asp-route="Login">
+                        <form asp-route="Login" id="frmlogin">
                             <input type="hidden" asp-for="ReturnUrl" />
 
                             <fieldset>
@@ -26,7 +26,7 @@
                                     </div>
                                     <div class="form-group">
                                         <a class="btn btn-primary btn-sm" id="btnNext">Next</a>
-                                        <button class="btn btn-default btn-sm" name="button" value="cancel">Cancel</button>
+                                        <a class="btn btn-default btn-sm" id="btnCancelFrm">Cancel</a>
                                     </div>
                                 </div>
 
@@ -38,13 +38,13 @@
                                     <div id="divOtp" style="display:none">
                                         <div class="form-group">
                                             <label>OTP</label>
-                                            <input type="password" class="form-control " placeholder="OTP" asp-for="EmailOTP " autocomplete="off">
+                                            <input type="password" class="form-control " placeholder="OTP" asp-for="EmailOTP " id="emailOTP" autocomplete="off">
                                         </div>
                                     </div>
                                     <div id="divPass" style="display:none">
                                         <div class="form-group">
                                             <label asp-for="Password"></label>
-                                            <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+                                            <input type="password" class="form-control" placeholder="Password" asp-for="Password" id="password" autocomplete="off">
                                         </div>
                                         @if (Model.AllowRememberLogin)
                                         {
@@ -70,7 +70,7 @@
 
         @if (Model.VisibleExternalProviders.Any())
         {
-            <div class="col-md-12 col-sm-12 external-providers">
+            <div class="col-md-12 col-sm-12 external-providers" id="divExternalProviders">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <br />
@@ -110,15 +110,20 @@
         $(document).ready(function () {
 
             function init() {
+                 $("#divExternalProviders").show();
                 $("#loginEnterUserName").show();
                 $("#loginEnterPassOtp").hide();
                 $("#divOtp").hide();
                 $("#txtUserName").focus();
                 $("#divPass").val("");
                 $("#divOtp").val("");
+               
             }
             init();
             $("#btnNext").click(function () {
+                if ($("#txtUserName").val().length == 0) {
+                    return;
+                }
                 $("#lblUserNameShow").html($("#txtUserName").val());
                 $("#loginEnterPassOtp").show();
                 $("#loginEnterUserName").hide();
@@ -126,19 +131,25 @@
                     function () {
                         $("#divPass").hide();
                         $("#divOtp").show();
-                        $("#divOtp").focus();
+                        $("#emailOTP").focus();
+                        $("#divExternalProviders").hide();
                     },
                     function () {
                         $("#divPass").show();
                         $("#divOtp").hide();
-                        $("#divPass").focus();
+                        $("#password").focus();
+                        $("#divExternalProviders").hide();
                     });
 
             });
             $("#btnCancelPass").click(function () {
                 init();
             });
+            $("#btnCancelFrm").click(function () {
+                $('#frmlogin').find('button[name="button"]').val('cancel');
+                $('#frmlogin').submit();
 
+            });
             function checkIfOTPLoginRequired(userName, otplogincallback, passcallback) {
                 $.ajax({
                     type: "POST",
@@ -157,6 +168,17 @@
                 });
             }
 
+            $("#frmlogin").submit(function (event) {
+                if ($('#frmlogin').find('button[name="button"]').val() != 'cancel') {
+                    if ($("#txtUserName").val().length == 0 || ($("#emailOTP").val().length == 0 && $("#password").val().length == 0)) {
+                        event.preventDefault();
+                    }
+                    if (!$('#divOtp').is(':visible') && !$('#divPass').is(':visible')) {
+                        event.preventDefault();
+                        $("#btnNext").click();
+                    }
+                }
+            });
 
         });
     </script>

@@ -34,6 +34,7 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -67,7 +68,13 @@ namespace IdentityServer4.Quickstart.UI
                 // we only have one option for logging in and it's an external provider
                 return RedirectToAction("Challenge", "External", new { provider = vm.ExternalLoginScheme, returnUrl });
             }
+            SetAppName(vm);
             return View(vm);
+        }
+
+        private void SetAppName(ViewModelBase vm)
+        {
+            ViewData["ApplicationName"] = vm.ApplicationName = "S2F School";
         }
 
         /// <summary>
@@ -81,7 +88,7 @@ namespace IdentityServer4.Quickstart.UI
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
             // the user clicked the "cancel" button
-            if (button != "login")
+            if (button == "cancel" || button ==null)
             {
                 if (context != null)
                 {
@@ -169,7 +176,9 @@ namespace IdentityServer4.Quickstart.UI
             }
 
             // something went wrong, show form with error
+           
             var vm = await BuildLoginViewModelAsync(model);
+            SetAppName(vm);
             return View(vm);
         }
 
@@ -198,7 +207,7 @@ namespace IdentityServer4.Quickstart.UI
                 // we don't need to show the prompt and can just log the user out directly.
                 return await Logout(vm);
             }
-
+            SetAppName(vm);
             return View(vm);
         }
 
@@ -232,7 +241,7 @@ namespace IdentityServer4.Quickstart.UI
                 // this triggers a redirect to the external provider for sign-out
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
-
+            SetAppName(vm);
             return View("LoggedOut", vm);
         }
 
