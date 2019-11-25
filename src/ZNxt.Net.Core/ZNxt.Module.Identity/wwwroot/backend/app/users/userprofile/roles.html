@@ -1,0 +1,24 @@
+﻿<div ng-controller="ZNxtAppAdmin.userprofile.rolesCtrl">
+    <div class="x_content">
+        <h2> Groups </h2>
+        <br>
+        <form class="form-horizontal form-label-left input_mask" name="userGroupsForm">
+            <p>
+                <span ng-repeat="g in userData.roles" class="label label-info" style="margin:5px">
+                    <span>{{g}}</span>
+                    <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white" style="cursor:pointer" ng-click="removeRole(g);"></i></a>
+                </span>
+            </p>
+            <h2> Add Group </h2>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                   Add
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="ag in allRoles"><a class="dropdown-item"  href="JavaScript:void(0);" ng-click="addRole(ag)">{{ag.name}}</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>

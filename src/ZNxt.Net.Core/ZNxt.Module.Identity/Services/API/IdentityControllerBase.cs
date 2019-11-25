@@ -46,21 +46,21 @@ namespace ZNxt.Module.Identity.Services.API
             }
         }
 
-        protected bool AddRemoveRole(bool isAdded, string group, JObject user)
+        protected bool AddRemoveRole(bool isAdded, string role, JObject user)
         {
-            if (!(user["roles"] as JArray).Where(f => f.ToString() == group).Any() && isAdded)
+            if (!(user["roles"] as JArray).Where(f => f.ToString() == role).Any() && isAdded)
             {
-                _logger.Debug($"Adding group {group}");
-                (user["roles"] as JArray).Add(group);
+                _logger.Debug($"Adding role {role}");
+                (user["roles"] as JArray).Add(role);
             }
-            else if ((user["roles"] as JArray).Where(f => f.ToString() == group).Any() && !isAdded)
+            else if ((user["roles"] as JArray).Where(f => f.ToString() == role).Any() && !isAdded)
             {
-                _logger.Debug($"Removing group {group}");
-                (user["roles"] as JArray).Remove((user["roles"] as JArray).FirstOrDefault(f => f.ToString() == group));
+                _logger.Debug($"Removing role {role}");
+                (user["roles"] as JArray).Remove((user["roles"] as JArray).FirstOrDefault(f => f.ToString() == role));
             }
             else
             {
-                throw new FormatException($"Role not found  {group} , User :{user.ToString()}");
+                throw new FormatException($"Role not found  {role} , User :{user.ToString()}");
             }
             return _dBService.Write(CommonConst.Collection.USERS, user, "{'user_id' : '" + user["user_id"].ToString() + "'}", true, MergeArrayHandling.Replace);
             

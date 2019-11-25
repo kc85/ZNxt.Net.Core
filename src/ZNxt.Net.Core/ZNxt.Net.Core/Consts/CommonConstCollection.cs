@@ -7,6 +7,7 @@
             public const string USERS = "users";
             public const string USER_INFO = "user_info";
             public const string USER_GROUPS = "user_groups";
+            public const string USER_ROLES = "user_roles";
             public const string STATIC_CONTECT = "wwwroot";
             public const string MODULES = "modules";
             public const string DLLS = "dlls";

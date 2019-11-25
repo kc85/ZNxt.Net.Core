@@ -19,7 +19,7 @@
 
 (function () {
     var ZApp = angular.module(__ZNxtAppName);
-    ZApp.controller(__ZNxtAppName + '.userprofile.home.userGroupWidgetCtrl', ['$scope', '$rootScope', 'dataService',
+    ZApp.controller(__ZNxtAppName + '.userprofile.home.userRoleWidgetCtrl', ['$scope', '$rootScope', 'dataService',
     function ($scope, $rootScope, dataService) {
         $scope.$on("onShowUserProfileItem", function (e, menu, user) {
             if (menu.key == "info") {
@@ -27,7 +27,7 @@
             }
         });
         $scope.showGroups = function () {
-            $scope.$parent.clickMenu({ key: 'user_profile_groups' });
+            $scope.$parent.clickMenu({ key: 'user_profile_roles' });
         }
     }]);
 })();

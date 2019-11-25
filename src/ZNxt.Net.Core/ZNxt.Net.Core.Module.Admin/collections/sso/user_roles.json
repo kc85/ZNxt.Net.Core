@@ -15,19 +15,19 @@
   {
     "key": "*",
     "name": "All Users",
-    "description": "Default group for all users",
+    "description": "Default role for all users",
     "is_system": true
   },
   {
     "key": "init_user",
     "name": "Init user",
-    "description": "User assign to this group after default registration",
+    "description": "User assign to this role after default registration",
     "is_system": true
   },
   {
     "key": "pass_change_required",
     "name": "Password change required",
-    "description": "User assign to this group for fource password change",
+    "description": "User assign to this role for fource password change",
     "is_system": true
   },
   {
