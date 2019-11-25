@@ -5,7 +5,7 @@
         function ($scope, dataService) {
             $scope.allRoles = [];
             $scope.$on("onShowUserProfileItem", function (e, menu, user) {
-                if (menu.key == "user_profile_groups") {
+                if (menu.key == "user_profile_roles") {
                     $scope.userData = angular.copy(user);
                     $scope.getAllUserRoles();
                 };
@@ -55,7 +55,7 @@
                         }
                         else {
 
-                            logger.error("Error getting user groups");
+                            logger.error("Error getting user roles");
                         }
                     });
                 }
