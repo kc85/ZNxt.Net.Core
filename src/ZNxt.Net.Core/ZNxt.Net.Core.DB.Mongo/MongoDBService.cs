@@ -16,7 +16,7 @@ namespace ZNxt.Net.Core.DB.Mongo
     public class MongoDBService : IDBService
     {
         private IMongoDatabase _mongoDataBase;
-        private MongoClient _mongoClient;
+        private static MongoClient _mongoClient;
         private IDBServiceConfig _DBConfig;
         private readonly IHttpContextProxy _httpContextProxy;
         private const string DUPLICATE_KEY_ERROR = "duplicate key error";
@@ -52,7 +52,10 @@ namespace ZNxt.Net.Core.DB.Mongo
             {
                 connectionString = _DBConfig.ConnectingString;
             }
-            _mongoClient = new MongoClient(connectionString);
+            if (_mongoClient == null)
+            {
+                _mongoClient = new MongoClient(connectionString);
+            }
             _mongoDataBase = _mongoClient.GetDatabase(dbName);
         }
         public long Delete(string collection, FilterQuery filters)

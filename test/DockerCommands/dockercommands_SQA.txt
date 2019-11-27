@@ -1,6 +1,10 @@
 sudo adduser shreyas_m
 sudo adduser shreyas_m --disabled-password
 
+sudo passwd shreyas_m
+s2f$$
+
+
 sudo su - shreyas_m
 mkdir .ssh
 chmod 700 .ssh
@@ -19,6 +23,10 @@ s2f$$
 
 sudo docker pull choudhurykhanin/znxtapp
 
+sudo docker rm -f  s2fapp-gateway-run
+sudo docker rm -f  s2fapp-sso-run 
+sudo docker rm -f  s2fapp-frontend-run
+sudo docker rm -f  s2fapp-admin-run
 
 #UI 
 sudo docker run -d -p 804:80 -p 4434:443 -e ConnectionString=mongodb://172.31.0.110:27071 -e DataBaseName=ZNxt_SQA_UI -e AppEndpoint=http://sqa.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-frontend-run  choudhurykhanin/znxtapp:latest
@@ -33,10 +41,6 @@ sudo docker run -d -p 807:80 -p 4437:443 -e ConnectionString=mongodb://172.31.0.
 sudo docker run -d -p 805:80 -p 4435:443 -e ConnectionString=mongodb://172.31.0.110:27071 -e DataBaseName=ZNxt_SQA_Admin -e AppEndpoint=http://sqa.admin.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-admin-run  choudhurykhanin/znxtapp:latest
 
 
-sudo docker rm -f  s2fapp-gateway-run
-sudo docker rm -f  s2fapp-sso-run 
-sudo docker rm -f  s2fapp-frontend-run
-sudo docker rm -f  s2fapp-admin-run
 
 f5d2ce5ed463e844266feb92abba804244a7b5287484ecd2041395dad4bf18c3
 
@@ -46,4 +50,12 @@ sudo docker restart  s2fapp-sso-run
 sudo docker restart  s2fapp-frontend-run
 sudo docker restart  s2fapp-admin-run
 
+------------------
+
+
+Resize file system 
+lsblk
+sudo growpart /dev/xvda 1
+df -h
+resize2fs /dev/xvda1
 

@@ -79,6 +79,7 @@ a2dissite 000-default
 
 
 ############################### new ######################
+git pull origin master
 sudo docker build -t znxtapp ./src/ZNxt.Net.Core
 sudo docker tag znxtapp:latest choudhurykhanin/znxtapp:latest
 sudo docker push choudhurykhanin/znxtapp:latest
@@ -103,7 +104,11 @@ sudo docker rm -f  s2fapp-sso-run
 sudo docker rm -f  s2fapp-frontend-run
 sudo docker rm -f  s2fapp-admin-run
 
+------------------
+docker system prune
+sudo docker exec -it znxtapp-run /bin/bash
+sudo docker inspect s2fapp-run
 
-#
+------------------------------
 
  

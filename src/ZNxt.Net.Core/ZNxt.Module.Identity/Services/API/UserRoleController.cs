@@ -35,12 +35,12 @@ namespace ZNxt.Module.Identity.Services.API
             return AddRemoveUserRole(false);
         }
         [Route("/sso/user/addrole", CommonConst.ActionMethods.POST, "sys_admin")]
-        public JObject AddUserGroup()
+        public JObject AddUserRole()
         {
             return AddRemoveUserRole(true);
         }
         [Route("/sso/user/removerole", CommonConst.ActionMethods.POST, "sys_admin")]
-        public JObject RemoveUserGroup()
+        public JObject RemoveUserRole()
         {
             return AddRemoveUserRole(false);
         }

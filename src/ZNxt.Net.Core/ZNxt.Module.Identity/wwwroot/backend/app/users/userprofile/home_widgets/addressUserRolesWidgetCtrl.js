@@ -26,7 +26,7 @@
                 $scope.userData = user;
             }
         });
-        $scope.showGroups = function () {
+        $scope.showRoles = function () {
             $scope.$parent.clickMenu({ key: 'user_profile_roles' });
         }
     }]);
