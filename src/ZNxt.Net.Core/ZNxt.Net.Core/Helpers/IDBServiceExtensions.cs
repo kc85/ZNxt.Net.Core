@@ -37,8 +37,7 @@ namespace ZNxt.Net.Core.Helpers
         public static JObject FirstOrDefault(this IDBService dbProxy, string collection, string filterKey, string filterValue, bool isOverrideCheck = false)
         {
             var dbQuery = new DBQuery();
-            dbQuery.Filters.Add(new Filter(filterKey, filterValue));
-            var response = dbProxy.Get(collection, dbQuery);
+            var response = dbProxy.Get(collection, new RawQuery("{" + filterKey + ":'" + filterValue + "'}"));
             if (response.Count != 0)
             {
                 return response[0] as JObject;
@@ -54,7 +53,7 @@ namespace ZNxt.Net.Core.Helpers
             return FirstOrDefault(dbProxy, collection, QueryBuilder(filters), isOverrideCheck);
         }
 
-        public static JObject FirstOrDefault(this IDBService dbProxy, string collection, DBQuery filterQuery, bool isOverrideCheck = false)
+        public static JObject FirstOrDefault(this IDBService dbProxy, string collection, IDBQueryBuilder filterQuery, bool isOverrideCheck = false)
         {
             var response = dbProxy.Get(collection, filterQuery);
             if (response.Count != 0)
@@ -85,7 +84,7 @@ namespace ZNxt.Net.Core.Helpers
 
         public static bool Write(this IDBService dbProxy, string collection, JObject data, Dictionary<string, string> filters, bool overrideData = false, MergeArrayHandling mergeType = MergeArrayHandling.Union)
         {
-            if (dbProxy.Update(collection, QueryBuilder(filters).Filters, data, overrideData, mergeType) != 0)
+            if (dbProxy.Update(collection, QueryBuilder(filters), data, overrideData, mergeType) != 0)
             {
                 return true;
             }
@@ -122,15 +121,14 @@ namespace ZNxt.Net.Core.Helpers
             dbProxy.Write(collection, updateObject, updateOverrideFilter);
         }
 
-        private static DBQuery QueryBuilder(Dictionary<string, string> filterInput)
+        private static RawQuery QueryBuilder(Dictionary<string, string> filterInput)
         {
-            DBQuery dbQuery = new DBQuery();
             JObject filter = new JObject();
             foreach (var item in filterInput)
             {
-                dbQuery.Filters.Add(new Filter(item.Key,item.Value));
+                filter[item.Key] = item.Value;
             }
-            return dbQuery;
+            return new RawQuery(filter.ToString());
         }
     }
 }

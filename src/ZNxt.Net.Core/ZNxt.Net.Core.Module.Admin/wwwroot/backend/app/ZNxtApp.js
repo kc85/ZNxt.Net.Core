@@ -165,7 +165,9 @@
                 $rootScope.$broadcast('onHttpEnd');
                 if (response.data != undefined && response.data.code != undefined) {
                     if (response.data.code == 401) {
-                        window.location.reload();
+                        $rootScope.$broadcast('onError', { text: "Unauthorized Access", timeout: 2000 });
+
+                        //window.location.reload();
                     }
                     else if (response.data.code != 1) {
                         $rootScope.$broadcast('onError', { text: "Something wrong in the request", timeout: 2000 });

@@ -64,6 +64,10 @@ namespace ZNxt.Net.Core.Web.Proxies
                     }
                     
                     var orgkey = GetHeader(CommonConst.CommonValue.ORG_KEY);
+                    if (string.IsNullOrEmpty(orgkey))
+                    {
+                         orgkey = GetQueryString(CommonConst.CommonValue.ORG_KEY);
+                    }
                     var org = user.orgs.FirstOrDefault(f => f.org_key == orgkey);
                     if (org != null)
                     {
