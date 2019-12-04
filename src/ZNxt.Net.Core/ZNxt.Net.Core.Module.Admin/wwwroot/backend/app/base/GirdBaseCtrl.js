@@ -17,15 +17,30 @@
             removeFiltyerColumn = [];
             $scope.active();
         }
-        $scope.getFilter = function () {
+        $scope.getFilterText = function (filterdata, filterIncludeColumns) {
             var filterText = "{}";
+            var filters = [];
+            filterIncludeColumns.forEach(function (d) {
+                    filters.push("{" + d + ":{$regex : '.*" + filterdata + "*.','$options' : 'i'}}");
+            });
+            if (filters.length != 0) {
+                filterText = "{$or : [ " + filters.join(",") + "]}";
+            }
+
+            return filterText;
+        }
+        $scope.getFilter = function (filterdata) {
+            var filterText = "{}";
+            if (filterdata == undefined) {
+                filterdata = $scope.filter;
+            }
             $scope.filterCoumns = [];
-            if ($scope.filter.length != 0) {
+            if (filterdata.length != 0) {
                 var filters = [];
                 $scope.filterIncludeColumns.forEach(function (d) {
                     if (removeFiltyerColumn.filter(function (f) { return f.column == d }).length == 0) {
-                        filters.push("{" + d + ":{$regex : '.*" + $scope.filter + "*.','$options' : 'i'}}");
-                        $scope.filterCoumns.push({ "column": d, "value": $scope.filter });
+                        filters.push("{" + d + ":{$regex : '.*" + filterdata  + "*.','$options' : 'i'}}");
+                        $scope.filterCoumns.push({ "column": d, "value": filterdata  });
                     }
                 });
                 if (filters.length != 0) {

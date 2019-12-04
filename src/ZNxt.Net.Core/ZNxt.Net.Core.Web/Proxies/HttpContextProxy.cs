@@ -69,9 +69,12 @@ namespace ZNxt.Net.Core.Web.Proxies
                          orgkey = GetQueryString(CommonConst.CommonValue.ORG_KEY);
                     }
                     var org = user.orgs.FirstOrDefault(f => f.org_key == orgkey);
-                    if (org != null)
+                    if (org != null && org.Groups != null)
                     {
-                        user.roles.AddRange(org.roles);
+                        foreach (var g in org.Groups)
+                        {
+                            user.roles.AddRange(g.roles);
+                        }
                     }
                     user.roles = user.roles.Distinct().ToList();
                     user.claims = claims;

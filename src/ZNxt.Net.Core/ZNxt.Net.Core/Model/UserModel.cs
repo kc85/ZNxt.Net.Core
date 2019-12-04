@@ -30,6 +30,17 @@ namespace ZNxt.Net.Core.Model
     public class UserOrgModel
     {
         public string org_key { get; set; }
+        public bool is_enabled { get; set; }
+        public string user_id { get; set; }
+        public List<Org_Group> Groups { get; set; }
+    }
+
+
+    public class Org_Group
+    {
+        public string name { get; set; }
+        public string key { get; set; }
         public List<string> roles { get; set; }
     }
+
 }
