@@ -384,5 +384,24 @@ namespace IdentityServer4.Quickstart.UI
 
             return vm;
         }
+
+        [HttpGet]
+        public IActionResult ForgetUsername(string returnUrl)
+
+        {
+            // build a model so we know what to show on the login page
+            var vm = new ViewModelBase();
+            SetAppName(vm);
+            return View(vm);
+        }
+        [HttpGet]
+        public IActionResult ForgetPassword(string returnUrl)
+
+        {
+            // build a model so we know what to show on the login page
+            var vm = new ViewModelBase();
+            SetAppName(vm);
+            return View(vm);
+        }
     }
 }

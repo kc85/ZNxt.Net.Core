@@ -49,10 +49,14 @@ namespace ZNxt.Module.Identity.Services.API
                         {
                             email = request.email,
                             user_id = ZNxt.Net.Core.Helpers.CommonUtility.GetNewID(),
-                            name = request.name,
+                            user_name = request.user_name,
+                            first_name = request.first_name,
+                            middle_name = request.middle_name,
+                            last_name = request.last_name,
                             salt = ZNxt.Net.Core.Helpers.CommonUtility.GetNewID(),
                             is_enabled = true,
                             user_type = "user_pass",
+                            dob = new DOBModel() { },
                             id = ZNxt.Net.Core.Helpers.CommonUtility.GetNewID(),
                             roles = new List<string> { "init_login_email_otp" }
                         };

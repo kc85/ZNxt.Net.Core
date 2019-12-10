@@ -54,9 +54,53 @@
                         </div>
                         <div class="modal-footer">
                             <small>
-                                Copyright @@2019 ZNxt.app
+                                Copyright @@2019 @appName
+                            </small>
+                            <small>
+                                | <a href="#" id="btnShowHelp" data-toggle="modal" data-target="#helpModal">Help</a>
                             </small>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                
+                <div class="modal-body">
+                    <center>
+                        <img src="~/new_icon.png" class="icon-banner" style="width:100px">
+                    </center>
+                    <center>
+                        <div class="page-header">
+                            <h2>@appName Login Help</h2>
+                        </div>
+                    </center>
+                    <div class="list-group">
+                        <a href="./Forgetpassword" class="list-group-item list-group-item-action flex-column align-items-start active">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Forget your password ? </h5>
+                                @*<small>3 days ago</small>*@
+                            </div>
+                            <p class="mb-1"></p>
+                            <small>Password reset details will send to your registered email id.</small>
+                        </a>
+                        <a href="./ForgetUsername" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Forget your username?</h5>
+                                @*<small class="text-muted">3 days ago</small>*@
+                            </div>
+                            @*<p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>*@
+                        <small class="text-muted"> Your username will send to your registered email id</small>
+                        </a>
+                        <a href="#" id="btnHelpClose" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <small class="text-muted" >Back to login</small>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -65,6 +109,15 @@
     <script>
         $(document).ready(function () {
             $('#loginBaseModal').modal('show');
+            $('#helpModal').on('hidden.bs.modal', function (e) {
+                 $('#loginBaseModal').modal('show');
+            });
+            $('#helpModal').on('show.bs.modal', function (e) {
+                  $('#loginBaseModal').modal('hide');
+            });
+            $("#btnHelpClose").click(function () {
+                $('#helpModal').modal('hide');
+            });
         });
     </script>
     <script src="~/js/bootstrap.bundle.min.js"></script>

@@ -1,4 +1,4 @@
-@model LoginViewModel
+    @model LoginViewModel
 
 <div>
     <center>
@@ -12,16 +12,16 @@
         {
             <div class="col-sm-12">
                 <div class="panel panel-default">
-                    <div class="panel-body">
+                    <div class="panel-body" style="min-height:266px">
 
                         <form asp-route="Login" id="frmlogin">
                             <input type="hidden" asp-for="ReturnUrl" />
 
                             <fieldset>
 
-                                <div id="loginEnterUserName">
+                                <div id="loginEnterUserName" style="margin-top:65px">
                                     <div class="form-group">
-                                        <label>User Name</label>
+                                        <label>Username</label>
                                         <input class="form-control" placeholder="Username" asp-for="Username" id="txtUserName" autofocus>
                                     </div>
                                     <div class="form-group">
@@ -32,7 +32,7 @@
 
                                 <div id="loginEnterPassOtp" style="display:none">
                                     <div class="form-group">
-                                        <label>User Name</label>
+                                        <label>Username</label>
                                         <label class="form-control" style="background-color:gray;color:#fff" disabled id="lblUserNameShow"></label>
                                     </div>
                                     <div id="divOtp" style="display:none">
@@ -70,7 +70,7 @@
 
         @if (Model.VisibleExternalProviders.Any())
         {
-            <div class="col-md-12 col-sm-12 external-providers" id="divExternalProviders">
+            <div class="col-md-12 col-sm-12 external-providers" id="divExternalProviders" >
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <br />
@@ -103,6 +103,7 @@
                 There are no login schemes configured for this client.
             </div>
         }
+
     </div>
     <partial name="_ValidationSummary" />
 
@@ -117,6 +118,7 @@
                 $("#txtUserName").focus();
                 $("#divPass").val("");
                 $("#divOtp").val("");
+                $("#divExternalProviders").hide();
                
             }
             init();

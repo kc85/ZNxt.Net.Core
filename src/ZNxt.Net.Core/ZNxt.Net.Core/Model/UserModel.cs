@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ZNxt.Net.Core.Model
 {
@@ -6,8 +7,14 @@ namespace ZNxt.Net.Core.Model
     {
         public string id { get; set; }
         public string user_id { get; set; }
+        public string user_name { get; set; }
         public string email { get; set; }
+        [System.Obsolete("use first_name,middle_namelast_name") ]
         public string name { get; set; }
+        public string first_name { get; set; }
+        public string middle_name { get; set; }
+        public string last_name { get; set; }
+        public DOBModel dob { get; set; }
         public string user_type { get; set; }
         public string salt { get; set; }
         public string email_validation_required { get; set; }
@@ -41,6 +48,19 @@ namespace ZNxt.Net.Core.Model
         public string name { get; set; }
         public string key { get; set; }
         public List<string> roles { get; set; }
+    }
+
+    public class DOBModel
+    {
+        public int day { get; set; }
+        public int month { get; set; }
+        public int year { get; set; }
+        public DOBModel()
+        {
+            day = DateTime.MinValue.Day;
+            month = DateTime.MinValue.Month;
+            year = DateTime.MinValue.Year;
+        }
     }
 
 }
