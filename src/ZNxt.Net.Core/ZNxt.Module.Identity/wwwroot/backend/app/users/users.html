@@ -78,9 +78,9 @@
                                 <div class="col-md-4 col-sm-4 col-xs-12 profile_details" ng-repeat="data in pageData.data">
                                     <div class="well profile_view">
                                         <div class="col-sm-12">
-                                            <h4 class="brief"><i>{{data.user_type}} :: {{data.user_id}}</i></h4>
+                                            <h4 class="brief"><i>{{data.user_type}} :: {{data.user_name}}</i></h4>
                                             <div class="left col-xs-7">
-                                                <h2>{{data.name}}</h2>
+                                                <h2>{{data.first_name}} {{data.middle_name}} {{data.last_name}}</h2>
                                                 <p><strong>Roles: </strong> <span ng-repeat="g in data.roles">{{g}} </span></p>
                                                 <ul class="list-unstyled">
                                                     <li><i class="fa fa-phone"></i> Phone #:{{data.phone}} </li>

@@ -8,7 +8,7 @@ namespace ZNxt.Module.Identity.Services.API.Models
         [Required]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "user name min length 5 max length 20")]
         public string user_name { get; set; }
-        
+
         [Required]
         [StringLength(150, MinimumLength = 3, ErrorMessage = "First name min length 3 max length 150")]
         public string first_name { get; set; }
@@ -30,6 +30,10 @@ namespace ZNxt.Module.Identity.Services.API.Models
         public string whatsapp_mobile_number { get; set; }
 
         public DOBModel dob { get; set; }
+
+        [StringLength(1, MinimumLength = 1, ErrorMessage = "Gender only one char")]
+
+        public string gender {get;set;}
 
     }
 }

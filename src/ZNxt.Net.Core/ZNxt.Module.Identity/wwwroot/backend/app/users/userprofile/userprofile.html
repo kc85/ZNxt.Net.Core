@@ -3,7 +3,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>{{user.name}}<small>Type : {{user.user_type}}</small></h2>
+                    <h2>{{user.first_name}} {{user.middle_name}} {{user.last_name}}<small>Type : {{user.user_type}}</small></h2>
                     <ul class="nav navbar-right panel_toolbox" ng-hide="isShowMyProfile">
 
                         <li class="dropdown">
@@ -38,7 +38,17 @@
                         </div>
                         <ul class="list-unstyled user_data">
                             <li>
-                                <i class="fa fa-map-marker user-profile-icon"></i> Phone #: {{user.phone}}
+                                <i class="fa fa-map-marker user-profile-icon"></i> User Name #: {{user.user_name}}
+                            </li>
+                            <li>
+                                <i class="fa fa-map-marker user-profile-icon"></i> User Id #: {{user.user_id}}
+                            </li>
+                            <li>
+                                <i class="fa fa-map-marker user-profile-icon"></i> Mobile Number  #: {{user.user_info[0].mobile_number}}
+                            </li>
+
+                            <li>
+                                <i class="fa fa-map-marker user-profile-icon"></i> WhatsApp Mobile Number  #: {{user.user_info[0].whatsapp_mobile_number}}
                             </li>
                             <li>
                                 <i class="fa fa-map-marker user-profile-icon"></i> Email : {{user.email}}

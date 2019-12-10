@@ -65,8 +65,20 @@ namespace ZNxt.Module.Identity.Services.API
                         var response = _ZNxtUserService.CreateUser( userModel, false );
                         if (response)
                         {
-                            _userNotifierService.SendWelcomeEmailWithOTPLoginAsync(userModel).GetAwaiter().GetResult();
-                            return _responseBuilder.Success();
+                            JObject userInfo = new JObject();
+                            userInfo["mobile_number"] = request.mobile_number;
+                            userInfo["whatsapp_mobile_number"] = request.whatsapp_mobile_number;
+                            userInfo["gender"] = request.gender;
+                            if (_ZNxtUserService.UpdateUserProfile(userModel.user_id, userInfo))
+                            {
+                                _userNotifierService.SendWelcomeEmailWithOTPLoginAsync(userModel).GetAwaiter().GetResult();
+                                return _responseBuilder.Success();
+                            }
+                            else
+                            {
+                                _logger.Error($"Error while updating user profile {userModel.user_id}", null,userInfo);
+                                return _responseBuilder.ServerError();
+                            }
                         }
                         else
                         {

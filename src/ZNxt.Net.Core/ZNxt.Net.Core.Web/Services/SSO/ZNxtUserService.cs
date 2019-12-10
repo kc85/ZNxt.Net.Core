@@ -100,7 +100,7 @@ namespace ZNxt.Identity.Services
                 {
                     id = subjectId,
                     user_id = subjectId,
-                    name = subject.GetDisplayName(),
+                    first_name = subject.GetDisplayName(),
                     email = subject.GetSubjectId()
                    
                 };
@@ -189,6 +189,27 @@ namespace ZNxt.Identity.Services
             else
             {
                 return null;
+            }
+
+        }
+        public bool UpdateUserProfile(string userid, JObject data)
+        {
+
+            var filter = new JObject();
+            filter[CommonField.USER_ID] = userid;
+            var userInfo = _dBService.FirstOrDefault(Collection.USER_INFO, new RawQuery(filter.ToString()));
+            if (userInfo != null)
+            {
+                foreach (var d in data)
+                {
+                    userInfo[d.Key] = d.Value;
+                }
+                return _dBService.Update(Collection.USER_INFO, new RawQuery(filter.ToString()), userInfo) == 1;
+            }
+            else
+            {
+                _logger.Error($"User not found User Id : {userInfo}");
+                return false;
             }
 
         }

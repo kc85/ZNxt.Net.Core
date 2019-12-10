@@ -1,6 +1,9 @@
 ﻿@if (ViewContext.ModelState.IsValid == false)
 {
-    <div class="alert alert-danger">
-       <div asp-validation-summary="All" class="danger"></div>
+    <div  id="validationsummary">
+        <div class="alert alert-danger">
+            <div asp-validation-summary="All" class="danger"></div>
+        </div>
+        Trouble with login?  Check the <a href="#" id="btnShowHelp" data-toggle="modal" data-target="#helpModal">help</a>.
     </div>
 }
