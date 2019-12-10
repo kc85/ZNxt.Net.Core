@@ -34,8 +34,8 @@ namespace ZNxt.Identity.Services
                     ["appurl"] = ApplicationConfig.AppEndpoint
                 };
 
-               var resultTemplate  = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
-
+               var resultTemplateBase  = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
+                var resultTemplate = resultTemplateBase["data"] as JObject;
                 if (resultTemplate["data"] !=null  && resultTemplate["subject"] !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
                     var emailModel = new JObject()
@@ -50,7 +50,7 @@ namespace ZNxt.Identity.Services
                 }
                 else
                 {
-                    _logger.Error($"Error while processing the template. Request :{templateRequest.ToString() }");
+                    _logger.Error($"Error while processing the template. Request :{templateRequest.ToString() }",null, resultTemplateBase);
                     return false;
                 }
             }
@@ -76,8 +76,8 @@ namespace ZNxt.Identity.Services
                     ["appurl"] = ApplicationConfig.AppEndpoint
                 };
 
-                var resultTemplate = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
-                
+                var resultTemplateBase = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
+                var resultTemplate = resultTemplateBase["data"] as JObject;
                 if (resultTemplate["data"] != null  && resultTemplate["subject"]  !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
                     var emailModel = new JObject()
@@ -94,7 +94,7 @@ namespace ZNxt.Identity.Services
                 }
                 else
                 {
-                    _logger.Error($"Error while processing the template. Request :{templateRequest.ToString() }");
+                    _logger.Error($"Error while processing the template. Request :{templateRequest.ToString() }",null, resultTemplateBase);
                     return false;
                 }
             }
