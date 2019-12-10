@@ -40,7 +40,7 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
         {
             return _responseBuilder.Success();
         }
-        [Route("/template/process", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN, "text/html")]
+        [Route("/template/process", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
         public JObject Process()
         {
             try

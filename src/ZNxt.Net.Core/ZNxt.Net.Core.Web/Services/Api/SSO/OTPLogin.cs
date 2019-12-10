@@ -17,10 +17,12 @@ namespace ZNxt.Net.Core.Web.Services.Api.SSO
         private readonly ILogger _logger;
         private readonly IDBService _dBService;
         private readonly IApiGatewayService _apiGatewayService;
-        public OTPLogin(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService)
+        private readonly IZNxtUserService _ZNxtUserService;
+        public OTPLogin(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IZNxtUserService ZNxtUserService)
         {
             _responseBuilder = responseBuilder;
             _httpContextProxy = httpContextProxy;
+            _ZNxtUserService = ZNxtUserService;
             _logger = logger;
             _dBService = dBService;
         }
@@ -32,10 +34,10 @@ namespace ZNxt.Net.Core.Web.Services.Api.SSO
                 var user_name = _httpContextProxy.GetQueryString("user_name");
                 if (!string.IsNullOrEmpty(user_name))
                 {
-                    var data = _dBService.Get(CommonConst.Collection.USERS, new RawQuery("{'email': '" + user_name + "','is_enabled':true}"));
-                    if (data.Any())
+                    var data = _ZNxtUserService.GetUserByUsername(user_name);
+                    if (data!=null)
                     {
-                        if ((data.First()["roles"] as JArray).Where(f => f.ToString() == "init_login_email_otp").Any())
+                        if (data.roles.Where(f => f == "init_login_email_otp").Any())
                         {
                             return _responseBuilder.Success();
                         }
