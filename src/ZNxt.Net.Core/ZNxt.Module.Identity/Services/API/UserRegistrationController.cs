@@ -43,7 +43,7 @@ namespace ZNxt.Module.Identity.Services.API
                    
                     _logger.Debug("Calling GetUserByEmail");
 
-                    if (_ZNxtUserService.GetUserByEmail( request.email) == null)
+                    if (_ZNxtUserService.GetUserByUsername(request.user_name) == null)
                     {
                         var userModel = new UserModel()
                         {
@@ -76,7 +76,7 @@ namespace ZNxt.Module.Identity.Services.API
                     else
                     {
                         JObject errors = new JObject();
-                        errors["error"] = $"Email id already registered {request.email}";
+                        errors["error"] = $"User id already registered : {request.user_name}";
                         return _responseBuilder.BadRequest(errors);
                     }
                 }

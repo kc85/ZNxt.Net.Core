@@ -65,9 +65,9 @@ namespace ZNxt.Identity.Services
                 var templateRequest = new JObject()
                 {
                     ["key"] = template_key,
-                    ["userdisplayname"] = user.name,
+                    ["userdisplayname"] = $"{user.first_name } {user.middle_name} {user.last_name}",
                     ["userloginemail"] = user.email,
-                    ["userlogin"] = user.email
+                    ["userlogin"] = user.user_name
                 };
 
                 var resultTemplate = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);

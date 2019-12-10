@@ -107,7 +107,7 @@ namespace ZNxt.Identity.Services
        
         public bool ValidateCredentials(string username, string password, string emailotp)
         {
-            var user =  _userService.GetUserByEmail(username);
+            var user =  _userService.GetUserByUsername(username);
             if (user != null)
             {
                 if (user.roles.Where(f=>f == "init_login_email_otp").Any())

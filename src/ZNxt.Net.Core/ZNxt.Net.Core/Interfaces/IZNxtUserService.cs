@@ -15,6 +15,7 @@ namespace ZNxt.Net.Core.Interfaces
         UserModel GetUserByEmail(string email);
 
         UserModel GetUser(string userid);
+        UserModel GetUserByUsername(string username);
         PasswordSaltModel GetPassword(string userid);
     }
 }

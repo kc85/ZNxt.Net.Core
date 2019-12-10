@@ -127,6 +127,20 @@ namespace ZNxt.Identity.Services
             }
 
         }
+        public UserModel GetUserByUsername(string username)
+        {
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_name: '" + username + "','is_enabled':true}"));
+            if (user.Any())
+            {
+                var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
+                SetUserOrgs(userModel);
+                return userModel;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         private void SetUserOrgs(UserModel userModel)
         {
