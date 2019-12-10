@@ -112,7 +112,7 @@ namespace ZNxt.Identity.Services
             {
                 if (user.roles.Where(f=>f == "init_login_email_otp").Any())
                 {
-                    if(ValidateEmailOTP(username, emailotp))
+                    if(ValidateEmailOTP(user.email, emailotp))
                     {
                         if (RemoveOTPValidateUserRole(user.user_id))
                         {
@@ -175,13 +175,13 @@ namespace ZNxt.Identity.Services
             }
         }
 
-        private bool ValidateEmailOTP(string username, string emailotp)
+        private bool ValidateEmailOTP(string email, string emailotp)
         {
 
             var request = new JObject()
             {
                 ["Type"] = "Email",
-                ["To"] = username,
+                ["To"] = email,
                 ["OTP"] = emailotp,
                 ["OTPType"] = "registration_with_email_otp",
             };
