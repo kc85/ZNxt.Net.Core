@@ -41,7 +41,7 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
             return _responseBuilder.Success();
         }
         [Route("/template/process", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN, "text/html")]
-        public string Process()
+        public JObject Process()
         {
             try
             {
@@ -53,30 +53,36 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
                     if (data.Count == 1 && data.First()["data"] != null)
                     {
                         var template = data.First()["data"].ToString();
+                        var subject = data.First()["subject"] != null ?  data.First()["subject"].ToString() : "";
+
                         request.Remove("key");
                         foreach (var item in request)
                         {
+                            subject = subject.Replace("{{" + item.Key.ToString() + "}}", item.Value.ToString());
                             template = template.Replace("{{" + item.Key.ToString() + "}}", item.Value.ToString());
                         }
-                        return template;
+
+                        JObject response = new JObject();
+                        response["data"] = template;
+                        response["subject"] = subject;
+                        return _responseBuilder.Success(response);
                     }
                     else
                     {
                         _logger.Error($"key not found {request["key"]}");
-                        return null;
+                        return _responseBuilder.NotFound(); ;
                     }
                 }
                 else
                 {
                     _logger.Error("Bad request");
-                    return null;
+                    return _responseBuilder.BadRequest(); ;
                 }
             }
             catch (Exception ex)
             {
                 _logger.Error(ex.Message, ex);
-                return null;
-
+                return _responseBuilder.ServerError() ;
             }
         }
         [Route("/template/get", CommonConst.ActionMethods.GET, CommonConst.CommonValue.SYS_ADMIN)]

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Helpers
 {
@@ -197,6 +198,10 @@ namespace ZNxt.Net.Core.Helpers
             return _ApiAuthKey;
         }
 
+        public static string GetDisplayName(this UserModel user)
+        {
+            return $"{user.first_name} {user.middle_name} {user.last_name}";
+        }
         public static bool IsRunningOnDocker { get { return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true"; } }
     }
 }

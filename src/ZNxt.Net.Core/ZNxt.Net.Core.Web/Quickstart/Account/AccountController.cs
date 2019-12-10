@@ -16,6 +16,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ZNxt.Identity.Services;
+using ZNxt.Net.Core.Config;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Model;
 
 namespace IdentityServer4.Quickstart.UI
@@ -74,7 +76,7 @@ namespace IdentityServer4.Quickstart.UI
 
         private void SetAppName(ViewModelBase vm)
         {
-            ViewData["ApplicationName"] = vm.ApplicationName = "S2F School";
+            ViewData["ApplicationName"] = vm.ApplicationName = ApplicationConfig.AppName;
         }
 
         /// <summary>
@@ -120,7 +122,7 @@ namespace IdentityServer4.Quickstart.UI
                 if (_users.ValidateCredentials(model.Username, model.Password,model.EmailOTP))
                 {
                     var user = _users.FindByUsername(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id,$"{ user.first_name } {user.middle_name } { user.last_name}", clientId: context?.ClientId));
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id,user.GetDisplayName(), clientId: context?.ClientId));
 
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
@@ -135,7 +137,7 @@ namespace IdentityServer4.Quickstart.UI
                     };
 
                     // issue authentication cookie with subject ID and username
-                    await HttpContext.SignInAsync(user.user_id, $"{ user.first_name } {user.middle_name } { user.last_name}", props);
+                    await HttpContext.SignInAsync(user.user_id, user.GetDisplayName(), props);
                     var passsetview = IsPasswordSetRequired(user, model);
                     if (passsetview != null)
                     {

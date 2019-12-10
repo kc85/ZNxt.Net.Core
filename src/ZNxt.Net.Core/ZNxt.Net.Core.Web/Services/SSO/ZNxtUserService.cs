@@ -129,7 +129,7 @@ namespace ZNxt.Identity.Services
         }
         public UserModel GetUserByUsername(string username)
         {
-            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_name: '" + username + "','is_enabled':true}"));
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_name: /^"+username+"$/i,'is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
@@ -166,7 +166,7 @@ namespace ZNxt.Identity.Services
 
         public UserModel GetUserByEmail(string email)
         {
-            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: '" + email + "','is_enabled':true}"));
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: /^" + email + "$/i,'is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());

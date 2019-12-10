@@ -34,19 +34,19 @@ sudo docker rm -f  s2fapp-admin-run
 sudo docker rm -f  s2fapp-core-run
 
 #UI 
-sudo docker run -d -p 804:80 -p 4434:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_UI -e AppEndpoint=http://sqa.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-frontend-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 804:80 -p 4434:443  -e "AppName=S2F School" -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_UI -e AppEndpoint=http://sqa.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-frontend-run  choudhurykhanin/znxtapp:latest
 
 # gateway
-sudo docker run -d -p 806:80 -p 4436:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_gateway -e AppEndpoint=http://sqa.gateway.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-gateway-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 806:80 -p 4436:443 -e "AppName=S2F School"  -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_gateway -e AppEndpoint=http://sqa.gateway.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-gateway-run  choudhurykhanin/znxtapp:latest
 
 #SSO
-sudo docker run -d -p 807:80 -p 4437:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_SSO -e AppEndpoint=http://sqa.sso.s2fschool.com -e SSOUrl=http://sqa.sso.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=true -e  AppSecret=sqaSecret -e RelyingPartyUrls=http://sqa.s2fschool.com,http://www.sqa.s2fschool.com,http://sqa.admin.s2fschool.com,http://www.sqa.admin.s2fschool.com,https://localhost:44373 --restart=always --name s2fapp-sso-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 807:80 -p 4437:443 -e "AppName=S2F School" -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_SSO -e AppEndpoint=http://sqa.sso.s2fschool.com -e SSOUrl=http://sqa.sso.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=true -e  AppSecret=sqaSecret -e RelyingPartyUrls=http://sqa.s2fschool.com,http://www.sqa.s2fschool.com,http://sqa.admin.s2fschool.com,http://www.sqa.admin.s2fschool.com,https://localhost:44373 --restart=always --name s2fapp-sso-run  choudhurykhanin/znxtapp:latest
 
 #Admin
-sudo docker run -d -p 805:80 -p 4435:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_Admin -e AppEndpoint=http://sqa.admin.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-admin-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 805:80 -p 4435:443 -e "AppName=S2F School" -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_Admin -e AppEndpoint=http://sqa.admin.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-admin-run  choudhurykhanin/znxtapp:latest
 
 #Core
-sudo docker run -d -p 808:80 -p 4438:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_Core -e AppEndpoint=http://sqa.core.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-core-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 808:80 -p 4438:443 -e "AppName=S2F School" -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=ZNxt_SQA_Core -e AppEndpoint=http://sqa.core.s2fschool.com -e ApiGatewayEndpoint=http://sqa.gateway.s2fschool.com -e IsSSO=false -e SSOUrl=http://sqa.sso.s2fschool.com -e  AppSecret=sqaSecret --restart=always --name s2fapp-core-run  choudhurykhanin/znxtapp:latest
 
 
 

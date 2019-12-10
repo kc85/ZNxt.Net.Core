@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Config;
+using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Identity.Services
 {
@@ -25,18 +27,20 @@ namespace ZNxt.Identity.Services
                 var templateRequest = new JObject()
                 {
                     ["key"] = "registration_confirmation",
-                    ["userdisplayname"] = user.name,
+                    ["userdisplayname"] = user.GetDisplayName(),
                     ["userloginemail"] = user.email,
-                    ["userlogin"] = user.email
+                    ["userlogin"] = user.email,
+                    ["appname"] =ApplicationConfig.AppName,
+                    ["appurl"] = ApplicationConfig.AppEndpoint
                 };
 
                var resultTemplate  = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
 
-                if (resultTemplate["data"] !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
+                if (resultTemplate["data"] !=null  && resultTemplate["subject"] !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
                     var emailModel = new JObject()
                     {
-                        ["Subject"] = "Registration confirmation ZNxt.App",
+                        ["Subject"] = resultTemplate["subject"],
                         ["To"] = user.email,
                         ["Message"] = resultTemplate["data"]
                     };
@@ -65,23 +69,25 @@ namespace ZNxt.Identity.Services
                 var templateRequest = new JObject()
                 {
                     ["key"] = template_key,
-                    ["userdisplayname"] = $"{user.first_name } {user.middle_name} {user.last_name}",
+                    ["userdisplayname"] = user.GetDisplayName(),
                     ["userloginemail"] = user.email,
-                    ["userlogin"] = user.user_name
+                    ["userlogin"] = user.user_name,
+                    ["appname"] = ApplicationConfig.AppName,
+                    ["appurl"] = ApplicationConfig.AppEndpoint
                 };
 
                 var resultTemplate = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
                 
-                if (resultTemplate["data"] != null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
+                if (resultTemplate["data"] != null  && resultTemplate["subject"]  !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
                     var emailModel = new JObject()
                     {
-                        ["Subject"] = "Registration confirmation ZNxt.App",
+                        ["Subject"] = resultTemplate["subject"],
                         ["To"] = user.email,
                         ["Type"] = "Email",
                         ["Message"] = resultTemplate["data"],
                         ["OTPType"] = template_key,
-                        ["Duration"] = (60*24*2).ToString() // TODO : Need to move to config, right now confugure for 2 days 
+                        ["Duration"] = (60*24*1).ToString() // TODO : Need to move to config, right now confugure for 2 days 
                     };
                     var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", "", emailModel, null);
                     return result["code"].ToString() == "1";
