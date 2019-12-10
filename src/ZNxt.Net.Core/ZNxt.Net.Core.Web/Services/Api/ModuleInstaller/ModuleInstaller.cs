@@ -394,7 +394,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
                             if (entry.FullName.LastIndexOf(".nuspec") == (entry.FullName.Length - ".nuspec".Length))
                             {
-                                var stringdata = System.Text.Encoding.UTF8.GetString(data);
+                                var stringdata = Encoding.UTF8.GetString(data);
 
                                 XmlDocument moduleConfig = new XmlDocument();
                                 moduleConfig.LoadXml(stringdata.Remove(0, stringdata.IndexOf("<")));

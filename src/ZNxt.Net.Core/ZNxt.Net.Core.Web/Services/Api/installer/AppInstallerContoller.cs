@@ -41,7 +41,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.Installer
         {
             var data =  _httpContextProxy.GetRequestBody<DBConnection>();
             _dbConfig.Set(data.Database, data.ConnectionString);
-            ApplicationConfig.AppInstallStatus = Enums.AppInstallStatus.Init; 
+            ApplicationConfig.AppInstallStatus = AppInstallStatus.Init; 
             var db = _serviceResolver.Resolve<IDBService>();
             if (db.IsConnected)
             {
@@ -50,7 +50,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.Installer
             }
             else
             {
-                ApplicationConfig.AppInstallStatus = Enums.AppInstallStatus.DBNotSet;
+                ApplicationConfig.AppInstallStatus = AppInstallStatus.DBNotSet;
                 return _responseBuilder.ServerError(new JObject
                 {
                     [CommonConst.CommonField.ERR_MESSAGE] = "DB Connection error"
@@ -73,7 +73,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.Installer
             {
                 return _responseBuilder.BadRequest();
             }
-            ApplicationConfig.AppInstallStatus = Enums.AppInstallStatus.Inprogress;
+            ApplicationConfig.AppInstallStatus = AppInstallStatus.Inprogress;
             var db = _serviceResolver.Resolve<IDBService>();
             var userAccontHelper = _serviceResolver.Resolve<UserAccontHelper>();
             if (db.IsConnected)
@@ -83,19 +83,19 @@ namespace ZNxt.Net.Core.Web.Services.Api.Installer
                 userAccontHelper.AddClaim(customConfig, CommonConst.CommonField.ROLE_CLAIM_TYPE, CommonConst.CommonField.SYS_ADMIN_ROLE);
                 if (db.Write(CommonConst.Collection.USERS, customConfig))
                 {
-                    ApplicationConfig.AppInstallStatus = Enums.AppInstallStatus.Finish;
+                    ApplicationConfig.AppInstallStatus = AppInstallStatus.Finish;
                     appSetting.SetAppSetting(CommonConst.CommonValue.APPINSTALLSTATUS, AppInstallStatus.Finish.ToString());
                     return _responseBuilder.Success();
                 }
                 else
                 {
-                    ApplicationConfig.AppInstallStatus = Enums.AppInstallStatus.Init;
+                    ApplicationConfig.AppInstallStatus = AppInstallStatus.Init;
                     return _responseBuilder.ServerError();
                 }
             }
             else
             {
-                ApplicationConfig.AppInstallStatus = Enums.AppInstallStatus.DBNotSet;
+                ApplicationConfig.AppInstallStatus = AppInstallStatus.DBNotSet;
                 return _responseBuilder.ServerError(new JObject
                 {
                     [CommonConst.CommonField.ERR_MESSAGE] = "DB Connection error"

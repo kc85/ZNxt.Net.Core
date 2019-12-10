@@ -48,16 +48,16 @@ namespace ZNxt.Module.Identity.Services.API
                         var userModel = new UserModel()
                         {
                             email = request.email,
-                            user_id = ZNxt.Net.Core.Helpers.CommonUtility.GetNewID(),
+                            user_id = CommonUtility.GetNewID(),
                             user_name = request.user_name,
                             first_name = request.first_name,
                             middle_name = request.middle_name,
                             last_name = request.last_name,
-                            salt = ZNxt.Net.Core.Helpers.CommonUtility.GetNewID(),
+                            salt = CommonUtility.GetNewID(),
                             is_enabled = true,
                             user_type = "user_pass",
                             dob = new DOBModel() { },
-                            id = ZNxt.Net.Core.Helpers.CommonUtility.GetNewID(),
+                            id = CommonUtility.GetNewID(),
                             roles = new List<string> { "init_login_email_otp" }
                         };
 

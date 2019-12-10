@@ -53,7 +53,7 @@ namespace ZNxt.Net.Core.DB.Mongo
 
         private string GetString(string bucket, string key, string encriptionKey)
         {
-            return System.Text.Encoding.UTF8.GetString(Get(bucket, key, encriptionKey));
+            return Encoding.UTF8.GetString(Get(bucket, key, encriptionKey));
         }
         public byte[] Get(string bucket, string key, string encriptionKey = null)
         {
@@ -63,7 +63,7 @@ namespace ZNxt.Net.Core.DB.Mongo
             {
                 var base64Data = data.First()[CommonConst.CommonField.DATA].ToString();
 
-                byte[] byteData = System.Convert.FromBase64String(base64Data);
+                byte[] byteData = Convert.FromBase64String(base64Data);
                 if (!string.IsNullOrEmpty(encriptionKey))
                 {
                     byteData = _encryption.Decrypt(byteData, encriptionKey);

@@ -112,7 +112,7 @@ namespace ZNxt.Net.Core.Config
         {
             get
             {
-                var tempFolder = string.Format("{0}\\{1}", ApplicationConfig.AppInstallFolder, ApplicationConfig.AppID);
+                var tempFolder = string.Format("{0}\\{1}", AppInstallFolder, AppID);
 
                 return tempFolder;
             }

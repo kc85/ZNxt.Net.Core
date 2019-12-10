@@ -94,7 +94,7 @@ namespace ZNxt.Net.Core.Web.Services
                 {
                     var id = dataResponse[0][CommonConst.CommonField.DISPLAY_ID].ToString();
                     var assemblyData = _keyValueStorage.Get<string>(CommonConst.Collection.DLLS, id);
-                    return System.Convert.FromBase64String(assemblyData);
+                    return Convert.FromBase64String(assemblyData);
                 }
             }
             catch (Exception ex)

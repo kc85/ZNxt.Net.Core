@@ -148,10 +148,10 @@ namespace ZNxt.Identity.Services
             try
             {
                 _logger.Debug($"Calling {extennalOrgEndpoint}");
-                var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
-                if (response[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonConst.CommonField.DATA] != null)
+                var response = _apiGatewayService.CallAsync(ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
+                if (response[CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonField.DATA] != null)
                 {
-                    userModel.orgs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonConst.CommonField.DATA].ToString());
+                    userModel.orgs = JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonField.DATA].ToString());
                 }
                 else
                 {

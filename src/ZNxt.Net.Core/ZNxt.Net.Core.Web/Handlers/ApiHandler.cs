@@ -193,7 +193,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                             var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/userinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.ORG_KEY] = orgkey } , ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
-                                userModel = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
+                                userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
                                 _inMemoryCacheService.Put<UserModel>(accessToken, userModel);
                             }
                         }

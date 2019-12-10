@@ -84,11 +84,11 @@ namespace ZNxt.Net.Core.Consts
 
             private MessageText()
             {
-                text[CommonConst._200_OK] = "OK";
-                text[CommonConst._404_RESOURCE_NOT_FOUND] = "NOT_FOUND";
-                text[CommonConst._400_BAD_REQUEST] = "BAD_REQUEST";
-                text[CommonConst._500_SERVER_ERROR] = "SERVER_ERROR";
-                text[CommonConst._1_SUCCESS] = "SUCCESS";
+                text[_200_OK] = "OK";
+                text[_404_RESOURCE_NOT_FOUND] = "NOT_FOUND";
+                text[_400_BAD_REQUEST] = "BAD_REQUEST";
+                text[_500_SERVER_ERROR] = "SERVER_ERROR";
+                text[_1_SUCCESS] = "SUCCESS";
                 text[_401_UNAUTHORIZED] = "UNAUTHORIZED";
             }
 
@@ -116,7 +116,7 @@ namespace ZNxt.Net.Core.Consts
         }
         public static class Filters
         {
-            public const string IS_OVERRIDE_FILTER = "{" + CommonConst.CommonField.IS_OVERRIDE + " : " + CommonConst.CommonValue.FALSE + "}";
+            public const string IS_OVERRIDE_FILTER = "{" + CommonField.IS_OVERRIDE + " : " + CommonValue.FALSE + "}";
         }
     }
 }

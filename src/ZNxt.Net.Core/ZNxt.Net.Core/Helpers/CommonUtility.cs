@@ -85,8 +85,8 @@ namespace ZNxt.Net.Core.Helpers
 
         public static string GetStringFromBase64(string base64Encoded)
         {
-            byte[] data = System.Convert.FromBase64String(base64Encoded);
-            return System.Text.Encoding.UTF8.GetString(data);
+            byte[] data = Convert.FromBase64String(base64Encoded);
+            return Encoding.UTF8.GetString(data);
         }
 
         public static string GenerateTxnId(string prefix = "HT")
@@ -193,7 +193,7 @@ namespace ZNxt.Net.Core.Helpers
         {
             if (string.IsNullOrEmpty(_ApiAuthKey))
             {
-                _ApiAuthKey = CommonUtility.Sha256Hash($"{ CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY)}{CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY)}");
+                _ApiAuthKey = Sha256Hash($"{ GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY)}{GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY)}");
             }
             return _ApiAuthKey;
         }

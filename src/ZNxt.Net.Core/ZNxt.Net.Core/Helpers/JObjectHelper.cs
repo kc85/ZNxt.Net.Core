@@ -124,7 +124,7 @@ namespace ZNxt.Net.Core.Helpers
         }
         public static  JObject ToJObject(this object obj)
         {
-            return JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(obj));
+            return JObject.Parse(JsonConvert.SerializeObject(obj));
         }
     }
 }

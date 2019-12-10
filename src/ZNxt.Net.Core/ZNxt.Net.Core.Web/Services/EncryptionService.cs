@@ -40,7 +40,7 @@ namespace ZNxt.Net.Core.Web.Services
 
         public string Encrypt(string inputString, string encryptionKey)
         {
-            byte[] inputArray = UTF8Encoding.UTF8.GetBytes(inputString);
+            byte[] inputArray = Encoding.UTF8.GetBytes(inputString);
             return Convert.ToBase64String(Encrypt(inputArray, encryptionKey));
         }
 
@@ -53,14 +53,14 @@ namespace ZNxt.Net.Core.Web.Services
         {
             byte[] inputArray = Convert.FromBase64String(inputString);
 
-            return UTF8Encoding.UTF8.GetString(Decrypt(inputArray, encryptionKey));
+            return Encoding.UTF8.GetString(Decrypt(inputArray, encryptionKey));
         }
 
         public byte[] Encrypt(byte[] data, string encryptionKey)
         {
             TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
             byte[] trimmedBytes = new byte[24];
-            var byteArr = UTF8Encoding.UTF8.GetBytes(encryptionKey);
+            var byteArr = Encoding.UTF8.GetBytes(encryptionKey);
             Buffer.BlockCopy(byteArr, 0, trimmedBytes, 0, 24);
             tripleDES.Key = trimmedBytes;
             tripleDES.Mode = CipherMode.ECB;
@@ -76,7 +76,7 @@ namespace ZNxt.Net.Core.Web.Services
         {
             TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
             byte[] trimmedBytes = new byte[24];
-            var byteArr = UTF8Encoding.UTF8.GetBytes(encryptionKey);
+            var byteArr = Encoding.UTF8.GetBytes(encryptionKey);
             Buffer.BlockCopy(byteArr, 0, trimmedBytes, 0, 24);
             tripleDES.Mode = CipherMode.ECB;
             tripleDES.Padding = PaddingMode.PKCS7;

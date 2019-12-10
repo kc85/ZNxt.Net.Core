@@ -45,7 +45,7 @@ namespace ZNxt.Net.Core.Web.Proxies
                 {
                     var user = new UserModel()
                     {
-                        name = _httpContextAccessor.HttpContext.User.Identity.Name,
+                        first_name = _httpContextAccessor.HttpContext.User.Identity.Name,
 
                     };
                     user.roles.Add("user");

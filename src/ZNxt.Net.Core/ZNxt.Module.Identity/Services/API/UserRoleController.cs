@@ -19,27 +19,27 @@ namespace ZNxt.Module.Identity.Services.API
         {
         }
 
-        [Route("/sso/user/roles", CommonConst.ActionMethods.GET, "user")]
+        [Route("/sso/user/roles", ActionMethods.GET, "user")]
         public JObject UserRoles()
         {
             return GetPaggedData(Collection.USER_ROLES, null, "{'override_by' : 'none'}", null, new List<string>() { "key", "name", "description", "module_name", "version", "is_default" });
         }
-        [Route("/sso/user/apiaddrole", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
+        [Route("/sso/user/apiaddrole", ActionMethods.POST, CommonField.API_AUTH_TOKEN)]
         public JObject AddUserRoleFromAPI()
         {
             return AddRemoveUserRole(true);
         }
-        [Route("/sso/user/apiremoverole", CommonConst.ActionMethods.POST, CommonConst.CommonField.API_AUTH_TOKEN)]
+        [Route("/sso/user/apiremoverole", ActionMethods.POST, CommonField.API_AUTH_TOKEN)]
         public JObject RemoveUserRoleFromAPI()
         {
             return AddRemoveUserRole(false);
         }
-        [Route("/sso/user/addrole", CommonConst.ActionMethods.POST, "sys_admin")]
+        [Route("/sso/user/addrole", ActionMethods.POST, "sys_admin")]
         public JObject AddUserRole()
         {
             return AddRemoveUserRole(true);
         }
-        [Route("/sso/user/removerole", CommonConst.ActionMethods.POST, "sys_admin")]
+        [Route("/sso/user/removerole", ActionMethods.POST, "sys_admin")]
         public JObject RemoveUserRole()
         {
             return AddRemoveUserRole(false);

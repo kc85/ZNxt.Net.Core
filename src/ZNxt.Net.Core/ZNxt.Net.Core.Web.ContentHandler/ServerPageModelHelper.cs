@@ -26,7 +26,7 @@ namespace ZNxt.Net.Core.Web.ContentHandler
 
                 UpdateBaseModel(pageModel, requestUriPath, fi.Name);
 
-                data = viewEngine.Compile(data, requestUriPath, ServerPageModelHelper.SetDefaultModel(dbProxy, httpProxy, logger, viewEngine, actionExecuter, pageModel, keyValueStorage, sessionProvider,folderPath));
+                data = viewEngine.Compile(data, requestUriPath, SetDefaultModel(dbProxy, httpProxy, logger, viewEngine, actionExecuter, pageModel, keyValueStorage, sessionProvider,folderPath));
                 if (pageModel.ContainsKey(CommonConst.CommonValue.PAGE_TEMPLATE_PATH))
                 {
                     FileInfo fiTemplate = new FileInfo(pageModel[CommonConst.CommonValue.PAGE_TEMPLATE_PATH]);
