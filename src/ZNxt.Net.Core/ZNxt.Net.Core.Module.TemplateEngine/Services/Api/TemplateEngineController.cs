@@ -65,7 +65,9 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
                         JObject response = new JObject();
                         response["data"] = template;
                         response["subject"] = subject;
-                        return _responseBuilder.Success(response);
+                        var apiresponse = _responseBuilder.Success(response);
+                        _logger.Debug("templete process response", apiresponse);
+                        return apiresponse;
                     }
                     else
                     {

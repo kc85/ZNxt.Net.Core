@@ -35,6 +35,7 @@ namespace ZNxt.Identity.Services
                 };
 
                var resultTemplateBase  = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
+                _logger.Debug("template/process response", resultTemplateBase);
                 var resultTemplate = resultTemplateBase["data"] as JObject;
                 if (resultTemplate["data"] !=null  && resultTemplate["subject"] !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
@@ -77,6 +78,7 @@ namespace ZNxt.Identity.Services
                 };
 
                 var resultTemplateBase = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
+                _logger.Debug("template/process response", resultTemplateBase);
                 var resultTemplate = resultTemplateBase["data"] as JObject;
                 if (resultTemplate["data"] != null  && resultTemplate["subject"]  !=null && !string.IsNullOrEmpty(resultTemplate["data"].ToString()))
                 {
