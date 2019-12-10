@@ -102,7 +102,7 @@ namespace ZNxt.Identity.Services
         //     The username.
         public UserModel FindByUsername(string username)
         {
-            return _userService.GetUserByEmail(username);
+            return _userService.GetUserByUsername(username);
         }
        
         public bool ValidateCredentials(string username, string password, string emailotp)
