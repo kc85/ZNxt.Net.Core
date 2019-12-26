@@ -18,5 +18,7 @@ namespace ZNxt.Net.Core.Interfaces
         PasswordSaltModel GetPassword(string userid);
         bool UpdateUserProfile(string userid, JObject data);
 
+        bool AddUserRelation(string parentuserid, string childuserid, string relation);
+
     }
 }

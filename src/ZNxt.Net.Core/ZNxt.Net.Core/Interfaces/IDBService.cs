@@ -32,6 +32,9 @@ namespace ZNxt.Net.Core.Interfaces
         bool DropDB();
         bool DropCollection(string collection);
 
+        T RunCommand<T>(string command);
+        T RunCommand<T>(JObject command);
+
     }
 
     public enum SortBy

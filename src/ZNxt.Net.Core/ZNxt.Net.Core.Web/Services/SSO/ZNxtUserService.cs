@@ -213,6 +213,27 @@ namespace ZNxt.Identity.Services
             }
 
         }
+        public bool AddUserRelation(string parentuserid, string childuserid, string relation)
+        {
 
+            relation = relation.Trim().ToLower();
+            var data = new JObject();
+            data[$"parent_"+ CommonField.USER_ID] = parentuserid;
+            data[$"child_" + CommonField.USER_ID] = childuserid;
+            data[CommonField.IS_ENABLED] = true;
+            data[$"relation"] = relation;
+
+            var userRelation = _dBService.FirstOrDefault(Collection.USER_RELATIONSHIP, new RawQuery(data.ToString()));
+            if (userRelation  == null)
+            {
+                data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
+                return _dBService.Write(Collection.USER_RELATIONSHIP, data);
+            }
+            else
+            {
+                _logger.Error($"Duplicate record found  not parentuserid: {parentuserid}, childuserid:{childuserid}, relation:{relation}");
+                return false;
+            }
+        }
     }
 }

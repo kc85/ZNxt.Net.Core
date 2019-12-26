@@ -6,10 +6,11 @@ using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Helpers;
+using static ZNxt.Net.Core.Consts.CommonConst;
 
 namespace ZNxt.Module.Identity.Services.API
 {
-    public  class UserRegistrationController
+    public class UserRegistrationController
     {
         private readonly IHttpContextProxy _httpContextProxy;
 
@@ -17,10 +18,10 @@ namespace ZNxt.Module.Identity.Services.API
 
         private readonly IUserNotifierService _userNotifierService;
         private readonly ILogger _logger;
-        
+
         private readonly IZNxtUserService _ZNxtUserService;
 
-      
+
         public UserRegistrationController(IZNxtUserService ZNxtUserService, IUserNotifierService userNotifierService, IHttpContextProxy httpContextProxy, IResponseBuilder responseBuilder, IDBService dBService, IKeyValueStorage keyValueStorage, ILogger logger)
         {
             _responseBuilder = responseBuilder;
@@ -40,7 +41,7 @@ namespace ZNxt.Module.Identity.Services.API
                 if (request.IsValidModel(out results))
                 {
                     _logger.Debug("Getting user service");
-                   
+
                     _logger.Debug("Calling GetUserByEmail");
 
                     if (_ZNxtUserService.GetUserByUsername(request.user_name) == null)
@@ -56,13 +57,13 @@ namespace ZNxt.Module.Identity.Services.API
                             salt = CommonUtility.GetNewID(),
                             is_enabled = true,
                             user_type = "user_pass",
-                            dob = new DOBModel() { },
+                            dob = request.dob,
                             id = CommonUtility.GetNewID(),
                             roles = new List<string> { "init_login_email_otp" }
                         };
 
                         _logger.Debug("Calling CreateUser");
-                        var response = _ZNxtUserService.CreateUser( userModel, false );
+                        var response = _ZNxtUserService.CreateUser(userModel, false);
                         if (response)
                         {
                             JObject userInfo = new JObject();
@@ -72,11 +73,15 @@ namespace ZNxt.Module.Identity.Services.API
                             if (_ZNxtUserService.UpdateUserProfile(userModel.user_id, userInfo))
                             {
                                 _userNotifierService.SendWelcomeEmailWithOTPLoginAsync(userModel).GetAwaiter().GetResult();
-                                return _responseBuilder.Success();
+                                var resonseData = new JObject()
+                                {
+                                    [CommonConst.CommonField.USER_ID] = userModel.user_id
+                                };
+                                return _responseBuilder.Success(resonseData);
                             }
                             else
                             {
-                                _logger.Error($"Error while updating user profile {userModel.user_id}", null,userInfo);
+                                _logger.Error($"Error while updating user profile {userModel.user_id}", null, userInfo);
                                 return _responseBuilder.ServerError();
                             }
                         }
@@ -108,6 +113,40 @@ namespace ZNxt.Module.Identity.Services.API
                 _logger.Error(ex.Message, ex);
                 return _responseBuilder.ServerError();
             }
+        }
+        [Route("/sso/admin/userrelation/add", CommonConst.ActionMethods.POST, "sys_admin")]
+        public JObject AddUserRelation()
+        {
+            try
+            {
+                var request = _httpContextProxy.GetRequestBody<JObject>();
+                var parentkey = $"parent_" + CommonField.USER_ID;
+                var childkey = $"child_" + CommonField.USER_ID;
+                var relationkey = $"relation";
+                if (request != null && request[parentkey] != null && request[childkey] != null && request[relationkey] != null)
+                {
+                    if (_ZNxtUserService.AddUserRelation(request[parentkey].ToString(), request[childkey].ToString(), request[relationkey].ToString()))
+                    {
+                        return _responseBuilder.Success();
+                    }
+                    else
+                    {
+                        _logger.Error("Error While adding the relationship");
+                        return _responseBuilder.ServerError();
+                    }
+                }
+                else
+                {
+                    _logger.Error("Requied parameter missing ", null, request);
+                    return _responseBuilder.BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error {ex.Message}", ex);
+                return _responseBuilder.ServerError();
+            }
+           
         }
     }
 }

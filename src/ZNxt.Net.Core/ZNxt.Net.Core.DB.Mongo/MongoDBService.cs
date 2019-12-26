@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
 using ZNxt.Net.Core.Config;
@@ -299,6 +300,18 @@ namespace ZNxt.Net.Core.DB.Mongo
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Empty;
             filter &= MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(query);
             return query;
+        }
+        public T RunCommand<T>(JObject command)
+        {
+            return RunCommand<T>(command.ToString());
+
+        }
+        public T RunCommand<T>(string command)
+        {
+            var commandDoc = BsonSerializer.Deserialize<BsonDocument>(command);
+
+            return _mongoDataBase.RunCommand<T>(commandDoc);
+
         }
 
     }
