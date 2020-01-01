@@ -28,13 +28,14 @@
                         <div class="profile_img">
                             <div id="crop-avatar">
                                 <!-- Current avatar -->
-                                <img class="img-responsive avatar-view"  src="{{user_profile_image}}" alt="Avatar" title="Change the avatar" onerror="this.src = 'images/user.png'" >
+                                <img class="img-responsive avatar-view" src="images/user.png" alt="Avatar" title="Change the avatar">
+                                <!--<img class="img-responsive avatar-view" src="{{user_profile_image}}" alt="Avatar" title="Change the avatar" onerror="this.src = 'images/user.png'">-->
                                 <form name="userProfileImagefrm">
                                     <!--<button type="button" class="btn btn-sm" onclick="document.getElementById('user_pic_change').click();"> Change Photo</button>-->
-                                    <input type="file"  id="user_pic_change" class="btn" data-input="false" file-model="userProfileImage">
-                               </form>
-                        </div>
-                        <br />
+                                    <input type="file" id="user_pic_change" class="btn" data-input="false" file-model="userProfileImage">
+                                </form>
+                            </div>
+                            <br />
                         </div>
                         <ul class="list-unstyled user_data">
                             <li>
@@ -53,11 +54,11 @@
                             <li>
                                 <i class="fa fa-map-marker user-profile-icon"></i> Email : {{user.email}}
                             </li>
-                            <li>
+                            <li ng-show="defaultAddress!=undefined">
                                 <i class="fa fa-map-marker user-profile-icon"></i>
                                 {{defaultAddress.street}},{{defaultAddress.city}},{{defaultAddress.state}}<br />
                             </li>
-                            <li>
+                            <li ng-show="user.user_info[0].gender!=null">
                                 <i class="fa fa-briefcase user-profile-icon"></i> Gender: {{user.user_info[0].gender}}
                             </li>
                         </ul>
@@ -78,7 +79,7 @@
                     <div class="col-md-9 col-sm-9 col-xs-12">
                         <div ng-include="'app/users/userprofile/home_widgets.html'" ng-hide="showOtherTabs">
                         </div>
-                        <div ng-include="menu.config.templateUrl" ng-repeat="menu in userProfileMenus" ng-show="menu.isShow == true">
+                        <div class="x_panel" ng-include="menu.config.templateUrl" ng-repeat="menu in userProfileMenus" ng-show="menu.isShow == true">
                         </div>
                     </div>
                 </div>

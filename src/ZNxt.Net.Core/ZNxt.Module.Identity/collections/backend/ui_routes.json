@@ -133,5 +133,21 @@
       "user"
     ],
     "index": 9999
+  },
+  {
+    "key": "user_profile_parents",
+    "label": "Parents",
+    "icon": "fa-lock",
+    "display_area": "user_profile_body",
+    "config": {
+      "templateUrl": "app/users/userprofile/parents.html"
+    },
+    "parent_links": [
+      "user_profile"
+    ],
+    "auth_users": [
+      "user"
+    ],
+    "index": 9999
   }
 ]

@@ -1,0 +1,49 @@
+﻿<div ng-controller="ZNxtAppAdmin.userprofile.parentsCtrl">
+
+    <div>
+        <h2> Parents </h2>
+        <br>
+    </div>
+    <div ng-show="userData.parents.length ==0">
+        No parent found 
+    </div>
+    <div class="col-md-6" ng-repeat="parent in userData.parents ">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{getRelationValue(parent.relation)}}
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <label class="col-sm-4 col-form-label">Name</label>
+                    <div class="col-sm-8">
+                        <span>{{parent.first_name}} {{parent.middle_name}} {{parent.last_name}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 col-form-label">Username</label>
+                    <div class="col-sm-8">
+                        <span>{{parent.user_name}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 col-form-label">Mobile Number</label>
+                    <div class="col-sm-8">
+                        <span>{{parent.mobile_number}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 col-form-label">Whatsapp  Number</label>
+                    <div class="col-sm-8">
+                        <span>{{parent.whatsapp_mobile_number}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-4 col-form-label">Email</label>
+                    <div class="col-sm-8">
+                        <span>{{parent.email}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

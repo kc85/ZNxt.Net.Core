@@ -32,20 +32,21 @@
             if ($scope.loadingUseData == false) {
                 $scope.loadingUseData = true;
                 $scope.isError = false;
-                var getUserInfoUrl = "./api/sso/users?pagesize=1&currentpage=1&filter={'user_id':'" + $scope.user.user_id + "'}";
-
+                //var getUserInfoUrl = "./api/sso/users?pagesize=1&currentpage=1&filter={'user_id':'" + $scope.user.user_id + "'}";
+                var getUserInfoUrl = "./api/sso/userinfo?user_id=" + $scope.user.user_id + "";
                 if ($scope.isShowMyProfile == true) {
                     getUserInfoUrl = "./api/sso/userinfo?user_id=" + userData.user_id + "";
                 }
                 dataService.get(getUserInfoUrl).then(function (response) {
                     $scope.loadingUseData = false;
                     if (response.data.code == 1) {
-                        if ($scope.isShowMyProfile == true) {
-                            $scope.user = response.data.data;
-                        }
-                        else {
-                            $scope.user = response.data.data[0];
-                        }
+                        $scope.user = response.data.data;
+                        //if ($scope.isShowMyProfile == true) {
+                        //    $scope.user = response.data.data;
+                        //}
+                        //else {
+                        //    $scope.user = response.data.data[0];
+                        //}
                         setUserInfoData($scope.user);
                         if (callback != undefined) {
                             callback();
@@ -60,7 +61,7 @@
                 });
             }
         }
-
+        
         function setUserInfoData(user) {
             $scope.user = user;
             $scope.user_profile_image = "";

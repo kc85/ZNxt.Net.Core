@@ -1,27 +1,75 @@
 ﻿<div ng-controller="ZNxtAppAdmin.userprofile.generalCtrl">
-    <div class="x_content">
+    <div>
         <h2> General </h2>
         <br>
         <form class="form-horizontal form-label-left input_mask" name="userGeneralForm">
-
-            <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                <input type="text" class="form-control has-feedback-left" placeholder="First Name" ng-model="userData.name" name="uname" required>
-                <span class="fa fa-user form-control-feedback left" ng-show="userGeneralForm.uname.$touched && userGeneralForm.uname.$invalid"> This is a required field</span>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : userGeneralForm.inputFirstName.$touched && userGeneralForm.inputFirstName.$invalid}">
+                        <label for="inputFirstName"> First Name </label>
+                        <input type="text" class="form-control" name="inputFirstName" id="inputFirstName" placeholder="Enter  First name" ng-model="userData.first_name" maxlength="150" ng-minlength="3" required />
+                        <span class="help-block" ng-show="userGeneralForm.inputFirstName.$touched && userGeneralForm.inputFirstName.$invalid">First Name is required and min length 3 chars.</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : userGeneralForm.inputMiddleName.$touched && userGeneralForm.inputMiddleName.$invalid}">
+                        <label for="inputMiddleName"> Middle Name </label>
+                        <input type="text" class="form-control" name="inputMiddleName" id="inputMiddleName" placeholder="Enter middle name" ng-model="userData.middle_name" maxlength="150" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : userGeneralForm.inputLastName.$touched && userGeneralForm.inputLastName.$invalid}">
+                        <label for="inputLastName"> Last Name </label>
+                        <input type="text" class="form-control" name="inputLastName" id="inputLastName" placeholder="Enter Last name" ng-model="userData.last_name" maxlength="150" ng-minlength="3" required />
+                        <span class="help-block" ng-show="userGeneralForm.inputLastName.$touched && userGeneralForm.inputLastName.$invalid">Last name is required and min length 3 chars.</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                <input type="text" class="form-control has-feedback-left" id="inputSuccess4" placeholder="Email" ng-model="userData.email" name="name">
-                <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
-            </div>
 
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                <input type="text" class="form-control" id="inputSuccess5" placeholder="Phone" ng-model="userData.phone" name="phone">
-                <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : userGeneralForm.inputMobileNumber.$touched && userGeneralForm.inputMobileNumber.$invalid}">
+                        <label for="inputMobileNumber"> Mobile Number </label>
+                        <input class="form-control" name="inputMobileNumber" id="inputMobileNumber" placeholder="Enter mobile number" ng-model="userData.user_info.mobile_number" maxlength="10" ng-minlength="10" required />
+                        <span class="help-block" ng-show="userGeneralForm.inputMobileNumber.$touched && userGeneralForm.inputMobileNumber.$invalid">Please enter 10 digit valid mobile number </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : userGeneralForm.inputWhatsappMobileNumber.$touched && userGeneralForm.inputMobileNumber.$invalid}">
+                        <label for="inputWhatsappMobileNumber"> WhatsApp mobile number </label>
+                        <input class="form-control" name="inputWhatsappMobileNumber" id="inputWhatsappMobileNumber" placeholder="Enter WhatsApp mobile number" ng-model="userData.user_info.whatsapp_mobile_number" maxlength="10" ng-minlength="10" required />
+                        <span class="help-block" ng-show="userGeneralForm.inputWhatsappMobileNumber.$touched && userGeneralForm.inputWhatsappMobileNumber.$invalid">Please enter 10 digit valid WhatsApp mobile number</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : userGeneralForm.inputEmail.$touched && userGeneralForm.inputEmail.$invalid}">
+                        <label for="inputEmail"> Email </label>
+                        <input type="email" class="form-control" name="inputEmail" id="inputEmail" placeholder="Enter User email" ng-model="userData.email" required />
+                        <span class="help-block" ng-show="userGeneralForm.inputEmail.$touched && userGeneralForm.inputEmail.$invalid">Please enter valid email </span>
+                    </div>
+                </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group" ng-class="{'has-error' : userGeneralForm.inputDOB.$touched && userGeneralForm.inputDOB.$invalid}">
+                        <label for="inputDOB"> Date of Birth </label>
+                        <input class="form-control" type="date" name="inputDOB" id="inputDOB" ng-model="userData.dateofbirth" required />
+                        <span class="help-block" ng-show="userGeneralForm.inputDOB.$touched && userGeneralForm.inputDOB.$invalid">Please enter Date of birth </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="inputGender">Gender</label>
+                        <select class="form-control" name="inputGender" id="inputGender" ng-model="userData.user_info.gender">
+                            <option ng-repeat="g in ['m','f']" value="{{g}}">{{g}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                    <button type="submit" class="btn btn-success" ng-click="save()">Save</button>
+                    <button type="submit" class="btn btn-success" disabled ng-click="save()">Save</button>
                 </div>
             </div>
         </form>

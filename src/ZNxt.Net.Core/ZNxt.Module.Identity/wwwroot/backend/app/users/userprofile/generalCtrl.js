@@ -3,9 +3,16 @@
 
     ZApp.controller(__ZNxtAppName + '.userprofile.generalCtrl', ['$scope', 'dataService',
     function ($scope, dataService) {
-        $scope.$on("onShowUserProfileItem", function (e, menu, user) {
+        $scope.$on("onShowUserProfileItem", function (e, menu, u) {
             if (menu.key == "user_profile_general") {
-                $scope.userData = angular.copy(user);
+                var user = {};
+                angular.copy(u, user);
+                if (user.user_info != undefined && user.user_info.length != 0) {
+                    user.user_info = user.user_info[0];
+                }
+                $scope.userData = {};
+                angular.copy(user, $scope.userData);
+                console.log($scope.userData);
             }
         });
         $scope.save = function () {

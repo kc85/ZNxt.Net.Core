@@ -6,7 +6,7 @@
         angular.extend(this, $controller(__ZNxtAppName + '.gridBaseCtrl', { $scope: $scope }));
         $scope.name = "Users";
         $scope.pageData = {};
-        $scope.filterIncludeColumns = ["id", "name", "email"];
+        $scope.filterIncludeColumns = ["id", "name", "email","user_name"];
         $scope.showDetails = false;
         $scope.loadingData = false;
         $scope.showAddUser = false;

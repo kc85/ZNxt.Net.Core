@@ -34,12 +34,12 @@ namespace ZNxt.Module.Identity.Services.API
             }
         }
 
-        [Route("/user/userinfo", CommonConst.ActionMethods.GET, "user")]
+        [Route("/user/userinfo", CommonConst.ActionMethods.GET, "sys_admin")]
         public JObject UserInfoAdmin()
         {
             return UserInfo();
         }
-        [Route("/sso/userinfo", CommonConst.ActionMethods.GET, "user")]
+        [Route("/sso/userinfo", CommonConst.ActionMethods.GET, "sys_admin")]
         public JObject UserInfo()
         {
             var user_id = _httpContextProxy.GetQueryString(CommonConst.CommonField.USER_ID);
@@ -54,6 +54,20 @@ namespace ZNxt.Module.Identity.Services.API
             }
         }
 
+        [Route("/user/parents", CommonConst.ActionMethods.GET, "sys_admin")]
+        public JObject UserParents()
+        {
+            var user_id = _httpContextProxy.GetQueryString(CommonConst.CommonField.USER_ID);
+            var data = GetParents(user_id);
+            if (data != null)
+            {
+                return _responseBuilder.Success(data);
+            }
+            else
+            {
+                return _responseBuilder.Success(new JArray());
+            }
+        }
         [Route("/sso/info/me", CommonConst.ActionMethods.GET, "user")]
         public JObject UserMe()
         {
@@ -82,12 +96,12 @@ namespace ZNxt.Module.Identity.Services.API
         private JObject GetUser(string user_id)
         {
             JArray joinData = new JArray();
-            JObject collectionJoin = GetCollectionJoin(CommonConst.CommonField.USER_ID, CommonConst.Collection.USER_INFO, CommonConst.CommonField.USER_ID, null, CommonConst.CommonField.USER_INFO);
+            JObject collectionJoin = GetCollectionJoin(CommonConst.CommonField.USER_ID, CommonConst.Collection.USER_INFO, CommonConst.CommonField.USER_ID, new List<string>() { "user_id", "whatsapp_mobile_number", "mobile_number", "gender" }, CommonConst.CommonField.USER_INFO);
             joinData.Add(collectionJoin);
             JObject filter = new JObject();
             filter[CommonConst.CommonField.USER_ID] = user_id;
             _logger.Debug($"Getting user data {user_id}, filter:{filter.ToString()}");
-            var data = GetPaggedData(CommonConst.Collection.USERS, null, filter.ToString());
+            var data = GetPaggedData(CommonConst.Collection.USERS, joinData, filter.ToString());
             _logger.Debug($"Data found {data.Count}");
             if ((data[CommonConst.CommonField.DATA] as JArray).Count != 0)
             {
@@ -99,6 +113,28 @@ namespace ZNxt.Module.Identity.Services.API
             }
         }
 
+        private JArray GetParents(string user_id)
+        {
+            JArray joinData = new JArray();
+            JObject collectionJoin = GetCollectionJoin("parent_user_id", CommonConst.Collection.USERS, CommonConst.CommonField.USER_ID, new List<string>() { "user_id", "email", "user_name", "first_name", "last_name", "middle_name" }, "user");
+            joinData.Add(collectionJoin);
+            //JObject collectionUserInfoJoin = GetCollectionJoin("parent_user_id", CommonConst.Collection.USER_INFO, CommonConst.CommonField.USER_ID, new List<string>() { "user_id", "whatsapp_mobile_number", "mobile_number", "gender" }, CommonConst.CommonField.USER_INFO);
+            //joinData.Add(collectionUserInfoJoin);
+
+            JObject filter = new JObject();
+            filter["child_user_id"] = user_id;
+            _logger.Debug($"Getting parents user data {user_id}, filter:{filter.ToString()}");
+            var data = GetPaggedData("user_relationship", joinData, filter.ToString());
+            _logger.Debug($"Parents user  data found {data.Count}");
+            if ((data[CommonConst.CommonField.DATA] as JArray).Count != 0)
+            {
+                return data[CommonConst.CommonField.DATA] as JArray;
+            }
+            else
+            {
+                return null;
+            }
+        }
         [Route("/sso/js/user", CommonConst.ActionMethods.GET, "user", "application/javascript")]
         public string GetUserJs()
         {
