@@ -49,7 +49,7 @@ namespace ZNxt.Net.Core.DB.Mongo
             {
                 dbName = _DBConfig.DBName;
             }
-            if(connectionString == null)
+            if (connectionString == null)
             {
                 connectionString = _DBConfig.ConnectingString;
             }
@@ -236,7 +236,7 @@ namespace ZNxt.Net.Core.DB.Mongo
         private string GetUserId()
         {
             var user = _httpContextProxy.User;
-            return user != null ? user.user_id  : "";
+            return user != null ? user.user_id : "";
         }
 
         private List<string> GetProperties(DBQuery query)
@@ -313,6 +313,15 @@ namespace ZNxt.Net.Core.DB.Mongo
             return _mongoDataBase.RunCommand<T>(commandDoc);
 
         }
-
+        public JArray Aggregate(string collection, string stage1, params string[] stages)
+        {
+            var dbcollection = _mongoDataBase.GetCollection<BsonDocument>(collection);
+            var stage = dbcollection.Aggregate().AppendStage<BsonDocument>(BsonDocument.Parse(stage1));
+            foreach (var stagecommand in stages)
+            {
+                stage = stage.AppendStage<BsonDocument>(BsonDocument.Parse(stagecommand));
+            }
+            return JArray.Parse(stage.ToList().ToJson());
+        }
     }
 }

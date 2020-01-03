@@ -6,7 +6,8 @@
         $scope.$on("onShowUserProfileItem", function (e, menu, user) {
             if (menu.key == "info") {
                 $scope.userData = user;
-                if ($scope.userData.user_info != undefined) {
+                $scope.addressCount = 0;
+                if ($scope.userData.user_info != undefined && $scope.userData.user_info[0].addresses != undefined) {
                     $scope.addressCount = $scope.userData.user_info[0].addresses.length;
                 }
             }

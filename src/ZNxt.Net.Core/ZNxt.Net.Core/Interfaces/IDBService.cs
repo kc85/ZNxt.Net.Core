@@ -35,6 +35,9 @@ namespace ZNxt.Net.Core.Interfaces
         T RunCommand<T>(string command);
         T RunCommand<T>(JObject command);
 
+        JArray Aggregate(string collection, string stage1, params string[] stages);
+
+
     }
 
     public enum SortBy

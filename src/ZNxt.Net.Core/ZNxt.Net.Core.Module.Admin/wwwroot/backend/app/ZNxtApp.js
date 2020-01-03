@@ -32,7 +32,7 @@
                 dataService.get("./api/user/userinfo?user_id=" + $scope.user.user_id + "").then(function (response) {
                     if (response.data.code == 1) {
                         $scope.user = response.data.data;
-                        if ($scope.user.user_info != undefined) {
+                        if ($scope.user.user_info != undefined && $scope.user.user_info[0].user_pic_s != undefined) {
                             $scope.userpic_s = $scope.user.user_info[0].user_pic_s.replace('/frontend/', '../');
                         }
                     }

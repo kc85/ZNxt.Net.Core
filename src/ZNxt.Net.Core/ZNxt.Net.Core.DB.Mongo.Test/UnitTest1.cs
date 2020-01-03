@@ -16,23 +16,12 @@ namespace ZNxt.Net.Core.DB.Mongo.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var function = @"{ 
-    'Name' : 'HourlyMP', 
-    'MapFunction' : function(){
-        var _id = this.srcip + ' - ' + this.hour
-        var valueData = {
-            ip: this.srcip,
-            session: 1
-        }
-        emit(_id, valueData);
-    } 
-}";
-
+         
            
 
             var dbService = GetDBService(GetHttpProxyMock());
-            var response = dbService.RunCommand<string>(function);
-            Assert.AreEqual("hello", response);
+            var response = dbService.Aggregate("users", "{$addFields:{'city': 'Pune'}}", "{$project:{'name': 1, 'user_id': 1,'city':1}}");
+            //Assert.AreEqual("hello", response[0][]);
         }
         public static MongoDBService GetDBService(IHttpContextProxy httpContextProxy)
         {
