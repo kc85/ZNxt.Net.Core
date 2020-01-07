@@ -20,7 +20,7 @@ namespace ZNxt.Identity.Services
         private readonly IUserNotifierService _userNotifierService;
         private readonly ILogger _logger;
         private readonly IApiGatewayService _apiGatewayService;
-        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService,ILogger logger,IApiGatewayService apiGatewayService)
+        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService, ILogger logger, IApiGatewayService apiGatewayService)
         {
 
             _userNotifierService = userNotifierService;
@@ -37,7 +37,7 @@ namespace ZNxt.Identity.Services
         {
             if (user != null && !IsExists(user.user_id))
             {
-                if(user.roles == null)
+                if (user.roles == null)
                 {
                     user.roles = new List<string>();
                 }
@@ -89,7 +89,7 @@ namespace ZNxt.Identity.Services
                 ["is_enabled"] = true
             });
         }
-     
+
         public async Task<bool> CreateUserAsync(ClaimsPrincipal subject)
         {
             var subjectId = subject.GetSubjectId();
@@ -102,7 +102,7 @@ namespace ZNxt.Identity.Services
                     user_id = subjectId,
                     first_name = subject.GetDisplayName(),
                     email = subject.GetSubjectId()
-                   
+
                 };
                 return await Task.FromResult(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user))));
             }
@@ -114,7 +114,7 @@ namespace ZNxt.Identity.Services
         }
         public UserModel GetUser(string userid)
         {
-            var user =  _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':true}"));
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
@@ -129,7 +129,7 @@ namespace ZNxt.Identity.Services
         }
         public UserModel GetUserByUsername(string username)
         {
-            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_name: /^"+username+"$/i,'is_enabled':true}"));
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_name: /^" + username + "$/i,'is_enabled':true}"));
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
@@ -164,6 +164,19 @@ namespace ZNxt.Identity.Services
             }
         }
 
+        public List<UserModel> GetUsersByEmail(string email)
+        {
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: /^" + email + "$/i,'is_enabled':true}"));
+            if (user.Any())
+            {
+                var userModel = JsonConvert.DeserializeObject<List<UserModel>>(user.ToString());
+                return userModel;
+            }
+            else
+            {
+                return new List<UserModel>();
+            }
+        }
         public UserModel GetUserByEmail(string email)
         {
             var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: /^" + email + "$/i,'is_enabled':true}"));

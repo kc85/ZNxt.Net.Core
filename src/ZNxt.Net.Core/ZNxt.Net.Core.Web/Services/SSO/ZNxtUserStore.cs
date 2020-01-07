@@ -37,7 +37,7 @@ namespace ZNxt.Identity.Services
                 user_type = provider,
                 user_id = privideuserid,
                 email = emailaddress.Value,
-                name = name.Value,
+                first_name = name.Value,
                 email_validation_required = Boolean.FalseString.ToLower(),
                 claims = claims.Select(f => new Net.Core.Model.Claim(f.Type, f.Value)).ToList()
             };

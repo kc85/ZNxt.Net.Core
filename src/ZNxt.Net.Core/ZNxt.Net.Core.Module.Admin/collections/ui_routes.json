@@ -48,6 +48,24 @@
       "sys_admin"
     ],
     "index": 100
+  },
+  {
+    "key": "adv_apis",
+    "label": "APIs",
+    "href": "/adv_apis",
+    "icon": "fa-paw",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/developer/apis/api.html"
+    },
+    "parent_links": [
+      "advance"
+    ],
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 100
   }
 
 ]

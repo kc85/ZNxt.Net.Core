@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Model;
@@ -11,7 +12,9 @@ namespace ZNxt.Net.Core.Interfaces
         Task<bool> CreateUserAsync(UserModel subject, bool sendEmail = true);
         bool CreateUser(UserModel subject, bool sendEmail = true);
         bool IsExists(string userid);
+        [System.Obsolete]
         UserModel GetUserByEmail(string email);
+        List<UserModel> GetUsersByEmail(string email);
 
         UserModel GetUser(string userid);
         UserModel GetUserByUsername(string username);

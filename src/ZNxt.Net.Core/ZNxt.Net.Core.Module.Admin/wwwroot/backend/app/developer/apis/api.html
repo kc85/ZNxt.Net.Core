@@ -1,0 +1,52 @@
+﻿<div ng-controller="ZNxtAppAdmin.apiCtrl">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>{{name}}</h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+            <div class="row">
+                <div class="clearfix"></div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_content">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            SL#
+                                        </td>
+
+                                        <td>
+                                            Module
+                                        </td>
+                                        <td>
+                                            URL
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="api in apiData.data">
+                                        <td>
+                                            {{$index+1}}
+                                        </td>
+                                        <td>
+                                            {{api.module_name}}
+                                        </td>
+                                        <td>
+                                            {{api.Method}} {{api.module_endpoint}}{{api.Route}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                           
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
