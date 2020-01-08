@@ -34,7 +34,6 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
                 var usermodel = _userService.GetUser(user.user_id);
                 if (usermodel.roles.Where(f => f == "pass_set_required").Any())
                 {
-
                     var viewmodel = new SetPasswordViewModel()
                     {
                         ReturnUrl = model.RedirectUrl

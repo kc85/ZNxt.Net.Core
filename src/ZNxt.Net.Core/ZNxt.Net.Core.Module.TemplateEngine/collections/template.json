@@ -13,5 +13,10 @@
     "key": "forgetuser_name",
     "subject": "Recover username : {{appname}}",
     "data": "<h6>User Names : {{usernames}}</h6>"
+  },
+  {
+    "key": "forgetpassword_with_email_otp",
+    "subject": "Password reset OTP: {{appname}}",
+    "data": "<h6>OTP : {{OTP}}</h6>"
   }
 ]

@@ -83,7 +83,7 @@ namespace IdentityServer4.Quickstart.UI
         /// Handle postback from username/password login
         /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      //  [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
             // check if we are in the context of an authorization request
@@ -119,7 +119,7 @@ namespace IdentityServer4.Quickstart.UI
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
-                if (_users.ValidateCredentials(model.Username, model.Password,model.EmailOTP))
+                if (_users.ValidateCredentials(model.Username, model.Password,model.EmailOTP,model.ResetPassOTP))
                 {
                     var user = _users.FindByUsername(model.Username);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id,user.GetDisplayName(), clientId: context?.ClientId));
@@ -401,7 +401,7 @@ namespace IdentityServer4.Quickstart.UI
 
         {
             // build a model so we know what to show on the login page
-            var vm = new ViewModelBase();
+            var vm = new LoginViewModel();
             SetAppName(vm);
             return View(vm);
         }

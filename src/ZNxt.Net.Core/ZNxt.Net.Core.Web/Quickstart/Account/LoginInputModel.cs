@@ -12,6 +12,7 @@ namespace IdentityServer4.Quickstart.UI
         public string Username { get; set; }
         public string Password { get; set; }
         public string EmailOTP { get; set; }
+        public string ResetPassOTP { get; set; }
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; }
     }

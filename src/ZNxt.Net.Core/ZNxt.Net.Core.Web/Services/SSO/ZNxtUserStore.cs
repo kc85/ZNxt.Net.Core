@@ -105,7 +105,7 @@ namespace ZNxt.Identity.Services
             return _userService.GetUserByUsername(username);
         }
        
-        public bool ValidateCredentials(string username, string password, string emailotp)
+        public bool ValidateCredentials(string username, string password, string emailotp,string resetpasswordotp)
         {
             var user =  _userService.GetUserByUsername(username);
             if (user != null)
@@ -113,6 +113,17 @@ namespace ZNxt.Identity.Services
                 if (user.roles.Where(f=>f == "init_login_email_otp").Any())
                 {
                     if(ValidateEmailOTP(user.email, emailotp))
+                    {
+                        if (RemoveOTPValidateUserRole(user.user_id))
+                        {
+                            return AddFouceAddPassUserRole(user.user_id);
+                        }
+                    }
+                    return false;
+                }
+                else if (!string.IsNullOrEmpty(resetpasswordotp))
+                {
+                   // if (ValidateEmailOTP(user.email, emailotp))
                     {
                         if (RemoveOTPValidateUserRole(user.user_id))
                         {
