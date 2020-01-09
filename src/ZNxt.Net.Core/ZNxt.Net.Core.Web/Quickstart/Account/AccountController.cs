@@ -36,7 +36,7 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
-        
+
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -79,18 +79,39 @@ namespace IdentityServer4.Quickstart.UI
             ViewData["ApplicationName"] = vm.ApplicationName = ApplicationConfig.AppName;
         }
 
+        [HttpPost("account/otplogin")]
+        public async Task<IActionResult> OTPLogin(LoginInputModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_users.ValidateCredentials(model.Username, model.Password, model.EmailOTP, model.ResetPassOTP))
+                {
+                    var user = _users.FindByUsername(model.Username);
+                    await HttpContext.SignInAsync(user.user_id, user.GetDisplayName());
+                    return Ok();
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
         /// <summary>
         /// Handle postback from username/password login
         /// </summary>
         [HttpPost]
-      //  [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)
         {
             // check if we are in the context of an authorization request
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
             // the user clicked the "cancel" button
-            if (button == "cancel" || button ==null)
+            if (button == "cancel" || button == null)
             {
                 if (context != null)
                 {
@@ -119,10 +140,10 @@ namespace IdentityServer4.Quickstart.UI
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
-                if (_users.ValidateCredentials(model.Username, model.Password,model.EmailOTP,model.ResetPassOTP))
+                if (_users.ValidateCredentials(model.Username, model.Password, model.EmailOTP, model.ResetPassOTP))
                 {
                     var user = _users.FindByUsername(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id,user.GetDisplayName(), clientId: context?.ClientId));
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.ClientId));
 
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
@@ -156,29 +177,29 @@ namespace IdentityServer4.Quickstart.UI
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
                     }
-                        // request for a local page
-                        if (Url.IsLocalUrl(model.ReturnUrl))
-                        {
-                            return Redirect(model.ReturnUrl);
-                        }
-                        else if (string.IsNullOrEmpty(model.ReturnUrl))
-                        {
-                            return Redirect("~/");
-                        }
-                        else
-                        {
-                            // user might have clicked on a malicious link - should be logged
-                            throw new Exception("invalid return URL");
-                        }
-                    
+                    // request for a local page
+                    if (Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else if (string.IsNullOrEmpty(model.ReturnUrl))
+                    {
+                        return Redirect("~/");
+                    }
+                    else
+                    {
+                        // user might have clicked on a malicious link - should be logged
+                        throw new Exception("invalid return URL");
+                    }
+
                 }
 
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId:context?.ClientId));
+                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.ClientId));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
 
             // something went wrong, show form with error
-           
+
             var vm = await BuildLoginViewModelAsync(model);
             SetAppName(vm);
             return View(vm);
@@ -186,9 +207,9 @@ namespace IdentityServer4.Quickstart.UI
 
         private IActionResult IsPasswordSetRequired(UserModel user, LoginInputModel model)
         {
-            if(user.roles.Where(f=>f == "pass_set_required").Any())
+            if (user.roles.Where(f => f == "pass_set_required").Any())
             {
-                return RedirectToAction("index","PasswordSet", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
+                return RedirectToAction("index", "PasswordSet", new RedirectViewModel { RedirectUrl = model.ReturnUrl });
             }
             return null;
         }

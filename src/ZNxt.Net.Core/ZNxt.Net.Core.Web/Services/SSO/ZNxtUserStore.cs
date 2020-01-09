@@ -112,17 +112,20 @@ namespace ZNxt.Identity.Services
             {
                 if (!string.IsNullOrEmpty(resetpasswordotp))
                 {
-                    // if (ValidateEmailOTP(user.email, emailotp))
+                    if (ValidateEmailOTP(user.email, emailotp, "forgetpassword_with_email_otp"))
                     {
 
-                        return AddFouceAddPassUserRole(user.user_id);
+                        if(AddFouceAddPassUserRole(user.user_id))
+                        {
+                            return true;
+                        }
 
                     }
                     return false;
                 }
                 else if (user.roles.Where(f => f == "init_login_email_otp").Any())
                 {
-                    if (ValidateEmailOTP(user.email, emailotp))
+                    if (ValidateEmailOTP(user.email, emailotp, "registration_with_email_otp"))
                     {
                         if (RemoveOTPValidateUserRole(user.user_id))
                         {
@@ -186,7 +189,7 @@ namespace ZNxt.Identity.Services
             }
         }
 
-        private bool ValidateEmailOTP(string email, string emailotp)
+        private bool ValidateEmailOTP(string email, string emailotp, string otptype)
         {
 
             var request = new JObject()
@@ -194,11 +197,12 @@ namespace ZNxt.Identity.Services
                 ["Type"] = "Email",
                 ["To"] = email,
                 ["OTP"] = emailotp,
-                ["OTPType"] = "registration_with_email_otp",
+                ["OTPType"] = otptype,
             };
             return CallGatewayPost(request, "/notifier/otp/validate");
 
         }
+        
         private bool CallGatewayPost(JObject request, string url)
         {
             try

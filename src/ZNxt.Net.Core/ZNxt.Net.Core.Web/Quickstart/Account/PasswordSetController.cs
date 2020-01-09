@@ -51,7 +51,7 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
             ViewData["ApplicationName"] = vm.ApplicationName = "S2F School";
         }
         [HttpPost]
-        public IActionResult Index(SetPasswordViewModel model)
+        public async Task<IActionResult> Index(SetPasswordViewModel model)
         {
             var user = _httpContextProxy.User;
 
@@ -64,7 +64,13 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
                     {
                         if (_zNxtUserStore.SetPassword(user.user_id, model.Password))
                         {
+
                             model.IsSuccess = true;
+                            if (User?.Identity.IsAuthenticated == true)
+                            {
+                                // delete local authentication cookie
+                                await HttpContext.SignOutAsync();
+                            }
                             return View(model);
                         }
                     }
@@ -72,6 +78,7 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
                     SetAppName(model);
                     return View(model);
                 }
+                
             }
             return Redirect(model.ReturnUrl);
 
