@@ -112,7 +112,7 @@ namespace ZNxt.Identity.Services
             {
                 if (!string.IsNullOrEmpty(resetpasswordotp))
                 {
-                    if (ValidateEmailOTP(user.email, emailotp, "forgetpassword_with_email_otp"))
+                    if (ValidateEmailOTP(user.email, resetpasswordotp, "forgetpassword_with_email_otp"))
                     {
 
                         if(AddFouceAddPassUserRole(user.user_id))

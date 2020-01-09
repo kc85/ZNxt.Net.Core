@@ -100,7 +100,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
                 }
                 else
                 {
-                    _logger.Error("Validate duration fail");
+                    _logger.Error("ValidateSMS Validate duration fail");
                     return false;
 
                 }
@@ -108,7 +108,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
             else
             {
 
-                _logger.Error("No OTP found ");
+                _logger.Error($"SMS No OTP found  phoneNumber:{phoneNumber}, otp:{otp}, otpType:{otpType}, securityToken:{securityToken}"");
                 return false;
             }
         }
@@ -156,20 +156,20 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
                     }
                     else
                     {
-                        _logger.Error("Error updating OTP status on DB");
+                        _logger.Error("ValidateEmail Error updating OTP status on DB");
                         return false;
                     }
                 }
                 else
                 {
-                    _logger.Error("Validate duration fail");
+                    _logger.Error("ValidateEmail Validate duration fail");
                     return false;
 
                 }
             }
             else
             {
-                _logger.Error("No OTP found ");
+                _logger.Error($"ValidateEmail No OTP found email:{email}, otp:{otp}, otpType:{otpType}, securityToken:{securityToken}");
                 return false;
             }
         }
