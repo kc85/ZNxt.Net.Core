@@ -207,6 +207,7 @@ namespace ZNxt.Identity.Services
         {
             try
             {
+                _logger.Debug($"CallGatewayPost: {url}", request);
                 var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, url, "", request).GetAwaiter().GetResult();
                 if (result[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == CommonConst.CommonField.SUCCESS_VAL.ToString())
                 {

@@ -108,7 +108,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
             else
             {
 
-                _logger.Error($"SMS No OTP found  phoneNumber:{phoneNumber}, otp:{otp}, otpType:{otpType}, securityToken:{securityToken}"");
+                _logger.Error($"SMS No OTP found  phoneNumber:{phoneNumber}, otp:{otp}, otpType:{otpType}, securityToken:{securityToken}");
                 return false;
             }
         }
