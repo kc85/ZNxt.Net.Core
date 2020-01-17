@@ -142,7 +142,7 @@ namespace ZNxt.Net.Core.Services
                 // get the join keys
                 foreach (JObject join in joins)
                 {
-                    collectionIds.Add(join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString(), new List<string>());
+                    collectionIds[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()] =  new List<string>();
                 }
 
                 // get the join ids
@@ -161,59 +161,70 @@ namespace ZNxt.Net.Core.Services
                         }
                     }
                 }
-
-                // gte data from IDs
-                foreach (var joinCoumnId in collectionIds)
+                foreach (var join in joins)
                 {
-                    var join = joins.FirstOrDefault(f => f[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString() == joinCoumnId.Key);
-                    if (join != null)
+                    var joinCoumnId = collectionIds[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()]; ;
                     {
-                        List<string> fields = new List<string>();
-                        if (join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELDS] != null)
-                        {
-                            fields.Add(join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString());
-                            foreach (var field in join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELDS] as JArray)
-                            {
-                                fields.Add(field.ToString());
-                            }
-                        }
-                        else
-                        {
-                            fields = null;
-                        }
-                        string filters = "{$or : {{filter}}}";
-                        var filterArr = new JArray();
-                        foreach (var item in joinCoumnId.Value)
-                        {
-                            filterArr.Add(new JObject()
-                            {
-                                [join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()]= item
-                            });
-                        }
-                        filters = filters.Replace("{{filter}}", filterArr.ToString());
-                        RawQuery query = new RawQuery(filters);
-                        
-                        JArray joinCollectionData = DBProxy.Get(join[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION].ToString(), query, fields);
-                        foreach (JObject joinData in joinCollectionData)
-                        {
-                            if (joinData[join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()] != null)
-                            {
-                                var joinid = joinData[join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()].ToString();
-
-                                var dataJoin = (data[CommonConst.CommonField.DATA] as JArray).FirstOrDefault(f => f[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()].ToString() == joinid);
-                                if (dataJoin != null)
-                                {
-                                    if (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] == null)
-                                    {
-                                        dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = new JArray();
-                                    }
-                                    (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(joinData);
-                                }
-                            }
-                        }
+                        RawQuery query = new RawQuery(GetJoinFilter(join, joinCoumnId));
+                        JoinToDestination(data, join, query, GetJoinDestinationFields(join));
                     }
                 }
             }
+        }
+        private void JoinToDestination(JObject data,JToken join, RawQuery query, List<string> fields)
+        {
+            JArray joinCollectionData = DBProxy.Get(join[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION].ToString(), query, fields);
+            foreach (JObject joinData in joinCollectionData)
+            {
+                if (joinData[join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()] != null)
+                {
+                    var joinid = joinData[join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()].ToString();
+
+                    var dataJoin = (data[CommonConst.CommonField.DATA] as JArray).FirstOrDefault(f => f[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()].ToString() == joinid);
+                    if (dataJoin != null)
+                    {
+                        if (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] == null)
+                        {
+                            dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = new JArray();
+                        }
+                        (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(joinData);
+                    }
+                }
+            }
+        }
+        private List<string> GetJoinDestinationFields(JToken join)
+        {
+            List<string> fields = new List<string>();
+            if (join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELDS] != null)
+            {
+                fields.Add(join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString());
+                foreach (var field in join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELDS] as JArray)
+                {
+                    fields.Add(field.ToString());
+                }
+            }
+            else
+            {
+                fields = null;
+            }
+            return fields;
+        }
+        private string GetJoinFilter(JToken join, List<string> values)
+        {
+           
+            string filters = "{$or : {{filter}}}";
+            var filterArr = new JArray();
+            foreach (var item in values)
+            {
+                filterArr.Add(new JObject()
+                {
+                    [join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()] = item
+                });
+            }
+            filters = filters.Replace("{{filter}}", filterArr.ToString());
+
+            return filters;
+
         }
     }
 }

@@ -301,18 +301,14 @@ namespace ZNxt.Net.Core.DB.Mongo
             filter &= MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(query);
             return query;
         }
-        public T RunCommand<T>(JObject command)
+        public JObject RunCommand(JObject command)
         {
-            return RunCommand<T>(command.ToString());
+
+            var result =  _mongoDataBase.RunCommand<BsonDocument>(command.ToString());
+            return JObject.Parse(result.ToJson());
 
         }
-        public T RunCommand<T>(string command)
-        {
-            var commandDoc = BsonSerializer.Deserialize<BsonDocument>(command);
-
-            return _mongoDataBase.RunCommand<T>(commandDoc);
-
-        }
+      
         public JArray Aggregate(string collection, string stage1, params string[] stages)
         {
             var dbcollection = _mongoDataBase.GetCollection<BsonDocument>(collection);
@@ -322,6 +318,21 @@ namespace ZNxt.Net.Core.DB.Mongo
                 stage = stage.AppendStage<BsonDocument>(BsonDocument.Parse(stagecommand));
             }
             return JArray.Parse(stage.ToList().ToJson());
+        }
+        public JObject UpdateMany(string collection, string updateQuery, string filter, params string[] arrayFilters)
+        {
+            FilterDefinition<BsonDocument> filterDoc = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(filter);
+            UpdateDefinition<BsonDocument> update = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(updateQuery);
+            var arrFilters = new List<ArrayFilterDefinition>();
+            foreach (var f in arrayFilters)
+            {
+                ArrayFilterDefinition<BsonDocument> arrayFtr = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(f);
+                arrFilters.Add(arrayFtr);
+
+            }
+
+            var result = _mongoDataBase.GetCollection<BsonDocument>(collection).UpdateMany(filterDoc, update, new UpdateOptions { ArrayFilters = arrFilters });
+            return JObject.Parse(result.ToJson());
         }
     }
 }

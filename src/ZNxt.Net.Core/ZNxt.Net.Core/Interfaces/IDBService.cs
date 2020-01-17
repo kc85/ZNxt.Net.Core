@@ -32,10 +32,10 @@ namespace ZNxt.Net.Core.Interfaces
         bool DropDB();
         bool DropCollection(string collection);
 
-        T RunCommand<T>(string command);
-        T RunCommand<T>(JObject command);
+        JObject RunCommand(JObject command);
 
         JArray Aggregate(string collection, string stage1, params string[] stages);
+        JObject UpdateMany(string collection, string updateQuery, string filter, params string[] arrayFilters);
 
 
     }

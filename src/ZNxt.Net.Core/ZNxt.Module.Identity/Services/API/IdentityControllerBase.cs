@@ -59,8 +59,9 @@ namespace ZNxt.Module.Identity.Services.API
                 (user["roles"] as JArray).Remove((user["roles"] as JArray).FirstOrDefault(f => f.ToString() == role));
             }
             else
-            {
-                throw new FormatException($"Role not found  {role} , User :{user.ToString()}");
+            {  
+                _logger.Debug($"{role} , User :{user.ToString()} isAdded: {isAdded}");
+                return true;
             }
             return _dBService.Write(CommonConst.Collection.USERS, user, "{'user_id' : '" + user["user_id"].ToString() + "'}", true, MergeArrayHandling.Replace);
             
