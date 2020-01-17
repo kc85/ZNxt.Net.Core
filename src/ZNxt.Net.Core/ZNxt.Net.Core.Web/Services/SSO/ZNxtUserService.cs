@@ -141,6 +141,39 @@ namespace ZNxt.Identity.Services
                 return null;
             }
         }
+        public bool UpdateUserLoginFailCount(string user_id)
+        {
+            const string collectonUserLoginFail = "user_login_fail";
+
+            var timestamp = ZNxt.Net.Core.Helpers.CommonUtility.GetTimestampMilliseconds(DateTime.Now);
+
+            var filter = new JObject() { [CommonConst.CommonField.USER_ID] = user_id };
+            var data = _dBService.Get(collectonUserLoginFail, new RawQuery(filter.ToString()));
+
+            if (data.Count == 0)
+            {
+                JObject failData = new JObject()
+                {
+                    [CommonConst.CommonField.USER_ID] = user_id,
+                    [CommonField.DISPLAY_ID] = CommonUtility.GetNewID(),
+                    [CommonField.COUNT] = 1
+                };
+                var result = _dBService.Write(collectonUserLoginFail, failData);
+                if (!result)
+                {
+                    _logger.Error("Error while updating login fail count")
+;
+                }
+            }
+            var count = int.Parse(data.First()[CommonField.COUNT].ToString());
+            data.First()[CommonField.COUNT] = (count + 1);
+            if (_dBService.Update(collectonUserLoginFail, new RawQuery(filter.ToString()), data.First() as JObject, true, MergeArrayHandling.Replace) != 1)
+            {
+                _logger.Error("Error while updating login fail count")
+;
+            }
+            return true;
+        }
 
         private void SetUserOrgs(UserModel userModel)
         {
@@ -231,13 +264,13 @@ namespace ZNxt.Identity.Services
 
             relation = relation.Trim().ToLower();
             var data = new JObject();
-            data[$"parent_"+ CommonField.USER_ID] = parentuserid;
+            data[$"parent_" + CommonField.USER_ID] = parentuserid;
             data[$"child_" + CommonField.USER_ID] = childuserid;
             data[CommonField.IS_ENABLED] = true;
             data[$"relation"] = relation;
 
             var userRelation = _dBService.FirstOrDefault(Collection.USER_RELATIONSHIP, new RawQuery(data.ToString()));
-            if (userRelation  == null)
+            if (userRelation == null)
             {
                 data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
                 return _dBService.Write(Collection.USER_RELATIONSHIP, data);

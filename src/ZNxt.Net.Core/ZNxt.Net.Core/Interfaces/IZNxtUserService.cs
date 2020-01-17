@@ -22,6 +22,7 @@ namespace ZNxt.Net.Core.Interfaces
         bool UpdateUserProfile(string userid, JObject data);
 
         bool AddUserRelation(string parentuserid, string childuserid, string relation);
+        bool UpdateUserLoginFailCount(string user_id);
 
     }
 }
