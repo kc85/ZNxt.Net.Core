@@ -21,5 +21,8 @@ namespace IdentityServer4.Quickstart.UI
         public static bool IncludeWindowsGroups = false;
 
         public static string InvalidCredentialsErrorMessage = "Invalid username or password";
+        public static string UserConsecutiveLoginFailLock = "User Locked";
+        public static string UserConsecutiveLoginBeforeLock =  "attempts remaining to lock user account";
+        public static string UserConsecutiveLoginBeforeLastAttempt = "Your have last attempt before lock the account";
     }
 }

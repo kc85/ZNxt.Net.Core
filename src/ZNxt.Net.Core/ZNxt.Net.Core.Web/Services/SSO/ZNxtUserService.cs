@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Exceptions;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
@@ -20,6 +21,11 @@ namespace ZNxt.Identity.Services
         private readonly IUserNotifierService _userNotifierService;
         private readonly ILogger _logger;
         private readonly IApiGatewayService _apiGatewayService;
+        private const string collectonUserLoginFail = "user_login_fail";
+        private const string consecutive_check_end_time = "consecutive_check_end_time";
+        private const string is_locked = "is_locked";
+
+
         public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService, ILogger logger, IApiGatewayService apiGatewayService)
         {
 
@@ -141,13 +147,49 @@ namespace ZNxt.Identity.Services
                 return null;
             }
         }
+        public bool GetIsUserConsecutiveLoginFailLocked(string user_id)
+        {
+            var filter = "{"+ consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "'," + is_locked + ":true}";
+            var data = _dBService.Get(collectonUserLoginFail, new RawQuery(filter.ToString()));
+            if (data.Any())
+            {
+                double endtime = 0;
+                if (double.TryParse(data.First()[consecutive_check_end_time].ToString(), out endtime))
+                {
+                    var datatime = CommonUtility.GetTimestampMilliseconds(DateTime.Now);
+                    throw new UserConsecutiveLoginFailLockException(endtime - datatime);
+                }
+                else
+                {
+                    throw new FormatException($"Error on : {consecutive_check_end_time} convert to long : {data.First().ToString()}");
+                }
+            }
+            return false;
+
+        }
+        public void  ResetUserLoginFailCount(string user_id)
+        {
+            var filter = "{"+ consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "'}";
+            var data = _dBService.Get(collectonUserLoginFail, new RawQuery(filter.ToString()));
+            if (data.Any())
+            {
+                data.First()[consecutive_check_end_time] = CommonUtility.GetTimestampMilliseconds(DateTime.Now);
+                if (_dBService.Update(collectonUserLoginFail, new RawQuery(filter.ToString()), data.First() as JObject, true, MergeArrayHandling.Replace) != 1)
+                {
+                    _logger.Error("Error while updating consecutive_check_end_time");
+                }
+            }
+
+        }
         public bool UpdateUserLoginFailCount(string user_id)
         {
-            const string collectonUserLoginFail = "user_login_fail";
+            const int consecutiveMaxfail = 5;
+            const int consecutiveLockDuratoin = 30;
+            const int consecutiveLockFailDuratoin = 10;
 
-            var timestamp = ZNxt.Net.Core.Helpers.CommonUtility.GetTimestampMilliseconds(DateTime.Now);
+            var consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.Now.AddMinutes(consecutiveLockFailDuratoin));
 
-            var filter = new JObject() { [CommonConst.CommonField.USER_ID] = user_id };
+            var filter = "{" + consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "' }";// new JObject() { [CommonConst.CommonField.USER_ID] = user_id };
             var data = _dBService.Get(collectonUserLoginFail, new RawQuery(filter.ToString()));
 
             if (data.Count == 0)
@@ -156,7 +198,9 @@ namespace ZNxt.Identity.Services
                 {
                     [CommonConst.CommonField.USER_ID] = user_id,
                     [CommonField.DISPLAY_ID] = CommonUtility.GetNewID(),
-                    [CommonField.COUNT] = 1
+                    [CommonField.COUNT] = 1,
+                    [is_locked] = false,
+                    [consecutive_check_end_time] = consecutiveLockFailDuratoinTimestamp
                 };
                 var result = _dBService.Write(collectonUserLoginFail, failData);
                 if (!result)
@@ -165,12 +209,25 @@ namespace ZNxt.Identity.Services
 ;
                 }
             }
-            var count = int.Parse(data.First()[CommonField.COUNT].ToString());
-            data.First()[CommonField.COUNT] = (count + 1);
-            if (_dBService.Update(collectonUserLoginFail, new RawQuery(filter.ToString()), data.First() as JObject, true, MergeArrayHandling.Replace) != 1)
+            else
             {
-                _logger.Error("Error while updating login fail count")
-;
+                var count = int.Parse(data.First()[CommonField.COUNT].ToString());
+                data.First()[CommonField.COUNT] = (count + 1);
+                if (count + 1 >= consecutiveMaxfail)
+                {
+                    data.First()[is_locked] = true;
+                    consecutiveLockFailDuratoinTimestamp = ZNxt.Net.Core.Helpers.CommonUtility.GetTimestampMilliseconds(DateTime.Now.AddMinutes(consecutiveLockDuratoin));
+                }
+                data.First()[consecutive_check_end_time] = consecutiveLockFailDuratoinTimestamp;
+                if (_dBService.Update(collectonUserLoginFail, new RawQuery(filter.ToString()), data.First() as JObject, true, MergeArrayHandling.Replace) != 1)
+                {
+                    _logger.Error("Error while updating login fail count");
+                }
+                if(count +3 > consecutiveMaxfail)
+                {
+                    throw new UserConsecutiveLoginFailLockCountException(consecutiveMaxfail - count);
+                }
+
             }
             return true;
         }

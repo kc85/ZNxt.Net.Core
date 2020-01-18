@@ -139,6 +139,10 @@ namespace ZNxt.Identity.Services
             {
                 _userService.UpdateUserLoginFailCount(user.user_id);
             }
+            else if (result && user!=null)
+            {
+                _userService.ResetUserLoginFailCount(user.user_id);
+            }
             return result;
         }
 
@@ -166,13 +170,20 @@ namespace ZNxt.Identity.Services
 
         private bool ValidatePassword(string password, UserModel user)
         {
-            var pass = _userService.GetPassword(user.user_id);
-            if (pass != null)
+            if (!_userService.GetIsUserConsecutiveLoginFailLocked(user.user_id))
             {
-                var passwordwithsalt = $"{password}{user.salt}";
-                if (pass.Password.Equals(CommonUtility.Sha256Hash(passwordwithsalt)))
+                var pass = _userService.GetPassword(user.user_id);
+                if (pass != null)
                 {
-                    return true;
+                    var passwordwithsalt = $"{password}{user.salt}";
+                    if (pass.Password.Equals(CommonUtility.Sha256Hash(passwordwithsalt)))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {

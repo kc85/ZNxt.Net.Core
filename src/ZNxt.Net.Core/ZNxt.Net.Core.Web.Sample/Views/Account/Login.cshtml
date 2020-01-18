@@ -1,4 +1,4 @@
-    @model LoginViewModel
+@model LoginViewModel
 
 <div>
     <center>
@@ -27,7 +27,7 @@
                                     <div class="form-group">
                                         <a class="btn btn-default btn-sm" id="btnCancelFrm">Cancel</a>
                                         <a class="btn btn-primary btn-sm" id="btnNext">Next</a>
-                                        <a class="btn btn-primary btn-sm" style="display:none" id="btnNextProgress">Loading...</a>
+                                        <a class="btn btn-default btn-sm" style="display:none" id="btnNextProgress">Loading...</a>
                                     </div>
                                 </div>
 
@@ -80,7 +80,7 @@
 
         @if (Model.VisibleExternalProviders.Any())
         {
-            <div class="col-md-12 col-sm-12 external-providers" id="divExternalProviders" >
+            <div class="col-md-12 col-sm-12 external-providers" id="divExternalProviders">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <br />
@@ -106,15 +106,15 @@
             </div>
         }
 
-       
+
 
     </div>
-    
+
     <script>
         $(document).ready(function () {
 
             function init() {
-                 $("#divExternalProviders").show();
+                $("#divExternalProviders").show();
                 $("#loginEnterUserName").show();
                 $("#loginEnterPassOtp").hide();
                 $("#divOtp").hide();
@@ -123,7 +123,7 @@
                 $("#divOtp").val("");
                 $("#divExternalProviders").hide();
                 $("#btnNext").show();
-               
+
             }
             init();
             $("#btnNext").click(function () {
@@ -132,8 +132,7 @@
                     return;
                 }
                 $("#lblUserNameShow").html($("#txtUserName").val());
-                $("#loginEnterPassOtp").show();
-                $("#loginEnterUserName").hide();
+
                 $("#btnNextProgress").show();
                 $("#btnNext").hide();
                 checkIfOTPLoginRequired($("#txtUserName").val(),
@@ -143,6 +142,8 @@
                         $("#divOtp").show();
                         $("#emailOTP").focus();
                         $("#divExternalProviders").hide();
+                        $("#loginEnterPassOtp").show();
+                        $("#loginEnterUserName").hide();
                     },
                     function () {
                         $("#btnNextProgress").hide();
@@ -150,6 +151,8 @@
                         $("#divOtp").hide();
                         $("#password").focus();
                         $("#divExternalProviders").hide();
+                        $("#loginEnterPassOtp").show();
+                        $("#loginEnterUserName").hide();
                     });
 
             });
