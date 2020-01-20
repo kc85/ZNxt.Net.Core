@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using IdentityServer4;
+using IdentityServer4.Models;
 using System.Collections.Generic;
 using System.Linq;
 using ZNxt.Net.Core.Consts;
@@ -29,6 +30,8 @@ namespace ZNxt.Identity
         {
             var appSecret = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY);
             var relyingPartyUrls = CommonUtility.GetAppConfigValue("RelyingPartyUrls");
+            var relyingPartyMobileUrls = CommonUtility.GetAppConfigValue("MobileRelyingPartyUrls");
+
             relyingPartyUrls.Split(",");
             var redirectUrisPrefix = relyingPartyUrls.Split(",").ToList();
             if(redirectUrisPrefix.Count == 0)
@@ -40,22 +43,22 @@ namespace ZNxt.Identity
             var postLogoutRedirectUris = redirectUrisPrefix.Select(f => $"{f}/signout-callback-oidc").ToList();
             var frontChannelLogoutUri = $"{redirectUrisPrefix.First()}/signout-oidc";
 
+            var mobileClient = new Client
+            {
+                ClientId = "ZNxtCoreAppMobile",
+                ClientName = "ZNxtCoreAppMobile",
+                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                RequireClientSecret = false,
+                RedirectUris = { relyingPartyMobileUrls },
+                PostLogoutRedirectUris = { relyingPartyMobileUrls },
+                AllowOfflineAccess = true,
+                RequireConsent = false,
+                AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi", IdentityServerConstants.StandardScopes.OfflineAccess }
+            };
+
             return new[]
             {
-                //// MVC client using hybrid flow
-                //new Client
-                //{
-                //    ClientId = "ZNxtCoreApp",
-                //    ClientName = "ZNxtCoreApp",
-                //    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                //    ClientSecrets = { new Secret(appSecret.Sha256()) },
-                //    RedirectUris = { "https://localhost:44373/signin-oidc" },
-                //    FrontChannelLogoutUri = "https://localhost:44373/signout-oidc",
-                //    PostLogoutRedirectUris = { "https://localhost:44373/signout-callback-oidc" },
-                //    AllowOfflineAccess = true,
-                //    RequireConsent = false,
-                //    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" }
-                //},
+              mobileClient,
                 new Client
                 {
                     ClientId = "ZNxtApp",
