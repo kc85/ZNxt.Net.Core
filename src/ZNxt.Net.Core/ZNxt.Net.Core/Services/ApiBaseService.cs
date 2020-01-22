@@ -81,7 +81,7 @@ namespace ZNxt.Net.Core.Services
             {
                 query.SortBy.Add(new SortField(sort.Key, (SortType)sort.Value));
             }
-
+            
             var data = GetPagedData(collection, query, filterQuery, pageSize, currentPage);
             if (data[CommonConst.CommonField.DATA] != null && (data[CommonConst.CommonField.DATA] as JArray).Count > 0)
             {
@@ -187,7 +187,7 @@ namespace ZNxt.Net.Core.Services
                         {
                             dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = new JArray();
                         }
-                        (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(joinData);
+                        (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(JObject.Parse( joinData.ToString()));
                     }
                 }
             }
