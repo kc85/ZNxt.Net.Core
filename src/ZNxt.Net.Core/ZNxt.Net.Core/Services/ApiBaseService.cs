@@ -10,15 +10,15 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Services
 {
-    public abstract class ApiBaseService 
+    public abstract class ApiBaseService
     {
         private readonly IHttpContextProxy HttpProxy;
         private readonly ILogger Logger;
         private readonly IDBService DBProxy;
         private readonly IResponseBuilder _responseBuilder;
 
-        public ApiBaseService(IHttpContextProxy httpContextProxy, IDBService dBService, ILogger logger,IResponseBuilder responseBuilder)
-            
+        public ApiBaseService(IHttpContextProxy httpContextProxy, IDBService dBService, ILogger logger, IResponseBuilder responseBuilder)
+
         {
             HttpProxy = httpContextProxy;
             Logger = logger;
@@ -81,7 +81,7 @@ namespace ZNxt.Net.Core.Services
             {
                 query.SortBy.Add(new SortField(sort.Key, (SortType)sort.Value));
             }
-            
+
             var data = GetPagedData(collection, query, filterQuery, pageSize, currentPage);
             if (data[CommonConst.CommonField.DATA] != null && (data[CommonConst.CommonField.DATA] as JArray).Count > 0)
             {
@@ -122,7 +122,7 @@ namespace ZNxt.Net.Core.Services
             {
                 sort[item.Name] = item.Sort == SortType.ASC ? 1 : -1;
             }
-            var dbArrData = DBProxy.Get(collection, new RawQuery(rawQuery), query.Fields.Select(f=>f.Name).ToList(), sort, top, skip);
+            var dbArrData = DBProxy.Get(collection, new RawQuery(rawQuery), query.Fields.Select(f => f.Name).ToList(), sort, top, skip);
             JObject extraData = new JObject();
             long count = DBProxy.GetCount(collection, new RawQuery(rawQuery));
             extraData[CommonConst.CommonField.TOTAL_RECORD_COUNT_KEY] = count;
@@ -142,7 +142,7 @@ namespace ZNxt.Net.Core.Services
                 // get the join keys
                 foreach (JObject join in joins)
                 {
-                    collectionIds[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()] =  new List<string>();
+                    collectionIds[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()] = new List<string>();
                 }
 
                 // get the join ids
@@ -171,7 +171,7 @@ namespace ZNxt.Net.Core.Services
                 }
             }
         }
-        private void JoinToDestination(JObject data,JToken join, RawQuery query, List<string> fields)
+        private void JoinToDestination(JObject data, JToken join, RawQuery query, List<string> fields)
         {
             JArray joinCollectionData = DBProxy.Get(join[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION].ToString(), query, fields);
             foreach (JObject joinData in joinCollectionData)
@@ -180,14 +180,18 @@ namespace ZNxt.Net.Core.Services
                 {
                     var joinid = joinData[join[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD].ToString()].ToString();
 
-                    var dataJoin = (data[CommonConst.CommonField.DATA] as JArray).FirstOrDefault(f => f[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()].ToString() == joinid);
-                    if (dataJoin != null)
+                    var dataArr = (data[CommonConst.CommonField.DATA] as JArray).Where(f => f[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()].ToString() == joinid);
+                    if (dataArr.Any())
                     {
-                        if (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] == null)
+                        foreach (var dataJoin in dataArr)
                         {
-                            dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = new JArray();
+                            if (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] == null)
+                            {
+                                dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = new JArray();
+                            }
+                        (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(JObject.Parse(joinData.ToString()));
                         }
-                        (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(JObject.Parse( joinData.ToString()));
+
                     }
                 }
             }
@@ -211,7 +215,7 @@ namespace ZNxt.Net.Core.Services
         }
         private string GetJoinFilter(JToken join, List<string> values)
         {
-           
+
             string filters = "{$or : {{filter}}}";
             var filterArr = new JArray();
             foreach (var item in values)
