@@ -26,5 +26,6 @@ namespace ZNxt.Net.Core.Interfaces
         bool GetIsUserConsecutiveLoginFailLocked(string userid);
         void ResetUserLoginFailCount(string user_id);
 
+         bool UpdateUser(string userid, JObject data);
     }
 }

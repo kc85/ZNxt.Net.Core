@@ -16,10 +16,18 @@
             }
         });
         $scope.save = function () {
-            var editProfileUrl = "./api/admin/userinfo/update";
-            if ($scope.$parent.isShowMyProfile == true) {
-                editProfileUrl = "./api/userinfo/update";
+            var editProfileUrl = "./api/sso/admin/userinfo/edit";
+            //if ($scope.$parent.isShowMyProfile == true) {
+            //    editProfileUrl = "./api/userinfo/update";
+            //}
+            if ($scope.userData.dateofbirth != undefined) {
+                var dob = new Date($scope.userData.dateofbirth);
+                $scope.userData.dob = {};
+                $scope.userData.dob.day = dob.getDate();
+                $scope.userData.dob.month = dob.getMonth();
+                $scope.userData.dob.year = dob.getFullYear();
             }
+            console.log($scope.userData);
             dataService.post(editProfileUrl, $scope.userData).then(function (response) {
                 if (response.data.code == 1) {
                     $scope.$emit("onUserInfoUpdate", $scope.userData);

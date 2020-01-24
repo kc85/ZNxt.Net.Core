@@ -295,6 +295,27 @@ namespace ZNxt.Identity.Services
             }
 
         }
+        public bool UpdateUser(string userid, JObject data)
+        {
+
+            var filter = new JObject();
+            filter[CommonField.USER_ID] = userid;
+            var userData = _dBService.FirstOrDefault(Collection.USERS, new RawQuery(filter.ToString()));
+            if (userData != null)
+            {
+                foreach (var d in data)
+                {
+                    userData[d.Key] = d.Value;
+                }
+                return _dBService.Update(Collection.USERS, new RawQuery(filter.ToString()), userData) == 1;
+            }
+            else
+            {
+                _logger.Error($"User not found User Id : {userData}");
+                return false;
+            }
+
+        }
         public bool UpdateUserProfile(string userid, JObject data)
         {
 
