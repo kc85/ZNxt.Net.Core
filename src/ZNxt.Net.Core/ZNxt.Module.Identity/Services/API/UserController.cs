@@ -96,7 +96,7 @@ namespace ZNxt.Module.Identity.Services.API
         private JObject GetUser(string user_id)
         {
             JArray joinData = new JArray();
-            JObject collectionJoin = GetCollectionJoin(CommonConst.CommonField.USER_ID, CommonConst.Collection.USER_INFO, CommonConst.CommonField.USER_ID, new List<string>() { "user_id", "whatsapp_mobile_number", "mobile_number", "gender" }, CommonConst.CommonField.USER_INFO);
+            JObject collectionJoin = GetCollectionJoin(CommonConst.CommonField.USER_ID, CommonConst.Collection.USER_INFO, CommonConst.CommonField.USER_ID, new List<string>() { "user_id", "whatsapp_mobile_number", "mobile_number", "gender", "addresses" }, CommonConst.CommonField.USER_INFO);
             joinData.Add(collectionJoin);
             JObject filter = new JObject();
             filter[CommonConst.CommonField.USER_ID] = user_id;

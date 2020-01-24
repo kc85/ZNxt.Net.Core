@@ -328,7 +328,7 @@ namespace ZNxt.Identity.Services
                 {
                     userInfo[d.Key] = d.Value;
                 }
-                return _dBService.Update(Collection.USER_INFO, new RawQuery(filter.ToString()), userInfo) == 1;
+                return _dBService.Update(Collection.USER_INFO, new RawQuery(filter.ToString()), userInfo,true, MergeArrayHandling.Replace) == 1;
             }
             else
             {

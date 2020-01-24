@@ -30,7 +30,7 @@ namespace ZNxt.Module.Identity.Services.API
 
 
 
-                    var userdata = JsonConvert.DeserializeObject<AdminAddUserModel>(request.ToString());
+                    var userdata = JsonConvert.DeserializeObject<UserModel>(request.ToString());
                     var user = _zNxtUserService.GetUser(request["user_id"].ToString());
                     if (user != null)
                     {
@@ -47,7 +47,14 @@ namespace ZNxt.Module.Identity.Services.API
                                         request.Remove(item.Key);
                                     }
                                 }
-                                if (_zNxtUserService.UpdateUserProfile(user.user_id, request))
+                                if (request["user_info"] != null)
+                                {
+                                    if (_zNxtUserService.UpdateUserProfile(user.user_id, request["user_info"] as JObject))
+                                    {
+                                        return _responseBuilder.Success();
+                                    }
+                                }
+                                else
                                 {
                                     return _responseBuilder.Success();
                                 }
@@ -82,7 +89,7 @@ namespace ZNxt.Module.Identity.Services.API
                 return _responseBuilder.ServerError();
             }
         }
-        public bool EditUser(string user_id, AdminAddUserModel request)
+        public bool EditUser(string user_id, UserModel request)
         {
             try
             {

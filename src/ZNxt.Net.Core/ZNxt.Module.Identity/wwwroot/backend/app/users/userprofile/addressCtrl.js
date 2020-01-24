@@ -28,12 +28,11 @@
             if ($scope.address.is_default) {
                 $scope.userData.user_info[0].addresses.filter(function (f) { return f.id != $scope.address.id }).forEach(function (d) { d.is_default = false; })
             }
-
-            var editProfileUrl = "./api/admin/userinfo/update";
-            if ($scope.$parent.isShowMyProfile == true) {
-                editProfileUrl = "./api/userinfo/update";
-            }
-            dataService.post(editProfileUrl, $scope.userData).then(function (response) {
+            var data = {};
+            angular.copy($scope.userData, data);
+            data.user_info = data.user_info[0];
+            var editProfileUrl = "./api/sso/admin/userinfo/edit";
+            dataService.post(editProfileUrl, data).then(function (response) {
                 if (response.data.code == 1) {
                     logger.success("Successfully saved the address");
                     $scope.$emit("onUserInfoUpdate", $scope.userData);
@@ -61,7 +60,7 @@
         $scope.addNew = function () {
             $scope.addNewState = true;
             $scope.address = {};
-            $scope.address.id = Date().toString();
+            $scope.address.id = Math.random().toString(36).substring(2) + Date.now().toString(36);
             $scope.address.is_deleted = false;
             $scope.address.is_default = false;
             $scope.userData.user_info[0].addresses.push($scope.address);
