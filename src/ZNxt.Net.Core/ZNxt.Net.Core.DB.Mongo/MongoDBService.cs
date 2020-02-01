@@ -304,11 +304,16 @@ namespace ZNxt.Net.Core.DB.Mongo
         public JObject RunCommand(JObject command)
         {
 
-            var result =  _mongoDataBase.RunCommand<BsonDocument>(command.ToString());
+            var result =  _mongoDataBase.RunCommand<JObject>(command.ToString());
             return JObject.Parse(result.ToJson());
 
         }
-      
+        public T RunCommand<T>(JObject command)
+        {
+
+            return _mongoDataBase.RunCommand<T>(command.ToString());
+
+        }
         public JArray Aggregate(string collection, string stage1, params string[] stages)
         {
             var dbcollection = _mongoDataBase.GetCollection<BsonDocument>(collection);
