@@ -22,7 +22,7 @@ namespace ZNxt.Net.Core.Web.Services.MvcApi
         [Route("signin")]
         public IActionResult SignIn()
         {
-            var redirectUri = $"{ApplicationConfig.AppEndpoint}/";
+            var redirectUri = $"/";
             Console.WriteLine($"auth/signin: RedirectUri: {redirectUri}");
             return Challenge(new AuthenticationProperties() { RedirectUri = redirectUri });
         }

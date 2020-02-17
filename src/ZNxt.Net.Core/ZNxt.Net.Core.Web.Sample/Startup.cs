@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace ZNxt.Net.Core.Web.Sample
 {
@@ -28,6 +29,15 @@ namespace ZNxt.Net.Core.Web.Sample
             {
                 app.UseDeveloperExceptionPage();
             }
+            var fordwardedHeaderOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            fordwardedHeaderOptions.KnownNetworks.Clear();
+            fordwardedHeaderOptions.KnownProxies.Clear();
+
+            app.UseForwardedHeaders(fordwardedHeaderOptions);
+
             app.UseZNxtSSO();
             app.UseAuthentication();
             app.UseZNxtApp();
