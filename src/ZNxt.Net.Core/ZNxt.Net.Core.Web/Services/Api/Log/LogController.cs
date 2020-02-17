@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using ZNxt.Net.Core.Consts;
@@ -110,7 +111,9 @@ namespace ZNxt.Net.Core.Web.Services.Api.Log
             stages.Add(@"{$project: {" + queryfields + "}}");
             string query = @"{aggregate:'" + collection + "', pipeline:[" + string.Join(",", stages.ToArray()) + "],'cursor':{}}";
             JObject jquery = JObject.Parse(query);
-            return _dBService.RunCommand(jquery);
+            var data =  _dBService.RunCommand<BsonDocument>(jquery);
+
+            return null;
 
             //string queryfields = null;// _httpContextProxy.GetQueryString("fields");
             //List<string> fields = null;

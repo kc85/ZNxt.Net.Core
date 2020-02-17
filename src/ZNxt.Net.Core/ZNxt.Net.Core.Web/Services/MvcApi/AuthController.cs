@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Net.Core.Web.Services.MvcApi
@@ -22,7 +23,8 @@ namespace ZNxt.Net.Core.Web.Services.MvcApi
         public IActionResult SignIn()
         {
 
-            return Challenge(new AuthenticationProperties() { RedirectUri = "/" });
+            
+            return Challenge(new AuthenticationProperties() { RedirectUri = $"{ApplicationConfig.AppEndpoint}/"  });
         }
         [Route("signout")]
         public async Task SignOut()

@@ -1,0 +1,58 @@
+rm -fr ZNxt.Net.Core
+sudo growpart /dev/xvda 1
+sudo resize2fs /dev/xvda1
+sudo service docker restart
+sudo docker stop $(sudo docker ps -a -q)
+sudo docker system prune -af
+
+cd /etc/apache2/sites-available
+
+sudo a2dissite znxtfashion.conf
+sudo a2dissite znxtfashion-gateway.conf
+sudo a2dissite znxtfashion-ssl.conf
+sudo a2dissite znxtfashion-admin.conf
+
+sudo rm -f znxtfashion.conf
+sudo rm -f znxtfashion-gateway.conf
+sudo rm -f znxtfashion-ssl.conf
+sudo rm -f znxtfashion-admin.conf
+
+sudo /etc/init.d/apache2 restart
+
+
+
+sudo docker pull choudhurykhanin/znxtapp
+
+sudo docker rm -f  s2fapp-gateway-run
+sudo docker rm -f  s2fapp-sso-run 
+sudo docker rm -f  s2fapp-frontend-run
+sudo docker rm -f  s2fapp-admin-run
+sudo docker rm -f  s2fapp-core-run
+
+#UI 
+sudo docker run -d -p 804:80 -p 4434:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_UI -e AppEndpoint=https://www.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-frontend-run  choudhurykhanin/znxtapp:latest
+
+# gateway
+sudo docker run -d -p 806:80 -p 4436:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_gateway -e AppEndpoint=https://gateway.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-gateway-run  choudhurykhanin/znxtapp:latest
+
+#SSO
+sudo docker run -d -p 807:80 -p 4437:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_sso -e AppEndpoint=https://sso.s2fschool.com -e SSOUrl=https://sso.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=true -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D -e RelyingPartyUrls=https://s2fschool.com,https://www.s2fschool.com,https://admin.s2fschool.com,https://www.admin.s2fschool.com --restart=always --name s2fapp-sso-run  choudhurykhanin/znxtapp:latest
+
+#Admin
+sudo docker run -d -p 805:80 -p 4435:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_admin -e AppEndpoint=https://admin.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-admin-run  choudhurykhanin/znxtapp:latest
+
+
+sudo docker run -d -p 808:80 -p 4438:443 -e "AppName=S2F School" -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_core -e AppEndpoint=https://core.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-core-run  choudhurykhanin/znxtapp:latest
+
+
+
+
+
+
+
+
+
+
+
+
+
