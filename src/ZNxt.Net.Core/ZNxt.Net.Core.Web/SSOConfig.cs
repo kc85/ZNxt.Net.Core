@@ -9,6 +9,8 @@ namespace ZNxt.Identity
 {
     public static class SSOConfig
     {
+        private const int MOBILE_ACCESS_TOKEN_LIFETIME = 604800; //7  days 
+
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new IdentityResource[]
@@ -56,9 +58,26 @@ namespace ZNxt.Identity
                 AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi", IdentityServerConstants.StandardScopes.OfflineAccess }
             };
 
+            var mobile_auth_client = new Client
+            {
+                ClientId = "mobile_auth_client",
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                AllowedScopes = { "ZNxtCoreAppApi" , IdentityServerConstants.StandardScopes.OfflineAccess },
+                AllowOfflineAccess = true,
+                RequireConsent = false,
+                AccessTokenLifetime = MOBILE_ACCESS_TOKEN_LIFETIME
+            };
+            
+
             return new[]
             {
               mobileClient,
+              mobile_auth_client,
                 new Client
                 {
                     ClientId = "ZNxtApp",

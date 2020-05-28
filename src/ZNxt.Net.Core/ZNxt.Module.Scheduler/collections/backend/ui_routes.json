@@ -1,0 +1,18 @@
+﻿[
+
+  {
+    "key": "scheduler",
+    "label": "Scheduler",
+    "href": "/scheduler",
+    "icon": "fa-users",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/scheduler/scheduler.html"
+    },
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 90
+  }
+]

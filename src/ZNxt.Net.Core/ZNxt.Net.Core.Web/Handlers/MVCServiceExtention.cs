@@ -28,6 +28,7 @@ using IdentityServer4;
 using ZNxt.Identity.Services;
 using IdentityServer4.Services;
 using IdentityServer4.Configuration;
+using IdentityServer4.Validation;
 
 public static class MVCServiceExtention
 {
@@ -212,6 +213,7 @@ public static class MVCServiceExtention
         services.AddTransient<IProfileService, ZNxtProfileService>();
         services.AddTransient<ZNxtUserStore>();
         services.AddTransient<IUserNotifierService, UserNotifierService>();
+        services.AddTransient<IResourceOwnerPasswordValidator, ZNxtResourceOwnerPasswordValidator>();
     }
 }
 
