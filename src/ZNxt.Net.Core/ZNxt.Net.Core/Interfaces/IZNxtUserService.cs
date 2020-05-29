@@ -27,5 +27,7 @@ namespace ZNxt.Net.Core.Interfaces
         void ResetUserLoginFailCount(string user_id);
 
          bool UpdateUser(string userid, JObject data);
+        MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request);
+        MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request);
     }
 }

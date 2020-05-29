@@ -146,7 +146,96 @@ namespace ZNxt.Module.Identity.Services.API
                 _logger.Error($"Error {ex.Message}", ex);
                 return _responseBuilder.ServerError();
             }
-           
+
+        }
+
+        [Route("/sso/mobile_auth/register", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        public JObject RegisterMobile()
+        {
+            try
+            {
+                var request = _httpContextProxy.GetRequestBody<MobileAuthRegisterRequest>();
+                request.device_address = _httpContextProxy.GetHeader("device_address");
+                request.app_version = _httpContextProxy.GetHeader("app_version");
+                request.x_auth_token = _httpContextProxy.GetHeader("x_auth_token");
+
+                var results = new Dictionary<string, string>();
+                if (request.IsValidModel(out results))
+                {
+
+                    // TO DO : Send mobile validation OTP 
+                    MobileAuthRegisterResponse mobileAuthRegisterResponse =  _ZNxtUserService.RegisterMobile(request);
+
+                    if (mobileAuthRegisterResponse.code == CommonConst._1_SUCCESS)
+                    {
+
+                        return _responseBuilder.Success(null, mobileAuthRegisterResponse.ToJObject());
+                    }
+                    else
+                    {
+                        return _responseBuilder.CreateReponseWithError(mobileAuthRegisterResponse.code, mobileAuthRegisterResponse.errors);
+                    }
+                }
+                else
+                {
+                    _logger.Debug("Model validation fail");
+                    JObject errors = new JObject();
+                    foreach (var error in results)
+                    {
+                        errors[error.Key] = error.Value;
+                    }
+                    return _responseBuilder.BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return _responseBuilder.ServerError();
+            }
+        }
+        [Route("/sso/mobile_auth/activate", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
+        public JObject RegisterActivate()
+        {
+            try
+            {
+                var request = _httpContextProxy.GetRequestBody<MobileAuthActivateRequest>();
+                request.device_address = _httpContextProxy.GetHeader("device_address");
+                request.app_version = _httpContextProxy.GetHeader("app_version");
+                request.x_auth_token = _httpContextProxy.GetHeader("x_auth_token");
+
+                var results = new Dictionary<string, string>();
+                if (request.IsValidModel(out results))
+                {
+
+                    // TO DO : Send mobile validation OTP 
+                    MobileAuthActivateResponse mobileAuthActivateResponse = _ZNxtUserService.ActivateRegisterMobile(request);
+
+                    if (mobileAuthActivateResponse.code == CommonConst._1_SUCCESS)
+                    {
+
+                        return _responseBuilder.Success(null, mobileAuthActivateResponse.ToJObject());
+                    }
+                    else
+                    {
+                        return _responseBuilder.CreateReponseWithError(mobileAuthActivateResponse.code, mobileAuthActivateResponse.errors);
+                    }
+                }
+                else
+                {
+                    _logger.Debug("Model validation fail");
+                    JObject errors = new JObject();
+                    foreach (var error in results)
+                    {
+                        errors[error.Key] = error.Value;
+                    }
+                    return _responseBuilder.BadRequest(errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return _responseBuilder.ServerError();
+            }
         }
     }
 }

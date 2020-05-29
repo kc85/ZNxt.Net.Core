@@ -359,5 +359,14 @@ namespace ZNxt.Identity.Services
                 return false;
             }
         }
+
+        public MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request)
+        {
+            return new MobileAuthRegisterResponse() { code = CommonConst._1_SUCCESS, validation_token = "dummy_token" };
+        }
+        public MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request)
+        {
+            return new MobileAuthActivateResponse() { code = CommonConst._1_SUCCESS, user_name = "dummy_user", secret_key = "dummy_token" };
+        }
     }
 }
