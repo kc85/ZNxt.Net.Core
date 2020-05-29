@@ -18,22 +18,24 @@ namespace ZNxt.Identity.Services
         public Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
             var headers  = _httpContextProxy.GetHeaders();
-            var validate = _zNxtUserStore.ValidateCredentials(context.UserName, context.Password, null, null);
-            if (validate)
+            var user = _zNxtUserStore.FindByUsername(context.UserName);
+            if (user != null)
             {
-                var user  =  _zNxtUserStore.FindByUsername(context.UserName);
-                //set the result
-                context.Result = new GrantValidationResult(
-                    subject: user.user_id.ToString(),
-                    authenticationMethod: "custom"
-                    //  claims: GetUserClaims(user)
-                    );
-                
+                // && user.user_type == "mobile_auth"
+                var validate = _zNxtUserStore.ValidateCredentials(context.UserName, context.Password, null, null);
+                if (validate)
+                {
+                    //set the result
+                    context.Result = new GrantValidationResult(
+                        subject: user.user_id.ToString(),
+                        authenticationMethod: "custom"
+                        //  claims: GetUserClaims(user)
+                        );
+
+                }
             }
-            else
-            {
-                context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid username or password");
-            }
+            context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid username or password");
+
 
             return Task.FromResult(0);
         }

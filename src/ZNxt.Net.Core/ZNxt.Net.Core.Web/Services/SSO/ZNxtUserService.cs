@@ -366,7 +366,55 @@ namespace ZNxt.Identity.Services
         }
         public MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request)
         {
-            return new MobileAuthActivateResponse() { code = CommonConst._1_SUCCESS, user_name = "dummy_user", secret_key = "dummy_token" };
+            var user = GetUserByUsername(request.mobile_number);
+            if (user == null)
+            {
+                user = new UserModel()
+                {
+                    id = CommonUtility.GetNewID(),
+                    user_id = CommonUtility.GetNewID(),
+                    user_name = CommonUtility.GetNewID(),
+                    first_name = request.mobile_number,
+                    middle_name = "",
+                    last_name = "",
+                    salt = CommonUtility.GetNewID(),
+                    is_enabled = true,
+                    user_type = "mobile_auth",
+                    dob = new DOBModel() { day = 1, month = 1, year = 1 },
+                    roles = new List<string> { "mobile_auth_init_user" }
+                };
+
+                if (!CreateUser(user, false))
+                {
+                    throw new Exception("Error adding user");
+                }
+            }
+
+            var mobileActivationObj = new JObject();
+            mobileActivationObj[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
+            mobileActivationObj["device_address"] = request.device_address;
+            var meta_data = new JObject();
+            foreach (var metadata in request.meta_data)
+            {
+                meta_data[metadata.Key] = metadata.Value;
+            }
+            mobileActivationObj["meta_data"] = meta_data;
+            if (_dBService.WriteData(CommonConst.Collection.MOBILE_AUTH_ACTIVATION, mobileActivationObj))
+            {
+                var secretKey = CommonUtility.RandomString(19);
+                if (CreatePassword(user.user_id, secretKey))
+                {
+                    return new MobileAuthActivateResponse() { code = CommonConst._1_SUCCESS, user_name = user.user_name, secret_key = secretKey };
+                }
+                else
+                {
+                    throw new Exception("Error adding create password");
+                }
+            }
+            else
+            {
+                throw new Exception("Error adding mobile activation");
+            }
         }
     }
 }

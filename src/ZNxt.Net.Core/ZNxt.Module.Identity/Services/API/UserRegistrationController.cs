@@ -206,13 +206,9 @@ namespace ZNxt.Module.Identity.Services.API
                 var results = new Dictionary<string, string>();
                 if (request.IsValidModel(out results))
                 {
-
-                    // TO DO : Send mobile validation OTP 
                     MobileAuthActivateResponse mobileAuthActivateResponse = _ZNxtUserService.ActivateRegisterMobile(request);
-
                     if (mobileAuthActivateResponse.code == CommonConst._1_SUCCESS)
                     {
-
                         return _responseBuilder.Success(null, mobileAuthActivateResponse.ToJObject());
                     }
                     else

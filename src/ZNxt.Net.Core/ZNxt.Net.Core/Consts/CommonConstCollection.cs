@@ -32,6 +32,7 @@
             public const string AUTH_TOKEN_COLLECTION = "auth_tokens";
             public const string MODULE_FILE_UPLOAD_CACHE = "_module_file_upload_cache";
             public const string UI_ROUTES = "ui_routes";
+            public const string MOBILE_AUTH_ACTIVATION = "mobile_auth_activation";
         }
 
         public static class CollectionAccessTypes
