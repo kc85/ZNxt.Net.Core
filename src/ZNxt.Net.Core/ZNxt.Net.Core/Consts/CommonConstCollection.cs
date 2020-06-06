@@ -33,6 +33,7 @@
             public const string MODULE_FILE_UPLOAD_CACHE = "_module_file_upload_cache";
             public const string UI_ROUTES = "ui_routes";
             public const string MOBILE_AUTH_ACTIVATION = "mobile_auth_activation";
+            public const string MOBILE_AUTH_REGISTRATION= "mobile_auth_registration";
         }
 
         public static class CollectionAccessTypes

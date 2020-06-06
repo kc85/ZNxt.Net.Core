@@ -188,5 +188,31 @@ namespace ZNxt.Identity.Services
                 return false;
             }
         }
+        public async Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse mobileAuth)
+        {
+            try
+            {
+                var mobileNo = mobileAuth.mobile_number;
+                var otpReqeust = new JObject()
+                {
+                    ["To"] = mobileNo,
+                    ["Message"] = "Account Activation OTP is {{OTP}} ",
+                    ["Type"] = "SMS",
+                    ["OTPType"] = "mobile_auth_activation",
+                    ["SecurityToken"] = mobileAuth.validation_token
+                };
+                var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", null, otpReqeust);
+
+                // TEMP CODE 
+                // return result["code"].ToString() == "1";
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error sending mobile_auth_registration to {mobileAuth.mobile_number}. Error:{ex.Message}", ex);
+                return false;
+            }
+        }
     }
 }

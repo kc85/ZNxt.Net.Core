@@ -55,7 +55,11 @@ namespace ZNxt.Net.Core.Model
     public class MobileAuthRegisterResponse : MobileAuthResponseBase
     {
         public string validation_token { get; set; }
-       
+
+        public string device_address { get; set; }
+
+        public string mobile_number { get; set; }
+
     }
     public class MobileAuthActivateResponse : MobileAuthResponseBase
     {

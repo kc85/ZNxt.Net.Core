@@ -12,5 +12,7 @@ namespace ZNxt.Net.Core.Interfaces
         Task<bool> SendForgetpasswordEmailWithOTPAsync(UserModel user);
         Task<bool> SendForgetUsernamesEmailAsync(List<UserModel> user);
 
+        Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse  mobileAuth);
+
     }
 }

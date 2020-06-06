@@ -362,7 +362,17 @@ namespace ZNxt.Identity.Services
 
         public MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request)
         {
-            return new MobileAuthRegisterResponse() { code = CommonConst._1_SUCCESS, validation_token = "dummy_token" };
+            var requestObj = request.ToJObject();
+            var id = CommonUtility.GetNewID();
+            requestObj[CommonConst.CommonField.DISPLAY_ID] = id;
+            if (_dBService.Write(Collection.MOBILE_AUTH_REGISTRATION, requestObj))
+            {
+                return new MobileAuthRegisterResponse() { code = CommonConst._1_SUCCESS, validation_token = id, device_address  = request.device_address, mobile_number = request.mobile_number };
+            }
+            else
+            {
+                throw new Exception("RegisterMobile error");
+            }
         }
         public MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request)
         {

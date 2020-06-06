@@ -21,14 +21,15 @@ namespace ZNxt.Module.Identity.Services.API
 
         private readonly IZNxtUserService _ZNxtUserService;
 
-
-        public UserRegistrationController(IZNxtUserService ZNxtUserService, IUserNotifierService userNotifierService, IHttpContextProxy httpContextProxy, IResponseBuilder responseBuilder, IDBService dBService, IKeyValueStorage keyValueStorage, ILogger logger)
+        protected readonly IApiGatewayService _apiGatewayService;
+        public UserRegistrationController(IZNxtUserService ZNxtUserService, IUserNotifierService userNotifierService, IHttpContextProxy httpContextProxy, IResponseBuilder responseBuilder, IDBService dBService, IKeyValueStorage keyValueStorage, ILogger logger, IApiGatewayService apiGatewayService)
         {
             _responseBuilder = responseBuilder;
             _httpContextProxy = httpContextProxy;
             _logger = logger;
             _ZNxtUserService = ZNxtUserService;
             _userNotifierService = userNotifierService;
+            _apiGatewayService = apiGatewayService;
         }
         [Route("/sso/admin/adduser", CommonConst.ActionMethods.POST, "sys_admin")]
         public JObject AdminAddUser()
@@ -168,8 +169,15 @@ namespace ZNxt.Module.Identity.Services.API
 
                     if (mobileAuthRegisterResponse.code == CommonConst._1_SUCCESS)
                     {
+                        if (_userNotifierService.SendMobileAuthRegistrationOTPAsync(mobileAuthRegisterResponse).GetAwaiter().GetResult())
+                        {
 
-                        return _responseBuilder.Success(null, mobileAuthRegisterResponse.ToJObject());
+                            return _responseBuilder.Success(null, mobileAuthRegisterResponse.ToJObject());
+                        }
+                        else
+                        {
+                            return _responseBuilder.ServerError("Error sending SMS OTP");
+                        }
                     }
                     else
                     {
@@ -206,14 +214,30 @@ namespace ZNxt.Module.Identity.Services.API
                 var results = new Dictionary<string, string>();
                 if (request.IsValidModel(out results))
                 {
-                    MobileAuthActivateResponse mobileAuthActivateResponse = _ZNxtUserService.ActivateRegisterMobile(request);
-                    if (mobileAuthActivateResponse.code == CommonConst._1_SUCCESS)
+                    var validateRequest = new JObject()
                     {
-                        return _responseBuilder.Success(null, mobileAuthActivateResponse.ToJObject());
+                        ["To"] = request.mobile_number,
+                        ["OTP"] = request.OTP,
+                        ["OTPType"] = "mobile_auth_activation",
+                        ["SecurityToken"] = request.validation_token
+                    };
+
+                    var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/validate", null, validateRequest).GetAwaiter().GetResult();
+                    if (result["code"].ToString() == "1")
+                    {
+                        MobileAuthActivateResponse mobileAuthActivateResponse = _ZNxtUserService.ActivateRegisterMobile(request);
+                        if (mobileAuthActivateResponse.code == CommonConst._1_SUCCESS)
+                        {
+                            return _responseBuilder.Success(null, mobileAuthActivateResponse.ToJObject());
+                        }
+                        else
+                        {
+                            return _responseBuilder.CreateReponseWithError(mobileAuthActivateResponse.code, mobileAuthActivateResponse.errors);
+                        }
                     }
                     else
                     {
-                        return _responseBuilder.CreateReponseWithError(mobileAuthActivateResponse.code, mobileAuthActivateResponse.errors);
+                        return _responseBuilder.Unauthorized();
                     }
                 }
                 else
