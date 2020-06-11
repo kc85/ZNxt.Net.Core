@@ -19,6 +19,35 @@ namespace ZNxt.Module.Identity.Services.API
         {
         }
 
+        [Route("/sso/userinfo/edit", CommonConst.ActionMethods.POST, CommonConst.CommonField.USER_ROLE)]
+        public JObject EditMyUserInfo()
+        {
+            var request = _httpContextProxy.GetRequestBody<JObject>();
+            if (request["user_id"] != null)
+            {
+                if(_httpContextProxy.User!=null && request["user_id"].ToString() == _httpContextProxy.User.user_id)
+                {
+                    if (request["email"] != null)
+                    {
+                        if(request["email"].ToString().Trim().ToLower() != _httpContextProxy.User.email.Trim().ToLower())
+                        {
+                            request["email_validation_required"] = true;
+                        }
+                    }
+                    return UpdateUser(request);
+                }
+                else
+                {
+                    _logger.Error($"User is not match with auth user _httpContextProxy.User : {(_httpContextProxy.User!=null? _httpContextProxy.User.user_id : "")}");
+                    return _responseBuilder.Unauthorized();
+                }
+            }
+            else
+            {
+                return _responseBuilder.BadRequest();
+            }
+        }
+
         [Route("/sso/admin/userinfo/edit", CommonConst.ActionMethods.POST, CommonConst.CommonField.SYS_ADMIN_ROLE)]
         public JObject EditUserInfo()
         {
@@ -27,56 +56,7 @@ namespace ZNxt.Module.Identity.Services.API
                 var request = _httpContextProxy.GetRequestBody<JObject>();
                 if (request["user_id"] != null)
                 {
-
-
-
-                    var userdata = JsonConvert.DeserializeObject<UserModel>(request.ToString());
-                    var user = _zNxtUserService.GetUser(request["user_id"].ToString());
-                    if (user != null)
-                    {
-                        userdata.user_name = user.user_name;
-                        var results = new Dictionary<string, string>();
-                        if (request.IsValidModel(out results))
-                        {
-                            if (EditUser(user.user_id, userdata))
-                            {
-                                foreach (var item in userdata.ToJObject())
-                                {
-                                    if (request[item.Key] != null)
-                                    {
-                                        request.Remove(item.Key);
-                                    }
-                                }
-                                if (request["user_info"] != null)
-                                {
-                                    if (_zNxtUserService.UpdateUserProfile(user.user_id, request["user_info"] as JObject))
-                                    {
-                                        return _responseBuilder.Success();
-                                    }
-                                }
-                                else
-                                {
-                                    return _responseBuilder.Success();
-                                }
-                            }
-                            return _responseBuilder.ServerError();
-                        }
-                        else
-                        {
-                            _logger.Debug("Model validation fail");
-                            JObject errors = new JObject();
-                            foreach (var error in results)
-                            {
-                                errors[error.Key] = error.Value;
-                            }
-                            return _responseBuilder.BadRequest(errors);
-                        }
-                    }
-                    else
-                    {
-                        _logger.Error($"User not found for user id {request["user_id"]}");
-                        return _responseBuilder.NotFound();
-                    }
+                    return UpdateUser(request);
                 }
                 else
                 {
@@ -89,7 +69,59 @@ namespace ZNxt.Module.Identity.Services.API
                 return _responseBuilder.ServerError();
             }
         }
-        public bool EditUser(string user_id, UserModel request)
+
+        private JObject UpdateUser(JObject request)
+        {
+            var userdata = JsonConvert.DeserializeObject<UserModel>(request.ToString());
+            var user = _zNxtUserService.GetUser(request["user_id"].ToString());
+            if (user != null)
+            {
+                userdata.user_name = user.user_name;
+                var results = new Dictionary<string, string>();
+                if (request.IsValidModel(out results))
+                {
+                    if (EditUser(user.user_id, request))
+                    {
+                        foreach (var item in userdata.ToJObject())
+                        {
+                            if (request[item.Key] != null)
+                            {
+                                request.Remove(item.Key);
+                            }
+                        }
+                        if (request["user_info"] != null)
+                        {
+                            if (_zNxtUserService.UpdateUserProfile(user.user_id, request["user_info"] as JObject))
+                            {
+                                return _responseBuilder.Success();
+                            }
+                        }
+                        else
+                        {
+                            return _responseBuilder.Success();
+                        }
+                    }
+                    return _responseBuilder.ServerError();
+                }
+                else
+                {
+                    _logger.Debug("Model validation fail");
+                    JObject errors = new JObject();
+                    foreach (var error in results)
+                    {
+                        errors[error.Key] = error.Value;
+                    }
+                    return _responseBuilder.BadRequest(errors);
+                }
+            }
+            else
+            {
+                _logger.Error($"User not found for user id {request["user_id"]}");
+                return _responseBuilder.NotFound();
+            }
+        }
+
+        public bool EditUser(string user_id, JObject request)
         {
             try
             {

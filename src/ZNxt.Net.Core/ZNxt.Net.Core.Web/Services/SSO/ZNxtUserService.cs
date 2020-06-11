@@ -304,7 +304,7 @@ namespace ZNxt.Identity.Services
             if (userData != null)
             {
                 foreach (var d in data)
-                {
+                {   
                     userData[d.Key] = d.Value;
                 }
                 return _dBService.Update(Collection.USERS, new RawQuery(filter.ToString()), userData) == 1;

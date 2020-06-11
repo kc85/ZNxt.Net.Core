@@ -22,6 +22,8 @@ namespace ZNxt.Module.Identity.Services.API
         private readonly IZNxtUserService _ZNxtUserService;
 
         protected readonly IApiGatewayService _apiGatewayService;
+
+        private const bool MOBILE_AUTH_IGNORE_OTP_VALIDATION = true;
         public UserRegistrationController(IZNxtUserService ZNxtUserService, IUserNotifierService userNotifierService, IHttpContextProxy httpContextProxy, IResponseBuilder responseBuilder, IDBService dBService, IKeyValueStorage keyValueStorage, ILogger logger, IApiGatewayService apiGatewayService)
         {
             _responseBuilder = responseBuilder;
@@ -169,9 +171,8 @@ namespace ZNxt.Module.Identity.Services.API
 
                     if (mobileAuthRegisterResponse.code == CommonConst._1_SUCCESS)
                     {
-                        if (_userNotifierService.SendMobileAuthRegistrationOTPAsync(mobileAuthRegisterResponse).GetAwaiter().GetResult())
+                        if (_userNotifierService.SendMobileAuthRegistrationOTPAsync(mobileAuthRegisterResponse).GetAwaiter().GetResult() || MOBILE_AUTH_IGNORE_OTP_VALIDATION)
                         {
-
                             return _responseBuilder.Success(null, mobileAuthRegisterResponse.ToJObject());
                         }
                         else
@@ -223,7 +224,7 @@ namespace ZNxt.Module.Identity.Services.API
                     };
 
                     var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/validate", null, validateRequest).GetAwaiter().GetResult();
-                    if (result["code"].ToString() == "1")
+                    if (result["code"].ToString() == "1" || MOBILE_AUTH_IGNORE_OTP_VALIDATION)
                     {
                         MobileAuthActivateResponse mobileAuthActivateResponse = _ZNxtUserService.ActivateRegisterMobile(request);
                         if (mobileAuthActivateResponse.code == CommonConst._1_SUCCESS)

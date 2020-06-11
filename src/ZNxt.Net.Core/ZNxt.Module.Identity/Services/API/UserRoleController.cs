@@ -24,6 +24,16 @@ namespace ZNxt.Module.Identity.Services.API
         {
             return GetPaggedData(Collection.USER_ROLES, null, "{'override_by' : 'none'}", null, new List<string>() { "key", "name", "description", "module_name", "version", "is_default" });
         }
+        [Route("/sso/user/remove_my_init_roles", ActionMethods.POST, CommonField.USER_ROLE)]
+        public JObject RemoteUserInitRole()
+        {
+            JObject request = new JObject()
+            {
+                ["user_id"] = _httpContextProxy.User.user_id,
+                ["role"] = "mobile_auth_init_user"
+            };
+            return AddRemoveUserRole(false, request);
+        }
         [Route("/sso/user/apiaddrole", ActionMethods.POST, CommonField.API_AUTH_TOKEN)]
         public JObject AddUserRoleFromAPI()
         {
@@ -46,9 +56,14 @@ namespace ZNxt.Module.Identity.Services.API
         }
         private JObject AddRemoveUserRole(bool isAdded)
         {
+            var request = _httpContextProxy.GetRequestBody<JObject>();
+            return AddRemoveUserRole(isAdded, request);
+
+        }
+        private JObject AddRemoveUserRole(bool isAdded, JObject request)
+        {
             try
             {
-                var request = _httpContextProxy.GetRequestBody<JObject>();
                 if (request == null)
                 {
                     return _responseBuilder.BadRequest();

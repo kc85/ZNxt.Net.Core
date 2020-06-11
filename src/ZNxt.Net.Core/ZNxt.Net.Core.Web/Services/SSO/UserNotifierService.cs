@@ -202,11 +202,7 @@ namespace ZNxt.Identity.Services
                     ["SecurityToken"] = mobileAuth.validation_token
                 };
                 var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", null, otpReqeust);
-
-                // TEMP CODE 
-                // return result["code"].ToString() == "1";
-
-                return true;
+                return result["code"].ToString() == "1";
             }
             catch (Exception ex)
             {
