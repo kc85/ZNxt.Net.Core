@@ -147,6 +147,21 @@ namespace ZNxt.Identity.Services
                 return null;
             }
         }
+        private UserModel GetUserByMobileAuthPhoneNumber(string mobileNumber)
+        {
+            var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{mobile_auth_phone_number: /^" + mobileNumber + "$/i,'is_enabled':true}"));
+            if (user.Any())
+            {
+                var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
+                SetUserOrgs(userModel);
+                return userModel;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public bool GetIsUserConsecutiveLoginFailLocked(string user_id)
         {
             var filter = "{"+ consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "'," + is_locked + ":true}";
@@ -376,7 +391,7 @@ namespace ZNxt.Identity.Services
         }
         public MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request)
         {
-            var user = GetUserByUsername(request.mobile_number);
+            var user = GetUserByMobileAuthPhoneNumber(request.mobile_number);
             if (user == null)
             {
                 user = new UserModel()
@@ -390,8 +405,9 @@ namespace ZNxt.Identity.Services
                     salt = CommonUtility.GetNewID(),
                     is_enabled = true,
                     user_type = "mobile_auth",
+                    mobile_auth_phone_number = request.mobile_number,
                     dob = new DOBModel() { day = 1, month = 1, year = 1 },
-                    roles = new List<string> { "mobile_auth_init_user" }
+                    roles = new List<string> { "mobile_auth", "mobile_auth_init_user" }
                 };
 
                 if (!CreateUser(user, false))
@@ -414,7 +430,7 @@ namespace ZNxt.Identity.Services
                 var secretKey = CommonUtility.RandomString(19);
                 if (CreatePassword(user.user_id, secretKey))
                 {
-                    return new MobileAuthActivateResponse() { code = CommonConst._1_SUCCESS, user_name = user.user_name, secret_key = secretKey };
+                    return new MobileAuthActivateResponse() { code = CommonConst._1_SUCCESS, user_name = user.user_name, secret_key = secretKey, user_id = user.user_id};
                 }
                 else
                 {

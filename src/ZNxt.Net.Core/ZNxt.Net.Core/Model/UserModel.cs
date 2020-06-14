@@ -27,6 +27,8 @@ namespace ZNxt.Net.Core.Model
         public List<string> temp_roles { get; set; }
         public List<UserOrgModel> orgs { get; set; }
 
+        public string mobile_auth_phone_number { get; set; }
+
         public UserModel()
         {
             claims = new List<Claim>();

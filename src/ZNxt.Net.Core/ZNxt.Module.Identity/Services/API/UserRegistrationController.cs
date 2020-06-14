@@ -227,9 +227,24 @@ namespace ZNxt.Module.Identity.Services.API
                     if (result["code"].ToString() == "1" || MOBILE_AUTH_IGNORE_OTP_VALIDATION)
                     {
                         MobileAuthActivateResponse mobileAuthActivateResponse = _ZNxtUserService.ActivateRegisterMobile(request);
+
                         if (mobileAuthActivateResponse.code == CommonConst._1_SUCCESS)
                         {
-                            return _responseBuilder.Success(null, mobileAuthActivateResponse.ToJObject());
+                            JObject userInfo = new JObject();
+                            userInfo["mobile_number"] = "";
+                            userInfo["whatsapp_mobile_number"] = "";
+                            userInfo["gender"] = "";
+                            if (_ZNxtUserService.UpdateUserProfile(mobileAuthActivateResponse.user_id, userInfo))
+                            {
+                                var obj = mobileAuthActivateResponse.ToJObject();
+                                obj.Remove("user_id");
+                                return _responseBuilder.Success(null, obj);
+                            }
+                            else
+                            {
+                                return _responseBuilder.CreateReponseWithError(mobileAuthActivateResponse.code, mobileAuthActivateResponse.errors);
+                            }
+                                
                         }
                         else
                         {

@@ -22,31 +22,40 @@ namespace ZNxt.Module.Identity.Services.API
         [Route("/sso/userinfo/edit", CommonConst.ActionMethods.POST, CommonConst.CommonField.USER_ROLE)]
         public JObject EditMyUserInfo()
         {
-            var request = _httpContextProxy.GetRequestBody<JObject>();
-            if (request["user_id"] != null)
+            try
             {
-                if(_httpContextProxy.User!=null && request["user_id"].ToString() == _httpContextProxy.User.user_id)
+                var request = _httpContextProxy.GetRequestBody<JObject>();
+                if (request["user_id"] != null)
                 {
-                    if (request["email"] != null)
+                    if (_httpContextProxy.User != null && request["user_id"].ToString() == _httpContextProxy.User.user_id)
                     {
-                        if(request["email"].ToString().Trim().ToLower() != _httpContextProxy.User.email.Trim().ToLower())
+                        if (request["email"] != null )
                         {
-                            request["email_validation_required"] = true;
+                            if (_httpContextProxy.User.email == null ||  request["email"].ToString().Trim().ToLower() != _httpContextProxy.User.email.Trim().ToLower())
+                            {
+                                request["email_validation_required"] = true;
+                            }
                         }
+                        return UpdateUser(request);
                     }
-                    return UpdateUser(request);
+                    else
+                    {
+                        _logger.Error($"User is not match with auth user _httpContextProxy.User : {(_httpContextProxy.User != null ? _httpContextProxy.User.user_id : "")}");
+                        return _responseBuilder.Unauthorized();
+                    }
                 }
                 else
                 {
-                    _logger.Error($"User is not match with auth user _httpContextProxy.User : {(_httpContextProxy.User!=null? _httpContextProxy.User.user_id : "")}");
-                    return _responseBuilder.Unauthorized();
+                    return _responseBuilder.BadRequest();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                return _responseBuilder.BadRequest();
+                _logger.Error($"EditUserInfo {ex.Message}", ex);
+                return _responseBuilder.ServerError();
             }
-        }
+
+}
 
         [Route("/sso/admin/userinfo/edit", CommonConst.ActionMethods.POST, CommonConst.CommonField.SYS_ADMIN_ROLE)]
         public JObject EditUserInfo()
