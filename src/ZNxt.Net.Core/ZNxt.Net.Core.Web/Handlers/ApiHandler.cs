@@ -202,10 +202,10 @@ namespace ZNxt.Net.Core.Web.Handlers
                             if (response["user"] != null)
                             {
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
-                                if(userModel.orgs == null || userModel.orgs.Count ==0)
-                                {
-                                    _serviceResolver.Resolve<IZNxtUserService>().SetUserOrgs(userModel);
-                                }
+                                //if(userModel.orgs == null || userModel.orgs.Count ==0)
+                                //{
+                                //   // _serviceResolver.Resolve<IZNxtUserService>().SetUserOrgs(userModel);
+                                //}
                                 
                                 _inMemoryCacheService.Put<UserModel>(cackeKey, userModel);
                             }
