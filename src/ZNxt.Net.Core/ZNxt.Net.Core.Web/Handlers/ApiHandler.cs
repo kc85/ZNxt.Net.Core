@@ -30,10 +30,9 @@ namespace ZNxt.Net.Core.Web.Handlers
         private readonly IResponseBuilder _responseBuilder;
         private readonly IApiGatewayService _apiGatewayService;
         private readonly IInMemoryCacheService _inMemoryCacheService;
-        private readonly IZNxtUserService _zNxtUserService;
         public ApiHandler(RequestDelegate next, ILogger logger, IDBService dbService, IRouting routing,
             IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder,
-            IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService, IZNxtUserService zNxtUserService)
+            IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService)
         {
             _next = next;
             _routing = routing;
@@ -45,7 +44,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             _responseBuilder = responseBuilder;
             _apiGatewayService = apiGatewayService;
             _inMemoryCacheService = inMemoryCacheService;
-            _zNxtUserService = zNxtUserService;
+           
         }
 
         public async Task Invoke(HttpContext context, IAuthorizationService authorizationService)
@@ -205,7 +204,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
                                 if(userModel.orgs == null || userModel.orgs.Count ==0)
                                 {
-                                    _zNxtUserService.SetUserOrgs(userModel);
+                                    _serviceResolver.Resolve<IZNxtUserService>().SetUserOrgs(userModel);
                                 }
                                 
                                 _inMemoryCacheService.Put<UserModel>(cackeKey, userModel);
