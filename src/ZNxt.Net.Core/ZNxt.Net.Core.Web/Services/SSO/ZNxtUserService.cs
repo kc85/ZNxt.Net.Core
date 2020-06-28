@@ -247,7 +247,7 @@ namespace ZNxt.Identity.Services
             return true;
         }
 
-        private void SetUserOrgs(UserModel userModel)
+        public void SetUserOrgs(UserModel userModel)
         {
             var extennalOrgEndpoint = "/s2fschool/identity/user/allorgs";
             try
@@ -256,6 +256,7 @@ namespace ZNxt.Identity.Services
                 var response = _apiGatewayService.CallAsync(ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
                 if (response[CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonField.DATA] != null)
                 {
+                    
                     userModel.orgs = JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonField.DATA].ToString());
                 }
                 else
