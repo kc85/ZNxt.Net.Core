@@ -54,5 +54,26 @@
     "data": "587",
     "is_override": false,
     "override_by": "none"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "sms_gateway_key",
+    "data": "dfe355e22fb62f2651c5878d7973bXXX"
+  },
+
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "gateway_endpoint",
+    "data": "http://sms.psbulksms.in/api/v2/sms/send/json"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "sms_from",
+    "data": "TXTSMS"
+  },
+  {
+    "auth_users": [ "sys_admin" ],
+    "key": "sms_provider",
+    "data": "PSBULKSMS"
   }
 ]

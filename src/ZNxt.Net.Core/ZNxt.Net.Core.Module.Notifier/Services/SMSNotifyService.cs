@@ -43,24 +43,50 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
                 filter[CommonConst.CommonField.DISPLAY_ID] = smsData[CommonConst.CommonField.DISPLAY_ID].ToString();
                 try
                 {
-                    if (TextLocalSMSHelper.SendSMS(
-                          message,
-                          toSms,
-                          _appSettingService.GetAppSettingData("text_local_sms_gateway_key"),
-                          _appSettingService.GetAppSettingData("text_local_sms_gateway_endpoint"),
-                          _appSettingService.GetAppSettingData("sms_from"),
-                          _logger))
+                    if (_appSettingService.GetAppSettingData("sms_provider") == "PSBULKSMS")
                     {
-                        smsData[CommonConst.CommonField.STATUS] = EmailStatus.Sent.ToString();
-                        _dbService.Write(CommonConst.Collection.SMS_QUEUE, smsData, filter);
-                        return true;
 
+                        if (PsbulkSMSHelper.SendSMS(
+                              message,
+                              toSms,
+                              _appSettingService.GetAppSettingData("sms_gateway_key"),
+                              _appSettingService.GetAppSettingData("gateway_endpoint"),
+                              _appSettingService.GetAppSettingData("sms_from"),
+                              _logger))
+                        {
+                            smsData[CommonConst.CommonField.STATUS] = EmailStatus.Sent.ToString();
+                            _dbService.Write(CommonConst.Collection.SMS_QUEUE, smsData, filter);
+                            return true;
+
+                        }
+                        else
+                        {
+                            smsData[CommonConst.CommonField.STATUS] = SMSStatus.SendError.ToString();
+                            _dbService.Write(CommonConst.Collection.SMS_QUEUE, smsData, filter);
+                            return false;
+                        }
                     }
                     else
                     {
-                        smsData[CommonConst.CommonField.STATUS] = SMSStatus.SendError.ToString();
-                        _dbService.Write(CommonConst.Collection.SMS_QUEUE, smsData, filter);
-                        return false;
+                        if (TextLocalSMSHelper.SendSMS(
+                              message,
+                              toSms,
+                              _appSettingService.GetAppSettingData("sms_gateway_key"),
+                              _appSettingService.GetAppSettingData("gateway_endpoint"),
+                              _appSettingService.GetAppSettingData("sms_from"),
+                              _logger))
+                        {
+                            smsData[CommonConst.CommonField.STATUS] = EmailStatus.Sent.ToString();
+                            _dbService.Write(CommonConst.Collection.SMS_QUEUE, smsData, filter);
+                            return true;
+
+                        }
+                        else
+                        {
+                            smsData[CommonConst.CommonField.STATUS] = SMSStatus.SendError.ToString();
+                            _dbService.Write(CommonConst.Collection.SMS_QUEUE, smsData, filter);
+                            return false;
+                        }
                     }
                 }
                 catch (Exception ex)

@@ -5,7 +5,9 @@ rem set http_base_url=https://localhost:44373
 rem set  http_base_url=http://admin.znxt.fashion
 
  rem set  http_base_url=http://admin.s2ftechnologies.com
- set  http_base_url=http://sqa.admin.s2fschool.com
+ rem set  http_base_url=http://sqa.admin.s2fschool.com
+
+ set  http_base_url=http://qa-admin.ellummullum.com
 
 rem wget -S -O uninstall_response.json --post-data "{\"Name\":\"ZNxt.Net.Core.Module.Admin\"}" %http_base_url%/api/moduleinstaller/uninstall
 

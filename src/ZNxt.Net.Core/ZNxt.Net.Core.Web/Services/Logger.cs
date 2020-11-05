@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
@@ -24,13 +25,20 @@ namespace ZNxt.Net.Core.Web.Services
         public Logger(IHttpContextAccessor httpContextAccessor, IHttpContextProxy httpContextProxy, IDBService dbService)
         {
             _dbService = dbService;
+
+            var loggerdb = CommonUtility.GetAppConfigValue("LoggerDb");
+            if (string.IsNullOrEmpty(loggerdb))
+            {
+                loggerdb = "ZNxt_Log";
+
+            }
+            _dbService.Init(loggerdb);
             _httpContextAccessor = httpContextAccessor;
             if (_httpContextAccessor.HttpContext != null)
             {
                 _httpContextProxy = httpContextProxy;
                 double.TryParse(_httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.CREATED_DATA_DATE_TIME], out double starttime);
                 TransactionStartTime = starttime;
-
             }
         }
 
