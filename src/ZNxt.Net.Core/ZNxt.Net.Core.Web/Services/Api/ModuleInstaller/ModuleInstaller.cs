@@ -282,7 +282,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 if (string.IsNullOrEmpty(appUIFolderUrl))
                 {
                     WriteToDB(fileData, request.Name, CommonConst.Collection.STATIC_CONTECT, CommonConst.CommonField.FILE_PATH);
-                    _keyValueStorage.Put<string>(CommonConst.Collection.STATIC_CONTECT, id, _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId));
+                    _keyValueStorage.Put<string>(CommonConst.Collection.STATIC_CONTECT, id, _keyValueStorage.Get<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, fileSourceId),null, request.Name);
                 }
                 else
                 {
@@ -499,9 +499,19 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                     DeleteFileEntry(fileItem);
                 }
                 // UninstallWWWRoot
+                string cleanupWWWRootFilter = "{ " + CommonConst.CommonField.MODULE_NAME + ":'" + request.Name + "'}";
+                foreach (var data in _dbService.Get(CommonConst.Collection.STATIC_CONTECT, new RawQuery(cleanupWWWRootFilter)))
+                {
+                    _keyValueStorage.Delete(CommonConst.Collection.STATIC_CONTECT, data[CommonConst.CommonField.DISPLAY_ID].ToString());
+                }
                 CleanDBCollection(request.Name, CommonConst.Collection.STATIC_CONTECT);
 
                 // Uninstall Dlls
+                string cleanupDllFilter = "{ " + CommonConst.CommonField.MODULE_NAME + ":'" + request.Name + "'}";
+                foreach (var data in _dbService.Get(CommonConst.Collection.DLLS, new RawQuery(cleanupDllFilter)))
+                {
+                    _keyValueStorage.Delete(CommonConst.Collection.DLLS, data[CommonConst.CommonField.DISPLAY_ID].ToString());
+                }
                 CleanDBCollection(request.Name, CommonConst.Collection.DLLS);
 
                 // Uninstall Server routes 
