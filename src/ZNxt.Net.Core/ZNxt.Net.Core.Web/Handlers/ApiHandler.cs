@@ -198,7 +198,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                         if (userModel == null)
                         {
                             
-                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/userinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.ORG_KEY] = orgkey } , ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.ORG_KEY] = orgkey } , ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());

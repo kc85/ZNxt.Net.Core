@@ -16,7 +16,7 @@ namespace ZNxt.Net.Core.Web.Services.MvcApi
             _httpContextProxy = httpContextProxy;
         }
         [HttpGet]
-        [Route("userinfo")]
+        [Route("getuserinfo")]
         public IActionResult GetUserInfo()
         {
             return Ok(new

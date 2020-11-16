@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
@@ -21,6 +22,17 @@ namespace ZNxt.Net.Core.Web.Services.Api.Log
         [Route("/base/log", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject GetJS()
         {
+
+
+            var loggerdb = CommonUtility.GetAppConfigValue("LoggerDb");
+            if (string.IsNullOrEmpty(loggerdb))
+            {
+                loggerdb = "ZNxt_Log";
+            }
+            _dBService.Init(loggerdb);
+            return GetPaggedData(CommonConst.Collection.SERVER_LOGS);
+
+
 
             string collection = "s2f_acadstdsyll_master";
             string queryfields = null;
@@ -136,7 +148,6 @@ namespace ZNxt.Net.Core.Web.Services.Api.Log
 
             //return GetPaggedData("s2f_org_users", joinData, null, null, new List<string> { "org_key", "groups", "user_id" });
 
-            //return GetPaggedData(CommonConst.Collection.SERVER_LOGS);
         }
 
         

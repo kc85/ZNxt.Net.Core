@@ -90,13 +90,14 @@ namespace ZNxt.Net.Core.Services
             return data;
         }
 
-        protected JObject GetCollectionJoin(string soureField, string destinationCollection, string destinationJoinField, List<string> fields, string valueKey)
+        protected JObject GetCollectionJoin(string soureField, string destinationCollection, string destinationJoinField, List<string> fields, string valueKey, string filter = "{}")
         {
             JObject collectionJoin = new JObject();
             collectionJoin[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION] = destinationCollection;
             collectionJoin[CommonConst.CommonField.DB_JOIN_DESTINATION_FIELD] = destinationJoinField;
             collectionJoin[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD] = soureField;
             collectionJoin[CommonConst.CommonField.DB_JOIN_VALUE] = valueKey;
+            collectionJoin[CommonConst.CommonField.DB_JOIN_FILTER] = filter;
             if (fields != null)
             {
                 JArray jarrFields = new JArray();
@@ -216,7 +217,7 @@ namespace ZNxt.Net.Core.Services
         private string GetJoinFilter(JToken join, List<string> values)
         {
 
-            string filters = "{$or : {{filter}}}";
+            string filters = "{$or : {{filter}}, $and : [" + join[CommonConst.CommonField.DB_JOIN_FILTER].ToString() + "] }";
             var filterArr = new JArray();
             foreach (var item in values)
             {
