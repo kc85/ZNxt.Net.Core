@@ -90,7 +90,7 @@ namespace ZNxt.Net.Core.Services
             return data;
         }
 
-        protected JObject GetCollectionJoin(string soureField, string destinationCollection, string destinationJoinField, List<string> fields, string valueKey, string filter = "{}")
+        protected JObject GetCollectionJoin(string soureField, string destinationCollection, string destinationJoinField, List<string> fields, string valueKey, string filter = "{}", bool unwind = false)
         {
             JObject collectionJoin = new JObject();
             collectionJoin[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION] = destinationCollection;
@@ -98,6 +98,8 @@ namespace ZNxt.Net.Core.Services
             collectionJoin[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD] = soureField;
             collectionJoin[CommonConst.CommonField.DB_JOIN_VALUE] = valueKey;
             collectionJoin[CommonConst.CommonField.DB_JOIN_FILTER] = filter;
+            collectionJoin[CommonConst.CommonField.DB_JOIN_UNWIND] = unwind.ToString();
+
             if (fields != null)
             {
                 JArray jarrFields = new JArray();
@@ -184,15 +186,24 @@ namespace ZNxt.Net.Core.Services
                     var dataArr = (data[CommonConst.CommonField.DATA] as JArray).Where(f => f[join[CommonConst.CommonField.DB_JOIN_SOURCE_FIELD].ToString()].ToString() == joinid);
                     if (dataArr.Any())
                     {
+
+
+
                         foreach (var dataJoin in dataArr)
                         {
-                            if (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] == null)
+                            if (join[CommonConst.CommonField.DB_JOIN_UNWIND].ToString() == "True")
                             {
-                                dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = new JArray();
+                                dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = JObject.Parse(joinData.ToString());
                             }
-                        (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(JObject.Parse(joinData.ToString()));
+                            else
+                            {
+                                if (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] == null)
+                                {
+                                    dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] = new JArray();
+                                }
+                            (dataJoin[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] as JArray).Add(JObject.Parse(joinData.ToString()));
+                            }
                         }
-
                     }
                 }
             }
