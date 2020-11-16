@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZNxt.Net.Core.DB.Mongo\ZNxt.Net.Core.DB.Mongo.csproj" />
+    <ProjectReference Include="..\ZNxt.Net.Core.Module.Notifier\ZNxt.Net.Core.Module.Notifier.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
   </ItemGroup>
 

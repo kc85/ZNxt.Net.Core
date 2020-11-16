@@ -49,6 +49,13 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_Provider.$touched && fromNotifierConfig.inputSMS_Provider.$invalid}">
+                                <label for="inputSMS_Provider"> SMS Provider</label>
+                                <input type="text" class="form-control" name="inputinputSMS_Provider" id="inputinputSMS_Provider" placeholder="SMS Provider" ng-model="notifier.sms_provider" maxlength="150" ng-minlength="2" required />
+                                <span class="help-block" ng-show="fromNotifierConfig.inputSMS_Provider.$touched && fromNotifierConfig.inputSMS_Provider.$invalid">SMS Provider required and min length 2 chars.</span>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group col-md-6" ng-class="{'has-error' : fromNotifierConfig.inputSMS_ENDPOINT.$touched && fromNotifierConfig.inputSMS_ENDPOINT.$invalid}">
                                 <label for="inputSMS_ENDPOINT"> SMS End point </label>
                                 <input type="text" class="form-control" name="inputSMS_ENDPOINT" id="inputSMS_ENDPOINT" placeholder="SMS gateway endpoint " ng-model="notifier.sms_gateway_endpoint" maxlength="150" ng-minlength="2" required />

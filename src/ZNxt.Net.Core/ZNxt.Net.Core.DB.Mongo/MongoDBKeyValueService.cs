@@ -88,7 +88,7 @@ namespace ZNxt.Net.Core.DB.Mongo
             return data.Select(f => f[CommonConst.CommonField.KEY].ToString()).ToList();
         }
 
-        public bool Put<T>(string bucket, string key, T data, string encriptionKey = null)
+        public bool Put<T>(string bucket, string key, T data, string encriptionKey = null, string moduleName = null)
         {
             byte[] byteData = null;
             if (typeof(T) == typeof(Byte[]))
@@ -114,7 +114,8 @@ namespace ZNxt.Net.Core.DB.Mongo
                 {
                     [CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID(),
                     [CommonConst.CommonField.KEY] = key,
-                    [CommonConst.CommonField.DATA] = Convert.ToBase64String(byteData)
+                    [CommonConst.CommonField.DATA] = Convert.ToBase64String(byteData),
+                    [CommonConst.CommonField.MODULE_NAME] = (!string.IsNullOrEmpty(moduleName) ? moduleName : string.Empty)
 
                 };
                 return _dBService.WriteData(GetCollection(bucket), dbdata);

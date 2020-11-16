@@ -40,12 +40,19 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                     return _responseBuilder.BadRequest();
                 }
                 var id = request[CommonConst.CommonField.DISPLAY_ID].ToString();
+                var moduleName = request[CommonConst.CommonField.MODULE_NAME].ToString();
+                var path = request[CommonConst.CommonField.FILE_PATH].ToString();
 
                 var data = request[CommonConst.CommonField.DATA].ToString();
+                
+                string cleanupWWWRootFilter = "{ " + CommonConst.CommonField.MODULE_NAME + ":'" + moduleName + "', "+ CommonConst.CommonField.FILE_PATH + ": '"+ path + "'}";
+                foreach (var item in _dbService.Get(CommonConst.Collection.STATIC_CONTECT, new RawQuery(cleanupWWWRootFilter)))
+                {
+                    _keyValueStorage.Delete(CommonConst.Collection.STATIC_CONTECT, item[CommonConst.CommonField.DISPLAY_ID].ToString());
+                }
 
                 _keyValueStorage.Put<string>(CommonConst.Collection.STATIC_CONTECT, id, data);
                 request.Remove(CommonConst.CommonField.DATA);
-                var moduleName = request[CommonConst.CommonField.MODULE_NAME].ToString();
                 WriteToDB(request, moduleName, CommonConst.Collection.STATIC_CONTECT, CommonConst.CommonField.FILE_PATH);
                 return _responseBuilder.Success();
 

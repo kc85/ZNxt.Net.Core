@@ -61,7 +61,18 @@ namespace ZNxt.Net.Core.Web.ContentHandler
         public static string GetStringContent(IDBService dbProxy, ILogger _logger, string path, IKeyValueStorage keyValueStorage)
         {
             JObject document = null;
-            if(dbProxy.IsConnected)
+            var staticFilePath = CommonUtility.GetAppConfigValue("StaticFilePath");
+            if (!string.IsNullOrEmpty(staticFilePath))
+            {
+                string filePath = $"{staticFilePath}{path}";
+                if (File.Exists(filePath))
+                {
+                    return File.ReadAllText(filePath);
+                }
+            }
+
+
+            if (dbProxy.IsConnected)
             document = (JObject)dbProxy.Get(CommonConst.Collection.STATIC_CONTECT, GetFilter(path)).First;
             if (document != null)
             {

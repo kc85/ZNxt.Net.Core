@@ -1,0 +1,29 @@
+﻿[
+  {
+    "key": "1577861694R3L25801",
+    "user_id": "1577861694R3L25801",
+    "user_name": "khanin_choudhury",
+    "email": "khanin.choudhury@gmail.com",
+    "name": null,
+    "first_name": "khanin",
+    "middle_name": "SS",
+    "last_name": "Choudhury",
+    "dob": {
+      "day": 12,
+      "month": 5,
+      "year": 2089
+    },
+    "user_type": "user_pass",
+    "salt": "668GG7KG3F",
+    "email_validation_required": null,
+    "is_enabled": true,
+    "phone_validation_required": null,
+    "claims": [],
+    "roles": [ "user", "sys_admin", "sys_org_admin", "sys_org_manager" ],
+    "temp_roles": [],
+    "orgs": [],
+    "mobile_number": null,
+    "whatsapp_mobile_number": null,
+    "gender": null
+  }
+]

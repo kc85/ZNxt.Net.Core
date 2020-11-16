@@ -155,8 +155,10 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
             configs["smtp_user"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_USER);
             configs["smtp_pass"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.SMTP_SERVER_PASSWORD);
             configs["from_email"] = _appSettingService.GetAppSettingData(CommonConst.CommonField.FROM_EMAIL_ID);
-            configs["sms_gateway_key"] = _appSettingService.GetAppSettingData("text_local_sms_gateway_key");
-            configs["sms_gateway_endpoint"] = _appSettingService.GetAppSettingData("text_local_sms_gateway_endpoint");
+            configs["sms_provider"] = _appSettingService.GetAppSettingData("sms_provider");
+
+            configs["sms_gateway_key"] = _appSettingService.GetAppSettingData("sms_gateway_key");
+            configs["sms_gateway_endpoint"] = _appSettingService.GetAppSettingData("gateway_endpoint");
             configs["sms_from"] = _appSettingService.GetAppSettingData("sms_from");
             return _responseBuilder.Success(configs);
            
@@ -175,10 +177,10 @@ namespace ZNxt.Net.Core.Module.Notifier.Services.Api
             _appSettingService.SetAppSetting(CommonConst.CommonField.SMTP_SERVER_USER, model["smtp_user"].ToString());
             _appSettingService.SetAppSetting(CommonConst.CommonField.SMTP_SERVER_PASSWORD, model["smtp_pass"].ToString());
             _appSettingService.SetAppSetting(CommonConst.CommonField.FROM_EMAIL_ID, model["from_email"].ToString());
-            _appSettingService.SetAppSetting("text_local_sms_gateway_key", model["sms_gateway_key"].ToString());
-            _appSettingService.SetAppSetting("text_local_sms_gateway_endpoint", model["sms_gateway_endpoint"].ToString());
+            _appSettingService.SetAppSetting("sms_gateway_key", model["sms_gateway_key"].ToString());
+            _appSettingService.SetAppSetting("gateway_endpoint", model["sms_gateway_endpoint"].ToString());
             _appSettingService.SetAppSetting("sms_from", model["sms_from"].ToString());
-
+            _appSettingService.SetAppSetting("sms_provider", model["sms_provider"].ToString());
             return _responseBuilder.Success();
 
         }

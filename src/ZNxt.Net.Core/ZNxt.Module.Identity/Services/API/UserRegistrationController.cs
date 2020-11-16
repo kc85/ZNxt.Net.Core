@@ -23,7 +23,7 @@ namespace ZNxt.Module.Identity.Services.API
 
         protected readonly IApiGatewayService _apiGatewayService;
 
-        private const bool MOBILE_AUTH_IGNORE_OTP_VALIDATION = true;
+        private const bool MOBILE_AUTH_IGNORE_OTP_VALIDATION = false;
         public UserRegistrationController(IZNxtUserService ZNxtUserService, IUserNotifierService userNotifierService, IHttpContextProxy httpContextProxy, IResponseBuilder responseBuilder, IDBService dBService, IKeyValueStorage keyValueStorage, ILogger logger, IApiGatewayService apiGatewayService)
         {
             _responseBuilder = responseBuilder;

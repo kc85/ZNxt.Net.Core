@@ -26,7 +26,7 @@ namespace ZNxt.Net.Core.Interfaces
         /// <param name="data"></param>
         /// <param name="encriptionKey"></param>
         /// <returns></returns>
-        bool Put<T>(string bucket, string key, T data, string encriptionKey = null);
+        bool Put<T>(string bucket, string key, T data, string encriptionKey = null, string moduleName = null);
 
         /// <summary>
         /// Delete value from bucket

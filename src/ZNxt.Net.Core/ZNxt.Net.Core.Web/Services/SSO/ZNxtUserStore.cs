@@ -45,7 +45,7 @@ namespace ZNxt.Identity.Services
             return user;
         }
 
-        internal bool SetPassword(string user_id, string password)
+        public bool SetPassword(string user_id, string password)
         {
 
             var user = _userService.GetUser(user_id);

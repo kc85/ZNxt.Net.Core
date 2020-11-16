@@ -1,0 +1,24 @@
+﻿[
+  {
+    "key": "1577861694R3L25801",
+    "user_id": "1577861694R3L25801",
+    "mobile_number": "9999999999",
+    "whatsapp_mobile_number": "9623946637",
+    "gender": "m",
+    "updated_by": "1577861694R3L25801",
+    "dateofbirth": "2089-06-11T18:30:00Z",
+    "addresses": [
+      {
+        "id": "Fri Jan 24 2020 19:22:11 GMT+0530 (India Standard Time)",
+        "is_deleted": false,
+        "is_default": false,
+        "name": "Khanin Choudhury",
+        "phone": "+919623946679",
+        "pin": "411045",
+        "locality": "Marigold Aptt, Ran Indu Park, Baner",
+        "city": "Pune",
+        "state": "MH"
+      }
+    ]
+  }
+]

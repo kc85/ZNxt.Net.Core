@@ -1,7 +1,7 @@
 ﻿var __ZNxtAppName = 'ZNxtAppAdmin';
 
 (function () {
-    var ZApp = angular.module(__ZNxtAppName, ['ngAnimate']);
+    var ZApp = angular.module(__ZNxtAppName, ['ngAnimate', 'ngRoute']);
     var isloaded = false;
 
     ZApp.controller(__ZNxtAppName + '.Main', ['$scope', '$location', '$rootScope', 'dataService', 'userData', '$timeout',

@@ -7,8 +7,9 @@ rem set  http_base_url=http://gateway.znxt.fashion
 rem  set http_base_url=http://gateway.s2ftechnologies.com
 rem set http_base_url=http://localhost:5000
 rem set http_base_url=http://s2fschool.com:806
- set http_base_url=http://sqa.gateway.s2fschool.com
+rem set http_base_url=http://sqa.gateway.s2fschool.com
 
+ set http_base_url=http://qa-gateway.ellummullum.com
 
 rem wget -S -O uninstall_response.json --post-data "{\"Name\":\"ZNxt.Net.Core.Module.Gateway\",\"InstallationKey\":\"49562cfc3b17139ea01c480b9c86a2ddacb38ff1b2e9db1bf66bab7a4e3f1fb5\"}" %http_base_url%/api/moduleinstaller/uninstall
 

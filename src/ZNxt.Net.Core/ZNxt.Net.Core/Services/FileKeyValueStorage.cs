@@ -76,7 +76,7 @@ namespace ZNxt.Net.Core.Services
             return keys;
         }
 
-        public bool Put<T>(string bucket, string key, T data, string encriptionKey = null)
+        public bool Put<T>(string bucket, string key, T data, string encriptionKey = null, string moduleName = null)
         {
             if (typeof(T) == typeof(Byte[]))
             {
