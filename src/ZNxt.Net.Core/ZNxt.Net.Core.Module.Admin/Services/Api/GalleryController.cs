@@ -33,6 +33,13 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
             _logger = logger;
             _dBService = dBService;
             _httpFileUploader = httpFileUploader;
+            var gallerydb = CommonUtility.GetAppConfigValue("gallery_db");
+            if (string.IsNullOrEmpty(gallerydb))
+            {
+                gallerydb = "ZNxt_EM-QA-ECS-UI";
+            }
+            _dBService.Init(gallerydb);
+
         }
 
         [Route("/gallery/image/upload", CommonConst.ActionMethods.POST, CommonConst.CommonValue.SYS_ADMIN)]
@@ -45,7 +52,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                 if (files.Any())
                 {
                     _logger.Debug($"getting file {files.First() }");
-
+                    var filePrefix = CommonUtility.RandomString(5).ToUpper();
                     var request = new JObject();
                     request[CommonConst.CommonField.DISPLAY_ID] = request[CommonConst.CommonField.KEY] = CommonUtility.GetNewID();
                     request["images"] = new JArray();
@@ -62,7 +69,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                     var largeImage = new MemoryStream(Convert.FromBase64String(ImageUtility.GetCropedImage(fileData, 200, 200)));
 
                     _logger.Debug($"UploadingImageToS3 Raw");
-                    var pathRaw = UploadImageToS3(rawImage);
+                    var pathRaw = UploadImageToS3(rawImage, filePrefix);
 
                     (request["images"] as JArray).Add(new JObject()
                     {
@@ -75,7 +82,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                     });
 
                     _logger.Debug($"UploadingImageToS3 Small");
-                    var pathsmall = UploadImageToS3(smallImage);
+                    var pathsmall = UploadImageToS3(smallImage, filePrefix);
                     (request["images"] as JArray).Add(new JObject()
                     {
                         ["image"] = pathsmall,
@@ -86,7 +93,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                         }
                     });
                     _logger.Debug($"UploadingImageToS3 M");
-                    var pathM = UploadImageToS3(mediumImage);
+                    var pathM = UploadImageToS3(mediumImage, filePrefix);
                     (request["images"] as JArray).Add(new JObject()
                     {
                         ["image"] = pathM,
@@ -97,14 +104,14 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                         }
                     });
                     _logger.Debug($"UploadingImageToS3 L");
-                    var pathLarge = UploadImageToS3(largeImage);
+                    var pathLarge = UploadImageToS3(largeImage, filePrefix);
                     (request["images"] as JArray).Add(new JObject()
                     {
                         ["image"] = pathLarge,
                         ["type"] = "thumbnail_l",
                         ["meta_data"] = new JObject()
                         {
-                            ["size"] = largeImage.Length
+                            ["size"] = pathLarge.Length
                         }
                     });
                     _logger.Debug($"add to db", request);
@@ -125,10 +132,10 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
             }
         }
 
-        private string UploadImageToS3(Stream memoryStream)
+        private string UploadImageToS3(Stream memoryStream,string filePrefix ="img")
         {
             string bucketName = "em-qa-ecomm-images";
-            string keyName = $"{CommonUtility.GenerateTxnId()}.png";
+            string keyName = $"{filePrefix}_{CommonUtility.GetNewID()}.png";
             RegionEndpoint bucketRegion = RegionEndpoint.APSouth1;
             string _accessKey = "AKIAXKQJDTEXVLEHBKH3";
             string _secretKey = "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";
@@ -140,7 +147,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
                 s3Client = new AmazonS3Client(credentials, bucketRegion);
 
 
-                S3CannedACL permissions = S3CannedACL.PublicRead;
+                S3CannedACL permissions = S3CannedACL.NoACL;
                 var putObject = new PutObjectRequest
                 {
                     BucketName = bucketName,
@@ -156,7 +163,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
 
                 if (putResponse.HttpStatusCode == HttpStatusCode.OK)
                 {
-                    return $"{bucketName}/{keyName}";
+                    return $"/{keyName}";
                 }
                 else
                 {
@@ -173,13 +180,24 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
         }
 
 
-
-
-
         [Route("/gallery/images", CommonConst.ActionMethods.GET, "ecomm_admin," + CommonConst.CommonValue.SYS_ADMIN)]
         public JObject GetAllImages()
         {
-            return GetPaggedData(collection, null, "{'is_override': false}");
+            var cfurl = "https://d1garn5dlo0m6m.cloudfront.net";
+            var data =  GetPaggedData(collection, null, "{'is_override': false}");
+            if (data[CommonConst.CommonField.DATA] != null)
+            {
+                foreach (var item in data[CommonConst.CommonField.DATA])
+                {
+                    foreach (var img in item["images"])
+                    {
+                        img["image"] = $"{cfurl}{img["image"]}";
+                    }
+                    
+                }
+            }
+            return data;
+        
         }
         [Route("/gallery/image", CommonConst.ActionMethods.GET, CommonConst.CommonValue.SYS_ADMIN)]
         public JObject GetImage()

@@ -7,9 +7,7 @@
             <div class="title_right">
                 <div class="col-md-7 col-sm-7 col-xs-12 form-group pull-right top_search">
                     <div class="input-group">
-                        <form name="galleryImagefrm">
-                            <input type="file" id="add_img_to_gallery" class="btn" data-input="false" file-model="addImage">
-                        </form>
+                        
                         <input type="text" class="form-control" placeholder="Search for..." ng-model="filter" ng-keydown="$event.keyCode === 13 && filterChanged()">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button" ng-click="filterChanged()">Go!</button>
@@ -74,17 +72,32 @@
                     <div class="x_panel">
                         <div class="x_content">
                             <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
-                                <div class="col-md-12 col-sm-12 col-xs-12 profile_details" ng-repeat="img in pageData.data" style="border-bottom:solid 1px silver;padding-top:5px">
-                                    <p><strong>file name: </strong> {{img.file_name}}</p>
-                                    <img src="{{img.images[0].image}}"/>
-                                    <div class="row">
-
-                                        <div class="clearfix"></div>
-                                        <div class="col-md-8 col-sm-8 col-xs-12">
-                                            <strong>Created On: </strong>{{img.created_datetime * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'}}: {{log.created_datetime}}
-                                        </div>
-                                    </div>
+                                <div class="col-md-2">
+                                    <figure class="figure">
+                                        <img src="/images/add_image.png" class="img-thumbnail" id="galleryImageAddPreview" style="width:80%;padding:50px" onclick="document.getElementById('add_img_to_gallery').click();">
+                                        <figcaption class="figure-caption text-right" style="width:100%">
+                                            <form name="galleryImagefrm">
+                                                <center>
+                                                    <button type="button" class="btn btn-sm" style="display:none" id="btnImageGalleryUpload" ng-click="uploadUserImage()"> Upload </button>
+                                                    <button type="button" class="btn btn-sm" style="display:none" id="btnImageGalleryUploadCancel" ng-click="cancelUploadUserImage()"> Cancel </button>
+                                                    <input type="file" id="add_img_to_gallery" class="btn" data-input="false" file-model="addImage" onchange="readURLOnAddImageChange(this)" style="display:none">
+                                                </center>
+                                             </form>
+                                        </figcaption>
+                                    </figure>
                                 </div>
+                                <div class="col-md-2" ng-repeat="img in pageData.data">
+                                    <figure class="figure">
+                                        <img src="{{img.images[3].image}}" class="img-thumbnail" alt="{{img.file_name}}" style="width:100%">
+                                        <figcaption class="figure-caption text-right">
+                                            <p>{{img.file_name}}</p>
+                                            <span ng-repeat="i in img.images" style="padding-right:5px">
+                                                <a href="{{i.image}}" target="_blank"> view {{i.type}}</a>
+                                            </span>
+                                        </figcaption>
+                                    </figure>
+                                </div>
+
                                 <div class="col-md-12 col-sm-12 col-xs-12 profile_details" ng-show="pageData.data.length == 0" style="padding:100px;text-align:center">
                                     <i>No result found </i>
                                 </div>

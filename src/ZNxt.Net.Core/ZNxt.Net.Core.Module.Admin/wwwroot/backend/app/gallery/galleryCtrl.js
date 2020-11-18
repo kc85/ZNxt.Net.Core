@@ -31,18 +31,22 @@
         $scope.pageNumberChanged = function () {
             $scope.gotoPage($scope.currentPageShow);
         };
-        $scope.$watch('addImage', function () {
-            uploadUserImage();
-        });
-        function uploadUserImage() {
+        //$scope.$watch('addImage', function () {
+        //    uploadUserImage();
+        //});
+        $scope.uploadUserImage= function() {
             if ($scope.addImage != undefined) {
                 console.log($scope.addImage);
+                $("#btnImageGalleryUpload").hide();
+                $("#btnImageGalleryUploadCancel").hide();
                 var uploadImageUrl = "./api/gallery/image/upload";
                 if ($scope.addImage.type.indexOf("image") != -1) {
                     fileUploadService.uploadFileToUrl($scope.addImage, uploadImageUrl, undefined, function (response) {
+                        $scope.cancelUploadUserImage();
                         if (response.data.code == 1) {
                             $scope.active();
-                            logger.success("upload image succefully");
+                           
+                            $('#galleryImageAddPreview').attr('src', '/images/add_image.png');
                         }
                     }, function () {
                         logger.error("Something worng in server");
@@ -53,6 +57,31 @@
                 }
             }
         }
-        $scope.active();
-    }]);
+            $scope.active();
+            $scope.cancelUploadUserImage = function () {
+                $scope.galleryImagefrm.$setPristine()
+                $('#galleryImageAddPreview').attr('src', '/images/add_image.png');
+                $("#btnImageGalleryUpload").hide();
+                $("#btnImageGalleryUploadCancel").hide();
+            }
+        }]);
+
+
+    
+  
 })();
+
+function readURLOnAddImageChange(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#galleryImageAddPreview')
+                .attr('src', e.target.result);
+            $("#btnImageGalleryUpload").show();
+            $("#btnImageGalleryUploadCancel").show();
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
