@@ -78,6 +78,7 @@ namespace ZNxt.Net.Core.Web.Services
                 log[CommonConst.CommonField.ERR_DETAILS] = GetFullMessage(ex);
             }
             log[CommonConst.CommonField.USER] = GetUserDetails();
+            Console.WriteLine(logData.ToString());
             WriteLog(log);
         }
 
@@ -120,7 +121,7 @@ namespace ZNxt.Net.Core.Web.Services
         }
         private void WriteLog(JObject logData)
         {
-            Console.WriteLine(logData.ToString());
+           // Console.WriteLine(logData.ToString());
             lock (lockObjet)
             {
                 if (_dbService.IsConnected)

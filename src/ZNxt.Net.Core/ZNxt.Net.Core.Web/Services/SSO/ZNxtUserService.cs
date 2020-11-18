@@ -252,21 +252,24 @@ namespace ZNxt.Identity.Services
             var extennalOrgEndpoint = "/s2fschool/identity/user/allorgs";
             try
             {
-                _logger.Debug($"Calling {extennalOrgEndpoint}");
-                var response = _apiGatewayService.CallAsync(ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
-                if (response[CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonField.DATA] != null)
+                if (CommonUtility.GetAppConfigValue("SetOrg") == "true")
                 {
-                    
-                    userModel.orgs = JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonField.DATA].ToString());
-                }
-                else
-                {
-                    _logger.Error($"Error responsefrom {extennalOrgEndpoint}", null, response);
+                    _logger.Debug($"Calling {extennalOrgEndpoint}");
+                    var response = _apiGatewayService.CallAsync(ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
+                    if (response[CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonField.DATA] != null)
+                    {
+
+                        userModel.orgs = JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonField.DATA].ToString());
+                    }
+                    else
+                    {
+                        _logger.Error($"Error responsefrom {extennalOrgEndpoint}", null, response);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex.Message, ex);
+                _logger.Info(ex.Message);
             }
         }
 

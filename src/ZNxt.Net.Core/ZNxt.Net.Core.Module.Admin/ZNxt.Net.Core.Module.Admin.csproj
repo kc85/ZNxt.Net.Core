@@ -4,7 +4,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-Beta00182</Version>
+    <Version>1.0.0-Beta00189</Version>
     <Copyright></Copyright>
   </PropertyGroup>
 
@@ -13,6 +13,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="AWSSDK.Core" Version="3.5.1.37" />
+    <PackageReference Include="AWSSDK.S3" Version="3.5.4.1" />
   </ItemGroup>
 
   <ItemGroup>

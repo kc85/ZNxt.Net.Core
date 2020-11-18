@@ -66,6 +66,21 @@
       "sys_admin"
     ],
     "index": 100
+  },{
+    "key": "Gallery",
+    "label": "Gallery",
+    "href": "/gallery",
+    "icon": "fa-paw",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/gallery/gallery.html"
+    },
+    "auth_users": [
+      "sys_admin",
+      "ecomm_admin"
+    ],
+    "index": 200
   }
 
 ]

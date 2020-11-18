@@ -93,7 +93,6 @@
                         </a>
                     </div>
                     <!-- /menu footer buttons -->
-                   
                     <!-- /sidebar menu -->
                 </div>
             </div>
@@ -227,7 +226,7 @@
                     }
                 } catch (e) {
                     if (e.name == "ReferenceError") {
-                         window.location = "./auth/signin"
+                        window.location = "./auth/signin"
                     }
                 }
 
@@ -269,65 +268,65 @@
             <script>
 
                 (function () {
-                    
-                     
-                        function buildMenu(parentElement, parent_link) {
 
-                            var menuData = __menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(parent_link) != -1) || (parent_link == d.parent_links) }).sort(function (a, b) { return a.index < b.index; });
-                            for (var menu_index in menuData) {
-                                var menu_item = menuData[menu_index];
-                                var hasChild = (__menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(menu_item.key) != -1) }).length != 0);
-                                var li_ele = document.createElement("li");
 
-                                if (hasChild) {
-                                    li_ele.innerHTML = " <a href='#level2_1'><i class='fa " + menu_item.icon + "'></i> " + menu_item.label + "<span class='fa fa-chevron-down'></span></a>";
-                                    var ul_ele = document.createElement("ul");
+                    function buildMenu(parentElement, parent_link) {
 
-                                    li_ele.appendChild(ul_ele)
-                                    ul_ele.setAttribute("class", "nav child_menu");
-                                    buildMenu(ul_ele, menu_item.key);
+                        var menuData = __menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(parent_link) != -1) || (parent_link == d.parent_links) }).sort(function (a, b) { return a.index < b.index; });
+                        for (var menu_index in menuData) {
+                            var menu_item = menuData[menu_index];
+                            var hasChild = (__menus.filter(function (d) { return (d.parent_links != undefined && d.parent_links.indexOf(menu_item.key) != -1) }).length != 0);
+                            var li_ele = document.createElement("li");
+
+                            if (hasChild) {
+                                li_ele.innerHTML = " <a href='#level2_1'><i class='fa " + menu_item.icon + "'></i> " + menu_item.label + "<span class='fa fa-chevron-down'></span></a>";
+                                var ul_ele = document.createElement("ul");
+
+                                li_ele.appendChild(ul_ele)
+                                ul_ele.setAttribute("class", "nav child_menu");
+                                buildMenu(ul_ele, menu_item.key);
+                            }
+                            else {
+                                if (menu_item.parent_links == undefined) {
+                                    li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> <i class='fa " + menu_item.icon + "'></i>" + menu_item.label + "</a>";
                                 }
                                 else {
-                                    if (menu_item.parent_links == undefined) {
-                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> <i class='fa " + menu_item.icon + "'></i>" + menu_item.label + "</a>";
-                                    }
-                                    else {
-                                        li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> " + menu_item.label + "</a>";
-                                    }
+                                    li_ele.innerHTML = "<a href='#!" + menu_item.href + "'> " + menu_item.label + "</a>";
                                 }
-                                parentElement.appendChild(li_ele);
                             }
+                            parentElement.appendChild(li_ele);
                         }
+                    }
 
-                        
 
-                        function locationHashChanged() {
-                            var path = location.hash.replace("#!", "");
-                            var menu_item = __menus.filter(function (d) { return d.href == path })[0];
-                            if (menu_item !== undefined) {
-                                $("#mainBodyPages > div").hide();
-                                $("#mainBodyPages").find("#" + menu_item.key).show();
-                                return $("#mainBodyPages").find("#" + menu_item.key).length != 0;
-                            }
-                            return false;
+
+                    function locationHashChanged() {
+                        var path = location.hash.replace("#!", "");
+                        var menu_item = __menus.filter(function (d) { return d.href == path })[0];
+                        if (menu_item !== undefined) {
+                            $("#mainBodyPages > div").hide();
+                            $("#mainBodyPages").find("#" + menu_item.key).show();
+                            return $("#mainBodyPages").find("#" + menu_item.key).length != 0;
                         }
+                        return false;
+                    }
                     window.onhashchange = locationHashChanged;
 
-                     var ele = document.getElementById("root_menu")
-                            buildMenu(ele, undefined);
+                    var ele = document.getElementById("root_menu")
+                    buildMenu(ele, undefined);
 
-                            __menus.forEach(function (d) {
-                                if (d.config.templateUrl != "#") {
-                                    if (d.display_area == "main_body") {
-                                        $("#mainBodyPages").append("<div style='display:none;' id='" + d.key + "' ng-include=\"'" + d.config.templateUrl + "'\"></div>");
-                                    }
-                                }
-                            });
-
-                            var changed = locationHashChanged();
-                            if (!changed) {
-                                $("#mainBodyPages").find("#default_home_dashboard_page").show();
+                    __menus.forEach(function (d) {
+                        if (d.config.templateUrl != "#") {
+                            if (d.display_area == "main_body") {
+                                $("#mainBodyPages").append("<div style='display:none;' id='" + d.key + "' ng-include=\"'" + d.config.templateUrl + "'\"></div>");
                             }
+                        }
+                    });
+
+                    var changed = locationHashChanged();
+                    if (!changed) {
+                        $("#mainBodyPages").find("#default_home_dashboard_page").show();
+                    }
 
 
 

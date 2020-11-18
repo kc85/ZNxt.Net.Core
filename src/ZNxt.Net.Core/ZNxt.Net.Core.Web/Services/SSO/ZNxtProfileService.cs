@@ -24,7 +24,7 @@ namespace ZNxt.Identity.Services
             try
             {
                 var subjectId = context.Subject.GetSubjectId();
-                _logger.Error($"Getting user by subjectId: {subjectId}");
+                _logger.Debug($"Getting user by subjectId: {subjectId}");
                 var user = _userService.GetUser(subjectId);
               
                 var claims = new List<Claim>
