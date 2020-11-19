@@ -26,12 +26,15 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
         private readonly ILogger _logger;
         private readonly IDBService _dBService;
         IHttpFileUploader _httpFileUploader;
-        public GalleryController(IHttpContextProxy httpContextProxy, IDBService dBService, ILogger logger, IResponseBuilder responseBuilder, IHttpFileUploader httpFileUploader) : base(httpContextProxy, dBService, logger, responseBuilder)
+        private readonly IAppSettingService _appSettingService;
+
+        public GalleryController(IHttpContextProxy httpContextProxy, IDBService dBService, ILogger logger, IResponseBuilder responseBuilder, IHttpFileUploader httpFileUploader, IAppSettingService appSettingService) : base(httpContextProxy, dBService, logger, responseBuilder)
         {
             _httpContextProxy = httpContextProxy;
             _responseBuilder = responseBuilder;
             _logger = logger;
             _dBService = dBService;
+            _appSettingService = appSettingService;
             _httpFileUploader = httpFileUploader;
             var gallerydb = CommonUtility.GetAppConfigValue("gallery_db");
             if (string.IsNullOrEmpty(gallerydb))
@@ -42,7 +45,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
 
         }
 
-        [Route("/gallery/image/upload", CommonConst.ActionMethods.POST, CommonConst.CommonValue.SYS_ADMIN)]
+        [Route("/gallery/image/upload", CommonConst.ActionMethods.POST, "ecomm_admin," + CommonConst.CommonValue.SYS_ADMIN)]
         public JObject UploadImage()
         {
             try
@@ -134,13 +137,16 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
 
         private string UploadImageToS3(Stream memoryStream,string filePrefix ="img")
         {
-            string bucketName = "em-qa-ecomm-images";
+            
+            string bucketName = _appSettingService.GetAppSettingData("gallery_s3_bucket_name");
             string keyName = $"{filePrefix}_{CommonUtility.GetNewID()}.png";
             RegionEndpoint bucketRegion = RegionEndpoint.APSouth1;
-            string _accessKey = "AKIAXKQJDTEXVLEHBKH3";
-            string _secretKey = "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";
+            string _accessKey = _appSettingService.GetAppSettingData("aws_s3_access_key");
+            string _secretKey = _appSettingService.GetAppSettingData("aws_s3_secret_key");
             IAmazonS3 s3Client;
 
+
+            _logger.Debug($"{bucketName}:::{_accessKey}:::{_secretKey}");
             try
             {
                 var credentials = new BasicAWSCredentials(_accessKey, _secretKey);
@@ -183,7 +189,7 @@ namespace ZNxt.Net.Core.Module.Admin.Services.Api
         [Route("/gallery/images", CommonConst.ActionMethods.GET, "ecomm_admin," + CommonConst.CommonValue.SYS_ADMIN)]
         public JObject GetAllImages()
         {
-            var cfurl = "https://d1garn5dlo0m6m.cloudfront.net";
+            var cfurl = _appSettingService.GetAppSettingData("cloudfront_url");
             var data =  GetPaggedData(collection, null, "{'is_override': false}");
             if (data[CommonConst.CommonField.DATA] != null)
             {

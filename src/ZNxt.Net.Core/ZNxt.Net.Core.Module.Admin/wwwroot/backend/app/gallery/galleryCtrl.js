@@ -49,6 +49,7 @@
                             $('#galleryImageAddPreview').attr('src', '/images/add_image.png');
                         }
                     }, function () {
+                            $scope.cancelUploadUserImage();
                         logger.error("Something worng in server");
                     });
                 }
