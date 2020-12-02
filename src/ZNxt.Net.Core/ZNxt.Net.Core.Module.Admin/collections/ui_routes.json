@@ -77,8 +77,7 @@
       "templateUrl": "app/gallery/gallery.html"
     },
     "auth_users": [
-      "sys_admin",
-      "ecomm_admin"
+      "sys_admin"
     ],
     "index": 200
   }

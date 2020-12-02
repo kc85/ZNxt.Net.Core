@@ -101,7 +101,7 @@ namespace ZNxt.Net.Core.Helpers
 
         private void AddDebugData(JObject response)
         {
-            if (ApplicationMode.Maintenance == ApplicationConfig.GetApplicationMode)
+            if (ApplicationMode.Maintenance == ApplicationConfig.GetApplicationMode || ApplicationMode.Debug == ApplicationConfig.GetApplicationMode)
             {
 
                 JObject objDebugData = new JObject();

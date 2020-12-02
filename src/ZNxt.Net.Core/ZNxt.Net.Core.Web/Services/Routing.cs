@@ -52,7 +52,8 @@ namespace ZNxt.Net.Core.Web.Services
                                 ExecuteMethod = mi.Name,
                                 ExecuteType = routeClass.FullName,
                                 ContentType = r.ContentType,
-                                auth_users = r.AuthUsers
+                                auth_users = r.AuthUsers,
+                                module_name = routeClass.Assembly.GetName().Name,
                             });
                         }
                     }

@@ -11,7 +11,7 @@ namespace ZNxt.Net.Core.Model
         public string ExecultAssembly { get; set; }
         public string ExecuteType { get; set; }
         public string ExecuteMethod { get; set; }
-        public string module { get; set; }
+        public string module_name { get; set; }
         public List<string> auth_users { get; set; }
         public string TemplateURL { get; set; }
 
@@ -24,7 +24,7 @@ namespace ZNxt.Net.Core.Model
             ExecuteType = string.Empty;
             ExecultAssembly = string.Empty;
             ExecuteMethod = string.Empty;
-            module = string.Empty;
+            module_name = string.Empty;
         }
 
         public string GetJson()
@@ -34,7 +34,7 @@ namespace ZNxt.Net.Core.Model
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}, Type: {2}, Assembly: {3}, Method: {4}, Module:{5}", Method, Route, ExecuteType, ExecultAssembly, ExecuteMethod, module);
+            return string.Format("{0}: {1}, Type: {2}, Assembly: {3}, Method: {4}, Module:{5}", Method, Route, ExecuteType, ExecultAssembly, ExecuteMethod, module_name);
         }
 
         public string GetEventName()

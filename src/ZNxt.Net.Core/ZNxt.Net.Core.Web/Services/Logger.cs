@@ -1,8 +1,9 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
@@ -21,6 +22,10 @@ namespace ZNxt.Net.Core.Web.Services
         private readonly IHttpContextProxy _httpContextProxy;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDBService _dbService;
+        private static List<string> LogLevels = null;
+        private  string ModuleExcutionType = "";
+        private  string Route = "";
+
 
         public Logger(IHttpContextAccessor httpContextAccessor, IHttpContextProxy httpContextProxy, IDBService dbService)
         {
@@ -39,47 +44,71 @@ namespace ZNxt.Net.Core.Web.Services
                 _httpContextProxy = httpContextProxy;
                 double.TryParse(_httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.CREATED_DATA_DATE_TIME], out double starttime);
                 TransactionStartTime = starttime;
+                TransactionId = _httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.TRANSACTION_ID];
+            }
+            if (LogLevels == null)
+            {
+                LogLevels = new List<string>();
+
+                var levels = CommonUtility.GetAppConfigValue("LogLevel");
+                if(!string.IsNullOrEmpty(levels))
+                {
+                    LogLevels.AddRange(levels.Split(",").Select(f => f.Trim()).ToList());
+                }
+                else
+                {
+                    LogLevels.Add("Error");
+                }
             }
         }
 
         public void Debug(string message, JObject logData = null)
         {
-            JObject log = LoggerCommon(message, logData, "Debug");
-            WriteLog(log);
+            if (LogLevels.Contains("Debug"))
+            {
+                JObject log = LoggerCommon(message, logData, "Debug");
+                WriteLog(log);
+            }
         }
 
         public void Error(string message, Exception ex)
         {
-            JObject logData = null;
-            if (_httpContextProxy != null)
+            if (LogLevels.Contains("Error"))
             {
-                logData = new JObject()
+                JObject logData = null;
+                if (_httpContextProxy != null)
                 {
-                    ["RequestBody"] = _httpContextProxy.GetRequestBody(),
-                    ["RequestUrl"] = _httpContextProxy.GetURIAbsolutePath(),
-                    ["RequestQueryString"] = _httpContextProxy.GetQueryString()
-                };
-                logData["RequestHeader"] = string.Join(";", _httpContextProxy.GetHeaders().Select(f => string.Format("{0}:{1}", f.Key, f.Value)));
+                    logData = new JObject()
+                    {
+                        ["RequestBody"] = _httpContextProxy.GetRequestBody(),
+                        ["RequestUrl"] = _httpContextProxy.GetURIAbsolutePath(),
+                        ["RequestQueryString"] = _httpContextProxy.GetQueryString()
+                    };
+                    logData["RequestHeader"] = string.Join(";", _httpContextProxy.GetHeaders().Select(f => string.Format("{0}:{1}", f.Key, f.Value)));
+                }
+                Error(message, ex, logData);
             }
-            Error(message, ex, logData);
         }
        
         public void Error(string message, Exception ex = null, JObject logData = null)
         {
-            if (logData == null)
+            if (LogLevels.Contains("Error"))
             {
-                logData = new JObject();
+                if (logData == null)
+                {
+                    logData = new JObject();
+                }
+                JObject log = LoggerCommon(message, logData, "Error");
+                if (ex != null)
+                {
+                    log[CommonConst.CommonField.ERR_MESSAGE] = ex.Message;
+                    log[CommonConst.CommonField.STACKTRACE] = ex.StackTrace.ToString();
+                    log[CommonConst.CommonField.ERR_DETAILS] = GetFullMessage(ex);
+                }
+                log[CommonConst.CommonField.USER] = GetUserDetails();
+                Console.WriteLine(logData.ToString());
+                WriteLog(log);
             }
-            JObject log = LoggerCommon(message, logData, "Error");
-            if (ex != null)
-            {
-                log[CommonConst.CommonField.ERR_MESSAGE] = ex.Message;
-                log[CommonConst.CommonField.STACKTRACE] = ex.StackTrace.ToString();
-                log[CommonConst.CommonField.ERR_DETAILS] = GetFullMessage(ex);
-            }
-            log[CommonConst.CommonField.USER] = GetUserDetails();
-            Console.WriteLine(logData.ToString());
-            WriteLog(log);
         }
 
         public JArray GetLogs(string transactionId)
@@ -92,15 +121,21 @@ namespace ZNxt.Net.Core.Web.Services
 
         public void Info(string message, JObject logData = null)
         {
-            JObject log = LoggerCommon(message, logData, "Info" );
-            WriteLog(log);
+            if (LogLevels.Contains("Info"))
+            {
+                JObject log = LoggerCommon(message, logData, "Info");
+                WriteLog(log);
+            }
         }
 
         public void Transaction(JObject transactionData, TransactionState state)
         {
-            var log = LoggerCommon(string.Format("Transaction State:{0}", state.ToString()), transactionData, "Transaction");
-            log[CommonConst.CommonField.TRANSACTION_STATE] = state.ToString();
-            WriteLog(log);
+            if (LogLevels.Contains("Transaction"))
+            {
+                var log = LoggerCommon(string.Format("Transaction State:{0}", state.ToString()), transactionData, "Transaction");
+                log[CommonConst.CommonField.TRANSACTION_STATE] = state.ToString();
+                WriteLog(log);
+            }
         }
         private JObject LoggerCommon(string message, JObject loginputData, string level)
         {
@@ -108,6 +143,8 @@ namespace ZNxt.Net.Core.Web.Services
             {
                 TransactionId = _httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.TRANSACTION_ID];
                 LoggerName = _httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.MODULE_NAME];
+                ModuleExcutionType = _httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.EXECUTE_TYPE];
+                Route = _httpContextAccessor.HttpContext.Response.Headers[CommonConst.CommonField.ROUTE];
             }
             var logData = new JObject();
             logData[CommonConst.CommonField.CREATED_DATA_DATE_TIME] = DateTime.Now;
@@ -117,6 +154,10 @@ namespace ZNxt.Net.Core.Web.Services
             logData[CommonConst.CommonField.TRANSACTION_ID] = TransactionId;
             logData[CommonConst.CommonField.LOG_MESSAGE] = message;
             logData[CommonConst.CommonField.DATA] = loginputData;
+            logData[CommonConst.CommonField.TRANSACTION_ID] = TransactionId;
+            logData[CommonConst.CommonField.EXECUTE_TYPE] = ModuleExcutionType;
+            logData[CommonConst.CommonField.ROUTE] = Route;
+
             return logData;
         }
         private void WriteLog(JObject logData)

@@ -34,10 +34,18 @@ namespace ZNxt.Module.Identity.Services.API
             }
         }
 
-        [Route("/user/userinfo", CommonConst.ActionMethods.GET, "sys_admin")]
+        [Route("/user/userinfo", CommonConst.ActionMethods.GET, "user")]
         public JObject UserInfoAdmin()
         {
-            return UserInfo();
+            var data = GetUser(_httpContextProxy.User.user_id);
+            if (data != null)
+            {
+                return _responseBuilder.Success(data);
+            }
+            else
+            {
+                return _responseBuilder.NotFound();
+            }
         }
         [Route("/sso/userinfo", CommonConst.ActionMethods.GET, "sys_admin")]
         public JObject UserInfo()

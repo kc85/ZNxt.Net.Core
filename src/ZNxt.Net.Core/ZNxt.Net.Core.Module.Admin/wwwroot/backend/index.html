@@ -264,6 +264,58 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="image_select_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document" ng-controller="ZNxtAppAdmin.galleryCtrl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Select Image</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <figure class="figure" style="width:200px;height:200px">
+                                        <img ng-hide="selectedImage==undefined" src="{{selectedImage.images[3].image}}" class="img-thumbnail" alt="{{selectedImage.file_name}}" style="width:90%;background-color:forestgreen" />
+                                        <img ng-show="selectedImage==undefined" src="./images/placeholder-200x200.png" class="img-thumbnail" alt="select image" style="width:90%" />
+                                        <div class="figure-caption text-left">
+                                            <a href="{{i.image}}" target="_blank" ng-repeat="i in selectedImage.images">
+                                                <span style="padding:5px;margin:5px" class="label label-default">
+                                                    {{i.type}}
+                                                </span>
+                                            </a>
+
+                                        </div>
+                                    </figure>
+                                </div>
+                                <div class="col-md-1">
+                                    <figure class="figure">
+                                        <img src="/images/add_image.png" class="img-thumbnail" id="galleryImageAddIndexPreview" style="width:60px;" onclick="document.getElementById('add_img_to_gallery_index').click();">
+                                        <figcaption class="figure-caption text-right" style="width:100%">
+                                            <form name="galleryImageIndexFrm">
+                                                <center>
+                                                    <button type="button" class="btn btn-sm" style="display:none" id="btnImageGalleryUpload_index" ng-click="uploadUserImage()"> Upload </button>
+                                                    <button type="button" class="btn btn-sm" style="display:none" id="btnImageGalleryUploadCancel_index" ng-click="cancelUploadUserImage()"> Cancel </button>
+                                                    <input type="file" id="add_img_to_gallery_index" class="btn" data-input="false" file-model="addIndexImage" onchange="readURLOnAddImageChangeIndex(this)" style="display:none">
+                                                </center>
+                                            </form>
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                                <div class="col-md-1" ng-repeat="img in pageData.data">
+                                    <figure class="figure" ng-click="selectImageFrom(img);">
+                                        <img src="{{img.images[1].image}}" class="img-thumbnail" alt="{{img.file_name}}" style="width:100%" />
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-hide="selectedImage==undefined" ng-click="onSelectImage(selectedImage)">Select</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <script>
 
@@ -337,7 +389,7 @@
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    2019(c)<a href="https://ZNxt.App">ZNxt.App</a>
+                    2020(c)<a href="https://ZNxt.App">ZNxt.App</a>
                 </div>
                 <div class="clearfix"></div>
             </footer>

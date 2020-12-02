@@ -57,9 +57,10 @@ namespace ZNxt.Net.Core.Web.Handlers
                     var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
                     if (type != null)
                     {
-                        context.Response.Headers[CommonConst.CommonField.MODULE_NAME] = route.module;
-                        context.Response.Headers[CommonConst.CommonField.ROUTE] = route.Route;
-                        
+                        context.Response.Headers[CommonConst.CommonField.MODULE_NAME] = route.module_name;
+                        context.Response.Headers[CommonConst.CommonField.EXECUTE_TYPE] = route.ExecuteType;
+                        context.Response.Headers[CommonConst.CommonField.ROUTE] = $"{route.Method}:{route.Route}";
+
                         _logger.Debug(string.Format("Executing route:{0}", route.ToString()));
                         var controller = _serviceResolver.Resolve(type);
                         var method = controller.GetType().GetMethods().FirstOrDefault(f => f.Name == route.ExecuteMethod);
@@ -75,6 +76,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                             {
                                 response = method.Invoke(controller, null);
                             }
+                            RemoveHeaders(context);
                             if (response != null)
                             {
                                 if (method.ReturnType == typeof(string))
@@ -98,6 +100,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                         }
                         else
                         {
+                            RemoveHeaders(context);
                             _logger.Error($"Method not found for route : {route.ToString()}");
                             context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                             await context.Response.WriteAsync(_responseBuilder.NotFound().ToString());
@@ -132,6 +135,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                             var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
                             if (response != null)
                             {
+                                RemoveHeaders(context);
                                 if (response["content_type"] != null && response["data"] != null)
                                 {
                                     await context.Response.WriteAsync(response["data"].ToString());
@@ -156,20 +160,43 @@ namespace ZNxt.Net.Core.Web.Handlers
                             _logger.Error($"Error Executing remote route. {route.ToString() } . {ex.Message}", ex);
                             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         }
-                        
+
                     }
                     else
                     {
                         await _next(context);
                     }
                 }
-                
+
                 catch (Exception ex)
                 {
                     _logger.Error($"Error Executing remote route. {route.ToString() } . {ex.Message}", ex);
                     await _next(context);
                 }
 
+            }
+
+           
+
+        }
+
+        private static void RemoveHeaders(HttpContext context)
+        {
+            if (context.Response.Headers.ContainsKey(CommonConst.CommonField.MODULE_NAME))
+            {
+                context.Response.Headers.Remove(CommonConst.CommonField.MODULE_NAME);
+            }
+            if (context.Response.Headers.ContainsKey(CommonConst.CommonField.EXECUTE_TYPE))
+            {
+                context.Response.Headers.Remove(CommonConst.CommonField.EXECUTE_TYPE);
+            }
+            if (context.Response.Headers.ContainsKey(CommonConst.CommonField.ROUTE))
+            {
+                context.Response.Headers.Remove(CommonConst.CommonField.ROUTE);
+            }
+            if (context.Response.Headers.ContainsKey(CommonConst.CommonField.CREATED_DATA_DATE_TIME))
+            {
+                context.Response.Headers.Remove(CommonConst.CommonField.CREATED_DATA_DATE_TIME);
             }
         }
 

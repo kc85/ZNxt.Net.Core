@@ -90,7 +90,7 @@ namespace ZNxt.Net.Core.Services
             return data;
         }
 
-        protected JObject GetCollectionJoin(string soureField, string destinationCollection, string destinationJoinField, List<string> fields, string valueKey, string filter = "{}", bool unwind = false)
+        protected JObject GetCollectionJoin(string soureField, string destinationCollection, string destinationJoinField, List<string> fields, string valueKey, string filter = "{}", bool unwind = false, bool innerJoin= true)
         {
             JObject collectionJoin = new JObject();
             collectionJoin[CommonConst.CommonField.DB_JOIN_DESTINATION_COLELCTION] = destinationCollection;
@@ -99,6 +99,7 @@ namespace ZNxt.Net.Core.Services
             collectionJoin[CommonConst.CommonField.DB_JOIN_VALUE] = valueKey;
             collectionJoin[CommonConst.CommonField.DB_JOIN_FILTER] = filter;
             collectionJoin[CommonConst.CommonField.DB_JOIN_UNWIND] = unwind.ToString();
+            collectionJoin[CommonConst.CommonField.DB_JOIN_INNER] = innerJoin.ToString();
 
             if (fields != null)
             {
@@ -205,6 +206,15 @@ namespace ZNxt.Net.Core.Services
                             }
                         }
                     }
+                }
+            }
+
+            if (join[CommonConst.CommonField.DB_JOIN_INNER].ToString() == "True")
+            {
+                var removeData = (data[CommonConst.CommonField.DATA] as JArray).Where(f => f[join[CommonConst.CommonField.DB_JOIN_VALUE].ToString()] == null).ToList();
+                foreach (var r in removeData)
+                {
+                    (data[CommonConst.CommonField.DATA] as JArray).Remove(r);
                 }
             }
         }

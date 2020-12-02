@@ -105,6 +105,7 @@
             public const string DB_JOIN_VALUE = "db_join_key";
             public const string DB_JOIN_FILTER = "db_join_filter";
             public const string DB_JOIN_UNWIND= "db_join_unwind";
+            public const string DB_JOIN_INNER = "db_join_inner";
 
             public const string DB_JOIN_DESTINATION_FIELDS = "db_join_destination_fields";
             public const string OTP_DURATION = "OTP_Duration";

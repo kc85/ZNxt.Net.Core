@@ -412,7 +412,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                                [CommonConst.CommonField.NAME] = entry.FullName,
                                [CommonConst.CommonField.FILE_SIZE] = data.Length,
                            });
-
+                            Console.WriteLine($"{entry.FullName}:{base64String.Length}");
                             _keyValueStorage.Put<string>(CommonConst.Collection.MODULE_FILE_UPLOAD_CACHE, objectkey, base64String);
                         }
                     }

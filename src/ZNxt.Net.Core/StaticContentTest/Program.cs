@@ -8,7 +8,7 @@ namespace StaticContentTest
     {
         static void Main(string[] args)
         {
-            var hash = ZNxt.Net.Core.Helpers.CommonUtility.Sha256Hash("7B1073FAA2934C4A9D6280F1AE36501D");
+            var hash = ZNxt.Net.Core.Helpers.CommonUtility.Sha256Hash("21AFF254AE134F3F843D176100715C6F");
 
             var rv = new RazorTemplateEngine();
 
