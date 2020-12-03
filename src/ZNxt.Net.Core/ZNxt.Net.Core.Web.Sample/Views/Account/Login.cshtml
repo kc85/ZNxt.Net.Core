@@ -118,11 +118,14 @@
                 $("#loginEnterUserName").show();
                 $("#loginEnterPassOtp").hide();
                 $("#divOtp").hide();
-                $("#txtUserName").focus();
+                setTimeout(function () {
+                    $("#txtUserName").focus();
+                }, 10);
                 $("#divPass").val("");
                 $("#divOtp").val("");
                 $("#divExternalProviders").hide();
                 $("#btnNext").show();
+              
 
             }
             init();
@@ -140,7 +143,9 @@
                         $("#btnNextProgress").hide();
                         $("#divPass").hide();
                         $("#divOtp").show();
-                        $("#emailOTP").focus();
+                        setTimeout(function () {
+                            $("#emailOTP").focus();
+                        }, 10);
                         $("#divExternalProviders").hide();
                         $("#loginEnterPassOtp").show();
                         $("#loginEnterUserName").hide();
@@ -149,7 +154,9 @@
                         $("#btnNextProgress").hide();
                         $("#divPass").show();
                         $("#divOtp").hide();
-                        $("#password").focus();
+                        setTimeout(function () {
+                            $("#password").focus();
+                        }, 10);
                         $("#divExternalProviders").hide();
                         $("#loginEnterPassOtp").show();
                         $("#loginEnterUserName").hide();
