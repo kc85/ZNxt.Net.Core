@@ -48,7 +48,7 @@ namespace ZNxt.Net.Core.Web.Quickstart.Account
         }
         private void SetAppName(ViewModelBase vm)
         {
-            ViewData["ApplicationName"] = vm.ApplicationName = "S2F School";
+            ViewData["ApplicationName"] = vm.ApplicationName = "ZNxtApp";
         }
         [HttpPost]
         public async Task<IActionResult> Index(SetPasswordViewModel model)
