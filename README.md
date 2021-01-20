@@ -17,7 +17,7 @@ Its has build it support of authentication, authorization, micro front end, dyna
 sudo docker run -d -p 806:80 -p 4436:443 -e ConnectionString=mongodb://172.31.22.56:27071 -e DataBaseName=ZNxt_QA_gateway -e AppEndpoint=http://gateway.ZNxt.App -e ApiGatewayEndpoint=http://gateway.ZNxt.App -e SSOUrl=http://sso.ZNxt.App -e  AppSecret=MySecret --restart=always --name znxt-gateway-run  choudhurykhanin/znxtapp:latest
 
 #SSO  Service
-sudo docker run -d -p 807:80 -p 4437:443 -e ConnectionString=mongodb://172.31.22.56:27071 -e DataBaseName=ZNxt_QA_SSO -e AppEndpoint=http://sso.s2ftecnologies.com -e ApiGatewayEndpoint=http://gateway.ZNxt.App -e IsSSO=true -e  AppSecret=MySecret -e RelyingPartyUrls=http://ZNxt.App,http://www.ZNxt.App,http://admin.ZNxt.App,http://www.admin.ZNxt.App,https://localhost:44373 --restart=always --name znxt-sso-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 807:80 -p 4437:443 -e ConnectionString=mongodb://172.31.22.56:27071 -e DataBaseName=ZNxt_QA_SSO -e AppEndpoint=http://sso.znxt.com -e ApiGatewayEndpoint=http://gateway.ZNxt.App -e IsSSO=true -e  AppSecret=MySecret -e RelyingPartyUrls=http://ZNxt.App,http://www.ZNxt.App,http://admin.ZNxt.App,http://www.admin.ZNxt.App,https://localhost:44373 --restart=always --name znxt-sso-run  choudhurykhanin/znxtapp:latest
 
 #Frontend Service
 sudo docker run -d -p 804:80 -p 4434:443 -e ConnectionString=mongodb://172.31.22.56:27071 -e DataBaseName=ZNxt_QA_UI -e AppEndpoint=http://ZNxt.App -e ApiGatewayEndpoint=http://gateway.ZNxt.App -e SSOUrl=http://sso.ZNxt.App -e  AppSecret=MySecret --restart=always --name znxt-frontend-run  choudhurykhanin/znxtapp:latest
