@@ -1,15 +1,15 @@
-sudo adduser shreyas_m
-sudo adduser shreyas_m --disabled-password
+sudo adduser khanin_m
+sudo adduser khanin_m --disabled-password
 
-sudo passwd shreyas_m
+sudo passwd khanin_m
 s2f$$
 
-sudo adduser shreyas_m sudo
-sudo adduser shreyas_m sudo
+sudo adduser khanin_m sudo
+sudo adduser khanin_m sudo
 
 
 
-sudo su - shreyas_m
+sudo su - khanin_m
 mkdir .ssh
 chmod 700 .ssh
 touch .ssh/authorized_keys
@@ -20,7 +20,7 @@ cat >> .ssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7VPHK+KFN1hki1Vy2ReLUiU4vhNU1YG0wpakpD4HjDZtXIPb6furgZoPz01i0pxFxpBcuIsBmD/zex72Y6HvWf1jtjbhlnM+jd9ail9kkTHa3GZADUQTvc0tYQiFMZGBr1+TuuGVP6Qm1/VnXhupqVzRDUutHMM0BYiStcb5LJ8qsSdh1XG1CNNpkxcIKXWSbjK4YAeRAt19ZTd4VO8UonTRUlBFM2aq30Ff7Y2KMGn45AiDjRMpVeAL3BpxntEL9ZJR3RTxkGgiEOHMXnhChl/u3PtZkHsueUZpg2aAy4IC6zpOVQkT3vO24zhxD1fin3cXFP0ZMl6Flh4hmdDu5
 
 
-shreyas_m
+khanin_m
 s2f$$
 
 
