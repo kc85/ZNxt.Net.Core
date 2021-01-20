@@ -23,36 +23,23 @@ sudo /etc/init.d/apache2 restart
 
 sudo docker pull choudhurykhanin/znxtapp
 
-sudo docker rm -f  s2fapp-gateway-run
-sudo docker rm -f  s2fapp-sso-run 
-sudo docker rm -f  s2fapp-frontend-run
-sudo docker rm -f  s2fapp-admin-run
-sudo docker rm -f  s2fapp-core-run
+sudo docker rm -f  nxtapp-gateway-run
+sudo docker rm -f  nxtapp-sso-run 
+sudo docker rm -f  nxtapp-frontend-run
+sudo docker rm -f  nxtapp-admin-run
+sudo docker rm -f  nxtapp-core-run
 
 #UI 
-sudo docker run -d -p 804:80 -p 4434:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_UI -e AppEndpoint=https://www.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-frontend-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 804:80 -p 4434:443 -e "ConnectionString=mongodb+srv://nxtsqa:nxt%24%24@nxtqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=nxtSchool_PROD_UI -e AppEndpoint=https://www.nxtschool.com -e ApiGatewayEndpoint=https://gateway.nxtschool.com -e IsSSO=false -e SSOUrl=https://sso.nxtschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name nxtapp-frontend-run  choudhurykhanin/znxtapp:latest
 
 # gateway
-sudo docker run -d -p 806:80 -p 4436:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_gateway -e AppEndpoint=https://gateway.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-gateway-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 806:80 -p 4436:443 -e "ConnectionString=mongodb+srv://nxtsqa:nxt%24%24@nxtqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=nxtSchool_PROD_gateway -e AppEndpoint=https://gateway.nxtschool.com -e ApiGatewayEndpoint=https://gateway.nxtschool.com -e IsSSO=false -e SSOUrl=https://sso.nxtschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name nxtapp-gateway-run  choudhurykhanin/znxtapp:latest
 
 #SSO
-sudo docker run -d -p 807:80 -p 4437:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_sso -e AppEndpoint=https://sso.s2fschool.com -e SSOUrl=https://sso.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=true -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D -e RelyingPartyUrls=https://s2fschool.com,https://www.s2fschool.com,https://admin.s2fschool.com,https://www.admin.s2fschool.com --restart=always --name s2fapp-sso-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 807:80 -p 4437:443 -e "ConnectionString=mongodb+srv://nxtsqa:nxt%24%24@nxtqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=nxtSchool_PROD_sso -e AppEndpoint=https://sso.nxtschool.com -e SSOUrl=https://sso.nxtschool.com -e ApiGatewayEndpoint=https://gateway.nxtschool.com -e IsSSO=true -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D -e RelyingPartyUrls=https://nxtschool.com,https://www.nxtschool.com,https://admin.nxtschool.com,https://www.admin.nxtschool.com --restart=always --name nxtapp-sso-run  choudhurykhanin/znxtapp:latest
 
 #Admin
-sudo docker run -d -p 805:80 -p 4435:443 -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_admin -e AppEndpoint=https://admin.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-admin-run  choudhurykhanin/znxtapp:latest
+sudo docker run -d -p 805:80 -p 4435:443 -e "ConnectionString=mongodb+srv://nxtsqa:nxt%24%24@nxtqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=nxtSchool_PROD_admin -e AppEndpoint=https://admin.nxtschool.com -e ApiGatewayEndpoint=https://gateway.nxtschool.com -e IsSSO=false -e SSOUrl=https://sso.nxtschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name nxtapp-admin-run  choudhurykhanin/znxtapp:latest
 
 
-sudo docker run -d -p 808:80 -p 4438:443 -e "AppName=S2F School" -e "ConnectionString=mongodb+srv://s2fsqa:s2f%24%24@s2fqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=S2fSchool_PROD_core -e AppEndpoint=https://core.s2fschool.com -e ApiGatewayEndpoint=https://gateway.s2fschool.com -e IsSSO=false -e SSOUrl=https://sso.s2fschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name s2fapp-core-run  choudhurykhanin/znxtapp:latest
-
-
-
-
-
-
-
-
-
-
-
-
-
+sudo docker run -d -p 808:80 -p 4438:443 -e "AppName=nxt School" -e "ConnectionString=mongodb+srv://nxtsqa:nxt%24%24@nxtqa-20phe.mongodb.net/test?retryWrites=true&w=majority" -e DataBaseName=nxtSchool_PROD_core -e AppEndpoint=https://core.nxtschool.com -e ApiGatewayEndpoint=https://gateway.nxtschool.com -e IsSSO=false -e SSOUrl=https://sso.nxtschool.com -e  AppSecret=7B1073FAA2934C4A9D6280F1AE36501D --restart=always --name nxtapp-core-run  choudhurykhanin/znxtapp:latest
