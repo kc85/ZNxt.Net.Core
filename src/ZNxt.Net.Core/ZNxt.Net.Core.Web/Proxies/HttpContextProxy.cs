@@ -41,7 +41,7 @@ namespace ZNxt.Net.Core.Web.Proxies
             get
             {
 
-                if (_httpContextAccessor.HttpContext!=null && _httpContextAccessor.HttpContext.User != null && _httpContextAccessor.HttpContext.User.Identity != null && !string.IsNullOrEmpty(_httpContextAccessor.HttpContext.User.Identity.Name))
+                if (_httpContextAccessor.HttpContext!=null && _httpContextAccessor.HttpContext.User != null && _httpContextAccessor.HttpContext.User.Identity != null)
                 {
                     var user = new UserModel()
                     {
