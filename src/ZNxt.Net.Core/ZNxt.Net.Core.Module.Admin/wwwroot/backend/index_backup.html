@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="images/logo.png" type="image/ico" />
+    <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>ZNxt.App: Admin </title>
+    <title>Admin </title>
 
     <!-- Bootstrap -->
     <link href="./vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,30 +27,16 @@
     <link href="./vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="./vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
 
-    <script src="./vendors/jquery/dist/jquery.min.js"></script>
-    <link data-require="jqueryui@*" data-semver="1.10.0" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/css/smoothness/jquery-ui-1.10.0.custom.min.css" />
-    <script data-require="jquery@*" data-semver="2.0.3" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script data-require="jqueryui@*" data-semver="1.10.0" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.0/jquery-ui.js"></script>
-
-
     <!-- Custom Theme Style -->
     <link href="./build/css/custom.min.css" rel="stylesheet">
     <link href="./css/znxtappbackend.css" rel="stylesheet">
 
-    
-
+    <!-- jQuery -->
+    <script src="./vendors/jquery/dist/jquery.min.js"></script>
     <script src="./api/admin/menu"></script>
     <script src="./api/sso/js/user"></script>
-    <style>
 
-        .has-error {
-            border-color: #F7504B;
-        }
 
-        .help-block {
-            color: #F7504B;
-        }
-    </style>
 </head>
 
 <body class="nav-md" ng-controller="ZNxtAppAdmin.Main" style="display:none">
@@ -62,7 +48,7 @@
                     <div class="navbar nav_title" style="border: 0;">
                         <a href="index.html" class="site_title">
                             <i class="fa fa-paw"></i>
-                            <span>ZNxt App</span>
+                            <span>ZNxtApp</span>
                         </a>
                     </div>
 
@@ -71,11 +57,11 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="images/user.png" alt="{{user.first_name}}" class="img-circle profile_img">
+                            <img src="images/user.png" alt="{{user.name}}" class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>{{user.first_name}}</h2>
+                            <h2>{{user.name}}</h2>
                         </div>
                     </div>
 
@@ -92,20 +78,20 @@
 
                     </div>
                     <!-- /menu footer buttons -->
-                    <!--<div class="sidebar-footer hidden-small">
-                <a data-toggle="tooltip" data-placement="top" title="Settings">
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                </a>
-                <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                    <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                </a>
-                <a data-toggle="tooltip" data-placement="top" title="Lock">
-                    <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                </a>
-                <a data-toggle="tooltip" data-placement="top" title="Logout" href="./auth/signout">
-                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                </a>
-            </div>-->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="./auth/signout">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
                     <!-- /menu footer buttons -->
                     <!-- /sidebar menu -->
                 </div>
@@ -132,15 +118,15 @@
                                     <li>
                                         <a href="#!my_profile" ng-click="showUserProfile()"> Profile</a>
                                     </li>
-                                    <!--<li>
-                                <a href="javascript:;">
-                                    <span class="badge bg-red pull-right">50%</span>
-                                    <span>Settings</span>
-                                </a>
-                            </li>-->
-                                    <!--<li>
-                                <a href="javascript:;">Help</a>
-                            </li>-->
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="badge bg-red pull-right">50%</span>
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">Help</a>
+                                    </li>
                                     <li>
                                         <a href="./auth/signout">
                                             <i class="fa fa-sign-out pull-right"></i> Log Out
@@ -149,78 +135,78 @@
                                 </ul>
                             </li>
 
-                            <!--<li role="presentation" class="dropdown">
-                        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="badge bg-green">6</span>
-                        </a>
-                        <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                            <li>
-                                <a>
-                                    <span class="image">
-                                        <img src="images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                    <span>
-                                        <span>{{user.name}}</span>
-                                        <span class="time">3 mins ago</span>
-                                    </span>
-                                    <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
+                            <li role="presentation" class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-green">6</span>
                                 </a>
+                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>{{user.name}}</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="./images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="./images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="./images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="text-center">
+                                            <a>
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
                             </li>
-                            <li>
-                                <a>
-                                    <span class="image">
-                                        <img src="./images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                    <span>
-                                        <span>John Smith</span>
-                                        <span class="time">3 mins ago</span>
-                                    </span>
-                                    <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a>
-                                    <span class="image">
-                                        <img src="./images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                    <span>
-                                        <span>John Smith</span>
-                                        <span class="time">3 mins ago</span>
-                                    </span>
-                                    <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a>
-                                    <span class="image">
-                                        <img src="./images/img.jpg" alt="Profile Image" />
-                                    </span>
-                                    <span>
-                                        <span>John Smith</span>
-                                        <span class="time">3 mins ago</span>
-                                    </span>
-                                    <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="text-center">
-                                    <a>
-                                        <strong>See All Alerts</strong>
-                                        <i class="fa fa-angle-right"></i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>-->
                         </ul>
                     </nav>
                 </div>
@@ -232,9 +218,7 @@
 
 
                     if (__userData != undefined && __userData.user_id != undefined) {
-                        setTimeout(function () {
-                            $("body").show();
-                        }, 2000);
+                        $("body").show();
 
                     }
                     else {
@@ -332,6 +316,7 @@
                 </div>
             </div>
 
+
             <script>
 
                 (function () {
@@ -400,7 +385,6 @@
                 })();
             </script>
 
-
             <!-- /page content -->
             <!-- footer content -->
             <footer>
@@ -468,9 +452,10 @@
 
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js');
+            navigator.serviceWorker
+                .register('/sw.js')
+                .then(function () { console.log("Service Worker Registered"); });
         }
-
     </script>
 
 </body>

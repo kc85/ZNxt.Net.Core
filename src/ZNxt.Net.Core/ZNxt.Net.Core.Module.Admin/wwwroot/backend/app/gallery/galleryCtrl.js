@@ -23,7 +23,7 @@
                 }
             }
             $scope.selectImageFrom = function (img) {
-                $scope.selectedImage = img;
+                $scope.selectedImage= img ;
 
             }
             $scope.onSelectImage = function (img) {
@@ -32,19 +32,19 @@
 
             }
 
-            //$scope.showDetailsPage = function (log) {
-            //    $scope.showDetails = true;
-            //    $scope.$broadcast("onShowLogViewDetails", log);
-            //}
-            //$scope.$on("onHideViewDetails", function (log) {
-            //    $scope.showDetails = false;
-            //});
-            $scope.pageNumberChanged = function () {
-                $scope.gotoPage($scope.currentPageShow);
-            };
-            //$scope.$watch('addImage', function () {
-            //    uploadUserImage();
-            //});
+        //$scope.showDetailsPage = function (log) {
+        //    $scope.showDetails = true;
+        //    $scope.$broadcast("onShowLogViewDetails", log);
+        //}
+        //$scope.$on("onHideViewDetails", function (log) {
+        //    $scope.showDetails = false;
+        //});
+        $scope.pageNumberChanged = function () {
+            $scope.gotoPage($scope.currentPageShow);
+        };
+        //$scope.$watch('addImage', function () {
+        //    uploadUserImage();
+        //});
             $scope.uploadUserImage = function () {
 
                 var imageFrom = undefined;
@@ -55,30 +55,30 @@
                     imageFrom = $scope.addImage;
                 }
                 if (imageFrom != undefined) {
-                    console.log($scope.addImage);
-                    $("#btnImageGalleryUpload").hide();
+                console.log($scope.addImage);
+                $("#btnImageGalleryUpload").hide();
                     $("#btnImageGalleryUploadCancel").hide();
                     $("#btnImageGalleryUpload_index").hide();
                     $("#btnImageGalleryUploadCancel_index").hide();
-                    var uploadImageUrl = "./api/gallery/image/upload";
-                    if (imageFrom.type.indexOf("image") != -1) {
-                        fileUploadService.uploadFileToUrl(imageFrom, uploadImageUrl, undefined, function (response) {
+                var uploadImageUrl = "./api/gallery/image/upload";
+                if (imageFrom.type.indexOf("image") != -1) {
+                    fileUploadService.uploadFileToUrl(imageFrom, uploadImageUrl, undefined, function (response) {
+                        $scope.cancelUploadUserImage();
+                        if (response.data.code == 1) {
+                            $scope.active();
+                            $('#galleryImageAddIndexPreview').attr('src', '/images/add_image.png');
+                            $('#galleryImageAddPreview').attr('src', '/images/add_image.png');
+                        }
+                    }, function () {
                             $scope.cancelUploadUserImage();
-                            if (response.data.code == 1) {
-                                $scope.active();
-                                $('#galleryImageAddIndexPreview').attr('src', '/images/add_image.png');
-                                $('#galleryImageAddPreview').attr('src', '/images/add_image.png');
-                            }
-                        }, function () {
-                            $scope.cancelUploadUserImage();
-                            logger.error("Something worng in server");
-                        });
-                    }
-                    else {
-                        logger.error("Invalid file selection. Please select image file");
-                    }
+                        logger.error("Something worng in server");
+                    });
+                }
+                else {
+                    logger.error("Invalid file selection. Please select image file");
                 }
             }
+        }
             $scope.active();
             $scope.cancelUploadUserImage = function () {
                 if ($scope.galleryImagefrm != undefined) {
@@ -97,8 +97,8 @@
         }]);
 
 
-
-
+    
+  
 })();
 
 function readURLOnAddImageChange(input) {
