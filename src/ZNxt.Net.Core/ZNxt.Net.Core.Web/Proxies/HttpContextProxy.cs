@@ -44,7 +44,7 @@ namespace ZNxt.Net.Core.Web.Proxies
                 if (_httpContextAccessor.HttpContext!=null 
                     && _httpContextAccessor.HttpContext.User != null 
                     && _httpContextAccessor.HttpContext.User.Identity != null 
-                    && !string.IsNullOrEmpty(_httpContextAccessor.HttpContext.User.Identity.Name))
+                    && _httpContextAccessor.HttpContext.User.Claims.Any())
                 {
                     var user = new UserModel()
                     {
