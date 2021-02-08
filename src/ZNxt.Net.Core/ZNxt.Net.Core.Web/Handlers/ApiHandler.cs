@@ -44,7 +44,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             _responseBuilder = responseBuilder;
             _apiGatewayService = apiGatewayService;
             _inMemoryCacheService = inMemoryCacheService;
-           
+
         }
 
         public async Task Invoke(HttpContext context, IAuthorizationService authorizationService)
@@ -176,7 +176,7 @@ namespace ZNxt.Net.Core.Web.Handlers
 
             }
 
-           
+
 
         }
 
@@ -207,6 +207,13 @@ namespace ZNxt.Net.Core.Web.Handlers
             {
                 try
                 {
+
+                    if (route.auth_users.IndexOf(CommonConst.CommonField.API_AUTH_TOKEN) != -1)
+                    {
+                        var api_access_key = _httpContextProxy.GetHeader(CommonConst.CommonField.API_AUTH_TOKEN);
+                        return api_access_key == CommonUtility.GetApiAuthKey();
+                    }
+
                     UserModel userModel = null;
                     var accessToken = _httpContextProxy.GetAccessTokenAync().GetAwaiter().GetResult();
                     var orgkey = string.Empty;
@@ -224,8 +231,8 @@ namespace ZNxt.Net.Core.Web.Handlers
                         userModel = _inMemoryCacheService.Get<UserModel>(cackeKey);
                         if (userModel == null)
                         {
-                            
-                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.ORG_KEY] = orgkey } , ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
+
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.ORG_KEY] = orgkey }, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
@@ -233,7 +240,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                                 //{
                                 //   // _serviceResolver.Resolve<IZNxtUserService>().SetUserOrgs(userModel);
                                 //}
-                                
+
                                 _inMemoryCacheService.Put<UserModel>(cackeKey, userModel);
                             }
                         }
@@ -273,23 +280,16 @@ namespace ZNxt.Net.Core.Web.Handlers
 
                         context.User = new ClaimsPrincipal(identity);
                         var u = _httpContextProxy.User;
-                        _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f => $"{f.Key}:{f.Value}"))} OrgRoles: { string.Join("," ,userModel.roles)}");
+                        _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f => $"{f.Key}:{f.Value}"))} OrgRoles: { string.Join(",", userModel.roles)}");
 
                         var hasaccess = false;
-                        if (route.auth_users.IndexOf(CommonConst.CommonField.API_AUTH_TOKEN) != -1)
+
+                        hasaccess = userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
+                        if (!hasaccess)
                         {
-                            /// Check for API  to API auth 
-                            var api_access_key = _httpContextProxy.GetHeader(CommonConst.CommonField.API_AUTH_TOKEN);
-                            hasaccess = api_access_key == CommonUtility.GetApiAuthKey();
+                            _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
                         }
-                        else
-                        {
-                            hasaccess = userModel.roles.Where(f => route.auth_users.IndexOf(f) != -1).Any();
-                            if (!hasaccess)
-                            {
-                                _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
-                            }
-                        }
+
                         return hasaccess;
                     }
                     return false;
