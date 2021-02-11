@@ -29,6 +29,7 @@ using ZNxt.Identity.Services;
 using IdentityServer4.Services;
 using IdentityServer4.Configuration;
 using IdentityServer4.Validation;
+using ZNxt.Net.Core.Web.Services.SSO;
 
 public static class MVCServiceExtention
 {
@@ -57,6 +58,7 @@ public static class MVCServiceExtention
         services.AddTransient<ISessionProvider, SessionProvider>();
         services.AddTransient<IApiGatewayService, ApiGatewayService>();
         services.AddTransient<IInMemoryCacheService, InMemoryCacheService>();
+        services.AddTransient<IOAuthClientService, OAuthClientService>();
         services.AddMemoryCache();
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);
@@ -191,7 +193,8 @@ public static class MVCServiceExtention
         // in-memory, code config
         builder.AddInMemoryIdentityResources(SSOConfig.GetIdentityResources());
         builder.AddInMemoryApiResources(SSOConfig.GetApis());
-        builder.AddInMemoryClients(SSOConfig.GetClients());
+        //builder.AddInMemoryClients(SSOConfig.GetClients());
+        builder.AddClientStore<ClientStore>();
         if (environment.IsDevelopment())
         {
             builder.AddDeveloperSigningCredential();

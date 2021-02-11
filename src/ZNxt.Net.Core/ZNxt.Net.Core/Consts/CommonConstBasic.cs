@@ -27,6 +27,8 @@
             public const string STATUS = "status";
             public const string TRANSACTION_ID = "transaction_id";
             public const string API_AUTH_TOKEN = "api_auth_token";
+            public const string OAUTH_CLIENT_ID = "oauth_client_id";
+            public const string OAUTH_CLIENT_SECRET = "client_secret";
             public static string DATA_MODULE_NAME = "module";
             public const string UPDATED_DATE_TIME = "updated_datetime";
             public const string NAME = "name";

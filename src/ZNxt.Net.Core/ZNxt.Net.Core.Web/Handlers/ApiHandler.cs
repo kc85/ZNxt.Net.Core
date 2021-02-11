@@ -14,6 +14,10 @@ using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Helpers;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Primitives;
+using ZNxt.Net.Core.Web.Services.SSO;
+using IdentityServer4.Models;
+
 
 namespace ZNxt.Net.Core.Web.Handlers
 {
@@ -30,9 +34,10 @@ namespace ZNxt.Net.Core.Web.Handlers
         private readonly IResponseBuilder _responseBuilder;
         private readonly IApiGatewayService _apiGatewayService;
         private readonly IInMemoryCacheService _inMemoryCacheService;
+        private readonly IOAuthClientService _oAuthClientService;
         public ApiHandler(RequestDelegate next, ILogger logger, IDBService dbService, IRouting routing,
             IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder,
-            IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService)
+            IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService, IOAuthClientService oAuthClientService)
         {
             _next = next;
             _routing = routing;
@@ -44,6 +49,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             _responseBuilder = responseBuilder;
             _apiGatewayService = apiGatewayService;
             _inMemoryCacheService = inMemoryCacheService;
+            _oAuthClientService = oAuthClientService;
 
         }
 
@@ -132,7 +138,9 @@ namespace ZNxt.Net.Core.Web.Handlers
                         {
                             _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
                             context.Response.ContentType = route.ContentType;
-                            var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
+                            var headers = new Dictionary<string, string>();
+                            headers[CommonConst.CommonField.API_AUTH_TOKEN] = "route-call";
+                            var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath(), _httpContextProxy.GetQueryString(), _httpContextProxy.GetRequestBody<JObject>(), headers);
                             if (response != null)
                             {
                                 RemoveHeaders(context);
@@ -212,6 +220,14 @@ namespace ZNxt.Net.Core.Web.Handlers
                     {
                         var api_access_key = _httpContextProxy.GetHeader(CommonConst.CommonField.API_AUTH_TOKEN);
                         return api_access_key == CommonUtility.GetApiAuthKey();
+                    }
+                    // check for auth client 
+
+                    var oauthclient = context.Request.Headers[CommonConst.CommonField.OAUTH_CLIENT_ID];
+                    if (!string.IsNullOrEmpty(oauthclient))
+                    {
+                        var oauthUser =  ValidateOAuthRequest(oauthclient, context, route);
+                        return oauthUser != null;
                     }
 
                     UserModel userModel = null;
@@ -304,6 +320,38 @@ namespace ZNxt.Net.Core.Web.Handlers
             {
                 return true;
             }
+        }
+
+        private UserModel ValidateOAuthRequest(StringValues oauthclient, HttpContext context, RoutingModel route)
+        {
+            var secrect  = context.Request.Headers[CommonConst.CommonField.OAUTH_CLIENT_SECRET];
+            var client = _oAuthClientService.GetClient(oauthclient);
+            if (client != null)
+            {
+                if(client.ClientSecrets.First() == new Secret(secrect.ToString().Sha256()))
+                {
+                    if (client.AllowedScopes.Where(f => route.auth_users.IndexOf(f) != -1).Any())
+                    {
+
+                        var user = new UserModel()
+                        {
+                            first_name = client.ClientName,
+                            user_type = "oauth",
+
+                        };
+                        var roles = Newtonsoft.Json.JsonConvert.SerializeObject(client.AllowedScopes);
+                        user.claims = new List<Model.Claim>() {
+                            new Model.Claim("roles", roles)
+                            };
+                        var identity = new ClaimsIdentity();
+                        identity.AddClaim(new System.Security.Claims.Claim("roles", roles));
+                        context.User = new ClaimsPrincipal(identity);
+                        return user;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 

@@ -1,0 +1,54 @@
+﻿<div ng-controller="ZNxtAppAdmin.addOauthclientCtrl">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel" ng-hide="showPassword">
+                <div class="x_title">
+                    <h2>Create New OAuth client</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form name="frmAddClient">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : frmAddClient.inputclientName.$touched && frmAddClient.inputclientName.$invalid}">
+                                    <label for="inputclientName"> Client Name </label>
+                                    <input type="text" class="form-control" name="inputclientName" id="inputclientName" placeholder="Enter client name" ng-model="client.name" maxlength="20" ng-minlength="5" required />
+                                    <span class="help-block" ng-show="frmAddClient.inputclientName.$touched && frmAddClient.inputclientName.$invalid">Name is required and min length 5 chars.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <button class="btn btn-default" ng-click="createClient();" ng-class="{'disabled': frmAddClient.$invalid}">
+                                Create Client
+                            </button>
+                            <button class="btn btn-default" ng-click="close()">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="x_panel" ng-show="showPassword">
+                <div class="x_title">
+                    <h2>Client cleated succefully</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <b>Client name: {{client.name}}</b>
+                    <p>Client secret: {{client.client_secret}}</p>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <button class="btn btn-default" ng-click="close()">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>

@@ -1,5 +1,5 @@
-﻿const PRECACHE = 'precache-ecomm-v1.030';
-const RUNTIME = 'runtime-ecomm-v1.030';
+﻿const PRECACHE = 'precache-ecomm-v1.031';
+const RUNTIME = 'runtime-ecomm-v1.031';
 
 
 const BACKGROUND_CACHE_URLS = [
@@ -9,7 +9,7 @@ const BACKGROUND_CACHE_URLS = [
 
 const IGNORE_CACHE_URLS = [
     '/api/',
-    
+    '/auth/'
 ];
 
 // A list of local resources we always want to be cached.

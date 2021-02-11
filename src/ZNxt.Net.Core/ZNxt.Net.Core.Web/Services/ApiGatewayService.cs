@@ -117,7 +117,10 @@ namespace ZNxt.Net.Core.Web.Services
         {
             foreach (var header in _httpContextProxy.GetHeaders())
             {
-               // request.Headers.Add(header.Key, header.Value);
+                if (header.Key == CommonConst.CommonField.OAUTH_CLIENT_ID || header.Key == CommonConst.CommonField.OAUTH_CLIENT_SECRET)
+                {
+                    request.Headers.Add(header.Key, header.Value);
+                }
             }
             if (headres != null)
             {

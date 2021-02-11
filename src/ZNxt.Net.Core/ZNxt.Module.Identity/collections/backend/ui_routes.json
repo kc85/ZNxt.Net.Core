@@ -149,5 +149,23 @@
       "user"
     ],
     "index": 9999
+  },
+  {
+    "key": "oauthclients",
+    "label": "OAuth Clients",
+    "href": "/oauthclients",
+    "icon": "fa-users",
+    "display_area": "main_body",
+    "url": "#",
+    "config": {
+      "templateUrl": "app/oauthclient/oauthclients.html"
+    },
+    "parent_links": [
+      "advance"
+    ],
+    "auth_users": [
+      "sys_admin"
+    ],
+    "index": 90
   }
 ]
