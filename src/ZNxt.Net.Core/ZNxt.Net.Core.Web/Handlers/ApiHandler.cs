@@ -328,7 +328,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             var client = _oAuthClientService.GetClient(oauthclient);
             if (client != null)
             {
-                if(client.ClientSecrets.First() == new Secret(secrect.ToString().Sha256()))
+                if(client.ClientSecrets.First().Value == new Secret(secrect.ToString().Sha256()).Value)
                 {
                     if (client.AllowedScopes.Where(f => route.auth_users.IndexOf(f) != -1).Any())
                     {
