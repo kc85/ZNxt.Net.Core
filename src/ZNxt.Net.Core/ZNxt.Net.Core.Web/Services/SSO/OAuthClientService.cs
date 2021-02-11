@@ -51,7 +51,7 @@ namespace ZNxt.Net.Core.Web.Services.SSO
             var route = _apiGatewayService.GetRouteAsync(CommonConst.ActionMethods.GET, oauthClientApiPath).GetAwaiter().GetResult();
             if (route != null)
             {
-                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, oauthClientApiPath).GetAwaiter().GetResult();
+                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, oauthClientApiPath,$"name={clientId}").GetAwaiter().GetResult();
                 if (result["code"].ToString() == "1")
                 {
                     Client client = new Client()
