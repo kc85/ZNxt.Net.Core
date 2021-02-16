@@ -1,0 +1,8 @@
+﻿[
+  {
+    "key": "user",
+    "name": "User",
+    "description": "Login user access",
+    "is_system": true
+  }
+]

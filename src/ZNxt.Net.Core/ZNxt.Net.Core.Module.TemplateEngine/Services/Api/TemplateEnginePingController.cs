@@ -24,4 +24,7 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
             return _responseBuilder.Success();
         }
     }
+    public static class Load {
+        public static string load = "";
+    }
 }

@@ -18,6 +18,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <span ng-repeat="g in client.allowed_scopes" class="label label-info" style="margin:5px">
+                                <span>{{g}}</span>
+                                <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white" style="cursor:pointer" ng-click="removeRole(g);"></i></a>
+                            </span>
+                        </div>
+                        <br />
+                        <div class="col-md-12" ng-hide="client.allowed_scopes.length == allRoles.length">
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Add Roles
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="ag in allRoles"><a class="dropdown-item" href="JavaScript:void(0);" ng-click="addRole(ag)">{{ag.name}}</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </form>
                     <div class="row">
                         <div class="form-group col-md-6">
@@ -50,5 +68,4 @@
             </div>
         </div>
     </div>
-   
 </div>

@@ -10,10 +10,12 @@ namespace ZNxt.Net.Core.Web.Services
     public class Routing : IRouting
     {
         public IDBService _dbService;
+        private ILogger _logger;
         private List<RoutingModel> _routes;
-        public Routing(IDBService dbService)
+        public Routing(IDBService dbService,ILogger logger)
         {
             _dbService = dbService;
+            _logger = logger;
             LoadRoutes();
 
         }
@@ -27,7 +29,7 @@ namespace ZNxt.Net.Core.Web.Services
             {
                 routeclasses.AddRange(
                         assembly.GetTypes()
-                                    .Where(t =>!t.IsAbstract)
+                                    .Where(t => !t.IsAbstract)
                                      .Distinct()
                                      .ToList());
             }
@@ -35,7 +37,7 @@ namespace ZNxt.Net.Core.Web.Services
 
             foreach (Type routeClass in routeclasses)
             {
-                System.Reflection.MemberInfo [] info = routeClass.GetMethods();
+                System.Reflection.MemberInfo[] info = routeClass.GetMethods();
                 foreach (var mi in info)
                 {
                     object[] routes = mi.GetCustomAttributes(typeof(Route), true);
@@ -61,19 +63,27 @@ namespace ZNxt.Net.Core.Web.Services
             }
 
             // from DB 
-
-            var filter = "{" + CommonConst.CommonField.IS_OVERRIDE + " : " + CommonConst.CommonValue.FALSE + "}";
-            var dataResponse = _dbService.Get(CommonConst.Collection.SERVER_ROUTES, new RawQuery(filter));
-            foreach (var routeData in dataResponse)
+            try
             {
-                var route = Newtonsoft.Json.JsonConvert.DeserializeObject<RoutingModel>(routeData.ToString());
-                var dbroute = GetRoute(route.Method, route.Route);
-                if (dbroute == null)
-                {
-                    _routes.Remove(dbroute);
-                }
-                _routes.Add(route);
 
+
+                var filter = "{" + CommonConst.CommonField.IS_OVERRIDE + " : " + CommonConst.CommonValue.FALSE + "}";
+                var dataResponse = _dbService.Get(CommonConst.Collection.SERVER_ROUTES, new RawQuery(filter));
+                foreach (var routeData in dataResponse)
+                {
+                    var route = Newtonsoft.Json.JsonConvert.DeserializeObject<RoutingModel>(routeData.ToString());
+                    var dbroute = GetRoute(route.Method, route.Route);
+                    if (dbroute == null)
+                    {
+                        _routes.Remove(dbroute);
+                    }
+                    _routes.Add(route);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error while loading route from db {ex.Message}", ex);
             }
         }
         public void ReLoadRoutes()

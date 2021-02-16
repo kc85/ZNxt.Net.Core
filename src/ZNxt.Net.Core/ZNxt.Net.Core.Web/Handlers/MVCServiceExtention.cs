@@ -100,16 +100,19 @@ public static class MVCServiceExtention
     public static void AddZNxtBearerAuthentication(this IServiceCollection services)
     {
         var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-        services.AddAuthentication().AddJwtBearer(options =>
+        if (!string.IsNullOrEmpty(ssourl))
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            services.AddAuthentication().AddJwtBearer(options =>
+            {
 
-            options.Authority = ssourl;
-            options.Audience = "ZNxtCoreAppApi";
-            options.TokenValidationParameters.NameClaimType = "name";
-            options.RequireHttpsMetadata = false;
-            
-        });
+                options.Authority = ssourl;
+                options.Audience = "ZNxtCoreAppApi";
+                options.TokenValidationParameters.NameClaimType = "name";
+                options.RequireHttpsMetadata = false;
+
+            });
+        }
     }
 
     private static void SetAppInstallStatus(ServiceProvider serviceProvider)

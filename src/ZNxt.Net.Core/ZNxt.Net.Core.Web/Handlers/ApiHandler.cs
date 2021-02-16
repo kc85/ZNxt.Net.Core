@@ -168,7 +168,6 @@ namespace ZNxt.Net.Core.Web.Handlers
                             _logger.Error($"Error Executing remote route. {route.ToString() } . {ex.Message}", ex);
                             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         }
-
                     }
                     else
                     {
@@ -210,8 +209,9 @@ namespace ZNxt.Net.Core.Web.Handlers
 
         private bool AuthorizedRoute(HttpContext context, RoutingModel route, IAuthorizationService authorizationService)
         {
-
-            if (!route.auth_users.Where(f => f == CommonConst.CommonValue.ACCESS_ALL).Any())
+            var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
+            
+            if (!route.auth_users.Where(f => f == CommonConst.CommonValue.ACCESS_ALL).Any() && !string.IsNullOrEmpty(ssourl))
             {
                 try
                 {

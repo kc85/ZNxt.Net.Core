@@ -205,9 +205,15 @@ namespace ZNxt.Net.Core.Web.Services
         private async Task<JToken> GetRouteData(string method, string route)
         {
             JObject routes = await GetAllRoutes();
-
-            var routeData = (routes[CommonConst.CommonField.DATA] as JArray).FirstOrDefault(f => f["Route"].ToString() == route && f["Method"].ToString() == method);
-            return routeData;
+            if (routes != null)
+            {
+                var routeData = (routes[CommonConst.CommonField.DATA] as JArray).FirstOrDefault(f => f["Route"].ToString() == route && f["Method"].ToString() == method);
+                return routeData;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private async Task<JObject> GetAllRoutes()
@@ -216,8 +222,11 @@ namespace ZNxt.Net.Core.Web.Services
             var routes = _inMemoryCacheService.Get<JObject>(routeCacheKey);
             if (routes == null)
             {
-                routes = await CallAsync(CommonConst.ActionMethods.GET, "/gateway/routes", "", null, null, ApplicationConfig.ApiGatewayEndpoint);
-                _inMemoryCacheService.Put<JObject>(routeCacheKey, routes);
+                if (!string.IsNullOrEmpty(ApplicationConfig.ApiGatewayEndpoint))
+                {
+                    routes = await CallAsync(CommonConst.ActionMethods.GET, "/gateway/routes", "", null, null, ApplicationConfig.ApiGatewayEndpoint);
+                    _inMemoryCacheService.Put<JObject>(routeCacheKey, routes);
+                }
             }
 
             return routes;

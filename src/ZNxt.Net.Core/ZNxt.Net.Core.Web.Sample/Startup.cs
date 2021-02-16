@@ -4,13 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.HttpOverrides;
 using ZNxt.Net.Core.Helpers;
+using ZNxt.Net.Core.Consts;
 
 namespace ZNxt.Net.Core.Web.Sample
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
         public IHostingEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
         public Startup(IHostingEnvironment environment, IConfiguration configuration)
@@ -51,7 +50,11 @@ namespace ZNxt.Net.Core.Web.Sample
                     options => options.WithOrigins(corurl.Split(';')).AllowAnyMethod()
              );
             app.UseZNxtSSO();
-            app.UseAuthentication();
+            var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
+            if (!string.IsNullOrEmpty(ssourl))
+            {
+                app.UseAuthentication();
+            }
             app.UseZNxtApp();
         }
     }

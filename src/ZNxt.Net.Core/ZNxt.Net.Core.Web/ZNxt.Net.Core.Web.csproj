@@ -3,13 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.14</Version>
+    <Version>1.0.16</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="wwwroot\appinstall\img\loader.gif" />
     <None Remove="wwwroot\appinstall\index.html" />
     <None Remove="wwwroot\appinstall\js\appinstall.js" />
+    <None Remove="znxtsettings - Copy.json.config" />
     <None Remove="znxtsettings.json.config" />
   </ItemGroup>
 

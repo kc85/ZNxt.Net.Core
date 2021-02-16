@@ -24,6 +24,7 @@ namespace ZNxt.Net.Core.Module.TemplateEngine.Services.Api
             _httpContextProxy = httpContextProxy;
             _logger = logger;
         }
+      
         [Route("/template/add", CommonConst.ActionMethods.POST, CommonConst.CommonValue.SYS_ADMIN)]
         public JObject Add()
         {

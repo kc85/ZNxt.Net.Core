@@ -1,5 +1,5 @@
-﻿const PRECACHE = 'precache-sso-v1.031';
-const RUNTIME = 'runtime-sso-v1.031';
+﻿const PRECACHE = 'precache-sso-v1.033';
+const RUNTIME = 'runtime-sso-v1.033';
 
 
 const BACKGROUND_CACHE_URLS = [
