@@ -30,6 +30,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Configuration;
 using IdentityServer4.Validation;
 using ZNxt.Net.Core.Web.Services.SSO;
+using ZNxt.Net.Core.DB.MySql;
 
 public static class MVCServiceExtention
 {
@@ -44,6 +45,7 @@ public static class MVCServiceExtention
         services.AddSingleton<IDBServiceConfig>(new MongoDBServiceConfig());
         services.AddSingleton<IKeyValueStorage, MongoDBKeyValueService>();
         services.AddTransient<IDBService, MongoDBService>();
+        services.AddTransient<IRDBService, MySqlRDBService>();
         services.AddSingleton<IRouting, Routing>();
         services.AddTransient<IAssemblyLoader, AssemblyLoader>();
         services.AddTransient<IStaticContentHandler, ZNxt.Net.Core.Web.ContentHandler.StaticContentHandler>();
