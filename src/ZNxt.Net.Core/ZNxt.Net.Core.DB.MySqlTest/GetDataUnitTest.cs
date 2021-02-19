@@ -1,5 +1,6 @@
 using Dapper.Contrib.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using ZNxt.Net.Core.DB.MySql;
@@ -35,8 +36,13 @@ namespace ZNxt.Net.Core.DB.MySqlTest
         {
            var e =  _rDBService.GetFirst<Event>("select * from event");
         }
+        [TestMethod]
+        public void GetDataWithSQLFilterJObject()
+        {
+            var e = _rDBService.Get<JObject>("select * from event");
+        }
 
-       
+
     }
       
 }

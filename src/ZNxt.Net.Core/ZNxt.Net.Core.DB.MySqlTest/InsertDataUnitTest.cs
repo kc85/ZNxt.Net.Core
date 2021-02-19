@@ -1,9 +1,11 @@
 using Dapper.Contrib.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using ZNxt.Net.Core.DB.MySql;
 using ZNxt.Net.Core.Interfaces;
+using ZNxt.Net.Core.Helpers;
 
 namespace ZNxt.Net.Core.DB.MySqlTest
 {
@@ -63,6 +65,21 @@ namespace ZNxt.Net.Core.DB.MySqlTest
             Insertwithtxn(sqls);
         }
 
+        [TestMethod]
+        public void InsertWithJOBject()
+        {
+
+            JObject jdata = new JObject();
+            jdata["COL1"] = 5555;
+
+            _rDBService.WriteData(_rDBService.GetInsertSQLWithParam(jdata, "tab1"),null);
+             jdata = new JObject();
+            jdata["id"] = 555;
+            jdata["EventLocationId"] = 555;
+            jdata["EventName"] = "eV555";
+            _rDBService.WriteData(_rDBService.GetInsertSQLWithParam(jdata, "event"), null);
+        }
+
         private void Insertwithtxn(List<string> sqls)
         {
             var tran = _rDBService.BeginTransaction();
@@ -70,7 +87,7 @@ namespace ZNxt.Net.Core.DB.MySqlTest
             {
                 foreach (var sql in sqls)
                 {
-                    if (!_rDBService.WriteData(sql, tran))
+                    if (!_rDBService.WriteData(sql,null, tran))
                     {
                         _rDBService.RollbackTransaction(tran);
                         return;

@@ -1,11 +1,56 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Text;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Helpers
 {
+    public static class IRDBServiceExtensions
+    {
+        public static string GetInsertSQLWithParam(this IRDBService dbService, JObject data, string table)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"INSERT INTO {table}");
+
+            var columns = new List<string>();
+            var values = new List<string>();
+            foreach (var item in data)
+            {
+                columns.Add(item.Key);
+                if (item.Value.Type == JTokenType.Integer || item.Value.Type == JTokenType.Boolean)
+                {
+                    values.Add(item.Value.ToString().ToLower());
+                }
+                else
+                {
+
+                    values.Add($"'{item.Value.ToString()}'");
+                }
+            }
+            sb.Append($"([{string.Join("],[", columns) }])");
+            sb.Append($" values ({string.Join(",", values) })");
+            return sb.ToString();
+        }
+        //public static object  GetSQLParam(this IRDBService dbService, JObject data)
+        //{
+        //    //dynamic param = new ExpandoObject();
+        //    //var values = new List<string>();
+        //    //foreach (var item in data)
+        //    //{
+        //    //    param[item.Key] = item.Value;
+        //    //}
+        //    Dictionary<string, string> dataDic = new Dictionary<string, string>();
+        //    foreach (var item in data)
+        //    {
+        //        dataDic[item.Key] = item.Value.ToString();
+
+        //    }
+        //    return dataDic;
+        //}
+    }
     public static class IDBServiceExtensions
     {
         public static T FirstOrDefault<T>(this IDBService dbProxy, string collection, string filterKey, string filterValue, bool isOverrideCheck = false)

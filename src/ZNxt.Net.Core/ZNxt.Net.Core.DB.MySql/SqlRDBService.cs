@@ -11,6 +11,8 @@ using Npgsql;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using Dapper.Contrib;
+using System.Data;
+using System.Linq;
 
 namespace ZNxt.Net.Core.DB.MySql
 {
@@ -44,7 +46,6 @@ namespace ZNxt.Net.Core.DB.MySql
                 _DBType = "MYSQL";
             }
         }
-        public bool IsConnected => throw new NotImplementedException();
 
         public RDBTransaction BeginTransaction()
         {
@@ -94,23 +95,41 @@ namespace ZNxt.Net.Core.DB.MySql
         }
 
         #region get 
-        public IEnumerable<T> Get<T>(string table, JObject filter) where T : class
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public IEnumerable<T> Get<T>(string sql, object param = null) where T : class
         {
             using (var conn = GetConnection())
             {
+                if(typeof(T) == typeof(JObject))
+                {
+                    IEnumerable<JObject> data  =  GetDateAsJObject(conn,sql, param);
+                    return data as IEnumerable<T>;
+                }
                 return conn.Query<T>(sql, param);
             }
         }
+
+        
         public T GetFirst<T>(string sql, object param = null) where T : class
         {
             using (var conn = GetConnection())
             {
-                return conn.QueryFirst<T>(sql, param);
+                if (typeof(T) == typeof(JObject))
+                {
+                    IEnumerable<JObject> data = GetDateAsJObject(conn, sql, param);
+                    if (data.Any())
+                    {
+                        return data.First() as T;
+                    }
+                    else
+                    {
+                        return default;
+                    }
+                }
+                else
+                {
+                    return conn.QueryFirst<T>(sql, param);
+                }
             }
         }
         public T GetFirst<T>(string id) where T : class
@@ -120,6 +139,52 @@ namespace ZNxt.Net.Core.DB.MySql
                 return conn.Get<T>(id);
             }
         }
+        private IEnumerable<JObject> GetDateAsJObject(DbConnection conn, string sql, object param = null)
+        {
+            List<JObject> dataResult = new List<JObject>();
+            conn.Open();
+            List<string> columns = new List<string>();
+            DbCommand oCmd = null;
+            try
+            {
+                switch (_DBType)
+                {
+                    case "MSSQL":
+                        oCmd = new SqlCommand(sql, conn as SqlConnection);
+                        break;
+                    case "MYSQL":
+                        oCmd = new MySqlCommand(sql, conn as MySqlConnection);
+                        break;
+                    case "NPGSQL":
+                        oCmd = new NpgsqlCommand(sql, conn as NpgsqlConnection);
+                        break;
+                }
+                using (DbDataReader oReader = oCmd.ExecuteReader())
+                {
+                    for (int i = 0; i < oReader.FieldCount; i++)
+                    {
+                        columns.Add(oReader.GetName(i));
+                    }
+                    while (oReader.Read())
+                    {
+                        JObject jdata = new JObject();
+                        foreach (var col in columns)
+                        {
+                            jdata[col] = oReader[col].ToString();
+                        }
+                        dataResult.Add(jdata);
+                    }
+
+                }
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dataResult;
+        }
+
         #endregion
 
         #region update
@@ -235,7 +300,7 @@ namespace ZNxt.Net.Core.DB.MySql
             }
             return true;
         }
-        public bool WriteData<T>( T data) where T : class
+        public bool WriteData<T>(T data) where T : class
         {
             using (var conn = GetConnection())
             {
@@ -243,17 +308,26 @@ namespace ZNxt.Net.Core.DB.MySql
             }
         }
 
-        public bool WriteData(string sql)
+        public bool WriteData(string sql, object param = null)
         {
             using (var conn = GetConnection())
             {
-                return conn.Execute(sql) == 1;
+                return conn.Execute(sql, param) == 1;
             }
         }
-        public bool WriteData(string sql, RDBTransaction transaction)
+        public bool WriteData(string sql, object param = null,RDBTransaction transaction = null)
         {
-            var result = transaction.Connection.Execute(sql, null, transaction.Transaction);
-            return result == 1;
+            if (transaction != null)
+            {
+                var result = transaction.Connection.Execute(sql, param, transaction.Transaction);
+                return result == 1;
+            }
+            else
+            {
+                var result = transaction.Connection.Execute(sql, param);
+                return result == 1;
+            }
+            
         }
 
         #endregion
