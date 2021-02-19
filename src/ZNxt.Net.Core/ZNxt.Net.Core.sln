@@ -41,7 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Net.Core.DB.Mongo.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Module.Scheduler", "ZNxt.Module.Scheduler\ZNxt.Module.Scheduler.csproj", "{029009C3-597C-4D4A-A8D9-0E2B8497A122}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.DB.MySql", "..\ZNxt.Net.Core.DB.MySql\ZNxt.Net.Core.DB.MySql.csproj", "{89D5EC30-E049-4252-85B3-1E40F4BA8406}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.DB.MySql", ".\ZNxt.Net.Core.DB.MySql\ZNxt.Net.Core.DB.MySql.csproj", "{89D5EC30-E049-4252-85B3-1E40F4BA8406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.DB.MySqlTest", ".\ZNxt.Net.Core.DB.MySqlTest\ZNxt.Net.Core.DB.MySqlTest.csproj", "{3F52F1F2-CCEE-4752-A932-84CA0B897782}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{89D5EC30-E049-4252-85B3-1E40F4BA8406}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89D5EC30-E049-4252-85B3-1E40F4BA8406}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89D5EC30-E049-4252-85B3-1E40F4BA8406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F52F1F2-CCEE-4752-A932-84CA0B897782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F52F1F2-CCEE-4752-A932-84CA0B897782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F52F1F2-CCEE-4752-A932-84CA0B897782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F52F1F2-CCEE-4752-A932-84CA0B897782}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,6 +141,7 @@ Global
 		{01098333-416D-432F-8302-8F4C53EB9EB6} = {F22C0707-89F1-450D-92A1-34AA0373508E}
 		{B5404A23-9BB4-405C-A033-16C7C3FB3599} = {4DD2FD32-7A35-4F98-B58E-FFE6EBBC9B49}
 		{029009C3-597C-4D4A-A8D9-0E2B8497A122} = {F22C0707-89F1-450D-92A1-34AA0373508E}
+		{3F52F1F2-CCEE-4752-A932-84CA0B897782} = {4DD2FD32-7A35-4F98-B58E-FFE6EBBC9B49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE125D3-A749-4F04-9D6C-9B9632AE1D4C}

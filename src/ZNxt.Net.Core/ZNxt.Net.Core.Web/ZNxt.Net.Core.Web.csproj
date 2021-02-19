@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.16</Version>
+    <Version>1.0.17</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ZNxt.Net.Core.DB.MySql\ZNxt.Net.Core.DB.MySql.csproj" />
+    <ProjectReference Include="..\ZNxt.Net.Core.DB.MySql\ZNxt.Net.Core.DB.MySql.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core.DB.Mongo\ZNxt.Net.Core.DB.Mongo.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core.Web.ContentHandler\ZNxt.Net.Core.Web.ContentHandler.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />

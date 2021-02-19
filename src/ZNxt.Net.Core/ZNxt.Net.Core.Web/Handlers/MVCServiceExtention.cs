@@ -45,7 +45,7 @@ public static class MVCServiceExtention
         services.AddSingleton<IDBServiceConfig>(new MongoDBServiceConfig());
         services.AddSingleton<IKeyValueStorage, MongoDBKeyValueService>();
         services.AddTransient<IDBService, MongoDBService>();
-        services.AddTransient<IRDBService, MySqlRDBService>();
+        services.AddTransient<IRDBService, SqlRDBService>();
         services.AddSingleton<IRouting, Routing>();
         services.AddTransient<IAssemblyLoader, AssemblyLoader>();
         services.AddTransient<IStaticContentHandler, ZNxt.Net.Core.Web.ContentHandler.StaticContentHandler>();

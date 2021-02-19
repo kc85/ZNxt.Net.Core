@@ -2,16 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.78" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
     <PackageReference Include="MySql.Data" Version="8.0.23" />
+    <PackageReference Include="Npgsql" Version="5.0.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
+    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
   </ItemGroup>
 
 </Project>
