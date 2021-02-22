@@ -80,6 +80,10 @@
             public const string TOTAL_PAGES_KEY = "TotalPages";
             public const string PAGE_SIZE_KEY = "PageSize";
             public const string CURRENT_PAGE_KEY = "CurrentPage";
+            public const string TOTAL_RECORD_COUNT_KEY_v2 = "total_records";
+            public const string TOTAL_PAGES_KEY_v2 = "total_pages";
+            public const string PAGE_SIZE_KEY_v2 = "page_size";
+            public const string CURRENT_PAGE_KEY_v2 = "current_page";
             public const string BASE_URI = "base_uri";
             public const string URI = "uri";
             public const string USER_GROUPS = "groups";

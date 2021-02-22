@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ZNxt.Net.Core.DB.MySql;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Helpers;
+using System.Text;
 
 namespace ZNxt.Net.Core.DB.MySqlTest
 {
@@ -24,7 +25,17 @@ namespace ZNxt.Net.Core.DB.MySqlTest
         [TestMethod]
         public void InsertWithSQL()
         {
-            _rDBService.WriteData("INSERT INTO [dbo].[tab1]([COL1]) VALUES (10000)");
+            _rDBService.WriteData("INSERT INTO [dbo].[tab1]([COL1]) VALUES (10000)",null);
+        }
+        [TestMethod]
+        public void InsertWithSQLAndGetId()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("DECLARE @InsertedRows AS TABLE (Id int); ");
+            sb.AppendLine("INSERT INTO tab3([name]) OUTPUT Inserted.Id INTO @InsertedRows");
+            sb.AppendLine("VALUES('abc');");
+            sb.AppendLine("SELECT Id FROM @InsertedRows");
+           var id  =  _rDBService.WriteDataGetId(sb.ToString(), null);
         }
         [TestMethod]
         public void InsertWithModel()

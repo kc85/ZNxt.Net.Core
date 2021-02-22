@@ -315,6 +315,17 @@ namespace ZNxt.Net.Core.DB.MySql
                 return conn.Execute(sql, param) == 1;
             }
         }
+        public int WriteDataGetId(string sql, object param = null)
+        {
+            using (var conn = GetConnection())
+            {
+                return conn.Query<int>(sql, param).Single();
+            }
+        }
+        public int WriteDataGetId(string sql, object param = null, RDBTransaction transaction = null)
+        {
+            return transaction.Connection.Query<int>(sql, param, transaction.Transaction).Single();
+        }
         public bool WriteData(string sql, object param = null,RDBTransaction transaction = null)
         {
             if (transaction != null)

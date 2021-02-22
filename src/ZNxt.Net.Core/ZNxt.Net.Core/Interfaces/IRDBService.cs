@@ -14,7 +14,8 @@ namespace ZNxt.Net.Core.Interfaces
         bool WriteData<T>(IEnumerable<T> data) where T : class;
         bool WriteData(string sql, object param = null);
         bool WriteData(string sql, object param = null, RDBTransaction transaction = null);
-
+        int WriteDataGetId(string sql, object param = null);
+        int WriteDataGetId(string sql, object param = null, RDBTransaction transaction = null);
         bool Update(string sql);
         bool Update(string sql, RDBTransaction transaction);
         bool Update (IEnumerable<string> sql);

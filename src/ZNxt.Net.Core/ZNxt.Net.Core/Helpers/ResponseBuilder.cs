@@ -20,6 +20,16 @@ namespace ZNxt.Net.Core.Helpers
             _logger = logger;
             _logReader = logReader;
         }
+        public JObject SuccessPaggedData(JObject jarrdata, int totalCount, int currentPage, int pageSize)
+        {
+            JObject extraData = new JObject();
+            extraData[CommonConst.CommonField.TOTAL_RECORD_COUNT_KEY_v2] = totalCount;
+            extraData[CommonConst.CommonField.TOTAL_PAGES_KEY_v2] = Math.Ceiling(((double)totalCount / pageSize));
+            extraData[CommonConst.CommonField.PAGE_SIZE_KEY_v2] = pageSize;
+            extraData[CommonConst.CommonField.CURRENT_PAGE_KEY_v2] = currentPage;
+            
+            return  Success(jarrdata, extraData);
+        }
         public JObject Success(JToken data = null, JObject extraData = null)
         {
             return CreateReponse(CommonConst._1_SUCCESS, data, extraData);

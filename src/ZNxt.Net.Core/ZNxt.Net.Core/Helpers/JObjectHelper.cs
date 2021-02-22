@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using ZNxt.Net.Core.Consts;
 
@@ -125,6 +126,10 @@ namespace ZNxt.Net.Core.Helpers
         public static  JObject ToJObject(this object obj)
         {
             return JObject.Parse(JsonConvert.SerializeObject(obj));
+        }
+        public static JArray ToJArray<T>(this List<T> obj)
+        {
+            return JArray.Parse(JsonConvert.SerializeObject(obj));
         }
     }
 }
