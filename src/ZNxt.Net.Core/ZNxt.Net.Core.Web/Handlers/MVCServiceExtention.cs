@@ -49,8 +49,17 @@ public static class MVCServiceExtention
         services.AddSingleton<IRouting, Routing>();
         services.AddTransient<IAssemblyLoader, AssemblyLoader>();
         services.AddTransient<IStaticContentHandler, ZNxt.Net.Core.Web.ContentHandler.StaticContentHandler>();
-        services.AddTransient<ILogger, Logger>();
-        services.AddTransient<ILogReader, Logger>();
+
+        if (string.IsNullOrEmpty(ApplicationConfig.ConnectionString)) {
+            services.AddTransient<ILogger, ConsoleLogger>();
+            services.AddTransient<ILogReader, ConsoleLogger>();
+        }
+        else
+        {
+            services.AddTransient<ILogger, Logger>();
+            services.AddTransient<ILogReader, Logger>();
+        }
+      
         services.AddTransient<IHttpContextProxy, HttpContextProxy>();
         services.AddTransient<IHttpFileUploader, HttpContextProxy>();
         services.AddTransient<IViewEngine, RazorTemplateEngine>();
@@ -256,5 +265,7 @@ public static class MVCApplicationBuilderExtensions
         AccountOptions.ShowLogoutPrompt = false;
         AccountOptions.AutomaticRedirectAfterSignOut = true;
     }
+
+    
 }
 

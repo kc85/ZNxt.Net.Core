@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,174 +15,41 @@
 
     <!-- Custom styles for this template -->
     <link href="css/scrolling-nav.css" rel="stylesheet">
-	<link href="css/znxt.css" rel="stylesheet">
+    <link href="css/znxt.css" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body id="page-top">
-     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+<body id="page-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="#page-top">ZNxt.App <sup><small><i>Beta</i></small></sup></a>
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">ZNxt.App </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!--
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#about">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#Installation">Quick Start</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#contact">Nuget</a>
-                    </li>
-                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="#">Blogs</a>
-                    </li>
-                
-                </ul>
-            </div>
-                -->
+
         </div>
-                
+
     </nav>
-<div>
-       <header class="bg-primary text-white">
+    <header class="bg-primary text-white">
         <div class="container text-center">
-            <h1>Welcome to ZNxt.App <sup><small><i>Beta</i></small></sup></h1>
+            <h1>Welcome to ZNxt.App</h1>
             <p class="lead">Next generation application development framework, Free and Open Source </p>
-            <p class="lead"> <a href="https://github.com/kc85/znxtapp.core" style="color:#fff" target="_blank"> 
-                View on GitHub</a> 
+            <p class="lead">
+                <a href="https://github.com/kc85/ZNxt.Net.Core" style="color:#fff" target="_blank">
+                    View on GitHub
+                </a>
 
             </p>
         </div>
     </header>
-    <!--
-    <section id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <h2>Overview</h2>
-                    <p class="lead">
-                        ZNxtApp is next generation application development framework for web application in .NET. It is lightweight, high performance and customizable framework suitable for all your modern day web development requirement.
-                    </p>
-                    <ul>
-                        <li>Developed in .Net 4.5.2 </li>
-                        <li>High performance and scalable</li>
-                        <li>Plug and play</li>
-                        <li>Highly customizable</li>
-                    </ul>
-                    <p>
-                        <br />
-                        <b>Let's join us on the next generation web development journey, it's free and open source</b>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="Installation" class="bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <h2>Quick Start</h2>
-                    <br />
-                    <b>Prerequisites</b>
-                    <ul>
-                        <li>.Net 4.5.2</li>
-                        <li>MongoDB 3.x</li>
-                    </ul>
-                    <b>Installation</b>
-                    <ul>
-                        <li>Create new empty WebApplication project from your Visual Studio. (Make sure project .net  version 4.5.2)</li>
-                        <li>Install ZNxtApp.Web Nuget package (Install-Package ZNxtApp.Web)</li>
-                        <li>Update below setting on your new web application</li>
-                    </ul>
-                    <div class="highlight highlight-source-shell">
-                        <pre> <span class="pl-k">&lt;</span><span class="pl-k">!</span>-- Put you application name here --<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add key=<span class="pl-s"><span class="pl-pds">"</span>AppName<span class="pl-pds">"</span></span> value=<span class="pl-s"><span class="pl-pds">"</span>ZNxtAppDummyApp<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span><span class="pl-k">!</span>-- this is the unique key of your application. Should be unique <span class="pl-k">in</span> your environments  --<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add key=<span class="pl-s"><span class="pl-pds">"</span>AppId<span class="pl-pds">"</span></span> value=<span class="pl-s"><span class="pl-pds">"</span>b758bd68-e295-4088-a340-5114761c66e4<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span><span class="pl-k">!</span>-- This is required <span class="pl-k">in</span> <span class="pl-k">case</span> <span class="pl-k">if</span> you are running application under some virtual directory <span class="pl-k">in</span> IIS--<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add key=<span class="pl-s"><span class="pl-pds">"</span>AppPath<span class="pl-pds">"</span></span> value=<span class="pl-s"><span class="pl-pds">"</span>/ZNxtApp.Core.WebTest<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span><span class="pl-k">!</span>-- ZNxtApp required write access to this path --<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add key=<span class="pl-s"><span class="pl-pds">"</span>ModuleCachePath<span class="pl-pds">"</span></span> value=<span class="pl-s"><span class="pl-pds">"</span>C:\temp\ZNxtApp<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span><span class="pl-k">!</span>-- MongoDb name should be unique to that server--<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add key=<span class="pl-s"><span class="pl-pds">"</span>DataBaseName<span class="pl-pds">"</span></span> value=<span class="pl-s"><span class="pl-pds">"</span>ZNxtAppTest<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span><span class="pl-k">!</span>-- mongoDB connection string--<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add key=<span class="pl-s"><span class="pl-pds">"</span>MongoDBConnectionString<span class="pl-pds">"</span></span> value=<span class="pl-s"><span class="pl-pds">"</span>mongodb://localhost:27017<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span><span class="pl-k">!</span>-- AppMode values  <span class="pl-c1">:</span>  Maintenance, Debug, Live --<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add key=<span class="pl-s"><span class="pl-pds">"</span>AppMode<span class="pl-pds">"</span></span> value=<span class="pl-s"><span class="pl-pds">"</span>Maintenance<span class="pl-pds">"</span></span> /&gt;&lt;/appSettings<span class="pl-k">&gt;</span></pre>
-                    </div>
-                    <div class="highlight highlight-source-shell">
-                        <pre><span class="pl-k">&lt;</span>system.webServer<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>httpProtocol<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>customHeaders<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>clear /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>remove name=<span class="pl-s"><span class="pl-pds">"</span>X-Powered-By<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>remove name=<span class="pl-s"><span class="pl-pds">"</span>X-AspNet-Version<span class="pl-pds">"</span></span>/<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>remove name=<span class="pl-s"><span class="pl-pds">"</span>X-AspNetMvc-Version<span class="pl-pds">"</span></span>/<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>remove name=<span class="pl-s"><span class="pl-pds">"</span>X-AspNet-Version<span class="pl-pds">"</span></span>/<span class="pl-k">&gt;</span>                
-                        <span class="pl-k">&lt;</span>/customHeaders<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>/httpProtocol<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>handlers<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>add name=<span class="pl-s"><span class="pl-pds">"</span>RequestHandler<span class="pl-pds">"</span></span> verb=<span class="pl-s"><span class="pl-pds">"</span>*<span class="pl-pds">"</span></span> path=<span class="pl-s"><span class="pl-pds">"</span>*<span class="pl-pds">"</span></span> type=<span class="pl-s"><span class="pl-pds">"</span>ZNxtApp.Core.Web.Handler.RequestHandler<span class="pl-pds">"</span></span>  allowPathInfo =<span class="pl-s"><span class="pl-pds">"</span>true<span class="pl-pds">"</span></span>  preCondition =<span class="pl-s"><span class="pl-pds">"</span>integratedMode<span class="pl-pds">"</span></span> /<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>/handlers<span class="pl-k">&gt;</span>
-                        <span class="pl-k">&lt;</span>/system.webServer<span class="pl-k">&gt;</span></pre>
-                    </div>
-                    <div class="highlight highlight-source-shell">
-                        <pre> Global.asax
-----
-using ZNxtApp.Core.Web.AppStart<span class="pl-k">;</span>
------
-   public class Global <span class="pl-c1">:</span> GlobalAsaxBase
-   {
-       protected override void Application_Start(object sender, EventArgs e)
-       {
-           base.Application_Start(sender, e)<span class="pl-k">;</span>
-       }
-   }</pre>
-                    </div>
-                    <ul>
-                        <li>Run your Web Application you should see the ZNxtApp installation page</li>
-                        <li>Installation will take few minute. After you are ready to use ZNxtApp first application</li>
-                        <li>Start your journey. Next create your own module -&gt;&gt;</li>
-                    </ul>
-                    </article>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <h2>Nuget Packages</h2>
-                    <ul>
-                        <li><a href="https://www.nuget.org/packages/ZNxtApp.Core"> ZNxtApp.Core</a></li>
-                        <li><a href="https://www.nuget.org/packages/ZNxtApp.Core.Module">ZNxtApp.Core.Module</a></li>
-                        <li><a href="https://www.nuget.org/packages/ZNxtApp.Web">ZNxtApp.Web</a></li>
-                        <li><a href="https://www.nuget.org/packages/ZNxtApp.Core.Module.App">ZNxtApp.Core.Module.App</a></li>
-                        <li><a href="https://www.nuget.org/packages/ZNxtApp.Core.Module.Theme">ZNxtApp.Core.Module.Theme</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    
 
-</div>
-        -->
 
-      
     <footer class="page-footer text-center font-small navbar-dark bg-dark " style="color:#fff">
         <!-- Social icons -->
 
 
         <div class="pb-4" style="padding-top:20px">
-            <a href="https://www.facebook.com/znxtapp.znxtapp.5" target="_blank">
+            <a href="https://www.facebook.com/#" target="_blank">
                 <i class="fa fa-facebook mr-3"></i>
             </a>
             <a href="https://twitter.com/ZNxtApp1" target="_blank">
@@ -191,13 +58,10 @@ using ZNxtApp.Core.Web.AppStart<span class="pl-k">;</span>
             <a href="https://www.youtube.com/#" target="_blank">
                 <i class="fa fa-youtube mr-3"></i>
             </a>
-            <a href="https://plus.google.com/117023252106428476016" target="_blank">
-                <i class="fa fa-google-plus mr-3"></i>
-            </a>
             <a href="https://in.pinterest.com/znxt/" target="_blank">
                 <i class="fa fa-pinterest mr-3"></i>
             </a>
-            <a href="https://github.com/kc85/znxtapp.core" target="_blank">
+            <a href="https://github.com/kc85/ZNxt.Net.Core" target="_blank">
                 <i class="fa fa-github mr-3"></i>
             </a>
         </div>
@@ -205,22 +69,13 @@ using ZNxtApp.Core.Web.AppStart<span class="pl-k">;</span>
         <!-- Social icons -->
         <!--Copyright-->
         <div class="footer-copyright py-3">
-            © 2020 Copyright:
+            © 2021 Copyright:
             <a href="#" target="_blank"> ZNxt.App</a> |
-            <a href="#" target="_blank"> Terms and conditions </a> | 
-             <a href="#" target="_blank"> Privacy policy</a>
+            <a href="#" target="_blank"> Terms and conditions </a> |
+            <a href="#" target="_blank"> Privacy policy</a>
         </div>
         <!--/.Copyright-->
         <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131807453-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-131807453-1');
-</script>
-
     </footer>
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -232,6 +87,6 @@ using ZNxtApp.Core.Web.AppStart<span class="pl-k">;</span>
     <!-- Custom JavaScript for this theme -->
     <script src="js/scrolling-nav.js"></script>
 
-  </body>
+</body>
 
 </html>

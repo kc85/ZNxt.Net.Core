@@ -13,6 +13,15 @@ namespace ZNxt.Net.Core.Web.ContentHandler
     {
         public static byte[] GetContent(IDBService dbProxy, ILogger logger, string path, IKeyValueStorage keyValueStorage)
         {
+            var staticFilePath = CommonUtility.GetAppConfigValue("StaticFilePath");
+            if (!string.IsNullOrEmpty(staticFilePath))
+            {
+                string filePath = $"{staticFilePath}{path}";
+                if (File.Exists(filePath))
+                {
+                    return File.ReadAllBytes(filePath);
+                }
+            }
             string wwwrootpath = ApplicationConfig.AppWWWRootPath;
             JObject document = null;
             if (dbProxy.IsConnected)

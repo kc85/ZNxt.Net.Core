@@ -37,6 +37,7 @@ namespace ZNxt.Net.Core.Web.Services
                 loggerdb = "ZNxt_Log";
 
             }
+          
             _dbService.Init(loggerdb);
             _httpContextAccessor = httpContextAccessor;
             if (_httpContextAccessor.HttpContext != null)

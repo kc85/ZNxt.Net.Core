@@ -176,7 +176,7 @@ namespace ZNxt.Net.Core.Config
 
         public static string AppBinPath { get { return Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location); } }
 
-        public static string AppWWWRootPath => CommonUtility.GetAppConfigValue("WWWRootFolder");
+        public static string AppWWWRootPath => string.IsNullOrEmpty(CommonUtility.GetAppConfigValue("WWWRootFolder"))  ?  "/wwwroot" : CommonUtility.GetAppConfigValue("WWWRootFolder");
 
         public static string AppEndpoint => CommonUtility.GetAppConfigValue("AppEndpoint");
 
