@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
@@ -65,20 +66,21 @@ namespace ZNxt.Net.Core.Web.Services
             // from DB 
             try
             {
-
-
-                var filter = "{" + CommonConst.CommonField.IS_OVERRIDE + " : " + CommonConst.CommonValue.FALSE + "}";
-                var dataResponse = _dbService.Get(CommonConst.Collection.SERVER_ROUTES, new RawQuery(filter));
-                foreach (var routeData in dataResponse)
+                if (!string.IsNullOrEmpty(ApplicationConfig.ConnectionString))
                 {
-                    var route = Newtonsoft.Json.JsonConvert.DeserializeObject<RoutingModel>(routeData.ToString());
-                    var dbroute = GetRoute(route.Method, route.Route);
-                    if (dbroute == null)
+                    var filter = "{" + CommonConst.CommonField.IS_OVERRIDE + " : " + CommonConst.CommonValue.FALSE + "}";
+                    var dataResponse = _dbService.Get(CommonConst.Collection.SERVER_ROUTES, new RawQuery(filter));
+                    foreach (var routeData in dataResponse)
                     {
-                        _routes.Remove(dbroute);
-                    }
-                    _routes.Add(route);
+                        var route = Newtonsoft.Json.JsonConvert.DeserializeObject<RoutingModel>(routeData.ToString());
+                        var dbroute = GetRoute(route.Method, route.Route);
+                        if (dbroute == null)
+                        {
+                            _routes.Remove(dbroute);
+                        }
+                        _routes.Add(route);
 
+                    }
                 }
             }
             catch (Exception ex)
