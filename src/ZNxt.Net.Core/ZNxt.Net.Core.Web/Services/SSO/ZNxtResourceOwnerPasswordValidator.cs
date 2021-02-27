@@ -3,6 +3,7 @@ using IdentityServer4.Validation;
 using System;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Interfaces;
+using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Identity.Services
 {
@@ -15,10 +16,11 @@ namespace ZNxt.Identity.Services
             _zNxtUserStore = zNxtUserStore;
             _httpContextProxy = httpContextProxy;
         }
-        public Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
+        public virtual Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
+
             var headers  = _httpContextProxy.GetHeaders();
-            var user = _zNxtUserStore.FindByUsername(context.UserName);
+            var  user = _zNxtUserStore.FindByUsername(context.UserName);
             if (user != null && user.user_type == "mobile_auth")
             {
                 var validate = _zNxtUserStore.ValidateCredentials(context.UserName, context.Password, null, null);
@@ -31,7 +33,7 @@ namespace ZNxt.Identity.Services
                         //  claims: GetUserClaims(user)
                         );
 
-                    return Task.FromResult(0); 
+                    return Task.FromResult(0);
 
                 }
             }

@@ -20,6 +20,7 @@ using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Exceptions;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Model;
+using ZNxt.Net.Core.Web.Interfaces;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -37,13 +38,14 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
-
+        private readonly IAppAuthTokenHandler _appAuthTokenHandler;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
+            IAppAuthTokenHandler appAuthTokenHandler,
             ZNxtUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -54,19 +56,43 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _appAuthTokenHandler = appAuthTokenHandler;
         }
 
         /// <summary>
         /// Entry point into the login workflow
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl)
+        public async Task<IActionResult> Login(string returnUrl, string connection)
 
         {
-            // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
-            if (vm.IsExternalLoginOnly)
+            if (vm.LoginUIType == "app_token" && _appAuthTokenHandler.IsInAction())
+            {
+                var context = await _interaction.GetAuthorizationContextAsync(vm.ReturnUrl);
+                var token = _appAuthTokenHandler.GetTokenModel(context.ClientId, vm.AppToken);
+                if (token == null)
+                {
+                    return Redirect(_appAuthTokenHandler.LoginFailRedirect());
+                }
+                else
+                {
+                    var user = _users.FindByUsername(token.user_id);
+                    if (user == null)
+                    {
+                        return Redirect(_appAuthTokenHandler.LoginFailRedirect());
+                    }
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.ClientId));
+                    var props = new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.Add(_appAuthTokenHandler.GetLoginDuration())
+                    };
+                    await HttpContext.SignInAsync(user.user_id, user.GetDisplayName(), props);
+                }
+            }
+            else if (vm.IsExternalLoginOnly)
             {
                 // we only have one option for logging in and it's an external provider
                 return RedirectToAction("Challenge", "External", new { provider = vm.ExternalLoginScheme, returnUrl });
@@ -111,6 +137,10 @@ namespace IdentityServer4.Quickstart.UI
 
             // check if we are in the context of an authorization request
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+
+
+            
+
             try
             {
 
@@ -162,6 +192,8 @@ namespace IdentityServer4.Quickstart.UI
                             };
                         };
 
+
+                        
                         // issue authentication cookie with subject ID and username
                         await HttpContext.SignInAsync(user.user_id, user.GetDisplayName(), props);
                         var passsetview = IsPasswordSetRequired(user, model);
@@ -313,6 +345,9 @@ namespace IdentityServer4.Quickstart.UI
                     EnableLocalLogin = local,
                     ReturnUrl = returnUrl,
                     Username = context?.LoginHint,
+                    LoginUIType = context.Parameters["login_ui_type"] !=null ? context.Parameters["login_ui_type"]  : "",
+                    AppToken = context.Parameters["app_token"] != null ? context.Parameters["app_token"] : "",
+
                 };
 
                 if (!local)
@@ -356,7 +391,11 @@ namespace IdentityServer4.Quickstart.UI
                 EnableLocalLogin = allowLocal && AccountOptions.AllowLocalLogin,
                 ReturnUrl = returnUrl,
                 Username = context?.LoginHint,
-                ExternalProviders = providers.ToArray()
+                ExternalProviders = providers.ToArray(),
+                LoginUIType = context.Parameters["login_ui_type"] != null ? context.Parameters["login_ui_type"] : "",
+                AppToken = context.Parameters["app_token"] != null ? context.Parameters["app_token"] : "",
+
+
             };
         }
 

@@ -17,12 +17,12 @@ namespace ZNxt.Net.Core.Web.Services.SSO
 {
     public class OAuthClientService : IOAuthClientService
     {
-        private readonly IDBService _dBService;
-        private readonly ILogger _logger;
-        private readonly IApiGatewayService _apiGatewayService;
-        private const string oauthClientApiPath = "/sso/oauthclient/byname";
-        private const string cachePrefix = "oauthclient_";
-        private readonly IInMemoryCacheService _inMemoryCacheService;
+        protected readonly IDBService _dBService;
+        protected readonly ILogger _logger;
+        protected readonly IApiGatewayService _apiGatewayService;
+        protected const string oauthClientApiPath = "/sso/oauthclient/byname";
+        protected const string cachePrefix = "oauthclient_";
+        protected readonly IInMemoryCacheService _inMemoryCacheService;
         public OAuthClientService(IDBService dBService, ILogger logger, IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService)
         {
             _inMemoryCacheService = inMemoryCacheService;
@@ -31,7 +31,7 @@ namespace ZNxt.Net.Core.Web.Services.SSO
             _apiGatewayService = apiGatewayService;
         }
 
-        public Client GetClient(string clientId)
+        public  virtual Client GetClient(string clientId)
         {
             var client = _inMemoryCacheService.Get<Client>($"{cachePrefix}{clientId}");
             if (client == null)

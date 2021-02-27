@@ -23,8 +23,11 @@ namespace ZNxt.Net.Core.Web.Services.MvcApi
         public IActionResult SignIn()
         {
             var redirectUri = $"/";
+
+            var authtokenProp = new AuthenticationProperties() { RedirectUri = redirectUri };
+           
             Console.WriteLine($"auth/signin: RedirectUri: {redirectUri}");
-            return Challenge(new AuthenticationProperties() { RedirectUri = redirectUri });
+            return Challenge(authtokenProp);
         }
         [Route("signout")]
         public async Task SignOut()

@@ -31,6 +31,10 @@ using IdentityServer4.Configuration;
 using IdentityServer4.Validation;
 using ZNxt.Net.Core.Web.Services.SSO;
 using ZNxt.Net.Core.DB.MySql;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Threading.Tasks;
+using ZNxt.Net.Core.Web.Interfaces;
+using System.Net.Http;
 
 public static class MVCServiceExtention
 {
@@ -70,6 +74,7 @@ public static class MVCServiceExtention
         services.AddTransient<IApiGatewayService, ApiGatewayService>();
         services.AddTransient<IInMemoryCacheService, InMemoryCacheService>();
         services.AddTransient<IOAuthClientService, OAuthClientService>();
+        services.AddTransient<IAppAuthTokenHandler, AppAuthTokenHandler>();
         services.AddMemoryCache();
         var serviceProvider = services.BuildServiceProvider();
         SetAppInstallStatus(serviceProvider);
@@ -104,6 +109,25 @@ public static class MVCServiceExtention
             options.SaveTokens = true;
             options.GetClaimsFromUserInfoEndpoint = true;
             options.RequireHttpsMetadata = false;
+            options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
+            options.Events = new OpenIdConnectEvents
+            {
+                OnRedirectToIdentityProvider = context =>
+                {
+                    if (context.Properties.Items.ContainsKey("app_token"))
+                    {
+                        context.ProtocolMessage.SetParameter("app_token",
+                            context.Properties.Items["app_token"]);
+                    }
+                    if (context.Properties.Items.ContainsKey("login_ui_type"))
+                    {
+                        context.ProtocolMessage.SetParameter("login_ui_type",
+                            context.Properties.Items["login_ui_type"]);
+                    }
+
+                    return Task.FromResult(0);
+                }
+            };
         })
             .AddCookie();
     }
@@ -121,6 +145,7 @@ public static class MVCServiceExtention
                 options.Audience = "ZNxtCoreAppApi";
                 options.TokenValidationParameters.NameClaimType = "name";
                 options.RequireHttpsMetadata = false;
+                options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true;  } };
 
             });
         }

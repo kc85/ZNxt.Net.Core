@@ -34,29 +34,37 @@ namespace ZNxt.Identity
             var relyingPartyUrls = CommonUtility.GetAppConfigValue("RelyingPartyUrls");
             var relyingPartyMobileUrls = CommonUtility.GetAppConfigValue("MobileRelyingPartyUrls");
 
+            if (relyingPartyUrls == null)
+            {
+                relyingPartyUrls = "";
+            }
+            if (string.IsNullOrEmpty(appSecret))
+            {
+                appSecret = "sqaSecret";
+            }
             relyingPartyUrls.Split(",");
             var redirectUrisPrefix = relyingPartyUrls.Split(",").ToList();
-            if(redirectUrisPrefix.Count == 0)
+            if (redirectUrisPrefix.Count == 0)
             {
                 redirectUrisPrefix.Add("https://localhost:44373");
             }
-            var redirectUris = new List<string>() ;
+            var redirectUris = new List<string>();
             redirectUris.AddRange(redirectUrisPrefix.Select(f => $"{f}/signin-oidc"));
             var postLogoutRedirectUris = redirectUrisPrefix.Select(f => $"{f}/signout-callback-oidc").ToList();
             var frontChannelLogoutUri = $"{redirectUrisPrefix.First()}/signout-oidc";
 
-            var mobileClient = new Client
-            {
-                ClientId = "ZNxtCoreAppMobile",
-                ClientName = "ZNxtCoreAppMobile",
-                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                RequireClientSecret = false,
-                RedirectUris = { relyingPartyMobileUrls },
-                PostLogoutRedirectUris = { relyingPartyMobileUrls },
-                AllowOfflineAccess = true,
-                RequireConsent = false,
-                AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi", IdentityServerConstants.StandardScopes.OfflineAccess }
-            };
+            //var mobileClient = new Client
+            //{
+            //    ClientId = "ZNxtCoreAppMobile",
+            //    ClientName = "ZNxtCoreAppMobile",
+            //    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+            //    RequireClientSecret = false,
+            //    RedirectUris = { relyingPartyMobileUrls },
+            //    PostLogoutRedirectUris = { relyingPartyMobileUrls },
+            //    AllowOfflineAccess = true,
+            //    RequireConsent = false,
+            //    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi", IdentityServerConstants.StandardScopes.OfflineAccess }
+            //};
 
             var mobile_auth_client = new Client
             {
@@ -67,16 +75,16 @@ namespace ZNxt.Identity
                     {
                         new Secret("secret".Sha256())
                     },
-                AllowedScopes = { "ZNxtCoreAppApi" , IdentityServerConstants.StandardScopes.OfflineAccess },
+                AllowedScopes = { "ZNxtCoreAppApi", IdentityServerConstants.StandardScopes.OfflineAccess },
                 AllowOfflineAccess = true,
                 RequireConsent = false,
                 AccessTokenLifetime = MOBILE_ACCESS_TOKEN_LIFETIME
             };
-            
+
 
             return new[]
             {
-              mobileClient,
+             // mobileClient,
               mobile_auth_client,
                 new Client
                 {
