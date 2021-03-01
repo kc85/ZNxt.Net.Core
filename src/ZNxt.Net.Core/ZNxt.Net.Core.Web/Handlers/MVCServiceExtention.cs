@@ -265,11 +265,20 @@ public static class MVCApplicationBuilderExtensions
     {
         app.UseHttpProxyHandler();
         app.Map("/api", HandlerAPI);
-        app.UseMvc(routes =>
+        if (CommonUtility.GetAppConfigValue("UseSpa").ToLower() == "true")
         {
-            routes.MapRoute("default", "{controller=Default}/{action=Index}/{id?}");
-        });
-        app.MapWhen(context => true, HandlerStaticContant);
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+        }
+        app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Default}/{action=Index}/{id?}");
+            });
+
+        if (CommonUtility.GetAppConfigValue("UseSpa").ToLower() != "true")
+        {
+            app.MapWhen(context => true, HandlerStaticContant);
+        }
     }
     private static void HandlerStaticContant(IApplicationBuilder app)
     {

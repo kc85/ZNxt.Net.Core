@@ -6,7 +6,9 @@ namespace ZNxt.Net.Core.Web.Services
 {
     public class InMemoryCacheService : IInMemoryCacheService
     {
-        private readonly IMemoryCache _memoryCache;
+        private static object _lockcacheitem = new object();
+        private static IMemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
+
         public InMemoryCacheService(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
@@ -18,27 +20,39 @@ namespace ZNxt.Net.Core.Web.Services
             {
                 return (T)Convert.ChangeType(value, typeof(T));
             }
-            else{
+            else
+            {
                 return default(T);
-            }   
+            }
         }
 
         public void Put<T>(string key, T data, int duration = 5)
         {
-            object value = null;
-            if (!_memoryCache.TryGetValue(key, out value))
+         
+            Put(key, data, TimeSpan.FromMinutes(duration));
+        }
+        public void Put<T>(string key, T data, TimeSpan timeSpan, Action<object, object, EvictionReason, object> callback = null)
+        {
+            lock (_lockcacheitem)
             {
-                // Key not in cache, so get data.
-                value = data;
+                var options = new MemoryCacheEntryOptions()
+                  .SetAbsoluteExpiration(DateTimeOffset.UtcNow.AddSeconds(timeSpan.TotalSeconds)).RegisterPostEvictionCallback(
+                (echoKey, removevalue, reason, substate) =>
+                {
+                    callback?.Invoke(echoKey, removevalue, reason, substate);
+                });
 
-                // Set cache options.
-                var cacheEntryOptions = new MemoryCacheEntryOptions()
-                    // Keep in cache for this time, reset time if accessed.
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(duration));
-
-                // Save data in cache.
-                _memoryCache.Set(key, data, cacheEntryOptions);
+                _memoryCache.Set<T>(
+                GetKey(key, typeof(T)),
+                data,
+                options
+                );
             }
         }
+        private string GetKey(string key, Type obj)
+        {
+            return $"{key}:::{obj.FullName}";
+        }
+
     }
 }
