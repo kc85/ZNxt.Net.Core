@@ -78,7 +78,7 @@ namespace IdentityServer4.Quickstart.UI
                 }
                 else
                 {
-                    var user = _users.FindByUsername(token.user_id);
+                    var user = _appAuthTokenHandler.GetUser(token);
                     if (user == null)
                     {
                         return Redirect(_appAuthTokenHandler.LoginFailRedirect());

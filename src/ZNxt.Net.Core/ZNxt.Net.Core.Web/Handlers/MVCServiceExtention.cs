@@ -265,7 +265,9 @@ public static class MVCApplicationBuilderExtensions
     {
         app.UseHttpProxyHandler();
         app.Map("/api", HandlerAPI);
-        if (CommonUtility.GetAppConfigValue("UseSpa").ToLower() == "true")
+        var useSpa = CommonUtility.GetAppConfigValue("UseSpa");
+
+        if (useSpa != null && useSpa.ToLower() == "true")
         {
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -275,7 +277,7 @@ public static class MVCApplicationBuilderExtensions
                 routes.MapRoute("default", "{controller=Default}/{action=Index}/{id?}");
             });
 
-        if (CommonUtility.GetAppConfigValue("UseSpa").ToLower() != "true")
+        if (useSpa ==null || useSpa.ToLower() != "true")
         {
             app.MapWhen(context => true, HandlerStaticContant);
         }

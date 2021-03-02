@@ -81,10 +81,10 @@ namespace ZNxt.Net.Core.Services
             if (typeof(T) == typeof(Byte[]))
             {
                 byte[] byteData = data as Byte[];
-                if (!string.IsNullOrEmpty(encriptionKey))
-                {
-                    byteData = _encryption.Encrypt(byteData, encriptionKey);
-                }
+                //if (!string.IsNullOrEmpty(encriptionKey))
+                //{
+                //    byteData = _encryption.Encrypt(byteData, encriptionKey);
+                //}
                 File.WriteAllBytes(GetPath(bucket, key), byteData);
                 return true;
             }
@@ -154,10 +154,10 @@ namespace ZNxt.Net.Core.Services
             }
 
             byte[] byteData = File.ReadAllBytes(path);
-            if (!string.IsNullOrEmpty(encriptionKey))
-            {
-                byteData = _encryption.Decrypt(byteData, encriptionKey);
-            }
+            //if (!string.IsNullOrEmpty(encriptionKey))
+            //{
+            //    byteData = _encryption.Decrypt(byteData, encriptionKey);
+            //}
             return byteData;
         }
 
@@ -171,10 +171,10 @@ namespace ZNxt.Net.Core.Services
                     throw new KeyNotFoundException(key);
                 }
                 byte[] byteData = File.ReadAllBytes(path);
-                if (!string.IsNullOrEmpty(encriptionKey))
-                {
-                    byteData = _encryption.Decrypt(byteData, encriptionKey);
-                }
+                //if (!string.IsNullOrEmpty(encriptionKey))
+                //{
+                //    byteData = _encryption.Decrypt(byteData, encriptionKey);
+                //}
                 return System.Text.Encoding.UTF8.GetString(byteData);
             }
             catch (Exception ex)

@@ -322,13 +322,14 @@ namespace ZNxt.Net.Core.Web.Handlers
             }
         }
 
-        private UserModel ValidateOAuthRequest(StringValues oauthclient, HttpContext context, RoutingModel route)
+        private UserModel ValidateOAuthRequest(StringValues oauthclientid, HttpContext context, RoutingModel route)
         {
             var secrect  = context.Request.Headers[CommonConst.CommonField.OAUTH_CLIENT_SECRET];
-            var client = _oAuthClientService.GetClient(oauthclient);
-            if (client != null)
+            var oauthclient = _oAuthClientService.GetClient(oauthclientid);
+            if (oauthclient != null)
             {
-                if(client.ClientSecrets.First().Value == new Secret(secrect.ToString().Sha256()).Value)
+                var client = oauthclient.Client;
+                if (oauthclient.Secret == secrect.ToString())
                 {
                     if (client.AllowedScopes.Where(f => route.auth_users.IndexOf(f) != -1).Any())
                     {

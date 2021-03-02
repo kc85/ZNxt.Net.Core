@@ -64,10 +64,10 @@ namespace ZNxt.Net.Core.DB.Mongo
                 var base64Data = data.First()[CommonConst.CommonField.DATA].ToString();
 
                 byte[] byteData = Convert.FromBase64String(base64Data);
-                if (!string.IsNullOrEmpty(encriptionKey))
-                {
-                    byteData = _encryption.Decrypt(byteData, encriptionKey);
-                }
+                //if (!string.IsNullOrEmpty(encriptionKey))
+                //{
+                //    byteData = _encryption.Decrypt(byteData, encriptionKey);
+                //}
                 return byteData;
             }
             else
@@ -94,10 +94,10 @@ namespace ZNxt.Net.Core.DB.Mongo
             if (typeof(T) == typeof(Byte[]))
             {
                 byteData = data as Byte[];
-                if (!string.IsNullOrEmpty(encriptionKey))
-                {
-                    byteData = _encryption.Encrypt(byteData, encriptionKey);
-                }
+                //if (!string.IsNullOrEmpty(encriptionKey))
+                //{
+                //    byteData = _encryption.Encrypt(byteData, encriptionKey);
+                //}
             }
             if (typeof(T) == typeof(string))
             {

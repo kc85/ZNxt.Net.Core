@@ -19,7 +19,15 @@ namespace ZNxt.Net.Core.Web.Services.SSO
         }
         public Task<Client> FindClientByIdAsync(string clientId)
         {
-            return Task.FromResult(_oAuthClientService.GetClient(clientId));
+            var client = _oAuthClientService.GetClient(clientId);
+            if (client != null)
+            {
+                return Task.FromResult(client.Client);
+            }
+            else
+            {
+                return Task.FromResult<Client>(null);
+            }
         }
     }
 }
