@@ -256,6 +256,8 @@ public static class MVCServiceExtention
         services.AddTransient<ZNxtUserStore>();
         services.AddTransient<IUserNotifierService, UserNotifierService>();
         services.AddTransient<IResourceOwnerPasswordValidator, ZNxtResourceOwnerPasswordValidator>();
+        services.AddTransient<ITenantSetterService, TenantSetterService>();
+
     }
 }
 
@@ -265,22 +267,24 @@ public static class MVCApplicationBuilderExtensions
     {
         app.UseHttpProxyHandler();
         app.Map("/api", HandlerAPI);
-        var useSpa = CommonUtility.GetAppConfigValue("UseSpa");
+        //var useSpa = CommonUtility.GetAppConfigValue("UseSpa");
 
-        if (useSpa != null && useSpa.ToLower() == "true")
-        {
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-        }
+        //if (useSpa != null && useSpa.ToLower() == "true")
+        //{
+        //  //  app.UseStaticFiles();
+        //   // app.UseSpaStaticFiles();
+        //}
+
+
+        //if (useSpa ==null || useSpa.ToLower() != "true")
+        //{
         app.UseMvc(routes =>
-            {
-                routes.MapRoute("default", "{controller=Default}/{action=Index}/{id?}");
-            });
-
-        if (useSpa ==null || useSpa.ToLower() != "true")
         {
-            app.MapWhen(context => true, HandlerStaticContant);
-        }
+            routes.MapRoute("default", "{controller}/{action}/{id?}");
+        });
+        app.MapWhen(context => true, HandlerStaticContant);
+           
+        //  }
     }
     private static void HandlerStaticContant(IApplicationBuilder app)
     {

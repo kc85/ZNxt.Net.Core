@@ -64,7 +64,6 @@ namespace ZNxt.Module.Identity.Services.API
                             id = CommonUtility.GetNewID(),
                             roles = new List<string> { "init_login_email_otp" }
                         };
-
                         _logger.Debug("Calling CreateUser");
                         var response = _ZNxtUserService.CreateUser(userModel, false);
                         if (response)

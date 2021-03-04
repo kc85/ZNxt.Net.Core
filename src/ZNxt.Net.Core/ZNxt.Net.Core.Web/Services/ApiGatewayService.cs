@@ -145,14 +145,14 @@ namespace ZNxt.Net.Core.Web.Services
             {
                 request.Headers.Add(CommonConst.CommonField.API_AUTH_TOKEN, CommonUtility.GetApiAuthKey());
             }
-            if (!request.Headers.Contains(CommonConst.CommonValue.ORG_KEY))
+            if (!request.Headers.Contains(CommonConst.CommonValue.TENANT_KEY))
             {
-                var orgkey = _httpContextProxy.GetHeader(CommonConst.CommonValue.ORG_KEY);
+                var orgkey = _httpContextProxy.GetHeader(CommonConst.CommonValue.TENANT_KEY);
                 if (string.IsNullOrEmpty(orgkey))
                 {
-                    orgkey = _httpContextProxy.GetQueryString(CommonConst.CommonValue.ORG_KEY);
+                    orgkey = _httpContextProxy.GetQueryString(CommonConst.CommonValue.TENANT_KEY);
                 }
-                request.Headers.Add(CommonConst.CommonValue.ORG_KEY, orgkey);
+                request.Headers.Add(CommonConst.CommonValue.TENANT_KEY, orgkey);
             }
         }
 

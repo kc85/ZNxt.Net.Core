@@ -25,7 +25,7 @@ namespace ZNxt.Net.Core.Model
         public List<Claim> claims { get; set; }
         public List<string> roles { get; set; }
         public List<string> temp_roles { get; set; }
-        public List<UserOrgModel> orgs { get; set; }
+        public List<TenantModel> tenants { get; set; }
 
         public string mobile_auth_phone_number { get; set; }
 
@@ -34,23 +34,25 @@ namespace ZNxt.Net.Core.Model
             claims = new List<Claim>();
             roles = new List<string>();
             temp_roles = new List<string>();
-            orgs = new List<UserOrgModel>();
+            tenants = new List<TenantModel>();
         }
     }
-    public class UserOrgModel
+    public class TenantModel
     {
+
         public string org_key { get; set; }
         public bool is_enabled { get; set; }
         public string user_id { get; set; }
-        public List<Org_Group> Groups { get; set; }
+        public List<TenantGroup> Groups { get; set; } = new List<TenantGroup>();
+
     }
 
 
-    public class Org_Group
+    public class TenantGroup
     {
         public string name { get; set; }
         public string key { get; set; }
-        public List<string> roles { get; set; }
+        public List<string> roles { get; set; } = new List<string>();
     }
 
     public class DOBModel

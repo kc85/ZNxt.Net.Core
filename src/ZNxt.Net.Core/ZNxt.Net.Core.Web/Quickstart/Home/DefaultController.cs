@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZNxt.Net.Core.Helpers;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -13,7 +14,12 @@ namespace IdentityServer4.Quickstart.UI
     {
         public IActionResult Index()
         {
-            return Redirect("/index.html");
+            var page = CommonUtility.GetAppConfigValue("default_page");
+            if (string.IsNullOrEmpty(page))
+            {
+                page = "/index.html";
+            }
+            return Redirect(page);
         }
     }
 }

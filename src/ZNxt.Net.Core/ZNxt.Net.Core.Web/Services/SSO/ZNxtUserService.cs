@@ -11,6 +11,7 @@ using ZNxt.Net.Core.Exceptions;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
+using ZNxt.Net.Core.Web.Services;
 using static ZNxt.Net.Core.Consts.CommonConst;
 
 namespace ZNxt.Identity.Services
@@ -24,15 +25,16 @@ namespace ZNxt.Identity.Services
         private const string collectonUserLoginFail = "user_login_fail";
         private const string consecutive_check_end_time = "consecutive_check_end_time";
         private const string is_locked = "is_locked";
+        private readonly ITenantSetterService _tenantSetterService;
 
-
-        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService, ILogger logger, IApiGatewayService apiGatewayService)
+        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService, ILogger logger, IApiGatewayService apiGatewayService, ITenantSetterService tenantSetterService)
         {
 
             _userNotifierService = userNotifierService;
             _dBService = dBService;
             _logger = logger;
             _apiGatewayService = apiGatewayService;
+            _tenantSetterService = tenantSetterService;
         }
         public bool CreateUser(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
         {
@@ -124,7 +126,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-                SetUserOrgs(userModel);
+                SetUserTenants(userModel);
                 return userModel;
             }
             else
@@ -139,7 +141,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-                SetUserOrgs(userModel);
+                SetUserTenants(userModel);
                 return userModel;
             }
             else
@@ -153,7 +155,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-                SetUserOrgs(userModel);
+                SetUserTenants(userModel);
                 return userModel;
             }
             else
@@ -247,30 +249,32 @@ namespace ZNxt.Identity.Services
             return true;
         }
 
-        public void SetUserOrgs(UserModel userModel)
+        public void SetUserTenants(UserModel userModel)
         {
-            var extennalOrgEndpoint = "/s2fschool/identity/user/allorgs";
-            try
-            {
-                if (CommonUtility.GetAppConfigValue("SetOrg") == "true")
-                {
-                    _logger.Debug($"Calling {extennalOrgEndpoint}");
-                    var response = _apiGatewayService.CallAsync(ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
-                    if (response[CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonField.DATA] != null)
-                    {
+            _tenantSetterService.SetTenant(userModel);
 
-                        userModel.orgs = JsonConvert.DeserializeObject<List<UserOrgModel>>(response[CommonField.DATA].ToString());
-                    }
-                    else
-                    {
-                        _logger.Error($"Error responsefrom {extennalOrgEndpoint}", null, response);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Info(ex.Message);
-            }
+            //var extennalOrgEndpoint = "/s2fschool/identity/user/allorgs";
+            //try
+            //{
+            //    if (CommonUtility.GetAppConfigValue("SetOrg") == "true")
+            //    {
+            //        _logger.Debug($"Calling {extennalOrgEndpoint}");
+            //        var response = _apiGatewayService.CallAsync(ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
+            //        if (response[CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonField.DATA] != null)
+            //        {
+
+            //            userModel.tenants = JsonConvert.DeserializeObject<List<TenantModel>>(response[CommonField.DATA].ToString());
+            //        }
+            //        else
+            //        {
+            //            _logger.Error($"Error responsefrom {extennalOrgEndpoint}", null, response);
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.Info(ex.Message);
+            //}
         }
 
         public List<UserModel> GetUsersByEmail(string email)
@@ -292,7 +296,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userModel = JsonConvert.DeserializeObject<UserModel>(user.First().ToString());
-                SetUserOrgs(userModel);
+                SetUserTenants(userModel);
                 return userModel;
             }
             else
@@ -358,7 +362,6 @@ namespace ZNxt.Identity.Services
         }
         public bool AddUserRelation(string parentuserid, string childuserid, string relation)
         {
-
             relation = relation.Trim().ToLower();
             var data = new JObject();
             data[$"parent_" + CommonField.USER_ID] = parentuserid;
@@ -413,7 +416,6 @@ namespace ZNxt.Identity.Services
                     dob = new DOBModel() { day = 1, month = 1, year = 1 },
                     roles = new List<string> { "mobile_auth", "mobile_auth_init_user" }
                 };
-
                 if (!CreateUser(user, false))
                 {
                     throw new Exception("Error adding user");

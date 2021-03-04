@@ -60,21 +60,30 @@ namespace ZNxt.Net.Core.Web.Proxies
                         {
                             user.roles = JArray.Parse(claim.Value).Select(f => f.ToString()).ToList();
                         }
-                        if (claim.Type == CommonConst.CommonValue.ORG_KEY)
+                        if (claim.Type == CommonConst.CommonValue.TENANT_KEY)
                         {  
-                            user.orgs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UserOrgModel>>(claim.Value);
+                            user.tenants = Newtonsoft.Json.JsonConvert.DeserializeObject<List<TenantModel>>(claim.Value);
                         }
                     }
                     
-                    var orgkey = GetHeader(CommonConst.CommonValue.ORG_KEY);
-                    if (string.IsNullOrEmpty(orgkey))
+                  
+                    TenantModel tenant = null;
+                    if (user.tenants.Count == 1)
                     {
-                         orgkey = GetQueryString(CommonConst.CommonValue.ORG_KEY);
+                        tenant = user.tenants.First();
                     }
-                    var org = user.orgs.FirstOrDefault(f => f.org_key == orgkey);
-                    if (org != null && org.Groups != null)
+                    else if(user.tenants.Count != 0)
                     {
-                        foreach (var g in org.Groups)
+                        var orgkey = GetHeader(CommonConst.CommonValue.TENANT_KEY);
+                        if (string.IsNullOrEmpty(orgkey))
+                        {
+                            orgkey = GetQueryString(CommonConst.CommonValue.TENANT_KEY);
+                        }
+                        tenant = user.tenants.FirstOrDefault(f => f.org_key == orgkey);
+                    }
+                    if (tenant != null && tenant.Groups != null)
+                    {
+                        foreach (var g in tenant.Groups)
                         {
                             user.roles.AddRange(g.roles);
                         }

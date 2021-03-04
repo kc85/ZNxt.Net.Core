@@ -55,7 +55,7 @@
             public const string SSOURL_CONFIG_KEY = "SSOUrl";
             public const string APP_NAME_CONFIG_KEY = "AppName";
             public const string APP_SECRET_CONFIG_KEY = "AppSecret";
-            public const string ORG_KEY = "orgkey";
+            public const string TENANT_KEY = "tenantkey";
         }
     }
 }

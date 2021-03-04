@@ -237,10 +237,10 @@ namespace ZNxt.Net.Core.Web.Handlers
                     if (!string.IsNullOrEmpty(accessToken))
                     {
 
-                        orgkey = _httpContextProxy.GetHeader(CommonConst.CommonValue.ORG_KEY);
+                        orgkey = _httpContextProxy.GetHeader(CommonConst.CommonValue.TENANT_KEY);
                         if (string.IsNullOrEmpty(orgkey))
                         {
-                            orgkey = _httpContextProxy.GetQueryString(CommonConst.CommonValue.ORG_KEY);
+                            orgkey = _httpContextProxy.GetQueryString(CommonConst.CommonValue.TENANT_KEY);
                         }
                         var cackeKey = $"{accessToken}_{orgkey}";
 
@@ -248,7 +248,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                         if (userModel == null)
                         {
 
-                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.ORG_KEY] = orgkey }, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.TENANT_KEY] = orgkey }, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
@@ -277,9 +277,9 @@ namespace ZNxt.Net.Core.Web.Handlers
                             {
                                 var roles = new List<string>();
                                 roles.AddRange(userModel.roles);
-                                if (userModel.orgs != null)
+                                if (userModel.tenants != null)
                                 {
-                                    var org = userModel.orgs.FirstOrDefault(f => f.org_key == orgkey);
+                                    var org = userModel.tenants.FirstOrDefault(f => f.org_key == orgkey);
                                     if (org != null)
                                     {
                                         //roles.Add(org.Groups.)
