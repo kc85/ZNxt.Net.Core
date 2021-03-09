@@ -63,7 +63,7 @@ namespace IdentityServer4.Quickstart.UI
         /// Entry point into the login workflow
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl, string connection)
+        public async Task<IActionResult> Login(string returnUrl)
 
         {
             var vm = await BuildLoginViewModelAsync(returnUrl);
@@ -137,8 +137,6 @@ namespace IdentityServer4.Quickstart.UI
 
             // check if we are in the context of an authorization request
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-
-
             
 
             try
@@ -392,8 +390,8 @@ namespace IdentityServer4.Quickstart.UI
                 ReturnUrl = returnUrl,
                 Username = context?.LoginHint,
                 ExternalProviders = providers.ToArray(),
-                LoginUIType = context.Parameters["login_ui_type"] != null ? context.Parameters["login_ui_type"] : "",
-                AppToken = context.Parameters["app_token"] != null ? context.Parameters["app_token"] : "",
+                LoginUIType = (context != null ?( context.Parameters["login_ui_type"] != null ? context.Parameters["login_ui_type"] : ""): ""),
+                AppToken = (context!=null ? (context.Parameters["app_token"] != null ? context.Parameters["app_token"] : ""): "")
 
 
             };
