@@ -76,7 +76,7 @@
                         <div class="x_content">
                             <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
                                 <div class="col-md-12 col-sm-12 col-xs-12 profile_details" ng-repeat="data in pageData.data">
-                                            <h4 >Name: {{data.name}} ( Active: {{data.is_active}})</h4> 
+                                    <h4>Client Id : {{data.client_id}}  Name: {{data.name}} ( Active: {{data.is_active}}), Client Secret: {{data.client_secret}}</h4> 
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12 profile_details" ng-show="pageData.data.length == 0" style="padding:100px;text-align:center">

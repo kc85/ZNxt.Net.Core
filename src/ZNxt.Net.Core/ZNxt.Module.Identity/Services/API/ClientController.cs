@@ -26,7 +26,7 @@ namespace ZNxt.Module.Identity.Services.API
         {
             try
             {
-                return GetPaggedData(CollectionName, null, null, null, new List<string>() { "name", "id", "allowed_scopes", "is_active" });
+                return GetPaggedData(CollectionName, null, null, null, new List<string>() { "client_id", "name", "id", "allowed_scopes", "is_active", "client_secret" });
             }
             catch (Exception ex)
             {
@@ -42,6 +42,32 @@ namespace ZNxt.Module.Identity.Services.API
                 JObject filter = new JObject()
                 {
                     ["name"] = _httpContextProxy.GetQueryString("name"),
+                    ["is_active"] = true
+                };
+                var data = _dBService.Get(CollectionName, new RawQuery(filter.ToString()));
+                if (data.Any())
+                {
+                    return _responseBuilder.Success(data.First());
+                }
+                else
+                {
+                    return _responseBuilder.NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex.Message, ex);
+                return _responseBuilder.ServerError();
+            }
+        }
+        [Route("/sso/oauthclient/byid", CommonConst.ActionMethods.GET, CommonConst.CommonField.API_AUTH_TOKEN)]
+        public JObject GetOAuthClientById()
+        {
+            try
+            {
+                JObject filter = new JObject()
+                {
+                    ["client_id"] = _httpContextProxy.GetQueryString("client_id"),
                     ["is_active"] = true
                 };
                 var data = _dBService.Get(CollectionName, new RawQuery(filter.ToString()));
@@ -123,7 +149,7 @@ namespace ZNxt.Module.Identity.Services.API
                    
                     JObject filter = new JObject()
                     {
-                        ["name"] = request.name
+                        ["client_id"] = request.client_id
                     };
                     if (!_dBService.Get(CollectionName, new RawQuery(filter.ToString())).Any())
                     {
@@ -146,7 +172,7 @@ namespace ZNxt.Module.Identity.Services.API
                     else
                     {
                         JObject errors = new JObject();
-                        errors["Error"] = $"Duplicate client id, {request.name}";
+                        errors["Error"] = $"Duplicate client id, {request.client_id}";
                         return _responseBuilder.BadRequest(errors);
                     }
                 }

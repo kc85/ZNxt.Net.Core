@@ -6,7 +6,13 @@ namespace ZNxt.Module.Identity.Services.API.Models
 {
     public class OAuthClientModel
     {
+
         public string id { get; set; }
+
+        [Required]
+        [Range(1000, 9999, ErrorMessage = "Client name min length 4 max length 4")]
+        public long client_id { get; set; }
+
         [Required]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Client name min length 5 max length 20")]
         public string name { get; set; }

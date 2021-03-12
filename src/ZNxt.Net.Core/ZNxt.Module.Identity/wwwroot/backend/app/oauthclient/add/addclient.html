@@ -8,7 +8,15 @@
                 </div>
                 <div class="x_content">
                     <form name="frmAddClient">
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{'has-error' : frmAddClient.inputclientId.$touched && frmAddClient.inputclientId.$invalid}">
+                                    <label for="inputclientId"> Client Id </label>
+                                    <input type="number" class="form-control" name="inputclientId" id="inputclientId" placeholder="Enter client id" ng-model="client.client_id" maxlength="4" ng-minlength="4" required />
+                                    <span class="help-block" ng-show="frmAddClient.inputclientId.$touched && frmAddClient.inputclientId.$invalid">Enter 4 digits number.</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group" ng-class="{'has-error' : frmAddClient.inputclientName.$touched && frmAddClient.inputclientName.$invalid}">

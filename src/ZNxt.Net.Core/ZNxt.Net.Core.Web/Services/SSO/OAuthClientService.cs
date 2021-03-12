@@ -21,7 +21,7 @@ namespace ZNxt.Net.Core.Web.Services.SSO
         protected readonly IDBService _dBService;
         protected readonly ILogger _logger;
         protected readonly IApiGatewayService _apiGatewayService;
-        protected const string oauthClientApiPath = "/sso/oauthclient/byname";
+        protected const string oauthClientApiPath = "/sso/oauthclient/byid";
         protected const string cachePrefix = "oauthclient_";
         protected readonly IInMemoryCacheService _inMemoryCacheService;
         public OAuthClientService(IDBService dBService, ILogger logger, IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService)
@@ -52,8 +52,8 @@ namespace ZNxt.Net.Core.Web.Services.SSO
             var route = _apiGatewayService.GetRouteAsync(CommonConst.ActionMethods.GET, oauthClientApiPath).GetAwaiter().GetResult();
             if (route != null)
             {
-                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, oauthClientApiPath,$"name={clientId}").GetAwaiter().GetResult();
-                if (result["code"].ToString() == "1")
+                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, oauthClientApiPath,$"client_id={clientId}").GetAwaiter().GetResult();
+                if (result[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == CommonConst._1_SUCCESS.ToString())
                 {
                     var client = new OAuthClient
                     {
@@ -61,6 +61,7 @@ namespace ZNxt.Net.Core.Web.Services.SSO
                         {
                             AllowedGrantTypes = GrantTypes.ClientCredentials,
                             ClientName = result["data"]["name"].ToString(),
+                            ClientId = result["data"]["client_id"].ToString(),
                             ClientSecrets = { new Secret(result["data"]["client_secret"].ToString().Sha256()) },
                             AllowOfflineAccess = true,
                         },
