@@ -63,7 +63,7 @@ namespace ZNxt.Net.Core.DB.MySql
       
         public void Init(string dbType, string connectionString)
         {
-            if (!string.IsNullOrEmpty(connectionString) && string.IsNullOrEmpty(dbType))
+            if (!string.IsNullOrEmpty(connectionString) && !string.IsNullOrEmpty(dbType))
             {
                 _connectionStr = connectionString;
                 _DBType = dbType;
@@ -109,7 +109,96 @@ namespace ZNxt.Net.Core.DB.MySql
             }
         }
 
-        
+        public IEnumerable<T> Get<T>(string tablename, int top, int skipped, JObject filter) where T : class
+        {
+            var sql = $"select * from {tablename}";
+
+            var filters = new List<string>();
+            if (filter != null)
+            {
+                foreach (var item in filter)
+                {
+                    filters.Add($"{item.Key}='{item.Value}'");
+                }
+            }
+
+            if (filters.Any())
+            {
+                sql = $"{sql} where { string.Join(" and ", filters) }";
+            }
+            sql  = $"{sql} LIMIT {top} OFFSET {skipped}";
+
+            using (var conn = GetConnection())
+            {
+                if (typeof(T) == typeof(JObject))
+                {
+                    IEnumerable<JObject> data = GetDateAsJObject(conn, sql);
+                    return data as IEnumerable<T>;
+                }
+                return conn.Query<T>(sql);
+            }
+        }
+        public IEnumerable<T> Get<T>(string tablename, int top, int skipped, string filter) where T : class
+        {
+            var sql = $"select * from {tablename}";
+
+            var filters = new List<string>();
+            
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                sql = $"{sql} where { filter}";
+            }
+            sql = $"{sql} LIMIT {top} OFFSET {skipped}";
+
+            using (var conn = GetConnection())
+            {
+                if (typeof(T) == typeof(JObject))
+                {
+                    IEnumerable<JObject> data = GetDateAsJObject(conn, sql);
+                    return data as IEnumerable<T>;
+                }
+                return conn.Query<T>(sql);
+            }
+        }
+
+        public long GetCount(string tablename, string filter)
+        {
+            var sql = $"select count(*) from {tablename} ";
+
+            if (!string.IsNullOrEmpty(filter)) {
+
+                sql = $"{sql} where { filter}"; 
+            }
+            using (var conn = GetConnection())
+            {
+                return conn.QueryFirst<long>(sql);
+            }
+        }
+        public long GetCount(string tablename, JObject filter)
+        {
+
+            var filters = new List<string>();
+            if (filter != null)
+            {
+                foreach (var item in filter)
+                {
+                    filters.Add($"{item.Key}='{item.Value}'");
+                }
+            }
+
+            var sql = $"select count(*) from {tablename} ";
+            if (filters.Any())
+            {
+                sql = $"{sql} where { string.Join(" and ", filters) }";
+            }
+            using (var conn = GetConnection())
+            {
+                return conn.QueryFirst<long>(sql);
+            }
+        }
+
+
         public T GetFirst<T>(string sql, object param = null) where T : class
         {
             using (var conn = GetConnection())
@@ -300,14 +389,20 @@ namespace ZNxt.Net.Core.DB.MySql
             }
             return true;
         }
-        public bool WriteData<T>(T data) where T : class
+        public long WriteData<T>(T data) where T : class
         {
             using (var conn = GetConnection())
             {
-                return conn.Insert<T>(data) == 1;
+                var result = conn.Insert<T>(data);
+                return result;
             }
         }
-
+        public long WriteData<T>(T data, RDBTransaction transaction) where T : class
+        {
+           
+                return transaction.Connection.Insert<T>(data,transaction.Transaction) ;
+            
+        }
         public bool WriteData(string sql, object param = null)
         {
             using (var conn = GetConnection())
@@ -315,7 +410,8 @@ namespace ZNxt.Net.Core.DB.MySql
                 return conn.Execute(sql, param) == 1;
             }
         }
-        public int WriteDataGetId(string sql, object param = null)
+       
+        public long WriteDataGetId(string sql, object param = null)
         {
             using (var conn = GetConnection())
             {
