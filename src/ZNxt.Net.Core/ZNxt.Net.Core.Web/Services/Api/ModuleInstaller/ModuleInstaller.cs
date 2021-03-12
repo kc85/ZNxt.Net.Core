@@ -62,6 +62,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
                 _logger.Error($"Error while GetAppGatewayConfig. {ex.Message}", ex);
             }
         }
+     
         [Route("/moduleinstaller/install", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject InstallModule()
         {

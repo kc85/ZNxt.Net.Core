@@ -35,11 +35,16 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Threading.Tasks;
 using ZNxt.Net.Core.Web.Interfaces;
 using System.Net.Http;
+using System.Reflection;
 
 public static class MVCServiceExtention
 {
+    private static IAssemblyLoader _assemblyLoader;
     public static void AddZNxtApp(this IServiceCollection services)
     {
+        AppDomain currentDomain = AppDomain.CurrentDomain;
+        currentDomain.AssemblyLoad += new AssemblyLoadEventHandler(AssemblyEventLoadHandler);
+        currentDomain.AssemblyResolve += AssemblyLoader;
         // services.AddScoped<IDBServiceConfig>(new Func<IServiceProvider, IDBServiceConfig>(f => { return new MongoDBServiceConfig("DotNetCoreTest", "mongodb://localhost:27017"); }));
         services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         services.AddTransient<IServiceResolver, ServiceResolver>();
@@ -77,10 +82,22 @@ public static class MVCServiceExtention
         services.AddTransient<IAppAuthTokenHandler, AppAuthTokenHandler>();
         services.AddMemoryCache();
         var serviceProvider = services.BuildServiceProvider();
+        _assemblyLoader =  serviceProvider.GetService<IAssemblyLoader>();
+
         SetAppInstallStatus(serviceProvider);
         InitRoutingDepedencies(services, serviceProvider);
     }
 
+    static Assembly AssemblyLoader(object source, ResolveEventArgs e)
+    {
+        Console.WriteLine("Resolving {0}", e.Name);
+        return _assemblyLoader.Load(e.Name);
+    }
+    static void AssemblyEventLoadHandler(object sender, AssemblyLoadEventArgs args)
+    {
+        Console.WriteLine("ASSEMBLY LOADED: " + args.LoadedAssembly.FullName);
+        Console.WriteLine();
+    }
     public static void AddZNxtIdentityServer(this IServiceCollection services)
     {
         if (ApplicationConfig.IsSSO)
@@ -190,10 +207,10 @@ public static class MVCServiceExtention
     private static void InitRoutingDepedencies(IServiceCollection services, ServiceProvider serviceProvider)
     {
         var routing = serviceProvider.GetService<IRouting>();
-        var assemblyLoader = serviceProvider.GetService<IAssemblyLoader>();
+      
         foreach (var route in routing.GetRoutes())
         {
-            var type = assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
+            var type = _assemblyLoader.GetType(route.ExecultAssembly, route.ExecuteType);
             if (type != null)
             {
                 // Do Not add AppInstallerContoller controller if AppInstallStatus is Finish for security reason 
