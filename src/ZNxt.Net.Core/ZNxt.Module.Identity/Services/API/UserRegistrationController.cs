@@ -52,7 +52,7 @@ namespace ZNxt.Module.Identity.Services.API
                         var userModel = new UserModel()
                         {
                             email = request.email,
-                            user_id = CommonUtility.GetNewID(),
+                            user_id = long.Parse($"{CommonUtility.GetUnixTimestamp(DateTime.UtcNow)}{CommonUtility.RandomNumber(4)}").ToString(),
                             user_name = request.user_name,
                             first_name = request.first_name,
                             middle_name = request.middle_name,

@@ -65,19 +65,28 @@ namespace ZNxt.Module.Identity.Services.API
         {
             try
             {
-                JObject filter = new JObject()
+                long clientid = 0;
+
+                if (long.TryParse(_httpContextProxy.GetQueryString("client_id"), out clientid))
                 {
-                    ["client_id"] = _httpContextProxy.GetQueryString("client_id"),
-                    ["is_active"] = true
-                };
-                var data = _dBService.Get(CollectionName, new RawQuery(filter.ToString()));
-                if (data.Any())
-                {
-                    return _responseBuilder.Success(data.First());
+                    JObject filter = new JObject()
+                    {
+                        ["client_id"] = clientid,
+                        ["is_active"] = true
+                    };
+                    var data = _dBService.Get(CollectionName, new RawQuery(filter.ToString()));
+                    if (data.Any())
+                    {
+                        return _responseBuilder.Success(data.First());
+                    }
+                    else
+                    {
+                        return _responseBuilder.NotFound();
+                    }
                 }
                 else
                 {
-                    return _responseBuilder.NotFound();
+                    return _responseBuilder.BadRequest($"Invalid client id: {_httpContextProxy.GetQueryString("client_id")}");
                 }
             }
             catch (Exception ex)
