@@ -1,25 +1,25 @@
 ﻿[
   {
     "key": "frontend_url",
-    "data": "http://sqa.s2fschool.com",
+    "data": "http://localhost:5001",
     "ui_folder": "frontend",
     "isactive": true
   },
   {
-    "data": "http://sqa.admin.s2fschool.com",
+    "data": "http://localhost:5002",
     "isactive": true,
     "key": "backend_url",
     "ui_folder": "backend"
   },
   {
     "key": "gateway_url",
-    "data": "http://sqa.gateway.s2fschool.com",
+    "data": "http://localhost:5003",
     "ui_folder": "gateway",
     "isactive": true
   },
   {
     "key": "sso_url",
-    "data": "http://sqa.sso.s2fschool.com",
+    "data": "http://localhost:5004",
     "ui_folder": "sso",
     "isactive": true
   }

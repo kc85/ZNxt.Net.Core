@@ -77,7 +77,7 @@ public static class MVCServiceExtention
         services.AddTransient<IAppSettingService, AppSettingService>();
         services.AddTransient<ISessionProvider, SessionProvider>();
         services.AddTransient<IApiGatewayService, ApiGatewayService>();
-        services.AddTransient<IInMemoryCacheService, InMemoryCacheService>();
+        services.AddSingleton<IInMemoryCacheService, InMemoryCacheService>();
         services.AddTransient<IOAuthClientService, OAuthClientService>();
         services.AddTransient<IAppAuthTokenHandler, AppAuthTokenHandler>();
         services.AddMemoryCache();

@@ -11,12 +11,15 @@ namespace ZNxt.Net.Core.Web.Services
 
         public InMemoryCacheService(IMemoryCache memoryCache)
         {
-            _memoryCache = memoryCache;
+            if (_memoryCache == null)
+            {
+                _memoryCache = memoryCache;
+            }
         }
         public T Get<T>(string key)
         {
             object value = null;
-            if (_memoryCache.TryGetValue(key, out value))
+            if (_memoryCache.TryGetValue(GetKey(key, typeof(T)), out value))
             {
                 return (T)Convert.ChangeType(value, typeof(T));
             }
