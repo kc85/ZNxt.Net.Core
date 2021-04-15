@@ -139,7 +139,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                             _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
                             context.Response.ContentType = route.ContentType;
                             var headers = new Dictionary<string, string>();
-                            headers[CommonConst.CommonField.API_AUTH_TOKEN] = "route-call";
+                           // headers[CommonConst.CommonField.API_AUTH_TOKEN] = "route-call";
                             var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath(), _httpContextProxy.GetQueryString(), _httpContextProxy.GetRequestBody<JObject>(), headers);
                             if (response != null)
                             {

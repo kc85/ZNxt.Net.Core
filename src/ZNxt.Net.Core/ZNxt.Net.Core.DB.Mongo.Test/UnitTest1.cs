@@ -60,7 +60,7 @@ namespace ZNxt.Net.Core.DB.Mongo.Test
 
         public string SessionID => throw new NotImplementedException();
 
-        public UserModel User => new UserModel() { id = "goo115559040204585310230", name = "Khanin", user_id = "goo115559040204585310230" };
+        public UserModel User => new UserModel() { id = "goo115559040204585310230", first_name = "Khanin", last_name = "C", user_id = "goo115559040204585310230" };
 
         public DateTime InitDateTime => throw new NotImplementedException();
 
@@ -132,7 +132,7 @@ namespace ZNxt.Net.Core.DB.Mongo.Test
                     return default;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return default;
             }
