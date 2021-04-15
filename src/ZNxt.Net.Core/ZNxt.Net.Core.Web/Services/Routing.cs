@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
@@ -28,11 +29,21 @@ namespace ZNxt.Net.Core.Web.Services
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                routeclasses.AddRange(
-                        assembly.GetTypes()
-                                    .Where(t => !t.IsAbstract)
-                                     .Distinct()
-                                     .ToList());
+
+                try
+                {
+                    var data = assembly.GetTypes()
+                                        .Where(t => !t.IsAbstract)
+                                         .Distinct()
+                                         .ToList();
+
+                    routeclasses.AddRange(data);
+
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    _logger.Error(ex.Message, ex);
+                }
             }
 
 
