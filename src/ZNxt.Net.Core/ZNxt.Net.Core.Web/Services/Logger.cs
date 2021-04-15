@@ -158,6 +158,7 @@ namespace ZNxt.Net.Core.Web.Services
             logData[CommonConst.CommonField.TRANSACTION_ID] = TransactionId;
             logData[CommonConst.CommonField.EXECUTE_TYPE] = ModuleExcutionType;
             logData[CommonConst.CommonField.ROUTE] = Route;
+            logData["AppEndpoint"] = CommonUtility.GetAppConfigValue("AppEndpoint"); ;
 
             return logData;
         }

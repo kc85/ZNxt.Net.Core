@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 
@@ -15,7 +16,7 @@ namespace ZNxt.Net.Core.Web.Services
         private ILogger _logger;
         public Dictionary<string, byte[]> _loadedAssembly = new Dictionary<string, byte[]>();
         private readonly IKeyValueStorage _keyValueStorage;
-        public AssemblyLoader(IDBService dbService,ILogger logger, IKeyValueStorage keyValueStorage)
+        public AssemblyLoader(IDBService dbService, ILogger logger, IKeyValueStorage keyValueStorage)
         {
             _dbProxy = dbService;
             _logger = logger;
@@ -65,7 +66,7 @@ namespace ZNxt.Net.Core.Web.Services
                     }
                     if (assemblyBytes == null)
                     {
-                        _logger.Error(string.Format("No Assembly found :{0}", assemblyName), null);
+                        _logger.Error($"No Assembly found :{assemblyName}", null);
                     }
                     else
                     {
