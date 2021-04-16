@@ -31,6 +31,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                 {
                     txnId = CommonUtility.GenerateTxnId();
                 }
+                context.Response.Headers.Add("powered-by", "znxt.app");
                 context.Response.Headers.Add(CommonConst.CommonField.TRANSACTION_ID, txnId);
                 context.Response.Headers.Add(CommonConst.CommonField.CREATED_DATA_DATE_TIME, CommonUtility.GetTimestampMilliseconds(DateTime.Now).ToString());
                 await _next(context);
