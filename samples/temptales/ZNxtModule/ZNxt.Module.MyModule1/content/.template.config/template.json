@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Khanin Choudhury",
+  "classifications": [ "Common", "Console" ],
+  "identity": "ZNxt.Module.Template.CSharp",
+  "name": "ZNxt.App module template",
+  "shortName": "znxtmodule",
+  "symbols": {
+    "ModuleName": {
+      "type": "parameter",
+      "defaultValue": "MyModule1",
+      "replaces": "MyModule1",
+      "FileRename": "MyModule1"
+    },
+    "Namespace": {
+      "type": "parameter",
+      "defaultValue": "ZNxt.Module",
+      "replaces": "ZNxt.Module",
+      "FileRename": "ZNxt.Module"
+    },
+    "ApiPrefix": {
+      "type": "parameter",
+      "defaultValue": "mdl1",
+      "replaces": "mdl1"
+    }
+  },
+  "primaryOutputs": [
+    {
+      "path": "ZNxt.Module.MyModule1\\ZNxt.Module.MyModule1.csproj"
+    },
+    {
+      "path": "ZNxt.Module.MyModule1.test\\ZNxt.Module.MyModule1.test.csproj"
+    },
+    {
+      "path": "ZNxt.Module.MyModule1.Web.Test\\ZNxt.Module.MyModule1.Web.Test.csproj"
+    }
+  ],
+  "exclude": [ "**/[Bb]in/**", "**/[Oo]bj/**", ".template.config/**/*", "**/*.lock.json" ]
+}

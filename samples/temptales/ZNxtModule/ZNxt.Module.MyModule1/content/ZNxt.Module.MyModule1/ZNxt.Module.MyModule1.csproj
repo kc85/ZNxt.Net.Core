@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0-Beta00031</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\Api\Modules\**" />
+    <EmbeddedResource Remove="Services\Api\Modules\**" />
+    <None Remove="Services\Api\Modules\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MSBump" Version="2.3.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ZNxt.Net.Core" Version="1.0.36" />
+    <PackageReference Include="MongoDB.Driver" Version="2.12.0-beta1" />
+    <PackageReference Include="AWSSDK.Core" Version="3.5.1.37" />
+    <PackageReference Include="AWSSDK.S3" Version="3.5.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="wwwroot\**\*.*">
+      <PackPath>.</PackPath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="collections\**\*.*">
+      <PackPath>.</PackPath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="collections\" />
+    <Folder Include="wwwroot\backend\" />
+    <Folder Include="wwwroot\frontend\" />
+    <Folder Include="wwwroot\sso\" />
+  </ItemGroup>
+</Project>
