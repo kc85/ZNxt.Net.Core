@@ -5,14 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.HttpOverrides;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Consts;
+using Microsoft.Extensions.Hosting;
+
 
 namespace ZNxt.Net.Core.Web.Sample
 {
     public class Startup
     {
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
-        public Startup(IHostingEnvironment environment, IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
             Configuration = configuration;
@@ -20,14 +22,14 @@ namespace ZNxt.Net.Core.Web.Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+            services.AddMvc();//.SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
             services.AddZNxtSSO(Environment);
             services.AddZNxtApp();
             services.AddZNxtBearerAuthentication();
             services.AddZNxtIdentityServer();
            
         }
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

@@ -71,7 +71,7 @@ namespace IdentityServer4.Quickstart.UI
             if (vm.LoginUIType == "app_token" && _appAuthTokenHandler.IsInAction())
             {
                 var context = await _interaction.GetAuthorizationContextAsync(vm.ReturnUrl);
-                var token = _appAuthTokenHandler.GetTokenModel(context.ClientId, vm.AppToken);
+                var token = _appAuthTokenHandler.GetTokenModel(context.Client.ClientId, vm.AppToken);
                 if (token == null)
                 {
                     return Redirect(_appAuthTokenHandler.LoginFailRedirect());
@@ -83,13 +83,17 @@ namespace IdentityServer4.Quickstart.UI
                     {
                         return Redirect(_appAuthTokenHandler.LoginFailRedirect());
                     }
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.ClientId));
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.Client?.ClientId));
                     var props = new AuthenticationProperties
                     {
                         IsPersistent = true,
                         ExpiresUtc = DateTimeOffset.UtcNow.Add(_appAuthTokenHandler.GetLoginDuration())
                     };
-                    await HttpContext.SignInAsync(user.user_id, user.GetDisplayName(), props);
+                    var isuser = new IdentityServerUser(user.user_id)
+                    {
+                        DisplayName = user.GetDisplayName()
+                    };
+                    await HttpContext.SignInAsync(isuser, props);
                 }
             }
             else if (vm.IsExternalLoginOnly)
@@ -114,7 +118,11 @@ namespace IdentityServer4.Quickstart.UI
                 if (_users.ValidateCredentials(model.Username, model.Password, model.EmailOTP, model.ResetPassOTP))
                 {
                     var user = _users.FindByUsername(model.Username);
-                    await HttpContext.SignInAsync(user.user_id, user.GetDisplayName());
+                    var isuser = new IdentityServerUser(user.user_id)
+                    {
+                        DisplayName = user.GetDisplayName()
+                    };
+                    await HttpContext.SignInAsync(isuser);
                     return Ok();
                 }
                 else
@@ -151,10 +159,10 @@ namespace IdentityServer4.Quickstart.UI
                         // if the user cancels, send a result back into IdentityServer as if they 
                         // denied the consent (even if this client does not require consent).
                         // this will send back an access denied OIDC error response to the client.
-                        await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
+                        await _interaction.DenyAuthorizationAsync(context, AuthorizationError.AccessDenied);
 
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                        if (await _clientStore.IsPkceClientAsync(context.ClientId))
+                        if (await _clientStore.IsPkceClientAsync(context?.Client.ClientId))
                         {
                             // if the client is PKCE then we assume it's native, so this change in how to
                             // return the response is for better UX for the end user.
@@ -176,7 +184,7 @@ namespace IdentityServer4.Quickstart.UI
                     if (_users.ValidateCredentials(model.Username, model.Password, model.EmailOTP, model.ResetPassOTP))
                     {
                         var user = _users.FindByUsername(model.Username);
-                        await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.ClientId));
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.Client?.ClientId));
 
                         // only set explicit expiration here if user chooses "remember me". 
                         // otherwise we rely upon expiration configured in cookie middleware.
@@ -191,9 +199,12 @@ namespace IdentityServer4.Quickstart.UI
                         };
 
 
-                        
+                        var isuser = new IdentityServerUser(user.user_id)
+                        {
+                            DisplayName = user.GetDisplayName()
+                        };
                         // issue authentication cookie with subject ID and username
-                        await HttpContext.SignInAsync(user.user_id, user.GetDisplayName(), props);
+                        await HttpContext.SignInAsync(isuser, props);
                         var passsetview = IsPasswordSetRequired(user, model);
                         if (passsetview != null)
                         {
@@ -202,7 +213,7 @@ namespace IdentityServer4.Quickstart.UI
                         }
                         if (context != null)
                         {
-                            if (await _clientStore.IsPkceClientAsync(context.ClientId))
+                            if (await _clientStore.IsPkceClientAsync(context.Client.ClientId))
                             {
                                 // if the client is PKCE then we assume it's native, so this change in how to
                                 // return the response is for better UX for the end user.
@@ -229,18 +240,18 @@ namespace IdentityServer4.Quickstart.UI
 
                     }
 
-                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.ClientId));
+                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client?.ClientId));
                     ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
                 }
             }
             catch (UserConsecutiveLoginFailLockException ex)
             {
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "User Consecutive Logined Fail Locked", clientId: context?.ClientId));
+                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "User Consecutive Logined Fail Locked", clientId: context?.Client?.ClientId));
                 ModelState.AddModelError(string.Empty, $"{AccountOptions.UserConsecutiveLoginFailLock}. Please try after {Math.Round((ex.Duration) / 1000 / 60)} minutes");
             }
             catch(UserConsecutiveLoginFailLockCountException ex)
             {
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.ClientId));
+                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client?.ClientId));
                 var message = $"{ex.RemainingCount} {AccountOptions.UserConsecutiveLoginBeforeLock}";
                 if(ex.RemainingCount == 1)
                 {
@@ -369,9 +380,9 @@ namespace IdentityServer4.Quickstart.UI
                 }).ToList();
 
             var allowLocal = true;
-            if (context?.ClientId != null)
+            if (context?.Client?.ClientId != null)
             {
-                var client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
+                var client = await _clientStore.FindEnabledClientByIdAsync(context?.Client?.ClientId);
                 if (client != null)
                 {
                     allowLocal = client.EnableLocalLogin;

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
@@ -24,7 +23,6 @@ using ZNxt.Net.Core.Web.Services;
 using ZNxt.Net.Core.Web.Services.Api.Installer;
 using Microsoft.AspNetCore.Hosting;
 using System.Security.Cryptography.X509Certificates;
-using IdentityServer4;
 using ZNxt.Identity.Services;
 using IdentityServer4.Services;
 using IdentityServer4.Configuration;
@@ -36,6 +34,9 @@ using System.Threading.Tasks;
 using ZNxt.Net.Core.Web.Interfaces;
 using System.Net.Http;
 using System.Reflection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
 
 public static class MVCServiceExtention
 {
@@ -46,7 +47,10 @@ public static class MVCServiceExtention
         currentDomain.AssemblyLoad += new AssemblyLoadEventHandler(AssemblyEventLoadHandler);
         currentDomain.AssemblyResolve += AssemblyLoader;
         // services.AddScoped<IDBServiceConfig>(new Func<IServiceProvider, IDBServiceConfig>(f => { return new MongoDBServiceConfig("DotNetCoreTest", "mongodb://localhost:27017"); }));
-        services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        //services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        //services.AddRazorPages();
+        //services.AddControllers();
+        services.AddControllers();
         services.AddTransient<IServiceResolver, ServiceResolver>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IEncryption, EncryptionService>();
@@ -60,12 +64,12 @@ public static class MVCServiceExtention
         services.AddTransient<IStaticContentHandler, ZNxt.Net.Core.Web.ContentHandler.StaticContentHandler>();
 
         if (string.IsNullOrEmpty(ApplicationConfig.ConnectionString)) {
-            services.AddTransient<ILogger, ConsoleLogger>();
+            services.AddTransient<ZNxt.Net.Core.Interfaces.ILogger, ConsoleLogger>();
             services.AddTransient<ILogReader, ConsoleLogger>();
         }
         else
         {
-            services.AddTransient<ILogger, Logger>();
+            services.AddTransient<ZNxt.Net.Core.Interfaces.ILogger, Logger>();
             services.AddTransient<ILogReader, Logger>();
         }
       
@@ -155,16 +159,16 @@ public static class MVCServiceExtention
         if (!string.IsNullOrEmpty(ssourl))
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            services.AddAuthentication().AddJwtBearer(options =>
-            {
+            //services.AddAuthentication().AddJwtBearer(options =>
+            //{
 
-                options.Authority = ssourl;
-                options.Audience = "ZNxtCoreAppApi";
-                options.TokenValidationParameters.NameClaimType = "name";
-                options.RequireHttpsMetadata = false;
-                options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true;  } };
+            //    options.Authority = ssourl;
+            //    options.Audience = "ZNxtCoreAppApi";
+            //    options.TokenValidationParameters.NameClaimType = "name";
+            //    options.RequireHttpsMetadata = false;
+            //    options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true;  } };
 
-            });
+            //});
         }
     }
 
@@ -221,7 +225,7 @@ public static class MVCServiceExtention
             }
         }
     }
-    public static void AddZNxtSSO(this IServiceCollection services, IHostingEnvironment environment)
+    public static void AddZNxtSSO(this IServiceCollection services, IWebHostEnvironment environment)
     {
         if (!ApplicationConfig.IsSSO)
             return;
@@ -261,13 +265,13 @@ public static class MVCServiceExtention
             var cert = new X509Certificate2(fileName, "abc@123");
             builder.AddSigningCredential(cert);
         }
-        services.AddAuthentication()
-            .AddGoogle(options =>
-            {
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                options.ClientId = "592081696184-3056k8j98cfliger0398q08nmi50cfjs.apps.googleusercontent.com";
-                options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
-            });
+        //services.AddAuthentication()
+        //    .AddGoogle(options =>
+        //    {
+        //        options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+        //        options.ClientId = "592081696184-3056k8j98cfliger0398q08nmi50cfjs.apps.googleusercontent.com";
+        //        options.ClientSecret = "l-vFpRQvyZP_otetPhrF5Xdy";
+        //    });
         services.AddTransient<IZNxtUserService, ZNxtUserService>();
         services.AddTransient<IProfileService, ZNxtProfileService>();
         services.AddTransient<ZNxtUserStore>();
@@ -295,9 +299,11 @@ public static class MVCApplicationBuilderExtensions
 
         //if (useSpa ==null || useSpa.ToLower() != "true")
         //{
-        app.UseMvc(routes =>
+        app.UseRouting();
+
+        app.UseEndpoints(endpoints =>
         {
-            routes.MapRoute("default", "{controller}/{action}/{id?}");
+            endpoints.MapControllers();
         });
         app.MapWhen(context => true, HandlerStaticContant);
            

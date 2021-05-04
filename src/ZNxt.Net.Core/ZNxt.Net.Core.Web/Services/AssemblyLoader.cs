@@ -87,7 +87,11 @@ namespace ZNxt.Net.Core.Web.Services
         {
             try
             {
-                _logger.Info(string.Format("Loading Assemmbly:{0}, from Download ", assemblyName));
+                if (string.IsNullOrEmpty(ApplicationConfig.ConnectionString))
+                {
+                    return null;
+                }
+               _logger.Info(string.Format("Loading Assemmbly:{0}, from Download ", assemblyName));
 
                 var dataResponse = _dbProxy.Get(CommonConst.Collection.DLLS, new RawQuery(GetFilter(assemblyName)));
 

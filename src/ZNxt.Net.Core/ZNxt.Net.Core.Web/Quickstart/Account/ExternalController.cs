@@ -14,7 +14,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using ZNxt.Identity.Services;
-
+using ZNxt.Net.Core.Helpers;
 namespace IdentityServer4.Quickstart.UI
 {
     [SecurityHeaders]
@@ -119,7 +119,15 @@ namespace IdentityServer4.Quickstart.UI
             ProcessLoginCallbackForSaml2p(result, additionalLocalClaims, localSignInProps);
 
             // issue authentication cookie for user
-            await HttpContext.SignInAsync(user.user_id, user.name, provider, localSignInProps, additionalLocalClaims.ToArray());
+
+
+            var isuser = new IdentityServerUser(user.user_id)
+            {
+                DisplayName = user.GetDisplayName(),
+                IdentityProvider = provider,
+                AdditionalClaims = additionalLocalClaims
+            };
+            await HttpContext.SignInAsync(isuser, localSignInProps);
 
             // delete temporary cookie used during external authentication
             await HttpContext.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
@@ -129,11 +137,11 @@ namespace IdentityServer4.Quickstart.UI
 
             // check if external login is in the context of an OIDC request
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.user_id,user.name, true, context?.ClientId));
+            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.user_id,user.GetDisplayName(), true, context?.Client?.ClientId));
 
             if (context != null)
             {
-                if (await _clientStore.IsPkceClientAsync(context.ClientId))
+                if (await _clientStore.IsPkceClientAsync(context.Client.ClientId))
                 {
                     // if the client is PKCE then we assume it's native, so this change in how to
                     // return the response is for better UX for the end user.

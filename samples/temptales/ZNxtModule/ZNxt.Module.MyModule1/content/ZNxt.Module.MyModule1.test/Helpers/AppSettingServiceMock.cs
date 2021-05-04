@@ -50,8 +50,7 @@ namespace ZNxt.Module.MyModule1.Helpers
         {
 
             var dbconfig = new ZNxt.Net.Core.DB.Mongo.MongoDBServiceConfig();
-            // dbconfig.Set("znxt_mut_app_core", "mongodb+srv://admin:2BUWb6P8PuBcb7es@cluster0.fcs9n.mongodb.net/test");
-            dbconfig.Set("znxt_mut_app_core", "mongodb+srv://admin2:mvp%40123@103.212.120.203:27017/?authSource=admin");
+            dbconfig.Set("znxt_mut_app_core", "mongodb+srv://admin2:mvp%40123@127.0.0.1:27017/?authSource=admin");
             var dBService = new ZNxt.Net.Core.DB.Mongo.MongoDBService(dbconfig, httpContextProxy);
             return dBService;
         }
