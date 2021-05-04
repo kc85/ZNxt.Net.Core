@@ -45,12 +45,12 @@ public static class MVCServiceExtention
     {
         AppDomain currentDomain = AppDomain.CurrentDomain;
         currentDomain.AssemblyLoad += new AssemblyLoadEventHandler(AssemblyEventLoadHandler);
-        currentDomain.AssemblyResolve += AssemblyLoader;
+         currentDomain.AssemblyResolve += AssemblyLoader;
         // services.AddScoped<IDBServiceConfig>(new Func<IServiceProvider, IDBServiceConfig>(f => { return new MongoDBServiceConfig("DotNetCoreTest", "mongodb://localhost:27017"); }));
         //services.AddMvc();//.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         //services.AddRazorPages();
         //services.AddControllers();
-        services.AddControllers();
+        services.AddControllersWithViews();
         services.AddTransient<IServiceResolver, ServiceResolver>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IEncryption, EncryptionService>();
@@ -301,10 +301,11 @@ public static class MVCApplicationBuilderExtensions
         //{
         app.UseRouting();
 
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        app.UseEndpoints(endpoints => endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller}/{action}/{id?}"));
+
+
         app.MapWhen(context => true, HandlerStaticContant);
            
         //  }

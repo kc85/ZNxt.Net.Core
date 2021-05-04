@@ -8,7 +8,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1-Beta00042</Version>
+    <Version>1.0.1-Beta00048</Version>
   </PropertyGroup>
 
   <ItemGroup>
