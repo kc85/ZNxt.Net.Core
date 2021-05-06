@@ -53,7 +53,7 @@ namespace ZNxt.Identity.Services
             {
                 if (user.roles.Where(f => f == "pass_set_required").Any())
                 {
-                    if ((_userService as ZNxtUserService).CreatePassword(user_id, password))
+                    if ((_userService as ZNxtUserServiceBase).CreatePassword(user_id, password))
                     {
                         var role = "pass_set_required";
                         var request = new JObject()

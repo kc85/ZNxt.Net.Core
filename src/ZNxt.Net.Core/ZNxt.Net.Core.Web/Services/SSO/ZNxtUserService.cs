@@ -16,32 +16,26 @@ using static ZNxt.Net.Core.Consts.CommonConst;
 
 namespace ZNxt.Identity.Services
 {
-    public class ZNxtUserService : IZNxtUserService
+    public class ZNxtUserService : ZNxtUserServiceBase
     {
         private readonly IDBService _dBService;
-        private readonly IUserNotifierService _userNotifierService;
-        private readonly ILogger _logger;
-        private readonly IApiGatewayService _apiGatewayService;
         private const string collectonUserLoginFail = "user_login_fail";
         private const string consecutive_check_end_time = "consecutive_check_end_time";
         private const string is_locked = "is_locked";
-        private readonly ITenantSetterService _tenantSetterService;
 
-        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService, ILogger logger, IApiGatewayService apiGatewayService, ITenantSetterService tenantSetterService)
+        public ZNxtUserService(IDBService dBService, IUserNotifierService userNotifierService, ILogger logger, IApiGatewayService apiGatewayService, ITenantSetterService tenantSetterService):base(
+             userNotifierService, logger, apiGatewayService, tenantSetterService
+            )
         {
 
-            _userNotifierService = userNotifierService;
             _dBService = dBService;
-            _logger = logger;
-            _apiGatewayService = apiGatewayService;
-            _tenantSetterService = tenantSetterService;
         }
-        public bool CreateUser(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
+        public override bool CreateUser(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
         {
             return CreateUserAsync(user, sendEmail).GetAwaiter().GetResult();
         }
 
-        public async Task<bool> CreateUserAsync(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
+        public override async Task<bool> CreateUserAsync(ZNxt.Net.Core.Model.UserModel user, bool sendEmail = true)
         {
             if (user != null && !IsExists(user.user_id))
             {
@@ -84,7 +78,7 @@ namespace ZNxt.Identity.Services
             return false;
         }
 
-        internal bool CreatePassword(string user_id, string password)
+        public override bool CreatePassword(string user_id, string password)
         {
             var user = GetUser(user_id);
             var passwordhash = CommonUtility.Sha256Hash($"{password}{user.salt}");
@@ -98,29 +92,29 @@ namespace ZNxt.Identity.Services
             });
         }
 
-        public async Task<bool> CreateUserAsync(ClaimsPrincipal subject)
-        {
-            var subjectId = subject.GetSubjectId();
-            if (!IsExists(subjectId))
-            {
-                var user = new ZNxt.Net.Core.Model.UserModel()
+        //public override async Task<bool> CreateUserAsync(ClaimsPrincipal subject)
+        //{
+        //    var subjectId = subject.GetSubjectId();
+        //    if (!IsExists(subjectId))
+        //    {
+        //        var user = new ZNxt.Net.Core.Model.UserModel()
 
-                {
-                    id = subjectId,
-                    user_id = subjectId,
-                    first_name = subject.GetDisplayName(),
-                    email = subject.GetSubjectId()
+        //        {
+        //            id = subjectId,
+        //            user_id = subjectId,
+        //            first_name = subject.GetDisplayName(),
+        //            email = subject.GetSubjectId()
 
-                };
-                return await Task.FromResult(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user))));
-            }
-            return false;
-        }
-        public bool IsExists(string userid)
+        //        };
+        //        return await Task.FromResult(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user))));
+        //    }
+        //    return false;
+        //}
+        public override bool IsExists(string userid)
         {
             return _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "'}")).Any();
         }
-        public UserModel GetUser(string userid)
+        public override UserModel GetUser(string userid)
         {
             var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':true}"));
             if (user.Any())
@@ -135,7 +129,7 @@ namespace ZNxt.Identity.Services
             }
 
         }
-        public UserModel GetUserByUsername(string username)
+        public override UserModel GetUserByUsername(string username)
         {
             var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_name: /^" + username + "$/i,'is_enabled':true}"));
             if (user.Any())
@@ -149,7 +143,7 @@ namespace ZNxt.Identity.Services
                 return null;
             }
         }
-        private UserModel GetUserByMobileAuthPhoneNumber(string mobileNumber)
+        protected override UserModel GetUserByMobileAuthPhoneNumber(string mobileNumber)
         {
             var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{mobile_auth_phone_number: /^" + mobileNumber + "$/i,'is_enabled':true}"));
             if (user.Any())
@@ -164,7 +158,7 @@ namespace ZNxt.Identity.Services
             }
         }
 
-        public bool GetIsUserConsecutiveLoginFailLocked(string user_id)
+        public override bool GetIsUserConsecutiveLoginFailLocked(string user_id)
         {
             var filter = "{"+ consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "'," + is_locked + ":true}";
             var data = _dBService.Get(collectonUserLoginFail, new RawQuery(filter.ToString()));
@@ -184,7 +178,7 @@ namespace ZNxt.Identity.Services
             return false;
 
         }
-        public void  ResetUserLoginFailCount(string user_id)
+        public override void  ResetUserLoginFailCount(string user_id)
         {
             var filter = "{"+ consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "'}";
             var data = _dBService.Get(collectonUserLoginFail, new RawQuery(filter.ToString()));
@@ -198,11 +192,9 @@ namespace ZNxt.Identity.Services
             }
 
         }
-        public bool UpdateUserLoginFailCount(string user_id)
+        public override bool UpdateUserLoginFailCount(string user_id)
         {
-            const int consecutiveMaxfail = 5;
-            const int consecutiveLockDuratoin = 30;
-            const int consecutiveLockFailDuratoin = 10;
+        
 
             var consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.Now.AddMinutes(consecutiveLockFailDuratoin));
 
@@ -249,35 +241,7 @@ namespace ZNxt.Identity.Services
             return true;
         }
 
-        public void SetUserTenants(UserModel userModel)
-        {
-            _tenantSetterService.SetTenant(userModel);
-
-            //var extennalOrgEndpoint = "/s2fschool/identity/user/allorgs";
-            //try
-            //{
-            //    if (CommonUtility.GetAppConfigValue("SetOrg") == "true")
-            //    {
-            //        _logger.Debug($"Calling {extennalOrgEndpoint}");
-            //        var response = _apiGatewayService.CallAsync(ActionMethods.GET, extennalOrgEndpoint, $"user_id={userModel.user_id}").GetAwaiter().GetResult();
-            //        if (response[CommonField.HTTP_RESPONE_CODE].ToString() == "1" && response[CommonField.DATA] != null)
-            //        {
-
-            //            userModel.tenants = JsonConvert.DeserializeObject<List<TenantModel>>(response[CommonField.DATA].ToString());
-            //        }
-            //        else
-            //        {
-            //            _logger.Error($"Error responsefrom {extennalOrgEndpoint}", null, response);
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.Info(ex.Message);
-            //}
-        }
-
-        public List<UserModel> GetUsersByEmail(string email)
+        public override List<UserModel> GetUsersByEmail(string email)
         {
             var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: /^" + email + "$/i,'is_enabled':true}"));
             if (user.Any())
@@ -290,7 +254,7 @@ namespace ZNxt.Identity.Services
                 return new List<UserModel>();
             }
         }
-        public UserModel GetUserByEmail(string email)
+        public override UserModel GetUserByEmail(string email)
         {
             var user = _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{email: /^" + email + "$/i,'is_enabled':true}"));
             if (user.Any())
@@ -304,7 +268,7 @@ namespace ZNxt.Identity.Services
                 return null;
             }
         }
-        public PasswordSaltModel GetPassword(string userid)
+        public override PasswordSaltModel GetPassword(string userid)
         {
             var user = _dBService.Get($"{Collection.USERS}-pass", new Net.Core.Model.RawQuery("{user_id: '" + userid + "','is_enabled':true}"));
             if (user.Any())
@@ -318,7 +282,7 @@ namespace ZNxt.Identity.Services
             }
 
         }
-        public bool UpdateUser(string userid, JObject data)
+        public override bool UpdateUser(string userid, JObject data)
         {
 
             var filter = new JObject();
@@ -339,7 +303,7 @@ namespace ZNxt.Identity.Services
             }
 
         }
-        public bool UpdateUserProfile(string userid, JObject data)
+        public override bool UpdateUserProfile(string userid, JObject data)
         {
 
             var filter = new JObject();
@@ -360,29 +324,8 @@ namespace ZNxt.Identity.Services
             }
 
         }
-        public bool AddUserRelation(string parentuserid, string childuserid, string relation)
-        {
-            relation = relation.Trim().ToLower();
-            var data = new JObject();
-            data[$"parent_" + CommonField.USER_ID] = parentuserid;
-            data[$"child_" + CommonField.USER_ID] = childuserid;
-            data[CommonField.IS_ENABLED] = true;
-            data[$"relation"] = relation;
-
-            var userRelation = _dBService.FirstOrDefault(Collection.USER_RELATIONSHIP, new RawQuery(data.ToString()));
-            if (userRelation == null)
-            {
-                data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
-                return _dBService.Write(Collection.USER_RELATIONSHIP, data);
-            }
-            else
-            {
-                _logger.Error($"Duplicate record found  not parentuserid: {parentuserid}, childuserid:{childuserid}, relation:{relation}");
-                return false;
-            }
-        }
-
-        public MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request)
+     
+        public override MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request)
         {
             var requestObj = request.ToJObject();
             var id = CommonUtility.GetNewID();
@@ -396,7 +339,7 @@ namespace ZNxt.Identity.Services
                 throw new Exception("RegisterMobile error");
             }
         }
-        public MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request)
+        public override MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request)
         {
             var user = GetUserByMobileAuthPhoneNumber(request.mobile_number);
             if (user == null)
