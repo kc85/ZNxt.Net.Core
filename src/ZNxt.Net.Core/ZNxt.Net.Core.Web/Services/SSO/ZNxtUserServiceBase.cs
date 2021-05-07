@@ -61,6 +61,10 @@ namespace ZNxt.Identity.Services
         {
             _tenantSetterService.SetTenant(userModel);
         }
+        public virtual bool AddUserToTenants(UserModel userModel)
+        {
+          return _tenantSetterService.AddUserToTenant(userModel);
+        }
 
         public abstract List<UserModel> GetUsersByEmail(string email);
 

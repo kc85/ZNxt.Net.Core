@@ -286,6 +286,22 @@ namespace ZNxt.Net.Core.DB.MySql
             }
         }
 
+        public bool Update(string sql, object param = null, RDBTransaction transaction = null)
+        {
+            if (transaction != null)
+            {
+                transaction.Connection.Execute(sql,param);
+            }
+            else
+            {
+                using (var conn = GetConnection())
+                {
+                    conn.Execute(sql,param);
+                }
+            }
+            return true;
+        }
+
         public bool Update(string sql, RDBTransaction transaction)
         {
             return transaction.Connection.Update(sql, transaction.Transaction);

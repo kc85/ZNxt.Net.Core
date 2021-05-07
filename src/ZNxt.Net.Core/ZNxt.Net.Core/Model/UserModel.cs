@@ -39,8 +39,8 @@ namespace ZNxt.Net.Core.Model
     }
     public class TenantModel
     {
-
-        public string org_key { get; set; }
+        public long tenant_id { get; set; }
+        public string tenant_key { get; set; }
         public bool is_enabled { get; set; }
         public string user_id { get; set; }
         public List<TenantGroup> Groups { get; set; } = new List<TenantGroup>();

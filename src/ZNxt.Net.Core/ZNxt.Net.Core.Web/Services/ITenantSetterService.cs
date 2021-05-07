@@ -8,5 +8,7 @@ namespace ZNxt.Net.Core.Web.Services
     public interface ITenantSetterService
     {
         void SetTenant(UserModel userModel);
+
+        bool AddUserToTenant(UserModel userModel);
     }
 }

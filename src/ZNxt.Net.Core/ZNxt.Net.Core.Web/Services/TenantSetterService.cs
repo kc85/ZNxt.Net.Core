@@ -7,6 +7,11 @@ namespace ZNxt.Net.Core.Web.Services
 {
     public class TenantSetterService : ITenantSetterService
     {
+        public bool AddUserToTenant(UserModel userModel)
+        {
+            return true;
+        }
+
         public void SetTenant(UserModel userModel)
         {
             userModel.tenants = new List<TenantModel>();

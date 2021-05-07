@@ -279,11 +279,11 @@ namespace ZNxt.Net.Core.Web.Handlers
                                 roles.AddRange(userModel.roles);
                                 if (userModel.tenants != null)
                                 {
-                                    var org = userModel.tenants.FirstOrDefault(f => f.org_key == orgkey);
-                                    if (org != null)
-                                    {
-                                        //roles.Add(org.Groups.)
-                                    }
+                                    //var org = userModel.tenants.FirstOrDefault(f => f.org_key == orgkey);
+                                    //if (org != null)
+                                    //{
+                                    //    //roles.Add(org.Groups.)
+                                    //}
                                 }
                                 identity.AddClaim(new System.Security.Claims.Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(roles)));
                             }

@@ -79,7 +79,7 @@ namespace ZNxt.Net.Core.Web.Proxies
                         {
                             orgkey = GetQueryString(CommonConst.CommonValue.TENANT_KEY);
                         }
-                        tenant = user.tenants.FirstOrDefault(f => f.org_key == orgkey);
+                        tenant = user.tenants.FirstOrDefault(f => f.tenant_key == orgkey);
                     }
                     if (tenant != null && tenant.Groups != null)
                     {

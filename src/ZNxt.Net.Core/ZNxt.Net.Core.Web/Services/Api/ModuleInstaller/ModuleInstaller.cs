@@ -128,6 +128,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
 
         private List<string> InstallRoutes(ModuleInstallRequest request, Assembly assembly)
         {
+            
             var userRoles = new List<string>();
             
             var routes = new List<RoutingModel>();

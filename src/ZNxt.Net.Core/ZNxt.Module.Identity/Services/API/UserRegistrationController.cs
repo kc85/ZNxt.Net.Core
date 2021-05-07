@@ -116,40 +116,40 @@ namespace ZNxt.Module.Identity.Services.API
                 return _responseBuilder.ServerError();
             }
         }
-        [Route("/sso/admin/userrelation/add", CommonConst.ActionMethods.POST, "sys_admin")]
-        public JObject AddUserRelation()
-        {
-            try
-            {
-                var request = _httpContextProxy.GetRequestBody<JObject>();
-                var parentkey = $"parent_" + CommonField.USER_ID;
-                var childkey = $"child_" + CommonField.USER_ID;
-                var relationkey = $"relation";
-                if (request != null && request[parentkey] != null && request[childkey] != null && request[relationkey] != null)
-                {
-                    if (_ZNxtUserService.AddUserRelation(request[parentkey].ToString(), request[childkey].ToString(), request[relationkey].ToString()))
-                    {
-                        return _responseBuilder.Success();
-                    }
-                    else
-                    {
-                        _logger.Error("Error While adding the relationship");
-                        return _responseBuilder.ServerError();
-                    }
-                }
-                else
-                {
-                    _logger.Error("Requied parameter missing ", null, request);
-                    return _responseBuilder.BadRequest();
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Error($"Error {ex.Message}", ex);
-                return _responseBuilder.ServerError();
-            }
+        //[Route("/sso/admin/userrelation/add", CommonConst.ActionMethods.POST, "sys_admin")]
+        //public JObject AddUserRelation()
+        //{
+        //    try
+        //    {
+        //        var request = _httpContextProxy.GetRequestBody<JObject>();
+        //        var parentkey = $"parent_" + CommonField.USER_ID;
+        //        var childkey = $"child_" + CommonField.USER_ID;
+        //        var relationkey = $"relation";
+        //        if (request != null && request[parentkey] != null && request[childkey] != null && request[relationkey] != null)
+        //        {
+        //            if (_ZNxtUserService.AddUserRelation(request[parentkey].ToString(), request[childkey].ToString(), request[relationkey].ToString()))
+        //            {
+        //                return _responseBuilder.Success();
+        //            }
+        //            else
+        //            {
+        //                _logger.Error("Error While adding the relationship");
+        //                return _responseBuilder.ServerError();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            _logger.Error("Requied parameter missing ", null, request);
+        //            return _responseBuilder.BadRequest();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.Error($"Error {ex.Message}", ex);
+        //        return _responseBuilder.ServerError();
+        //    }
 
-        }
+        //}
 
         [Route("/sso/mobile_auth/register", CommonConst.ActionMethods.POST, CommonConst.CommonValue.ACCESS_ALL)]
         public JObject RegisterMobile()

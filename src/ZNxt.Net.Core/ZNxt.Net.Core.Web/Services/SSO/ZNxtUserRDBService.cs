@@ -126,15 +126,21 @@ namespace ZNxt.Identity.Services
                             role_id = role.role_id
                         }, dbtxn);
                     }
-
-                    _rdBService.CommitTransaction(dbtxn);
-
-                    if (sendEmail)
+                    if (AddUserToTenants(user))
                     {
-                        await _userNotifierService.SendWelcomeEmailAsync(user);
-                    }
+                        _rdBService.CommitTransaction(dbtxn);
 
-                    return await Task.FromResult(true);
+                        if (sendEmail)
+                        {
+                            await _userNotifierService.SendWelcomeEmailAsync(user);
+                        }
+
+                        return await Task.FromResult(true);
+                    }
+                    else
+                    {
+                        return await Task.FromResult(false);
+                    }
                 }
                 catch (Exception)
                 {
@@ -254,10 +260,7 @@ namespace ZNxt.Identity.Services
         }
        
 
-        public override bool GetIsUserConsecutiveLoginFailLocked(string user_id)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public override PasswordSaltModel GetPassword(string userid)
         {
@@ -286,7 +289,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userdata = user.First();
-                return GetDtoUserModel(userdata);
+                return GetDtoUserModel(userdata, filter);
             }
             else
             {
@@ -303,13 +306,13 @@ namespace ZNxt.Identity.Services
 
             foreach (var item in users)
             {
-                usermodels.Add(GetDtoUserModel(item));
+                usermodels.Add(GetDtoUserModel(item,filter));
             }
 
             return usermodels;
 
         }
-            private UserModel GetDtoUserModel(UserModelDbo userdata)
+        private UserModel GetDtoUserModel(UserModelDbo userdata, JObject filter)
         {
             var userModel = new UserModel()
             {
@@ -352,38 +355,69 @@ namespace ZNxt.Identity.Services
 
         }
 
-       
+
         public override void ResetUserLoginFailCount(string user_id)
         {
-            var sql = "update user_login_fail_lock set lock_end_time=@current_time where lock_end_time > @current_time and user_id=@user_id";
-
-                //var filter = "{" + consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "'}";
-                //var data = _dBService.Get(collectonUserLoginFail, new RawQuery(filter.ToString()));
-                //if (data.Any())
-                //{
-                //    data.First()[consecutive_check_end_time] = CommonUtility.GetTimestampMilliseconds(DateTime.Now);
-                //    if (_dBService.Update(collectonUserLoginFail, new RawQuery(filter.ToString()), data.First() as JObject, true, MergeArrayHandling.Replace) != 1)
-                //    {
-                //        _logger.Error("Error while updating consecutive_check_end_time");
-                //    }
-                //}
-
-
-            throw new NotImplementedException();
+            var sql = "update user_login_fail_lock set lock_end_time=@current_time where lock_end_time > @consecutive_lock_time and lock_start_time <  @consecutive_lock_time and user_id=@user_id ";
+            var result = _rdBService.Update(sql, new { current_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow), user_id = long.Parse(user_id) });
         }
-
-        public override bool UpdateUser(string userid, JObject data)
+        public override bool GetIsUserConsecutiveLoginFailLocked(string user_id)
         {
-            throw new NotImplementedException();
+            //var consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockFailDuratoin));
+
+            var sql = "select * from user_login_fail_lock  where lock_end_time > @consecutive_lock_time and lock_start_time <  @consecutive_lock_time  and user_id=@user_id and is_locked = true";
+
+            var data = _rdBService.Get<UserLoginFailDbo>(sql, new { consecutive_lock_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow), user_id = long.Parse(user_id) });
+
+            return data.Any();
         }
 
         public override bool UpdateUserLoginFailCount(string user_id)
         {
+            var consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockFailDuratoin));
+            var sql = "select * from user_login_fail_lock  where lock_end_time < @consecutive_lock_time and user_id=@user_id and is_locked=false";
+
+            var data = _rdBService.Get<UserLoginFailDbo>(sql, new { consecutive_lock_time = consecutiveLockFailDuratoinTimestamp, user_id = long.Parse(user_id) });
+
+            if (data.Any())
+            {
+                var lockData = data.First();
+                lockData.count = lockData.count + 1;
+                if (lockData.count > consecutiveMaxfail)
+                {
+                   // consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockDuratoin));
+
+                    lockData.is_locked = true;
+                }
+                lockData.lock_end_time = consecutiveLockFailDuratoinTimestamp;
+                var result = _rdBService.Update<UserLoginFailDbo>(lockData);
+            }
+            else
+            {
+                var lockData = new UserLoginFailDbo()
+                {
+                    count = 1,
+                    is_locked = false,
+                    lock_end_time = consecutiveLockFailDuratoinTimestamp,
+                    lock_start_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow),
+                    user_id = long.Parse(user_id)
+                };
+                var result = _rdBService.WriteData<UserLoginFailDbo>(lockData);
+            }
+            return true;
+        }
+
+        public override bool UpdateUser(string userid, JObject data)
+        {
+           
             throw new NotImplementedException();
         }
 
+     
+
         public override bool UpdateUserProfile(string userid, JObject data)
         {
+
             throw new NotImplementedException();
         }
 

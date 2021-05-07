@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
@@ -127,6 +128,43 @@ namespace ZNxt.Net.Core.Web.Services
                 }
             }
             return null;
+        }
+
+        public List<RoutingModel> GetRoulesFromAssembly(Assembly assembly)
+        {
+            var routes = new List<RoutingModel>();
+            List<Type> routeclasses = new List<Type>();
+
+            routeclasses.AddRange(
+                    assembly.GetTypes()
+                                .Where(t => !t.IsAbstract)
+                                 .Distinct()
+                                 .ToList());
+
+            foreach (Type routeClass in routeclasses)
+            {
+                System.Reflection.MemberInfo[] info = routeClass.GetMethods();
+                foreach (var mi in info)
+                {
+                    object[] objroutes = mi.GetCustomAttributes(typeof(Route), true);
+                    if (objroutes.Length != 0)
+                    {
+                        var r = (Route)objroutes.First();
+                        routes.Add(new RoutingModel()
+                        {
+                            Method = r.Method,
+                            Route = r.RoutePath.ToLower(),
+                            ExecultAssembly = assembly.FullName,
+                            ExecuteMethod = mi.Name,
+                            ExecuteType = routeClass.FullName,
+                            ContentType = r.ContentType,
+                            auth_users = r.AuthUsers
+                        });
+                        //  userRoles.AddRange(r.AuthUsers);
+                    }
+                }
+            }
+            return routes;
         }
     }
 }

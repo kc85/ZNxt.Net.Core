@@ -57,6 +57,39 @@ namespace ZNxt.Net.Core.Web.Test
             var result = (_zNxtUserService as ZNxtUserRDBService).CreatePassword("7", "abc@12346");
             Assert.IsTrue(result);
         }
+        [TestMethod]
+        public void UpdateUserLoginFailCount()
+        {
+            var result = (_zNxtUserService).UpdateUserLoginFailCount("7");
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void UpdateUserLoginFailCount_lockuser()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var result = (_zNxtUserService).UpdateUserLoginFailCount("7");
+                Assert.IsTrue(result);
+            }
+         
+        }
+        [TestMethod]
+        public void UpdateUserLoginFailCount_isuser_locked()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                var result1 = (_zNxtUserService).UpdateUserLoginFailCount("7");
+                Assert.IsTrue(result1);
+            }
+            var result3 = (_zNxtUserService).UpdateUserLoginFailCount("7");
+            var result = (_zNxtUserService).GetIsUserConsecutiveLoginFailLocked("7");
+            Assert.IsTrue(result);
+            (_zNxtUserService).ResetUserLoginFailCount("7");
+            var result4 = (_zNxtUserService).GetIsUserConsecutiveLoginFailLocked("7");
+            Assert.IsTrue(!result4);
+
+        }
     }
 
 

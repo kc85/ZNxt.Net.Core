@@ -15,8 +15,8 @@ namespace ZNxt.Net.Core.Web.Models.DBO
         public long user_id { get; set; }
         public int count { get; set; }
         public bool is_locked { get; set; }
-        public long lock_start_time { get; set; }
-        public long lock_end_time { get; set; }
+        public double lock_start_time { get; set; }
+        public double lock_end_time { get; set; }
         public long lock_type { get; set; }
         public UserLoginFailDbo()
         {
