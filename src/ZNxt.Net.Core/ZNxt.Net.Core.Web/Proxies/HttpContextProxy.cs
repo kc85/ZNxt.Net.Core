@@ -102,13 +102,16 @@ namespace ZNxt.Net.Core.Web.Proxies
         public  async Task<string> GetAccessTokenAync()
         {
             var accessToken = string.Empty;
-            if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
+            if (_httpContextAccessor.HttpContext != null)
             {
-                accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].First().Replace("Bearer ", "");
-            }
-            else
-            {
-                 accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+                if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
+                {
+                    accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].First().Replace("Bearer ", "");
+                }
+                else
+                {
+                    accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
+                }
             }
             return accessToken;
         }
@@ -120,22 +123,39 @@ namespace ZNxt.Net.Core.Web.Proxies
 
         public string GetHeader(string key)
         {
-            return _httpContextAccessor.HttpContext.Request.Headers[key];
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                return _httpContextAccessor.HttpContext.Request.Headers[key];
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public Dictionary<string, string> GetHeaders()
         {
             var header = new Dictionary<string, string>();
-            foreach (var h in _httpContextAccessor.HttpContext.Request.Headers)
+            if (_httpContextAccessor.HttpContext != null)
             {
-                header.Add(h.Key, h.Value);
+                foreach (var h in _httpContextAccessor.HttpContext.Request.Headers)
+                {
+                    header.Add(h.Key, h.Value);
+                }
             }
             return header;
         }
 
         public string GetHttpMethod()
         {
-           return _httpContextAccessor.HttpContext.Request.Method;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                return _httpContextAccessor.HttpContext.Request.Method;
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         public string GetMimeType(string fileName)
@@ -145,18 +165,32 @@ namespace ZNxt.Net.Core.Web.Proxies
 
         public string GetQueryString(string key)
         {
-            return _httpContextAccessor.HttpContext.Request.Query[key];
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                return _httpContextAccessor.HttpContext.Request.Query[key];
+            }
+            else
+            {
+                return null;
+            }
         }
         public string GetQueryString()
         {
-            return _httpContextAccessor.HttpContext.Request.QueryString.Value;
-        }
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                return _httpContextAccessor.HttpContext.Request.QueryString.Value;
+            }
+            else
+            {
+                return null;
+            }
+            }
 
         public string GetRequestBody()
         {
-            if (_httpContextAccessor.HttpContext.Request.Body != null)
+            if (_httpContextAccessor.HttpContext!=null && _httpContextAccessor.HttpContext.Request.Body != null)
             {
-                var requestBody = new StreamReader(_httpContextAccessor.HttpContext.Request.Body).ReadToEnd();
+                var requestBody = new StreamReader(_httpContextAccessor.HttpContext.Request.Body).ReadToEndAsync().GetAwaiter().GetResult();
                 return requestBody;
             }
             return null;
@@ -185,7 +219,14 @@ namespace ZNxt.Net.Core.Web.Proxies
 
         public string GetURIAbsolutePath()
         {
-            return _httpContextAccessor.HttpContext.Request.Path.ToString().ToLower();
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                return _httpContextAccessor.HttpContext.Request.Path.ToString().ToLower();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public void SetResponse(int statusCode, JObject data = null)

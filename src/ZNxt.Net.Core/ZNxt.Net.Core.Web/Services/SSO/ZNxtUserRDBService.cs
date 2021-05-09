@@ -61,7 +61,7 @@ namespace ZNxt.Identity.Services
                     user.roles = roles.Distinct().ToList();
                     user.salt = CommonUtility.RandomString(10);
                     user.email = user.email?.ToLower();
-                    var dbroles = GetAndAddDbValues<RoleDbo>(dbtxn, roles, "role", (d) =>
+                    var dbroles = GetAndAddDbValues<RoleDbo>(dbtxn, user.roles, "role", (d) =>
                              {
                                  return roles.IndexOf(d.name) != -1;
                              },
@@ -289,7 +289,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userdata = user.First();
-                return GetDtoUserModel(userdata, filter);
+                return GetDtoUserModel(userdata, new JObject() { [nameof(userdata.user_id)] = userdata.user_id });
             }
             else
             {
@@ -418,7 +418,7 @@ namespace ZNxt.Identity.Services
         public override bool UpdateUserProfile(string userid, JObject data)
         {
            
-            var profile = _rdBService.Get<UserProfileDbo>("user_profile", new JObject() { ["user_id"] = userid });
+            var profile = _rdBService.Get<UserProfileDbo>("user_profile", DefaultGetpageLength, 0, new JObject() { ["user_id"] = userid });
             if (profile.Any())
             {
                 if (data["phone_number"] != null)
@@ -427,7 +427,7 @@ namespace ZNxt.Identity.Services
                 }
                 _rdBService.Update<UserProfileDbo>(profile.First());
             }
-            return false;   
+            return true;   
         }
 
         protected override UserModel GetUserByMobileAuthPhoneNumber(string mobileNumber)
