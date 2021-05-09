@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ZNxt.Module.MyModule1.Consts
+﻿namespace ZNxt.Module.MyModule1.Consts
 {
     public static class MyModule1Consts
     {

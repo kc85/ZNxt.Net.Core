@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json.Linq;
-using ZNxt.Module.MyModule1.Helpers;
 using ZNxt.Net.Core.DB.Mongo;
 using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Module.MyModule1.Helpers
 {
-   public  class AppSettingServiceMock : IAppSettingService
+    public  class AppSettingServiceMock : IAppSettingService
     {
         Dictionary<string, string> data = new Dictionary<string, string>() {
             ["cloudfront_url"] = "https://d1garn5dlo0m6m.cloudfront.net",
@@ -50,8 +48,7 @@ namespace ZNxt.Module.MyModule1.Helpers
         {
 
             var dbconfig = new ZNxt.Net.Core.DB.Mongo.MongoDBServiceConfig();
-            // dbconfig.Set("znxt_mut_app_core", "mongodb+srv://admin:2BUWb6P8PuBcb7es@cluster0.fcs9n.mongodb.net/test");
-            dbconfig.Set("znxt_mut_app_core", "mongodb+srv://admin2:mvp%40123@103.212.120.203:27017/?authSource=admin");
+            dbconfig.Set("znxt_mut_app_core", "mongodb+srv://admin2:mvp%40123@127.0.0.1:27017/?authSource=admin");
             var dBService = new ZNxt.Net.Core.DB.Mongo.MongoDBService(dbconfig, httpContextProxy);
             return dBService;
         }
