@@ -108,6 +108,11 @@ namespace ZNxt.Net.Core.Web.Test
 
     class MockTenantSetterService : ITenantSetterService
     {
+        public bool AddUserToTenant(UserModel userModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetTenant(UserModel userModel)
         {
           

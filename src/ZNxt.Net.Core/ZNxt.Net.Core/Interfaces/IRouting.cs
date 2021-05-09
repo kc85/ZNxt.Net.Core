@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Interfaces
@@ -8,6 +9,8 @@ namespace ZNxt.Net.Core.Interfaces
         void ReLoadRoutes();
         RoutingModel GetRoute(string Method, string url);
         List<RoutingModel> GetRoutes();
+
+        void PushAssemblyRoute(Assembly assembly);
 
     }
 }

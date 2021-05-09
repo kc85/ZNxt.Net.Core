@@ -170,8 +170,6 @@ namespace ZNxt.Net.Core.Web.Services.Api.ModuleInstaller
             {
                 try
                 {
-
-
                     var data = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(route));
                     data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
                     data[CommonConst.CommonField.MODULE_NAME] = request.Name;

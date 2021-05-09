@@ -413,12 +413,21 @@ namespace ZNxt.Identity.Services
             throw new NotImplementedException();
         }
 
-     
+
 
         public override bool UpdateUserProfile(string userid, JObject data)
         {
-
-            throw new NotImplementedException();
+           
+            var profile = _rdBService.Get<UserProfileDbo>("user_profile", new JObject() { ["user_id"] = userid });
+            if (profile.Any())
+            {
+                if (data["phone_number"] != null)
+                {
+                    profile.First().phone_number = data["phone_number"].ToString();
+                }
+                _rdBService.Update<UserProfileDbo>(profile.First());
+            }
+            return false;   
         }
 
         protected override UserModel GetUserByMobileAuthPhoneNumber(string mobileNumber)

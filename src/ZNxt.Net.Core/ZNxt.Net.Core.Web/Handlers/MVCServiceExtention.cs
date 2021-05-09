@@ -94,8 +94,15 @@ public static class MVCServiceExtention
 
     static Assembly AssemblyLoader(object source, ResolveEventArgs e)
     {
-        Console.WriteLine("Resolving {0}", e.Name);
-        return _assemblyLoader.Load(e.Name);
+        if (_assemblyLoader != null)
+        {
+            Console.WriteLine("Resolving {0}", e.Name);
+            return _assemblyLoader.Load(e.Name);
+        }
+        else
+        { 
+            return null;
+        }
     }
     static void AssemblyEventLoadHandler(object sender, AssemblyLoadEventArgs args)
     {
@@ -208,7 +215,7 @@ public static class MVCServiceExtention
         }
     }
 
-    private static void InitRoutingDepedencies(IServiceCollection services, ServiceProvider serviceProvider)
+    public static void InitRoutingDepedencies(IServiceCollection services, ServiceProvider serviceProvider)
     {
         var routing = serviceProvider.GetService<IRouting>();
       
