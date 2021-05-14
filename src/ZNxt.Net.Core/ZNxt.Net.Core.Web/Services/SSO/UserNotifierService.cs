@@ -21,7 +21,7 @@ namespace ZNxt.Identity.Services
             _logger = logger;
         }
 
-        public async Task<bool> SendForgetpasswordEmailWithOTPAsync(UserModel user)
+        public async Task<bool> SendForgetpasswordEmailWithOTPAsync(UserModel user, string message = null)
         {
             try
             {
@@ -34,7 +34,8 @@ namespace ZNxt.Identity.Services
                     ["userloginemail"] = user.email,
                     ["userlogin"] = user.user_name,
                     ["appname"] = ApplicationConfig.AppName,
-                    ["appurl"] = ApplicationConfig.AppEndpoint
+                    ["appurl"] = ApplicationConfig.AppEndpoint,
+                    ["message"] = message
                 };
 
                 var resultTemplateBase = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
@@ -49,7 +50,8 @@ namespace ZNxt.Identity.Services
                         ["Type"] = "Email",
                         ["Message"] = resultTemplate["data"],
                         ["OTPType"] = template_key,
-                        ["Duration"] = (60 * 15).ToString() // TODO : Need to move to config, right now confugure for 15 minutes
+                        ["Duration"] = (60 * 15).ToString(), // TODO : Need to move to config, right now confugure for 15 minutes
+                        ["message"] = message
                     };
                     var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", "", emailModel, null);
                     return result["code"].ToString() == "1";
@@ -67,7 +69,7 @@ namespace ZNxt.Identity.Services
             }
         }
 
-        public async Task<bool> SendForgetUsernamesEmailAsync(List<UserModel> users)
+        public async Task<bool> SendForgetUsernamesEmailAsync(List<UserModel> users, string message = null)
         {
             _logger.Debug($"Sending forgetusername email to {users.First().email}");
             var templateRequest = new JObject()
@@ -75,7 +77,8 @@ namespace ZNxt.Identity.Services
                 ["key"] = "forgetuser_name",
                 ["usernames"] = string.Join("<br>", users.Select(f => f.user_name).ToList()),
                 ["appname"] = ApplicationConfig.AppName,
-                ["appurl"] = ApplicationConfig.AppEndpoint
+                ["appurl"] = ApplicationConfig.AppEndpoint,
+                ["message"] = message
             };
 
             var resultTemplateBase = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
@@ -87,7 +90,8 @@ namespace ZNxt.Identity.Services
                 {
                     ["Subject"] = resultTemplate["subject"],
                     ["To"] = users.First().email,
-                    ["Message"] = resultTemplate["data"]
+                    ["Message"] = resultTemplate["data"],
+                    ["message"] = message
                 };
                 var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/send", "", emailModel, null);
                 _logger.Debug("SendForgetUsernamesEmailWithOTPAsync: /notifier/send", result);
@@ -101,7 +105,7 @@ namespace ZNxt.Identity.Services
             }
         }
 
-        public async Task<bool> SendWelcomeEmailAsync(UserModel user)
+        public async Task<bool> SendWelcomeEmailAsync(UserModel user, string message = null)
         {
             try
             { 
@@ -113,7 +117,8 @@ namespace ZNxt.Identity.Services
                     ["userloginemail"] = user.email,
                     ["userlogin"] = user.email,
                     ["appname"] =ApplicationConfig.AppName,
-                    ["appurl"] = ApplicationConfig.AppEndpoint
+                    ["appurl"] = ApplicationConfig.AppEndpoint,
+                    ["message"] = message
                 };
 
                var resultTemplateBase  = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
@@ -143,7 +148,7 @@ namespace ZNxt.Identity.Services
                 return false;
             }
         }
-        public async Task<bool> SendWelcomeEmailWithOTPLoginAsync(UserModel user)
+        public async Task<bool> SendWelcomeEmailWithOTPLoginAsync(UserModel user, string message = null)
         {
             try
             {
@@ -156,7 +161,8 @@ namespace ZNxt.Identity.Services
                     ["userloginemail"] = user.email,
                     ["userlogin"] = user.user_name,
                     ["appname"] = ApplicationConfig.AppName,
-                    ["appurl"] = ApplicationConfig.AppEndpoint
+                    ["appurl"] = ApplicationConfig.AppEndpoint,
+                    ["message"] = message
                 };
 
                 var resultTemplateBase = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/template/process", "", templateRequest, null);
@@ -188,7 +194,7 @@ namespace ZNxt.Identity.Services
                 return false;
             }
         }
-        public async Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse mobileAuth)
+        public async Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse mobileAuth, string message = null)
         {
             try
             {
@@ -199,7 +205,8 @@ namespace ZNxt.Identity.Services
                     ["Message"] = "Account Activation OTP is {{OTP}} ",
                     ["Type"] = "SMS",
                     ["OTPType"] = "mobile_auth_activation",
-                    ["SecurityToken"] = mobileAuth.validation_token
+                    ["SecurityToken"] = mobileAuth.validation_token,
+                    ["message"] = message
                 };
                 var result = await _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/notifier/otp/send", null, otpReqeust);
                 return result["code"].ToString() == "1";

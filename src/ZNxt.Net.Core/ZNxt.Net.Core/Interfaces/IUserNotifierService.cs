@@ -6,13 +6,13 @@ namespace ZNxt.Net.Core.Interfaces
 {
     public interface IUserNotifierService
     {
-        Task<bool> SendWelcomeEmailAsync(UserModel user);
-        Task<bool> SendWelcomeEmailWithOTPLoginAsync(UserModel user);
+        Task<bool> SendWelcomeEmailAsync(UserModel user, string message= null);
+        Task<bool> SendWelcomeEmailWithOTPLoginAsync(UserModel user, string message = null);
 
-        Task<bool> SendForgetpasswordEmailWithOTPAsync(UserModel user);
-        Task<bool> SendForgetUsernamesEmailAsync(List<UserModel> user);
+        Task<bool> SendForgetpasswordEmailWithOTPAsync(UserModel user, string message = null);
+        Task<bool> SendForgetUsernamesEmailAsync(List<UserModel> user, string message = null);
 
-        Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse  mobileAuth);
+        Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse  mobileAuth, string message = null);
 
     }
 }

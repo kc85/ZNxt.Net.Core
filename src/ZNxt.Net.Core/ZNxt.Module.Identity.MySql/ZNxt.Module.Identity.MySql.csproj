@@ -3,18 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.16</Version>
-    <Authors>Khanin Choudhury</Authors>
-    <Company>ZNxt.App</Company>
+    <Version>1.0.1-Beta00081</Version>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MSBump" Version="2.3.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
   </ItemGroup>
 </Project>

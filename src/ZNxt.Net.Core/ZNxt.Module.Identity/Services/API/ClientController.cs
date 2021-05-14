@@ -15,6 +15,7 @@ namespace ZNxt.Module.Identity.Services.API
     public class ClientController : IdentityControllerBase
     {
         private const string CollectionName = "oauth_clients";
+
         public ClientController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IKeyValueStorage keyValueStorage, IStaticContentHandler staticContentHandler, IApiGatewayService apiGatewayService, IZNxtUserService zNxtUserService)
        : base(responseBuilder, logger, httpContextProxy, dBService, keyValueStorage, staticContentHandler, apiGatewayService, zNxtUserService)
         {

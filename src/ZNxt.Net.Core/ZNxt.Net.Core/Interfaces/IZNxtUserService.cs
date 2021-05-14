@@ -29,6 +29,6 @@ namespace ZNxt.Net.Core.Interfaces
          bool UpdateUser(string userid, JObject data);
         MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request);
         MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request);
-       // void SetUserOrgs(UserModel userModel);
+        bool CreatePassword(string user_id, string password);
     }
 }

@@ -159,27 +159,27 @@ namespace ZNxt.Net.Core.Web.Test
     }
     class MockUserNotifierService : IUserNotifierService
     {
-        public Task<bool> SendForgetpasswordEmailWithOTPAsync(UserModel user)
+        public Task<bool> SendForgetpasswordEmailWithOTPAsync(UserModel user, string message = null)
         {
             return Task.FromResult(true);
         }
 
-        public Task<bool> SendForgetUsernamesEmailAsync(List<UserModel> user)
+        public Task<bool> SendForgetUsernamesEmailAsync(List<UserModel> user, string message = null)
         {
             return Task.FromResult(true); 
         }
 
-        public Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse mobileAuth)
+        public Task<bool> SendMobileAuthRegistrationOTPAsync(MobileAuthRegisterResponse mobileAuth, string message = null)
         {
             return Task.FromResult(true);
         }
 
-        public Task<bool> SendWelcomeEmailAsync(UserModel user)
+        public Task<bool> SendWelcomeEmailAsync(UserModel user, string message = null)
         {
             return Task.FromResult(true);
         }
 
-        public Task<bool> SendWelcomeEmailWithOTPLoginAsync(UserModel user)
+        public Task<bool> SendWelcomeEmailWithOTPLoginAsync(UserModel user, string message = null)
         {
             return Task.FromResult(true);
         }

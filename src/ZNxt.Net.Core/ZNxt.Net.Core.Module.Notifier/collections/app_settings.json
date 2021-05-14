@@ -23,7 +23,7 @@
   {
     "auth_users": [ "sys_admin" ],
     "key": "from_email_id",
-    "data": "contact@s2fschool.com",
+    "data": "contact@znxt.com",
     "is_override": false,
     "override_by": "none"
   },
@@ -37,7 +37,7 @@
   {
     "auth_users": [ "sys_admin" ],
     "key": "smtp_server_user",
-    "data": "contact@s2fschool.com",
+    "data": "contact@znxt.com",
     "is_override": false,
     "override_by": "none"
   },
