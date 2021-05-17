@@ -6,7 +6,7 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Web.Models.DBO
 {
-    [Table("role")]
+    [Table(IdentityTable.ROLE)]
     public class RoleDbo : BaseModelDbo
     {
         [Dapper.Contrib.Extensions.Key]

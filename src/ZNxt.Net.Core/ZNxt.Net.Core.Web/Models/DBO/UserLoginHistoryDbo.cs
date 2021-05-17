@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ZNxt.Net.Core.Web.Models.DBO
 {
-    [Table("\"user_login_history\"")]
+    [Table(IdentityTable.USER_LOGIN_HISTORY)]
     public class UserLoginHistoryDbo
     {
 

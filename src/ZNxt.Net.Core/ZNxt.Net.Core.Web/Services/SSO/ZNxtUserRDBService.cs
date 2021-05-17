@@ -11,6 +11,7 @@ using ZNxt.Net.Core.Exceptions;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
+using ZNxt.Net.Core.Web.Models;
 using ZNxt.Net.Core.Web.Models.DBO;
 using ZNxt.Net.Core.Web.Services;
 using static ZNxt.Net.Core.Consts.CommonConst;
@@ -78,7 +79,7 @@ namespace ZNxt.Identity.Services
                                 };
                             });
                     var usertypes = new List<string>() { user.user_type };
-                    var dbauthtype = GetAndAddDbValues<UserAuthTypeDbo>(dbtxn, usertypes, "user_auth_type", (d) =>
+                    var dbauthtype = GetAndAddDbValues<UserAuthTypeDbo>(dbtxn, usertypes, IdentityTable.USER_AUTH_TYPE, (d) =>
                              {
                                  return usertypes.IndexOf(d.name) != -1;
                              },
@@ -165,12 +166,12 @@ namespace ZNxt.Identity.Services
         }
         private RoleDbo GetDbRole(long roleid)
         {
-            var roles = GetCacheValue<RoleDbo>("role", new JObject() { ["is_enabled"] = true });
+            var roles = GetCacheValue<RoleDbo>(IdentityTable.ROLE, new JObject() { ["is_enabled"] = true });
 
             var role = roles.FirstOrDefault(f => f.role_id == roleid);
             if (role == null)
             {
-                roles = GetDBValueAddToCache<RoleDbo>("role", null, new JObject() { ["is_enabled"] = true });
+                roles = GetDBValueAddToCache<RoleDbo>(IdentityTable.ROLE, null, new JObject() { ["is_enabled"] = true });
                 return roles.FirstOrDefault(f => f.role_id == roleid);
             }
             else
@@ -180,12 +181,12 @@ namespace ZNxt.Identity.Services
         }
         private UserAuthTypeDbo GetDbUserAuthType(long id)
         {
-            var data = GetCacheValue<UserAuthTypeDbo>("user_auth_type", new JObject() { ["is_enabled"] = true });
+            var data = GetCacheValue<UserAuthTypeDbo>(IdentityTable.USER_AUTH_TYPE, new JObject() { ["is_enabled"] = true });
 
             var authtype = data.FirstOrDefault(f => f.user_auth_type_id == id);
             if (authtype == null)
             {
-                data = GetDBValueAddToCache<UserAuthTypeDbo>("user_auth_type", null, new JObject() { ["is_enabled"] = true });
+                data = GetDBValueAddToCache<UserAuthTypeDbo>(IdentityTable.USER_AUTH_TYPE, null, new JObject() { ["is_enabled"] = true });
                 return data.FirstOrDefault(f => f.user_auth_type_id == id);
             }
             else
@@ -276,7 +277,7 @@ namespace ZNxt.Identity.Services
 
         public override PasswordSaltModel GetPassword(string userid)
         {
-            var userpass = _rdBService.Get<UserPasswordDbo>("\"user_password\"", 1, 0, new JObject() { ["user_id"] = userid, ["is_enabled"] = true });
+            var userpass = _rdBService.Get<UserPasswordDbo>(IdentityTable.USER_PASSWORD, 1, 0, new JObject() { ["user_id"] = userid, ["is_enabled"] = true });
             if (userpass != null && userpass.Any())
             {
                 return new PasswordSaltModel()
@@ -297,7 +298,7 @@ namespace ZNxt.Identity.Services
 
         private  UserModel GetUser(JObject filter)
         {
-            var user = _rdBService.Get<UserModelDbo>("\"user\"", 1, 0, filter);
+            var user = _rdBService.Get<UserModelDbo>(IdentityTable.USER, 1, 0, filter);
             if (user.Any())
             {
                 var userdata = user.First();
@@ -312,7 +313,7 @@ namespace ZNxt.Identity.Services
 
         private List<UserModel> GetUsers(JObject filter)
         {
-            var users = _rdBService.Get<UserModelDbo>("\"user\"", DefaultGetpageLength, 0, filter);
+            var users = _rdBService.Get<UserModelDbo>(IdentityTable.USER, DefaultGetpageLength, 0, filter);
 
             List<UserModel> usermodels = new List<UserModel>();
 
@@ -337,7 +338,7 @@ namespace ZNxt.Identity.Services
                 salt = userdata.salt,
                 user_type = GetDbUserAuthType(userdata.user_auth_type_id).name,
             };
-            var roles = _rdBService.Get<UserRoleDbo>("\"user_role\"", DefaultGetpageLength, 0, filter);
+            var roles = _rdBService.Get<UserRoleDbo>(IdentityTable.USER_ROLE, DefaultGetpageLength, 0, filter);
             userModel.roles = roles.Select(f => GetDbRole(f.role_id).name).ToList();
             SetUserTenants(userModel);
             return userModel;
@@ -361,7 +362,7 @@ namespace ZNxt.Identity.Services
         {
 
             var m = new UserModelDbo();
-            var count = _rdBService.GetCount("\"user\"", new JObject() { [nameof(m.user_name)] = user_name });
+            var count = _rdBService.GetCount(IdentityTable.USER, new JObject() { [nameof(m.user_name)] = user_name });
 
             return count != 0;
 
@@ -430,7 +431,7 @@ namespace ZNxt.Identity.Services
         public override bool UpdateUserProfile(string userid, JObject data)
         {
            
-            var profile = _rdBService.Get<UserProfileDbo>("user_profile", DefaultGetpageLength, 0, new JObject() { ["user_id"] = userid });
+            var profile = _rdBService.Get<UserProfileDbo>(IdentityTable.USER_PROFILE, DefaultGetpageLength, 0, new JObject() { ["user_id"] = userid });
             if (profile.Any())
             {
                 if (data["phone_number"] != null)
@@ -456,7 +457,7 @@ namespace ZNxt.Identity.Services
                 try
                 {
                     var passwordhash = CommonUtility.Sha256Hash($"{password}{user.salt}");
-                    var passworddata = _rdBService.Get<UserPasswordDbo>("\"user_password\"", 1, 0, new JObject() { ["user_id"] = user_id, ["is_enabled"] = true });
+                    var passworddata = _rdBService.Get<UserPasswordDbo>(IdentityTable.USER_PASSWORD, 1, 0, new JObject() { ["user_id"] = user_id, ["is_enabled"] = true });
                     if (passworddata.Any())
                     {
                         passworddata.First().is_enabled = false;

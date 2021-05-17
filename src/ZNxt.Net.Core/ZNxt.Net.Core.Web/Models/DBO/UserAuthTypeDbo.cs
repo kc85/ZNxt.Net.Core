@@ -6,7 +6,7 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Web.Models.DBO
 {
-    [Table("user_auth_type")]
+    [Table(IdentityTable.USER_AUTH_TYPE)]
     public class UserAuthTypeDbo : BaseModelDbo
     {
         [Dapper.Contrib.Extensions.Key]

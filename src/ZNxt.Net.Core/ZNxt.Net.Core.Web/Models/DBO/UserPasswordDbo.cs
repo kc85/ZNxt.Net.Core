@@ -6,7 +6,7 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Web.Models.DBO
 {
-    [Table("\"user_password\"")]
+    [Table(IdentityTable.USER_PASSWORD)]
     public class UserPasswordDbo : BaseModelDbo
     {
         [Dapper.Contrib.Extensions.Key]

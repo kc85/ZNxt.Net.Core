@@ -6,7 +6,7 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Web.Models.DBO
 {
-    [Table("user_login_fail_lock")]
+    [Table(IdentityTable.USER_LOGIN_FAIL_LOCK)]
     public class UserLoginFailDbo : BaseModelDbo
     {
 

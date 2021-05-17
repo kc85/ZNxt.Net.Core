@@ -6,7 +6,7 @@ using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.Web.Models.DBO
 {
-    [Table("\"user_profile\"")]
+    [Table(IdentityTable.USER_PROFILE)]
     public class UserProfileDbo :   BaseModelDbo
     {
         [Dapper.Contrib.Extensions.Key]
