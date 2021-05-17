@@ -13,6 +13,7 @@ namespace ZNxt.Net.Core.Interfaces
         JObject CreateReponse(int code, JToken data = null, JObject extraData = null);
         JObject NotFound(JToken data = null, JObject extraData = null);
         JObject ServerError(JToken data = null, JObject extraData = null);
+        JObject NotImplementedError(JToken data = null, JObject extraData = null);
         JObject BadRequest(JToken data = null, JObject extraData = null);
         JObject BadRequest(string error);
         JObject Unauthorized(JToken data = null, JObject extraData = null);

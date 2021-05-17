@@ -23,6 +23,7 @@ namespace ZNxt.Net.Core.Consts
         public const int _400_BAD_REQUEST = 400;
         public const int _401_UNAUTHORIZED = 401;
         public const int _500_SERVER_ERROR = 500;
+        public const int _503_NOT_IMPLEMENTED = 503;
         private const string UNKNOWN_MESSAGE = "UNKNOWN_STATUS_CODE";
 
         public static MessageText Messages
@@ -85,11 +86,12 @@ namespace ZNxt.Net.Core.Consts
             private MessageText()
             {
                 text[_200_OK] = "OK";
+                text[_1_SUCCESS] = "SUCCESS";
+                text[_401_UNAUTHORIZED] = "UNAUTHORIZED";
                 text[_404_RESOURCE_NOT_FOUND] = "NOT_FOUND";
                 text[_400_BAD_REQUEST] = "BAD_REQUEST";
                 text[_500_SERVER_ERROR] = "SERVER_ERROR";
-                text[_1_SUCCESS] = "SUCCESS";
-                text[_401_UNAUTHORIZED] = "UNAUTHORIZED";
+                text[_503_NOT_IMPLEMENTED] = "NOT_IMPLEMENTED";
             }
 
             public static MessageText GetMessage()

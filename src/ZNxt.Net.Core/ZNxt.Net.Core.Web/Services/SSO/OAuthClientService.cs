@@ -55,20 +55,49 @@ namespace ZNxt.Net.Core.Web.Services.SSO
                 var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, oauthClientApiPath,$"client_id={clientId}").GetAwaiter().GetResult();
                 if (result[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == CommonConst._1_SUCCESS.ToString())
                 {
+                    var clientname = result["data"]["client_id"].ToString();
+                    if(result["data"]["name"]!=null)
+                    {
+                        clientname = result["data"]["name"].ToString();
+                    }
+                    var tenantId = string.Empty;
+                    if (result["data"]["tenant_id"] != null)
+                    {
+                        tenantId = result["data"]["tenant_id"].ToString();
+                    }
+                    var roles = new List<string>();
+
+                    if (result["data"]["roles"] != null)
+                    {
+                        roles.AddRange((result["data"]["roles"] as JArray).Select(f => f.ToString()));
+                    }
+
+                    var salt = string.Empty;
+                    if (result["data"]["salt"] != null)
+                    {
+                        salt = result["data"]["salt"].ToString();
+                    }
                     var client = new OAuthClient
                     {
                         Client = new Client()
                         {
                             AllowedGrantTypes = GrantTypes.ClientCredentials,
-                            ClientName = result["data"]["name"].ToString(),
+                            ClientName = clientname,
                             ClientId = result["data"]["client_id"].ToString(),
-                            ClientSecrets = { new Secret(result["data"]["client_secret"].ToString().Sha256()) },
+                            ClientSecrets = { new Secret(result["data"]["client_secret"].ToString()) },
                             AllowOfflineAccess = true,
                         },
-                        Secret = result["data"]["client_secret"].ToString()
+                        Secret = result["data"]["client_secret"].ToString(),
+                        TenantId = tenantId,
+                        Roles = roles,
+                        Salt = salt
                     };
                     var allowedScopes = new List<string>() { "openid", "profile", "ZNxtCoreAppApi" };
-                    allowedScopes.AddRange((result["data"]["allowed_scopes"] as JArray).Select(f => f.ToString()).ToList());
+                    if (result["data"]["allowed_scopes"] != null)
+                    {
+                        allowedScopes.AddRange((result["data"]["allowed_scopes"] as JArray).Select(f => f.ToString()).ToList());
+                    }
+                     
                     client.Client.AllowedScopes = allowedScopes;
                     _inMemoryCacheService.Put<OAuthClient>($"{cachePrefix}{clientId}", client);
                     return client;

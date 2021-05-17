@@ -18,7 +18,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.Ping
         {
             return await Task.FromResult<JObject>(_responseBuilder.Success());
         }
-        [Route("/auth/ping", CommonConst.ActionMethods.GET, "user")]
+        [Route("/auth/ping", CommonConst.ActionMethods.GET, CommonConst.CommonValue.ACCESS_ANY_LOGIN_USER)]
         public async Task<JObject> AuthPing()
         {
             return await Task.FromResult<JObject>(_responseBuilder.Success());

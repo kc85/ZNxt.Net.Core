@@ -50,7 +50,6 @@ namespace ZNxt.Net.Core.DB.Mongo.Test
             _headers = headers;
 
         }
-        public Dictionary<string, string> ResponseHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public int ResponseStatusCode => throw new NotImplementedException();
 
@@ -105,6 +104,11 @@ namespace ZNxt.Net.Core.DB.Mongo.Test
         }
 
         public string GetQueryString()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetReponseHeader(string key)
         {
             throw new NotImplementedException();
         }

@@ -59,6 +59,10 @@ namespace ZNxt.Net.Core.Helpers
         {
             return CreateReponse(CommonConst._404_RESOURCE_NOT_FOUND, data, extraData);
         }
+        public JObject NotImplementedError(JToken data = null, JObject extraData = null)
+        {
+            return CreateReponse(CommonConst._503_NOT_IMPLEMENTED, data, extraData);
+        }
         public JObject ServerError(JToken data = null, JObject extraData = null)
         {
             return CreateReponse(CommonConst._500_SERVER_ERROR, data, extraData);

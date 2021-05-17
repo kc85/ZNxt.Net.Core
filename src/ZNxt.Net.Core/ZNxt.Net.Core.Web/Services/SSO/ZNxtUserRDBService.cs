@@ -151,6 +151,18 @@ namespace ZNxt.Identity.Services
             return await Task.FromResult(false);
         }
 
+        public override JObject GetRoleById(long roleid)
+        {
+            var role = GetDbRole(roleid);
+            if(role!=null)
+            {
+                return role.ToJObject();
+            }
+            else
+            {
+                return null;
+            }
+        }
         private RoleDbo GetDbRole(long roleid)
         {
             var roles = GetCacheValue<RoleDbo>("role", new JObject() { ["is_enabled"] = true });

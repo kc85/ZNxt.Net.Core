@@ -10,8 +10,7 @@ namespace ZNxt.Net.Core.Interfaces
         string GetURIAbsolutePath();
 
         string GetHttpMethod();
-
-        Dictionary<string, string> ResponseHeaders { get; set; }
+        string GetReponseHeader(string key);
 
         int ResponseStatusCode { get; }
 

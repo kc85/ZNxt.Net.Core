@@ -72,6 +72,9 @@ namespace ZNxt.Identity.Services
         public abstract PasswordSaltModel GetPassword(string userid);
         public abstract bool UpdateUser(string userid, JObject data);
 
+        public abstract JObject GetRoleById(long roleid);
+
+
         public abstract bool UpdateUserProfile(string userid, JObject data);
       
         //public  bool AddUserRelation(string parentuserid, string childuserid, string relation)

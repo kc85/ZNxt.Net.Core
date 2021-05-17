@@ -17,7 +17,7 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Primitives;
 using ZNxt.Net.Core.Web.Services.SSO;
 using IdentityServer4.Models;
-
+using IdentityModel;
 
 namespace ZNxt.Net.Core.Web.Handlers
 {
@@ -205,6 +205,10 @@ namespace ZNxt.Net.Core.Web.Handlers
             {
                 context.Response.Headers.Remove(CommonConst.CommonField.CREATED_DATA_DATE_TIME);
             }
+            if (context.Response.Headers.ContainsKey(CommonConst.CommonField.TENANT_ID))
+            {
+                context.Response.Headers.Remove(CommonConst.CommonField.TENANT_ID);
+            }
         }
 
         private bool AuthorizedRoute(HttpContext context, RoutingModel route, IAuthorizationService authorizationService)
@@ -293,7 +297,10 @@ namespace ZNxt.Net.Core.Web.Handlers
                             }
                         }
 
-
+                        if(userModel.tenants!=null && userModel.tenants.Any())
+                        {
+                            context.Response.Headers[CommonConst.CommonField.TENANT_ID] = userModel.tenants.First().tenant_id;
+                        }
                         context.User = new ClaimsPrincipal(identity);
                         var u = _httpContextProxy.User;
                         _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f => $"{f.Key}:{f.Value}"))} OrgRoles: { string.Join(",", userModel.roles)}");
@@ -329,24 +336,37 @@ namespace ZNxt.Net.Core.Web.Handlers
             if (oauthclient != null)
             {
                 var client = oauthclient.Client;
-                if (oauthclient.Secret == secrect.ToString())
-                {
-                    if (client.AllowedScopes.Where(f => route.auth_users.IndexOf(f) != -1).Any())
+                if (oauthclient.Secret == $"{secrect.ToString()}{oauthclient.Salt}".Sha256())
+                { 
+                    if (oauthclient.Roles.Where(f => route.auth_users.IndexOf(f) != -1).Any())
                     {
-
                         var user = new UserModel()
                         {
                             first_name = client.ClientName,
                             user_type = "oauth",
-
                         };
-                        var roles = Newtonsoft.Json.JsonConvert.SerializeObject(client.AllowedScopes);
+                        var roles = Newtonsoft.Json.JsonConvert.SerializeObject(oauthclient.Roles);
+                        if (!string.IsNullOrEmpty(oauthclient.TenantId))
+                        {
+                            user.tenants.Add(new TenantModel()
+                            {
+                                tenant_id = oauthclient.TenantId,
+                                tenant_key = oauthclient.TenantId
+                            });
+                        }
                         user.claims = new List<Model.Claim>() {
-                            new Model.Claim("roles", roles)
-                            };
+                             new Model.Claim("roles", roles),
+                             new Model.Claim(JwtClaimTypes.Subject, oauthclient.TenantId),
+                             new Model.Claim("user_type","oauth"),
+                             new Model.Claim("first_name",client.ClientName)
+                        };
                         var identity = new ClaimsIdentity();
                         identity.AddClaim(new System.Security.Claims.Claim("roles", roles));
                         context.User = new ClaimsPrincipal(identity);
+                        if (!string.IsNullOrEmpty(oauthclient.TenantId))
+                        {
+                            context.Response.Headers[CommonConst.CommonField.TENANT_ID] = oauthclient.TenantId;
+                        }
                         return user;
                     }
                 }

@@ -157,7 +157,10 @@ namespace ZNxt.Identity.Services
                 return null;
             }
         }
-
+        public override JObject GetRoleById(long roleid)
+        {
+            return new JObject() { ["role_id"] = roleid, ["name"] = roleid };
+        }
         public override bool GetIsUserConsecutiveLoginFailLocked(string user_id)
         {
             var filter = "{"+ consecutive_check_end_time + ": { $gt: " + CommonUtility.GetTimestampMilliseconds(DateTime.Now) + " }," + CommonConst.CommonField.USER_ID + ": '" + user_id + "'," + is_locked + ":true}";

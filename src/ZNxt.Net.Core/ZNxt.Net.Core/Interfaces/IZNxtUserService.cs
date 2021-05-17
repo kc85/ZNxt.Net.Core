@@ -15,7 +15,7 @@ namespace ZNxt.Net.Core.Interfaces
         [System.Obsolete]
         UserModel GetUserByEmail(string email);
         List<UserModel> GetUsersByEmail(string email);
-
+        JObject GetRoleById(long roleid);
         UserModel GetUser(string userid);
         UserModel GetUserByUsername(string username);
         PasswordSaltModel GetPassword(string userid);

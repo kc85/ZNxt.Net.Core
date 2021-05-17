@@ -20,7 +20,7 @@ namespace ZNxt.Net.Core.Web.Proxies
             _httpContextAccessor = httpContextAccessor;
         }
        
-        public Dictionary<string, string> ResponseHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        //public Dictionary<string, string> ResponseHeaders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public int ResponseStatusCode => throw new NotImplementedException();
 
@@ -126,6 +126,17 @@ namespace ZNxt.Net.Core.Web.Proxies
             if (_httpContextAccessor.HttpContext != null)
             {
                 return _httpContextAccessor.HttpContext.Request.Headers[key];
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public string GetReponseHeader(string key)
+        {
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                return _httpContextAccessor.HttpContext.Response.Headers[key];
             }
             else
             {

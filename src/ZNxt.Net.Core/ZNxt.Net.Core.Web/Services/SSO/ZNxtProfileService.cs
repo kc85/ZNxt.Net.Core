@@ -26,11 +26,11 @@ namespace ZNxt.Identity.Services
                 var subjectId = context.Subject.GetSubjectId();
                 _logger.Debug($"Getting user by subjectId: {subjectId}");
                 var user = _userService.GetUser(subjectId);
-              
+
                 var claims = new List<Claim>
-            {
-                new Claim(JwtClaimTypes.Subject, user.user_id),
-            };
+                 {
+                    new Claim(JwtClaimTypes.Subject, user.user_id),
+                };
 
                 foreach (var item in user.claims)
                 {

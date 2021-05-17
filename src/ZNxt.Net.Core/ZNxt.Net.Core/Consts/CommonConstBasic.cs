@@ -137,6 +137,8 @@
             public const string SALT_KEY = "salt";
             public const int SUCCESS_VAL = 1;
 
+            public const string TENANT_ID = "tenant_id";
+
         }
     }
 }
