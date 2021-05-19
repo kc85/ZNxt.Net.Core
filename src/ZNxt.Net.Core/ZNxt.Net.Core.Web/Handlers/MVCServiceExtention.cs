@@ -307,7 +307,11 @@ public static class MVCApplicationBuilderExtensions
         //if (useSpa ==null || useSpa.ToLower() != "true")
         //{
         app.UseRouting();
-
+        var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
+        if (!string.IsNullOrEmpty(ssourl))
+        {
+            app.UseAuthentication();
+        }
         app.UseEndpoints(endpoints => endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller}/{action}/{id?}"));

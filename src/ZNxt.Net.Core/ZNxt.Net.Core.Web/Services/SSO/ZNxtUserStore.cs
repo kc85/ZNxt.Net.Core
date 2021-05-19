@@ -56,12 +56,7 @@ namespace ZNxt.Identity.Services
                     if ((_userService as ZNxtUserServiceBase).CreatePassword(user_id, password))
                     {
                         var role = "pass_set_required";
-                        var request = new JObject()
-                        {
-                            ["user_id"] = user_id,
-                            ["role"] = role,
-                        };
-                        return CallGatewayPost(request, "/sso/user/apiremoverole");
+                        return _userService.RemoveUserRole(user_id, role);
                     }
                 }
             }
@@ -149,23 +144,14 @@ namespace ZNxt.Identity.Services
         private bool AddFouceAddPassUserRole(string user_id)
         {
             var role = "pass_set_required";
-            var request = new JObject()
-            {
-                ["user_id"] = user_id,
-                ["role"] = role,
-            };
-            return CallGatewayPost(request, "/sso/user/apiaddrole");
+            return _userService.AddUserRole(user_id, role);
         }
 
         private bool RemoveOTPValidateUserRole(string user_id)
         {
             var role = "init_login_email_otp";
-            var request = new JObject()
-            {
-                ["user_id"] = user_id,
-                ["role"] = role,
-            };
-            return CallGatewayPost(request, "/sso/user/apiremoverole");
+          
+          return  _userService.RemoveUserRole(user_id, role);
         }
 
         private bool ValidatePassword(string password, UserModel user)

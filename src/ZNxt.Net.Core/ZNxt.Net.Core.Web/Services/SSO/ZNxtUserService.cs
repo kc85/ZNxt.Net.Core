@@ -92,24 +92,35 @@ namespace ZNxt.Identity.Services
             });
         }
 
-        //public override async Task<bool> CreateUserAsync(ClaimsPrincipal subject)
-        //{
-        //    var subjectId = subject.GetSubjectId();
-        //    if (!IsExists(subjectId))
-        //    {
-        //        var user = new ZNxt.Net.Core.Model.UserModel()
+        public override bool RemoveUserRole(string userid, string rolename)
+        {
+            return AddRemoveRole(false, rolename, GetUser(userid).ToJObject());
+        }
+        public override bool AddUserRole(string userid, string rolename)
+        {
+            return AddRemoveRole(true, rolename, GetUser(userid).ToJObject());
+        }
 
-        //        {
-        //            id = subjectId,
-        //            user_id = subjectId,
-        //            first_name = subject.GetDisplayName(),
-        //            email = subject.GetSubjectId()
+        protected bool AddRemoveRole(bool isAdded, string role, JObject user)
+        {
+            if (!(user["roles"] as JArray).Where(f => f.ToString() == role).Any() && isAdded)
+            {
+                _logger.Debug($"Adding role {role}");
+                (user["roles"] as JArray).Add(role);
+            }
+            else if ((user["roles"] as JArray).Where(f => f.ToString() == role).Any() && !isAdded)
+            {
+                _logger.Debug($"Removing role {role}");
+                (user["roles"] as JArray).Remove((user["roles"] as JArray).FirstOrDefault(f => f.ToString() == role));
+            }
+            else
+            {
+                _logger.Debug($"{role} , User :{user.ToString()} isAdded: {isAdded}");
+                return true;
+            }
+            return _dBService.Write(CommonConst.Collection.USERS, user, "{'user_id' : '" + user["user_id"].ToString() + "'}", true, MergeArrayHandling.Replace);
 
-        //        };
-        //        return await Task.FromResult(_dBService.WriteData(Collection.USERS, JObject.Parse(JsonConvert.SerializeObject(user))));
-        //    }
-        //    return false;
-        //}
+        }
         public override bool IsExists(string userid)
         {
             return _dBService.Get(Collection.USERS, new Net.Core.Model.RawQuery("{user_id: '" + userid + "'}")).Any();

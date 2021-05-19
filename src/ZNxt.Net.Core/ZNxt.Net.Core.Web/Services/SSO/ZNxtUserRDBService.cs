@@ -64,7 +64,7 @@ namespace ZNxt.Identity.Services
                     user.email = user.email?.ToLower();
                     var dbroles = GetAndAddDbValues<RoleDbo>(dbtxn, user.roles, "role", (d) =>
                              {
-                                 return roles.IndexOf(d.name) != -1;
+                                 return user.roles.IndexOf(d.name) != -1;
                              },
                             (d, r) =>
                             {
@@ -152,6 +152,7 @@ namespace ZNxt.Identity.Services
             return await Task.FromResult(false);
         }
 
+
         public override JObject GetRoleById(long roleid)
         {
             var role = GetDbRole(roleid);
@@ -197,7 +198,9 @@ namespace ZNxt.Identity.Services
 
         private List<T> GetCacheValue<T>(string tablename, JObject filter = null) where T : class
         {
-            var dbroles = _inMemoryCacheService.Get<List<T>>($"{cacheprefix}-{tablename}");
+            if (filter == null) { filter = new JObject();  }
+
+            var dbroles = _inMemoryCacheService.Get<List<T>>($"{cacheprefix}-{tablename}-{filter.ToString()}");
             if (dbroles == null)
             {
                 dbroles = GetDBValueAddToCache<T>(tablename, null, filter);
@@ -217,7 +220,7 @@ namespace ZNxt.Identity.Services
                 }
                 if (input.Any())
                 {
-                    _inMemoryCacheService.Put<List<T>>($"{cacheprefix}-{tablename}", input);
+                    _inMemoryCacheService.Put<List<T>>($"{cacheprefix}-{tablename}-{filter.ToString()}", input);
                 }
                 return input;
             }
@@ -271,9 +274,90 @@ namespace ZNxt.Identity.Services
             }
             return finalroles;
         }
-       
 
-       
+        public override bool RemoveUserRole(string userid, string rolename)
+        {
+
+            var roles = GetCacheValue<RoleDbo>(IdentityTable.ROLE,new JObject());
+
+            var role = roles.FirstOrDefault(f => f.name == rolename);
+            if (role != null)
+            {
+              var roledata =   _rdBService.Get<UserRoleDbo>(IdentityTable.USER_ROLE, DefaultGetpageLength, 0, new JObject() { ["user_id"] = long.Parse(userid), ["role_id"] = role.role_id, ["is_enabled"] = true });
+                if (roledata.Any())
+                {
+                    roledata.First().is_enabled = false;
+                    return _rdBService.Update<UserRoleDbo>(roledata.First());
+
+                }
+                else
+                {
+                    _logger.Error($"User role not found user:{userid}, role:  {rolename}");
+                }
+            }
+            else
+            {
+                _logger.Error($"Role not found user:{userid}, role:  {rolename}");
+            }
+            return false;
+        }
+        public override bool AddUserRole(string userid, string rolename)
+        {
+            var txn = _rdBService.BeginTransaction();
+            try
+            {
+                var roles = new List<string>() { rolename };
+                var dbroles = GetAndAddDbValues<RoleDbo>(txn, roles, "role", (d) =>
+                {
+                    return roles.IndexOf(d.name) != -1;
+                },
+                                      (d, r) =>
+                                      {
+                                          return d.name == r;
+                                      }
+                                      , (d) =>
+                                      {
+                                          return new RoleDbo()
+                                          {
+                                              is_enabled = true,
+                                              name = d
+                                          };
+                                      });
+
+                var role = dbroles.FirstOrDefault(f => f.name == rolename);
+                if (role != null)
+                {
+                    var roledata = _rdBService.Get<UserRoleDbo>(IdentityTable.USER_ROLE, DefaultGetpageLength, 0, new JObject() { ["user_id"] = long.Parse(userid), ["role_id"] = role.role_id, ["is_enabled"] = true });
+                    if (!roledata.Any())
+                    {
+                        _rdBService.WriteData<UserRoleDbo>(new UserRoleDbo()
+                        {
+                            is_enabled = true,
+                            role_id = role.role_id,
+                            user_id = long.Parse(userid)
+                        },txn);
+                        _rdBService.CommitTransaction(txn);
+                        return true;
+                    }
+                }
+                else
+                {
+                    _logger.Error($"Role not found user:{userid}, role:  {rolename}");
+
+                }
+
+                _rdBService.RollbackTransaction(txn);
+
+            }
+            catch (Exception ex)
+            {
+                _rdBService.RollbackTransaction(txn);
+                _logger.Error($"Role not found user:{userid}, role:  {rolename}. { ex.Message}", ex);
+            }
+          
+            return false;
+        }
+
 
         public override PasswordSaltModel GetPassword(string userid)
         {
@@ -302,7 +386,7 @@ namespace ZNxt.Identity.Services
             if (user.Any())
             {
                 var userdata = user.First();
-                return GetDtoUserModel(userdata, new JObject() { [nameof(userdata.user_id)] = userdata.user_id });
+                return GetDtoUserModel(userdata, new JObject() { [nameof(userdata.user_id)] = userdata.user_id, ["is_enabled"] = true });
             }
             else
             {
@@ -371,52 +455,54 @@ namespace ZNxt.Identity.Services
 
         public override void ResetUserLoginFailCount(string user_id)
         {
-            var sql = "update user_login_fail_lock set lock_end_time=@current_time where lock_end_time > @consecutive_lock_time and lock_start_time <  @consecutive_lock_time and user_id=@user_id ";
-            var result = _rdBService.Update(sql, new { current_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow), user_id = long.Parse(user_id) });
+          //  var sql = "update user_login_fail_lock set lock_end_time=@current_time where lock_end_time > @consecutive_lock_time and lock_start_time <  @consecutive_lock_time and user_id=@user_id ";
+          //  var result = _rdBService.Update(sql, new { current_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow), user_id = long.Parse(user_id) });
         }
         public override bool GetIsUserConsecutiveLoginFailLocked(string user_id)
         {
             //var consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockFailDuratoin));
 
-            var sql = "select * from user_login_fail_lock  where lock_end_time > @consecutive_lock_time and lock_start_time <  @consecutive_lock_time  and user_id=@user_id and is_locked = true";
+            // var sql = "select * from user_login_fail_lock  where lock_end_time > @consecutive_lock_time and lock_start_time <  @consecutive_lock_time  and user_id=@user_id and is_locked = true";
 
-            var data = _rdBService.Get<UserLoginFailDbo>(sql, new { consecutive_lock_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow), user_id = long.Parse(user_id) });
+            //  var data = _rdBService.Get<UserLoginFailDbo>(sql, new { consecutive_lock_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow), user_id = long.Parse(user_id) });
 
-            return data.Any();
+            // return data.Any();
+
+            return false;
         }
 
         public override bool UpdateUserLoginFailCount(string user_id)
         {
-            var consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockFailDuratoin));
-            var sql = "select * from user_login_fail_lock  where lock_end_time < @consecutive_lock_time and user_id=@user_id and is_locked=false";
+            //var consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockFailDuratoin));
+            //var sql = "select * from user_login_fail_lock  where lock_end_time < @consecutive_lock_time and user_id=@user_id and is_locked=false";
 
-            var data = _rdBService.Get<UserLoginFailDbo>(sql, new { consecutive_lock_time = consecutiveLockFailDuratoinTimestamp, user_id = long.Parse(user_id) });
+            //var data = _rdBService.Get<UserLoginFailDbo>(sql, new { consecutive_lock_time = consecutiveLockFailDuratoinTimestamp, user_id = long.Parse(user_id) });
 
-            if (data.Any())
-            {
-                var lockData = data.First();
-                lockData.count = lockData.count + 1;
-                if (lockData.count > consecutiveMaxfail)
-                {
-                   // consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockDuratoin));
+            //if (data.Any())
+            //{
+            //    var lockData = data.First();
+            //    lockData.count = lockData.count + 1;
+            //    if (lockData.count > consecutiveMaxfail)
+            //    {
+            //       // consecutiveLockFailDuratoinTimestamp = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow.AddMinutes(consecutiveLockDuratoin));
 
-                    lockData.is_locked = true;
-                }
-                lockData.lock_end_time = consecutiveLockFailDuratoinTimestamp;
-                var result = _rdBService.Update<UserLoginFailDbo>(lockData);
-            }
-            else
-            {
-                var lockData = new UserLoginFailDbo()
-                {
-                    count = 1,
-                    is_locked = false,
-                    lock_end_time = consecutiveLockFailDuratoinTimestamp,
-                    lock_start_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow),
-                    user_id = long.Parse(user_id)
-                };
-                var result = _rdBService.WriteData<UserLoginFailDbo>(lockData);
-            }
+            //        lockData.is_locked = true;
+            //    }
+            //    lockData.lock_end_time = consecutiveLockFailDuratoinTimestamp;
+            //    var result = _rdBService.Update<UserLoginFailDbo>(lockData);
+            //}
+            //else
+            //{
+            //    var lockData = new UserLoginFailDbo()
+            //    {
+            //        count = 1,
+            //        is_locked = false,
+            //        lock_end_time = consecutiveLockFailDuratoinTimestamp,
+            //        lock_start_time = CommonUtility.GetTimestampMilliseconds(DateTime.UtcNow),
+            //        user_id = long.Parse(user_id)
+            //    };
+            //    var result = _rdBService.WriteData<UserLoginFailDbo>(lockData);
+            //}
             return true;
         }
 

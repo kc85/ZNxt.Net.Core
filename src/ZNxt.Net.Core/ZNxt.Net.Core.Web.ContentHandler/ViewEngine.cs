@@ -2,7 +2,7 @@
 using System.Text;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Interfaces;
-using RazorLight;
+//using RazorLight;
 
 namespace ZNxt.Net.Core.Web.ContentHandler
 {
@@ -56,12 +56,14 @@ namespace ZNxt.Net.Core.Web.ContentHandler
                 inputTemplate = headerAppender.AppendLine("}").AppendLine(inputTemplate).ToString();
             }
 
-            var engine = new RazorLightEngineBuilder()
-                .UseEmbeddedResourcesProject(this.GetType())
-            .UseMemoryCachingProvider()
-            .Build();
+            //var engine = new RazorLightEngineBuilder()
+            //    .UseEmbeddedResourcesProject(this.GetType())
+            //.UseMemoryCachingProvider()
+            //.Build();
 
-            return engine.CompileRenderAsync(key, inputTemplate, dataModel).GetAwaiter().GetResult();
+            //return engine.CompileRenderAsync(key, inputTemplate, dataModel).GetAwaiter().GetResult();
+
+            return inputTemplate;
         }
     }
 }

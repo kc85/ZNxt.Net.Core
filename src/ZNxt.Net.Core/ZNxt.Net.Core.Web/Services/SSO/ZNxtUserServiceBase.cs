@@ -16,14 +16,14 @@ using static ZNxt.Net.Core.Consts.CommonConst;
 
 namespace ZNxt.Identity.Services
 {
-    public  abstract class ZNxtUserServiceBase : IZNxtUserService
+    public abstract class ZNxtUserServiceBase : IZNxtUserService
     {
         protected readonly IUserNotifierService _userNotifierService;
         protected readonly ILogger _logger;
         protected readonly IApiGatewayService _apiGatewayService;
         protected readonly ITenantSetterService _tenantSetterService;
 
-      protected  const int consecutiveMaxfail = 5;
+        protected const int consecutiveMaxfail = 5;
         protected const int consecutiveLockDuratoin = 30;
         protected const int consecutiveLockFailDuratoin = 10;
 
@@ -45,7 +45,7 @@ namespace ZNxt.Identity.Services
         public abstract bool CreatePassword(string user_id, string password);
 
         //public abstract Task<bool> CreateUserAsync(ClaimsPrincipal subject);
-       
+
         public abstract bool IsExists(string userid);
 
         public abstract UserModel GetUser(string userid);
@@ -56,14 +56,14 @@ namespace ZNxt.Identity.Services
         public abstract void ResetUserLoginFailCount(string user_id);
 
         public abstract bool UpdateUserLoginFailCount(string user_id);
-     
+
         public virtual void SetUserTenants(UserModel userModel)
         {
             _tenantSetterService.SetTenant(userModel);
         }
         public virtual bool AddUserToTenants(UserModel userModel)
         {
-          return _tenantSetterService.AddUserToTenant(userModel);
+            return _tenantSetterService.AddUserToTenant(userModel);
         }
 
         public abstract List<UserModel> GetUsersByEmail(string email);
@@ -76,7 +76,7 @@ namespace ZNxt.Identity.Services
 
 
         public abstract bool UpdateUserProfile(string userid, JObject data);
-      
+
         //public  bool AddUserRelation(string parentuserid, string childuserid, string relation)
         //{
         //    relation = relation.Trim().ToLower();
@@ -99,8 +99,10 @@ namespace ZNxt.Identity.Services
         //    }
         //}
 
+        public abstract bool RemoveUserRole(string userid, string rolename);
+        public abstract bool AddUserRole(string userid, string rolename);
         public abstract MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request);
         public abstract MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request);
-        
+
     }
 }

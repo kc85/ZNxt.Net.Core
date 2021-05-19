@@ -30,5 +30,8 @@ namespace ZNxt.Net.Core.Interfaces
         MobileAuthRegisterResponse RegisterMobile(MobileAuthRegisterRequest request);
         MobileAuthActivateResponse ActivateRegisterMobile(MobileAuthActivateRequest request);
         bool CreatePassword(string user_id, string password);
+
+         bool RemoveUserRole(string userid, string rolename);
+        bool AddUserRole(string userid, string rolename);
     }
 }

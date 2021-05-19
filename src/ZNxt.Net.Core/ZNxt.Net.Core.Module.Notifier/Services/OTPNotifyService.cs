@@ -176,7 +176,7 @@ namespace ZNxt.Net.Core.Module.Notifier.Services
 
         private JObject CreateOTPData(string otpType, string securityToken, long otpduration)
         {
-            var otp = CommonUtility.RandomNumber(4);
+            var otp = CommonUtility.RandomNumber(6);
             JObject otpData = new JObject();
             otpData[CommonConst.CommonField.ID] = CommonUtility.GetNewID();
             otpData[CommonConst.CommonField.OTP] = otp;
