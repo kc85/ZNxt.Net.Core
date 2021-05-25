@@ -90,14 +90,15 @@ namespace ZNxt.Identity
                 {
                     ClientId = "ZNxtApp",
                     ClientName = "ZNxtApp",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = { new Secret(appSecret.Sha256()) },
                     RedirectUris = redirectUris,
                     FrontChannelLogoutUri = frontChannelLogoutUri,
                     PostLogoutRedirectUris = postLogoutRedirectUris,
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "ZNxtCoreAppApi" },
+                   // AllowOfflineAccess = true,
+                    AllowedScopes = { "openid", "profile"},
                     RequireConsent = false,
+                    RequirePkce = false
                 }
             };
         }

@@ -414,6 +414,7 @@ namespace ZNxt.Identity.Services
             var userModel = new UserModel()
             {
                 user_id = userdata.user_id.ToString(),
+                user_name = userdata.user_name,
                 first_name = userdata.first_name,
                 middle_name = userdata.middle_name,
                 last_name = userdata.last_name,
@@ -442,11 +443,12 @@ namespace ZNxt.Identity.Services
             return GetUsers(new JObject() { ["email"] = email.ToLower(), ["is_enabled"] = true });
         }
 
-        public override bool IsExists(string user_name)
+        public override bool IsExists(string user_id)
         {
 
+            long userid = long.Parse(user_id);
             var m = new UserModelDbo();
-            var count = _rdBService.GetCount(IdentityTable.USER, new JObject() { [nameof(m.user_name)] = user_name });
+            var count = _rdBService.GetCount(IdentityTable.USER, new JObject() { [nameof(m.user_id)] = userid });
 
             return count != 0;
 

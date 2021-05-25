@@ -39,7 +39,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             catch (Exception ex)
             {
                 _serviceResolver.Resolve<ILogger>().Error(ex.Message, ex);
-                await context.Response.WriteAsync(_serviceResolver.Resolve<IResponseBuilder>().ServerError().ToString());
+                await context.Response.WriteAsync(_serviceResolver.Resolve<IResponseBuilder>().ServerError(ex.Message).ToString());
             }
             
         }

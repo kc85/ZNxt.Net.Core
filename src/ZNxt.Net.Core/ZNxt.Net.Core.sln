@@ -49,7 +49,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Net.Core.Web.Test", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Module.Identity.MySql", "ZNxt.Module.Identity.MySql\ZNxt.Module.Identity.MySql.csproj", "{8AEEF74B-2506-4539-BB5F-48BAAE3B8DC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Module.Identity.MySql.Test", "ZNxt.Module.Identity.MySql.Test\ZNxt.Module.Identity.MySql.Test.csproj", "{A27816F6-CB61-4D7F-9131-530566DCD453}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZNxt.Module.Identity.MySql.Test", "ZNxt.Module.Identity.MySql.Test\ZNxt.Module.Identity.MySql.Test.csproj", "{A27816F6-CB61-4D7F-9131-530566DCD453}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.Web.SSOClientSample", "ZNxt.Net.Core.Web.SSOClientSample\ZNxt.Net.Core.Web.SSOClientSample.csproj", "{FB9ECE5F-5365-4931-A328-28011B568683}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZNxt.Net.Core.Web.SSOSample", "ZNxt.Net.Core.Web.SSOSample\ZNxt.Net.Core.Web.SSOSample.csproj", "{FF658614-F367-4F6E-B395-D9B42F332EEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,6 +149,14 @@ Global
 		{A27816F6-CB61-4D7F-9131-530566DCD453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A27816F6-CB61-4D7F-9131-530566DCD453}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A27816F6-CB61-4D7F-9131-530566DCD453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB9ECE5F-5365-4931-A328-28011B568683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB9ECE5F-5365-4931-A328-28011B568683}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB9ECE5F-5365-4931-A328-28011B568683}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB9ECE5F-5365-4931-A328-28011B568683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF658614-F367-4F6E-B395-D9B42F332EEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF658614-F367-4F6E-B395-D9B42F332EEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF658614-F367-4F6E-B395-D9B42F332EEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF658614-F367-4F6E-B395-D9B42F332EEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

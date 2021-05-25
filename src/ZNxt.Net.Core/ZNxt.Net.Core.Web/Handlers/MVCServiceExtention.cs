@@ -36,7 +36,9 @@ using System.Net.Http;
 using System.Reflection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 
 public static class MVCServiceExtention
 {
@@ -123,19 +125,36 @@ public static class MVCServiceExtention
             options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.DefaultAuthenticateScheme = "oidc";
 
+        })
+        .AddJwtBearer("Bearer", options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false
+            };
+            options.Authority = ssourl;
+            options.Audience = "profile";
+            options.TokenValidationParameters.NameClaimType = "name";
+            options.RequireHttpsMetadata = false;
+            options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
+
         }).AddOpenIdConnect("oidc", options =>
         {
             options.Authority = ssourl;
             options.ClientId = appName;
             options.ClientSecret = appSecret;
-            options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+            options.ResponseType = OpenIdConnectResponseType.Code;
+            options.UsePkce = true;
+            options.Scope.Clear();
             options.Scope.Add("openid");
-            options.Scope.Add("profile");
-            options.Scope.Add("ZNxtCoreAppApi");
+             options.Scope.Add("profile");
+            //options.Scope.Add("ZNxtCoreAppApi");
             options.SignedOutRedirectUri = "/";
             options.TokenValidationParameters.NameClaimType = "name";
             options.SaveTokens = true;
             options.GetClaimsFromUserInfoEndpoint = true;
+            //options.AlwaysIncludeUserClaimsInIdToken = true;
+            options.ClaimActions.MapAll();
             options.RequireHttpsMetadata = false;
             options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true; } };
             options.Events = new OpenIdConnectEvents
@@ -165,16 +184,11 @@ public static class MVCServiceExtention
         var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
         if (!string.IsNullOrEmpty(ssourl))
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            //services.AddAuthentication().AddJwtBearer(options =>
+            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            //services.AddAuthentication(options =>
             //{
-
-            //    options.Authority = ssourl;
-            //    options.Audience = "ZNxtCoreAppApi";
-            //    options.TokenValidationParameters.NameClaimType = "name";
-            //    options.RequireHttpsMetadata = false;
-            //    options.BackchannelHttpHandler = new HttpClientHandler { ServerCertificateCustomValidationCallback = delegate { return true;  } };
-
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             //});
         }
     }

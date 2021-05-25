@@ -55,6 +55,7 @@ namespace ZNxt.Net.Core.Web.Handlers
 
         public async Task Invoke(HttpContext context, IAuthorizationService authorizationService)
         {
+            
             var route = _routing.GetRoute(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
             if (route != null && !string.IsNullOrEmpty(route.ExecultAssembly) && !string.IsNullOrEmpty(route.ExecuteType))
             {
@@ -139,7 +140,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                             _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
                             context.Response.ContentType = route.ContentType;
                             var headers = new Dictionary<string, string>();
-                           // headers[CommonConst.CommonField.API_AUTH_TOKEN] = "route-call";
+                            headers[CommonConst.CommonField.API_AUTH_TOKEN] = "route-call";
                             var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath(), _httpContextProxy.GetQueryString(), _httpContextProxy.GetRequestBody<JObject>(), headers);
                             if (response != null)
                             {
@@ -219,14 +220,12 @@ namespace ZNxt.Net.Core.Web.Handlers
             {
                 try
                 {
-
                     if (route.auth_users.IndexOf(CommonConst.CommonField.API_AUTH_TOKEN) != -1)
                     {
                         var api_access_key = _httpContextProxy.GetHeader(CommonConst.CommonField.API_AUTH_TOKEN);
                         return api_access_key == CommonUtility.GetApiAuthKey();
                     }
-                    // check for auth client 
-
+                    
                     var oauthclient = context.Request.Headers[CommonConst.CommonField.OAUTH_CLIENT_ID];
                     if (!string.IsNullOrEmpty(oauthclient))
                     {
@@ -235,73 +234,49 @@ namespace ZNxt.Net.Core.Web.Handlers
                     }
 
                     UserModel userModel = null;
-                    var accessToken = _httpContextProxy.GetAccessTokenAync().GetAwaiter().GetResult();
-                    var orgkey = string.Empty;
+                    userModel = _httpContextProxy.User;
 
-                    if (!string.IsNullOrEmpty(accessToken))
+                    if (userModel == null)
                     {
-
-                        orgkey = _httpContextProxy.GetHeader(CommonConst.CommonValue.TENANT_KEY);
-                        if (string.IsNullOrEmpty(orgkey))
-                        {
-                            orgkey = _httpContextProxy.GetQueryString(CommonConst.CommonValue.TENANT_KEY);
-                        }
-                        var cackeKey = $"{accessToken}_{orgkey}";
-
+                        var accessToken = _httpContextProxy.GetAccessTokenAync().GetAwaiter().GetResult();
+                        var cackeKey = $"{accessToken}";
                         userModel = _inMemoryCacheService.Get<UserModel>(cackeKey);
                         if (userModel == null)
                         {
-
-                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() { [CommonConst.CommonValue.TENANT_KEY] = orgkey }, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() {  }, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());
-                                //if(userModel.orgs == null || userModel.orgs.Count ==0)
-                                //{
-                                //   // _serviceResolver.Resolve<IZNxtUserService>().SetUserOrgs(userModel);
-                                //}
-
                                 _inMemoryCacheService.Put<UserModel>(cackeKey, userModel);
                             }
                         }
+                        if (userModel != null)
+                        {
+                            var identity = new ClaimsIdentity();
+                            foreach (var claim in userModel.claims)
+                            {
+                                if (claim.Key == "roles")
+                                {
+                                    var roles = new List<string>();
+                                    roles.AddRange(userModel.roles);
+                                    identity.AddClaim(new System.Security.Claims.Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(roles)));
+                                }
+                                else
+                                {
+                                    identity.AddClaim(new System.Security.Claims.Claim(claim.Key, claim.Value));
+                                }
+                            }
+                            context.User = new ClaimsPrincipal(identity);
+                        }
                     }
-                    else
-                    {
-                        userModel = _httpContextProxy.User;
-                    }
+
                     if (userModel != null)
                     {
-                        var identity = new ClaimsIdentity();
-
-                        _logger.Debug("userModel", JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(userModel)));
-
-                        foreach (var claim in userModel.claims)
-                        {
-                            if (claim.Key == "roles")
-                            {
-                                var roles = new List<string>();
-                                roles.AddRange(userModel.roles);
-                                if (userModel.tenants != null)
-                                {
-                                    //var org = userModel.tenants.FirstOrDefault(f => f.org_key == orgkey);
-                                    //if (org != null)
-                                    //{
-                                    //    //roles.Add(org.Groups.)
-                                    //}
-                                }
-                                identity.AddClaim(new System.Security.Claims.Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(roles)));
-                            }
-                            else
-                            {
-                                identity.AddClaim(new System.Security.Claims.Claim(claim.Key, claim.Value));
-                            }
-                        }
-
                         if(userModel.tenants!=null && userModel.tenants.Any())
                         {
                             context.Response.Headers[CommonConst.CommonField.TENANT_ID] = userModel.tenants.First().tenant_id;
                         }
-                        context.User = new ClaimsPrincipal(identity);
+                       
                         var u = _httpContextProxy.User;
                         _logger.Debug($"Assign user id :{u.user_id} Claims:{string.Join(", ", u.claims.Select(f => $"{f.Key}:{f.Value}"))} OrgRoles: { string.Join(",", userModel.roles)}");
 
@@ -312,7 +287,6 @@ namespace ZNxt.Net.Core.Web.Handlers
                         {
                             _logger.Debug($"Access :{hasaccess}:{route.ToString()}:{  string.Join(",", route.auth_users)}");
                         }
-
                         return hasaccess;
                     }
                     return false;

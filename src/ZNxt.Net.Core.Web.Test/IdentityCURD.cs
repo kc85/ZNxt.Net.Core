@@ -13,7 +13,7 @@ namespace ZNxt.Net.Core.Web.Test
 
         public IdentityCURD()
         {
-            Environment.SetEnvironmentVariable("NPGSQLConnectionString", "Host=103.212.120.203;Username=root;Password=root;Database=identity;");
+            Environment.SetEnvironmentVariable("NPGSQLConnectionString", "Host=103.212.120.XXX;Username=root;Password=root;Database=identity;");
             _rDBService = new SqlRDBService();
 
         }

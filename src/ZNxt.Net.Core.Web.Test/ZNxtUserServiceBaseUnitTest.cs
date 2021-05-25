@@ -20,7 +20,7 @@ namespace ZNxt.Net.Core.Web.Test
 
         public ZNxtUserServiceBaseUnitTest()
         {
-            Environment.SetEnvironmentVariable("NPGSQLConnectionString", "Host=103.212.120.203;Username=root;Password=root;Database=identity;");
+            Environment.SetEnvironmentVariable("NPGSQLConnectionString", "Host=103.212.120.XXX;Username=root;Password=root;Database=identity;");
             _rDBService = new SqlRDBService();
 
             _zNxtUserService = new ZNxtUserRDBService(_rDBService, new MockUserNotifierService(), new MockLogger(), new MockApiGatewayService(), new MockTenantSetterService(), new MockinMemoryCacheService());

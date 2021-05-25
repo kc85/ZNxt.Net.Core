@@ -36,6 +36,18 @@ namespace ZNxt.Identity.Services
                 {
                     claims.Add(new Claim(item.Key, item.Value));
                 }
+                if (user.user_name != null)
+                    claims.Add(new Claim("user_name", user.user_name));
+                if (user.first_name != null)
+                    claims.Add(new Claim("first_name", user.first_name));
+                if (user.last_name != null)
+                    claims.Add(new Claim("last_name", user.last_name));
+                if (user.middle_name != null)
+                    claims.Add(new Claim("middle_name", user.middle_name));
+                if (user.email != null)
+                    claims.Add(new Claim("email", user.email));
+                if (user.user_type != null)
+                    claims.Add(new Claim("user_type", user.user_type));
                 claims.Add(new Claim("roles", Newtonsoft.Json.JsonConvert.SerializeObject(user.roles)));
                 var tenants = Newtonsoft.Json.JsonConvert.SerializeObject(user.tenants);
                 _logger.Debug($"User tenants {tenants}");

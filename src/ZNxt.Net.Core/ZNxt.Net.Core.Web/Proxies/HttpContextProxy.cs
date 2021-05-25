@@ -64,6 +64,30 @@ namespace ZNxt.Net.Core.Web.Proxies
                         {  
                             user.tenants = Newtonsoft.Json.JsonConvert.DeserializeObject<List<TenantModel>>(claim.Value);
                         }
+                        if (claim.Type == nameof(user.user_name))
+                        {
+                            user.user_name = claim.Value;
+                        }
+                        if (claim.Type == nameof(user.email))
+                        {
+                            user.email = claim.Value;
+                        }
+                        if (claim.Type == nameof(user.first_name))
+                        {
+                            user.first_name = claim.Value;
+                        }
+                        if (claim.Type == nameof(user.middle_name))
+                        {
+                            user.middle_name = claim.Value;
+                        }
+                        if (claim.Type == nameof(user.last_name))
+                        {
+                            user.last_name = claim.Value;
+                        }
+                        if (claim.Type == nameof(user.user_type))
+                        {
+                            user.user_type = claim.Value;
+                        }
                     }
                     
                   

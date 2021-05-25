@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <title>ZNxt.App : Next Generation Application Framework</title>
+      <!-- Bootstrap core CSS -->
+      <link href="./css/bootstrap.min.css" rel="stylesheet">
+      <!-- Custom styles for this template -->
+      <link href="./css/scrolling-nav.css" rel="stylesheet">
+      <link href="./css/znxt.css" rel="stylesheet">
+   </head>
+   <body id="page-top">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+         <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">ZNxt.App </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+         </div>
+      </nav>
+      <header class="bg-primary text-white">
+         <div class="container text-center">
+            <h1>ZNxt.App</h1>
+            <p class="lead">
+               The ZNxt.App is .Net C# Framework for design highly scalable microservice base application, Free and Open Source 
+            </p>
+            <p class="lead">
+               <a href="https://github.com/kc85/ZNxt.Net.Core" style="color:#fff" target="_blank">
+               View on GitHub
+               </a>
+            </p>
+         </div>
+      </header>
+      <section id="about">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-8 mx-auto">
+                  <h2>Overview</h2>
+                  <p class="lead">ZNxt.App is an open source, cross platform, highly scalable, micro-services based application development framework. ZNxt.App designed on .net core 2.2 and can run on standalone on under container. Its has build it support of authentication, authorization, micro front end, dynamic module injection.
+                  </p>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="Installation" class="bg-light">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-8 mx-auto">
+                  <h2>Docker commands</h2>
+                  <br/>			
+                  <code>
+                  <small style="color:gray">
+                  #Basic setup 
+                  </small>
+                  </br>
+                  sudo docker run -d -p 806:80 -p 4436:443  --restart=always --name znxt-app-run  choudhurykhanin/znxtapp:latest
+                  </br>
+                  </br>
+                  <small style="color:gray">
+                  #Mapped static content on windows ## c:\myapp\wwwroot is the folder from your application static content
+                  </small>
+                  </br>
+                  sudo docker run -d -p 806:80 -p 4436:443 -v c:\myapp\wwwroot:/app/wwwroot --restart=always --name znxt-app-run  choudhurykhanin/znxtapp:latest
+                  </br>
+                  </br>
+                  <small style="color:gray">
+                  #Mapped static content on linux ## /myapp/wwwroot is the folder from your application static content
+                  </small>
+                  </br>
+                  sudo docker run -d -p 806:80 -p 4436:443 -v /myapp/wwwroot:/app/wwwroot --restart=always --name znxt-app-run  choudhurykhanin/znxtapp:latest
+                  </code>
+                  </p>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="contact">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-8 mx-auto">
+                  <h2>Create Api Module</h2>
+                  <b>Prerequisite:  <a href="https://dotnet.microsoft.com/download/dotnet/2.2 ">.Net Core 2.2</a>  </b>
+                  <br/>
+                  &nbsp;
+                  <ul>
+                     <li>Install ZNxt Module templete
+                        <br>
+                        <small style="color:gray">
+                        #Run below command for your command prompt or terminal 
+                        </small>
+                        <br/>
+                        dotnet new --install ZNxt.Module.Template.CSharp::1.0.0
+                        <br/>
+                        &nbsp;
+                     </li>
+                     <li>Create new C# module project
+                        <br>
+                        <small style="color:gray">
+                        # Create folder with you module name. (eg _> md MyModule.EComm). From cmd/terminal go inside the folder and run below command     
+                        </small>
+                        <br>
+                        dotnet new znxtmodule  --ModuleName EComm --Namespace MyModule --ApiPrefix ecom
+                        <br/>
+                        &nbsp;
+                     </li>
+                     <li>Build Project 
+                        <br>
+                        <small style="color:gray">
+                        # Go to the folder yournamespace.yourmodulename.Web.Test      
+                        </small>
+                        <br>
+                        eg. _> cd MyModule.EComm.Web.Test
+                        <br>
+                        <small style="color:gray">
+                        # Do dotnet build      
+                        </small>
+                        <br>
+                        _> dotnet build
+                        <br/>
+                        &nbsp;
+                     </li>
+                     <li>Run The Project 
+                        <br>
+                        _> dotnet run
+                        <br/>
+                        &nbsp;
+                     </li>
+                     <li>Open below link to you browser  
+                        <br>
+                        _> <a href="http://localhost:880" target="_blank"> http://localhost:880</a>
+                        <br/>
+                        &nbsp;
+                     </li>
+                     <li>Call Sample API    
+                        <br>
+                        <a href="http://localhost:880/api/EComm/ping" target="_blank"> 
+                        http://localhost:880/api/{yourapiprefix}/ping
+                        <br>
+                        e.g: http://localhost:880/api/EComm/ping
+                        </a>
+                        <br/>
+                        &nbsp;
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section id="contact"  class="bg-light">
+        <div class="container">
+           <div class="row">
+              <div class="col-lg-8 mx-auto">
+                 <h2>Add new api</h2>
+                 <ul>
+                    <li>
+                      <small style="color:gray">
+                      #add new C# class under {projectfolder}\Services\Api 
+                      </small>
+                      <br/>
+                     <img src="./img/add-controller.jpg" width="300">
+                      <br/>
+                      &nbsp;
+                    </li>
+                    <li>
+                      <small style="color:gray">
+                      #add controller code 
+                      </small>
+                      <br/>
+                     <img src="./img/product-controller.JPG" width="600">
+                      <br/>
+                      &nbsp;
+                    </li>
+                    <li>
+                      <small style="color:gray">
+                      #call api and get response  
+                      </small>
+                      <br/>
+                     <img src="./img/product-api-respone.JPG" width="300">
+                      <br/>
+                      &nbsp;
+                    </li>
+                    <li>
+                     <b> <a href="https://github.com/kc85/ZNxt.Net.Core/tree/master/samples/Modules/EComm.Module/MyModule.EComm/Services/Api/Product" target="_blank"> Github sample </a></b>
+                    </li>
+                 </ul>
+              </div>
+           </div>
+        </div>
+     </section>
+     <section id="contact">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-8 mx-auto">
+               <h2>Manipulate data with api</h2>
+               <b>Prerequisite: <a href="https://docs.mongodb.com/manual/installation/"> Install mongodb on local </a> or <a href="https://www.mongodb.com/cloud/atlas"> create account of mongodb cloud</a> </b> 
+               <ul>
+                  <li>
+                    <small style="color:gray">
+                      # get mongodb connection string 
+                      </small>
+                      <br/>
+                      e.g : mongodb://localhost:27017
+                      <br/>
+                  </li>
+                  <li>
+                    <small style="color:gray">
+                      # add connection string and db name znxtsettings.json.config 
+                      </small>
+                      <br/>
+                      e.g :
+                      <br>
+                      <img src="./img/connection-string.JPG">
+                      <br/>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </section>
+      <section id="contact">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-8 mx-auto">
+                  <h2>Nuget Packages</h2>
+                  <ul>
+                     <li><a href="https://www.nuget.org/profiles/ZNxtApp"> ZNxt.App Nuget</a></li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="bg-light">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-8 mx-auto">
+                  <h2>Contact/Feedback</h2>
+                  <ul>
+                     <li>Please email to znxtapp@gmail.com for any feedback/issue/support</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </section>
+      <footer class="page-footer text-center font-small navbar-dark bg-dark " style="color:#fff">
+         <!-- Social icons -->
+         <div class="pb-4" style="padding-top:20px">
+            <!-- 
+               <a href="https://www.facebook.com/#" target="_blank">
+                   <i class="fa fa-facebook mr-3"></i>
+               </a>
+               <a href="https://twitter.com/ZNxtApp1" target="_blank">
+                   <i class="fa fa-twitter mr-3"></i>
+               </a>
+               <a href="https://www.youtube.com/#" target="_blank">
+                   <i class="fa fa-youtube mr-3"></i>
+               </a>
+               <a href="https://in.pinterest.com/znxt/" target="_blank">
+                   <i class="fa fa-pinterest mr-3"></i>
+               </a>
+               -->
+            <a href="https://github.com/kc85/ZNxt.Net.Core" target="_blank">
+            <i class="fa fa-github mr-3"></i>
+            </a>
+         </div>
+         <!-- Social icons -->
+         <!--Copyright-->
+         <div class="footer-copyright py-3">
+            © 2021 Copyright:
+            <a href="https://znxt.app" target="_blank"> ZNxt.App</a> 
+            <!-- |
+               <a href="#" target="_blank"> Terms and conditions </a> |
+               <a href="#" target="_blank"> Privacy policy</a>
+               -->
+         </div>
+         <!--/.Copyright-->
+         <!-- Global site tag (gtag.js) - Google Analytics -->
+      </footer>
+      <!-- Bootstrap core JavaScript -->
+      <script src="./js/jquery.min.js"></script>
+      <script src="./js/bootstrap.bundle.min.js"></script>
+      <!-- Plugin JavaScript -->
+      <script src="./js/jquery.easing.min.js"></script>
+      <!-- Custom JavaScript for this theme -->
+      <script src="./js/scrolling-nav.js"></script>
+   </body>
+</html>
