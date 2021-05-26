@@ -88,8 +88,7 @@ namespace ZNxt.Net.Core.Web.SSOSample
             app.UseEndpoints(endpoints => endpoints.MapControllerRoute(
             name: "default",
             pattern: "{controller}/{action}/{id?}"));
-
-
+            
             app.MapWhen(context => true, HandlerStaticContant);
 
         }

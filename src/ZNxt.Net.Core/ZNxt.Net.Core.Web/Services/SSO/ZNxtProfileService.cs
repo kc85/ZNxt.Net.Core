@@ -36,6 +36,8 @@ namespace ZNxt.Identity.Services
                 {
                     claims.Add(new Claim(item.Key, item.Value));
                 }
+                if (user.user_id != null)
+                    claims.Add(new Claim("user_id", user.user_id));
                 if (user.user_name != null)
                     claims.Add(new Claim("user_name", user.user_name));
                 if (user.first_name != null)

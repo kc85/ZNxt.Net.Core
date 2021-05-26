@@ -181,11 +181,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                     _logger.Error($"Error Executing remote route. {route.ToString() } . {ex.Message}", ex);
                     await _next(context);
                 }
-
             }
-
-
-
         }
 
         private static void RemoveHeaders(HttpContext context)
@@ -243,7 +239,12 @@ namespace ZNxt.Net.Core.Web.Handlers
                         userModel = _inMemoryCacheService.Get<UserModel>(cackeKey);
                         if (userModel == null)
                         {
-                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() {  }, ApplicationConfig.AppEndpoint).GetAwaiter().GetResult();
+                            var endpoint = ApplicationConfig.AppEndpoint;
+                            if(endpoint == ApplicationConfig.SSOEndpoint)
+                            {
+                                endpoint = ApplicationConfig.ApiGatewayEndpoint;
+                            }
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() {  }, endpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());

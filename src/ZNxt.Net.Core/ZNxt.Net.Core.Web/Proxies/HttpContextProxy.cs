@@ -61,7 +61,7 @@ namespace ZNxt.Net.Core.Web.Proxies
                             user.roles = JArray.Parse(claim.Value).Select(f => f.ToString()).ToList();
                         }
                         if (claim.Type == CommonConst.CommonValue.TENANT_KEY)
-                        {  
+                        {
                             user.tenants = Newtonsoft.Json.JsonConvert.DeserializeObject<List<TenantModel>>(claim.Value);
                         }
                         if (claim.Type == nameof(user.user_name))
@@ -87,6 +87,10 @@ namespace ZNxt.Net.Core.Web.Proxies
                         if (claim.Type == nameof(user.user_type))
                         {
                             user.user_type = claim.Value;
+                        }
+                        if (claim.Type == nameof(user.user_id))
+                        {
+                            user.id = user.user_id = claim.Value;
                         }
                     }
                     
@@ -114,9 +118,9 @@ namespace ZNxt.Net.Core.Web.Proxies
                     }
                     user.roles = user.roles.Distinct().ToList();
                     user.claims = claims;
-                    var userid = user.claims.FirstOrDefault(f => f.Key == "sub");
-                    if (userid != null)
-                        user.id = user.user_id = userid.Value;
+                    //var userid = user.claims.FirstOrDefault(f => f.Key == "sub");
+                    //if (userid != null)
+                    //    user.id = user.user_id = userid.Value;
                     return user;
                 }
                 return null;

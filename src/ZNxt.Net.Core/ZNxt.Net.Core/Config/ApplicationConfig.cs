@@ -181,6 +181,7 @@ namespace ZNxt.Net.Core.Config
         public static string AppEndpoint => CommonUtility.GetAppConfigValue("AppEndpoint");
 
         public static string ApiGatewayEndpoint => CommonUtility.GetAppConfigValue("ApiGatewayEndpoint");
+        public static string SSOEndpoint => CommonUtility.GetAppConfigValue("SSOUrl");
         public static bool IsSSO {
             get {
                 return CommonUtility.GetAppConfigValue("IsSSO") == "true";
