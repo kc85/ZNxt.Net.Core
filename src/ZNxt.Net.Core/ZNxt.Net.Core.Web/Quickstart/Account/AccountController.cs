@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ZNxt.Identity.Services;
 using ZNxt.Net.Core.Config;
+using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Exceptions;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Model;
@@ -68,7 +69,7 @@ namespace IdentityServer4.Quickstart.UI
         {
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
-            if (vm.LoginUIType == "app_token" && _appAuthTokenHandler.IsInAction())
+            if (vm.LoginUIType == CommonConst.USER_TYPE.APP_TOKEN && _appAuthTokenHandler.IsInAction())
             {
                 var context = await _interaction.GetAuthorizationContextAsync(vm.ReturnUrl);
                 var token = _appAuthTokenHandler.GetTokenModel(context.Client.ClientId, vm.AppToken);

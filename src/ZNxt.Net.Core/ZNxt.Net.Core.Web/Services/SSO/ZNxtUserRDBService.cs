@@ -47,7 +47,7 @@ namespace ZNxt.Identity.Services
         public override async Task<bool> CreateUserAsync(UserModel user, bool sendEmail = true)
         {
             user.user_name = user.user_name.ToLower();
-            if (user != null && !IsExists(user.user_name))
+            if (user != null && !IsExistsByUserName(user.user_name))
             {
 
                 var dbtxn = _rdBService.BeginTransaction();
@@ -449,6 +449,15 @@ namespace ZNxt.Identity.Services
             long userid = long.Parse(user_id);
             var m = new UserModelDbo();
             var count = _rdBService.GetCount(IdentityTable.USER, new JObject() { [nameof(m.user_id)] = userid });
+
+            return count != 0;
+
+        }
+        public  bool IsExistsByUserName(string username)
+        {
+
+            var m = new UserModelDbo();
+            var count = _rdBService.GetCount(IdentityTable.USER, new JObject() { [nameof(m.user_name)] = username });
 
             return count != 0;
 

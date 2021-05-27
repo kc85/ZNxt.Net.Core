@@ -2,6 +2,11 @@
 {
     public static partial class CommonConst
     {
+        public static class USER_TYPE
+        {
+            public const string USER_PASS = "userpass";
+            public const string APP_TOKEN = "app_token";
+        }
         public static class CommonField
         {
             public const string IS_ENABLED = "is_enabled";

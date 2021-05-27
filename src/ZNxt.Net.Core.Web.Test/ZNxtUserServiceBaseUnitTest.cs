@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ZNxt.Identity.Services;
+using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.DB.MySql;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
@@ -40,7 +41,7 @@ namespace ZNxt.Net.Core.Web.Test
                 last_name = "test",
                 salt = "äaa",
                 roles = new List<string>() { "sys_admin" },
-                user_type = "userpass",
+                user_type = CommonConst.USER_TYPE.USER_PASS,
                 is_enabled= true
             });
             Assert.IsTrue(result);

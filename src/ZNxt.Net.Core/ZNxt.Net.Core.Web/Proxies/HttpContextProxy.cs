@@ -109,18 +109,21 @@ namespace ZNxt.Net.Core.Web.Proxies
                         }
                         tenant = user.tenants.FirstOrDefault(f => f.tenant_key == orgkey);
                     }
-                    if (tenant != null && tenant.Groups != null)
+                    if (tenant != null && tenant.groups != null)
                     {
-                        foreach (var g in tenant.Groups)
+                        foreach (var g in tenant.groups)
                         {
                             user.roles.AddRange(g.roles);
                         }
                     }
                     user.roles = user.roles.Distinct().ToList();
                     user.claims = claims;
-                    //var userid = user.claims.FirstOrDefault(f => f.Key == "sub");
-                    //if (userid != null)
-                    //    user.id = user.user_id = userid.Value;
+                    if (user.user_id == null)
+                    {
+                        var userid = user.claims.FirstOrDefault(f => f.Key == "sub");
+                        if (userid != null)
+                            user.id = user.user_id = userid.Value;
+                    }
                     return user;
                 }
                 return null;

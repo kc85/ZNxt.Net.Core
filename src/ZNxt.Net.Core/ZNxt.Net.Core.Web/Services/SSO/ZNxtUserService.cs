@@ -370,7 +370,7 @@ namespace ZNxt.Identity.Services
                     is_enabled = true,
                     user_type = "mobile_auth",
                     mobile_auth_phone_number = request.mobile_number,
-                    dob = new DOBModel() { day = 1, month = 1, year = 1 },
+                    //dob = new DOBModel() { day = 1, month = 1, year = 1 },
                     roles = new List<string> { "mobile_auth", "mobile_auth_init_user" }
                 };
                 if (!CreateUser(user, false))

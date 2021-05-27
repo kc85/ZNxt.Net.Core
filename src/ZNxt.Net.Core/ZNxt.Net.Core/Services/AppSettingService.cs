@@ -33,6 +33,12 @@ namespace ZNxt.Net.Core.Services
         public JObject GetAppSetting(string key)
         {
             ReloadSettings();
+            var data = CommonUtility.GetAppConfigValue(key);
+            if (!string.IsNullOrEmpty(data))
+            {
+                return JObject.Parse(data);
+            }
+           
             return _settings.FirstOrDefault(f => f[CommonConst.CommonField.DATA_KEY].ToString() == key) as JObject;
         }
 

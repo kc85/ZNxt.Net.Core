@@ -72,7 +72,7 @@ namespace ZNxt.Net.Core.Web.Services.Api.Auth
             List<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>
             {
                 new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, user.user_id),
-                new System.Security.Claims.Claim(ClaimTypes.Name, user.name),
+                new System.Security.Claims.Claim(ClaimTypes.Name, user.first_name),
                 new System.Security.Claims.Claim(ClaimTypes.Email, user.email)
             };
             // claims.AddRange(this.GetUserRoleClaims(user));

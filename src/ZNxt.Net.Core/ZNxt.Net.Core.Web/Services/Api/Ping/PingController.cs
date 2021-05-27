@@ -9,9 +9,13 @@ namespace ZNxt.Net.Core.Web.Services.Api.Ping
     public class PingController
     {
         private readonly IResponseBuilder _responseBuilder;
-        public PingController(IResponseBuilder responseBuilder)
+        private readonly IAppSettingService _appSettingService;
+
+        public PingController(IResponseBuilder responseBuilder, IAppSettingService appSettingService)
         {
             _responseBuilder = responseBuilder;
+            _appSettingService = appSettingService;
+
         }
         [Route("/ping", CommonConst.ActionMethods.GET,CommonConst.CommonValue.ACCESS_ALL)]
         public async Task<JObject> Ping()

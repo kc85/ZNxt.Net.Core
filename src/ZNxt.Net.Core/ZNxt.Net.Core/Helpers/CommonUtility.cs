@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,8 @@ namespace ZNxt.Net.Core.Helpers
     public static class CommonUtility
     {
         public const string CONFIGRATION_FILE = "znxtsettings.json.config";
-        private static IConfigurationRoot _configuration;
+        public static  string CONFIGRATION_FILE_PATH = "";
+        private static JObject _configuration;
         private static readonly object lockObject = new object();
         public static string GetNewID()
         {
@@ -122,15 +124,13 @@ namespace ZNxt.Net.Core.Helpers
             }
         }
 
-        public static IConfigurationRoot GetWebAppConfig()
+        public static JObject GetWebAppConfig()
         {
             if (_configuration == null)
             {
                 lock (lockObject)
                 {
-                    _configuration = new ConfigurationBuilder()
-                                      .AddJsonFile(CONFIGRATION_FILE, optional: false)
-                                      .Build();
+                    _configuration = JObject.Parse(File.ReadAllText($"{CONFIGRATION_FILE_PATH}{CONFIGRATION_FILE}")); 
                 }
 
             }
@@ -161,7 +161,8 @@ namespace ZNxt.Net.Core.Helpers
             var value = Environment.GetEnvironmentVariable(key);
             if (string.IsNullOrEmpty(value))
             {
-                return GetWebAppConfig()[key];
+                var val = GetWebAppConfig()[key];
+                return val?.ToString();
             }
             else
             {

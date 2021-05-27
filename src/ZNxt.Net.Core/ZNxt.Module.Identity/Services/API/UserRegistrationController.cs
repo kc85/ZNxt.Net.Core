@@ -60,7 +60,7 @@ namespace ZNxt.Module.Identity.Services.API
                             salt = CommonUtility.GetNewID(),
                             is_enabled = true,
                             user_type = "user_pass",
-                            dob = request.dob,
+                            //dob = request.dob,
                             id = CommonUtility.GetNewID(),
                             roles = new List<string> { "init_login_email_otp" }
                         };

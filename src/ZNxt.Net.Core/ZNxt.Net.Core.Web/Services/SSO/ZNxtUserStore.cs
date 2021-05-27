@@ -38,7 +38,6 @@ namespace ZNxt.Identity.Services
                 user_id = privideuserid,
                 email = emailaddress.Value,
                 first_name = name.Value,
-                email_validation_required = Boolean.FalseString.ToLower(),
                 claims = claims.Select(f => new Net.Core.Model.Claim(f.Type, f.Value)).ToList()
             };
             await _userService.CreateUserAsync(user);

@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.DB.MySql;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Web.Models.DBO;
@@ -35,7 +36,7 @@ namespace ZNxt.Net.Core.Web.Test
             var response = _rDBService.WriteData<UserAuthTypeDbo>(new UserAuthTypeDbo()
             {
                 is_enabled = true,
-                name = "userpass"
+                name = CommonConst.USER_TYPE.USER_PASS
             });
 
         }

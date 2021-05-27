@@ -333,7 +333,8 @@ namespace ZNxt.Net.Core.Web.Handlers
                              new Model.Claim("roles", roles),
                              new Model.Claim(JwtClaimTypes.Subject, oauthclient.TenantId),
                              new Model.Claim("user_type","oauth"),
-                             new Model.Claim("first_name",client.ClientName)
+                             new Model.Claim("first_name",client.ClientName),
+                             new Model.Claim("user_id",client.ClientId)
                         };
                         var identity = new ClaimsIdentity();
                         identity.AddClaim(new System.Security.Claims.Claim("roles", roles));
