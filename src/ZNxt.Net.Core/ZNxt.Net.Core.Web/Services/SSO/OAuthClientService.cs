@@ -37,11 +37,15 @@ namespace ZNxt.Net.Core.Web.Services.SSO
             var client = _inMemoryCacheService.Get<OAuthClient>($"{cachePrefix}{clientId}");
             if (client == null)
             {
-                client = FetchClient(clientId);
+                var cln = SSOConfig.GetClients().FirstOrDefault(f => f.ClientId == clientId);
+                if (cln != null)
+                {
+                    client = new OAuthClient {Client = cln };
+                }
             }
             if(client == null)
             {
-                client = new OAuthClient { Client = SSOConfig.GetClients().FirstOrDefault(f => f.ClientId == clientId) };
+                client = FetchClient(clientId);
             }
             return client;
 
@@ -52,11 +56,11 @@ namespace ZNxt.Net.Core.Web.Services.SSO
             var route = _apiGatewayService.GetRouteAsync(CommonConst.ActionMethods.GET, oauthClientApiPath).GetAwaiter().GetResult();
             if (route != null)
             {
-                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, oauthClientApiPath,$"client_id={clientId}").GetAwaiter().GetResult();
+                var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, oauthClientApiPath, $"client_id={clientId}").GetAwaiter().GetResult();
                 if (result[CommonConst.CommonField.HTTP_RESPONE_CODE].ToString() == CommonConst._1_SUCCESS.ToString())
                 {
                     var clientname = result["data"]["client_id"].ToString();
-                    if(result["data"]["name"]!=null)
+                    if (result["data"]["name"] != null)
                     {
                         clientname = result["data"]["name"].ToString();
                     }
@@ -77,6 +81,21 @@ namespace ZNxt.Net.Core.Web.Services.SSO
                     {
                         salt = result["data"]["salt"].ToString();
                     }
+
+                    var encKey = string.Empty;
+                    if (result["data"]["encryption_key"] != null)
+                    {
+                        encKey = result["data"]["encryption_key"].ToString();
+                    }
+                    var ips = new List<string>();
+
+                    if (result["data"]["ips"] != null)
+                    {
+                        foreach (var ip in result["data"]["ips"] as JArray)
+                        {
+                            ips.Add(ip["ip"].ToString());
+                        }
+                    }
                     var client = new OAuthClient
                     {
                         Client = new Client()
@@ -90,14 +109,17 @@ namespace ZNxt.Net.Core.Web.Services.SSO
                         Secret = result["data"]["client_secret"].ToString(),
                         TenantId = tenantId,
                         Roles = roles,
-                        Salt = salt
+                        Salt = salt,
+                        EncryptionKey = encKey,
+                        IPs = ips
+
                     };
                     var allowedScopes = new List<string>() { "openid", "profile", "ZNxtCoreAppApi" };
                     if (result["data"]["allowed_scopes"] != null)
                     {
                         allowedScopes.AddRange((result["data"]["allowed_scopes"] as JArray).Select(f => f.ToString()).ToList());
                     }
-                     
+
                     client.Client.AllowedScopes = allowedScopes;
                     _inMemoryCacheService.Put<OAuthClient>($"{cachePrefix}{clientId}", client);
                     return client;

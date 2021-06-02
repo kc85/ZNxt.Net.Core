@@ -15,6 +15,8 @@ namespace ZNxt.Net.Core.Web.Services
             var client = new RestClient();
             client.BaseUrl = new System.Uri(request.URL);
             var restRequest = new RestRequest();
+            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+
             if (request.Headres != null)
             {
                 foreach (var header in request.Headres)
@@ -35,6 +37,7 @@ namespace ZNxt.Net.Core.Web.Services
             if (request.Body != null)
             {
                 restRequest.AddJsonBody(request.Body);
+                
             }
             var response = client.Execute(restRequest);
             if (response.ErrorException != null)

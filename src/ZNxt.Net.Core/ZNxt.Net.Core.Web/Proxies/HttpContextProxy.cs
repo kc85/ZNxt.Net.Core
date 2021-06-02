@@ -130,16 +130,24 @@ namespace ZNxt.Net.Core.Web.Proxies
             }
         }
 
-        public  async Task<string> GetAccessTokenAync()
+        public async Task<string> GetAccessTokenAync()
         {
             var accessToken = string.Empty;
             if (_httpContextAccessor.HttpContext != null)
             {
-                if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
+                if (_httpContextAccessor.HttpContext != null
+                   && _httpContextAccessor.HttpContext.User != null
+                   && _httpContextAccessor.HttpContext.User.Identity != null
+                   && _httpContextAccessor.HttpContext.User.Claims.Any())
+                {
+                    accessToken = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(f => f.Type == "access_token")?.Value;
+                }
+
+                if (string.IsNullOrEmpty(accessToken) && _httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
                 {
                     accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].First().Replace("Bearer ", "");
                 }
-                else
+                else if (string.IsNullOrEmpty(accessToken))
                 {
                     accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
                 }

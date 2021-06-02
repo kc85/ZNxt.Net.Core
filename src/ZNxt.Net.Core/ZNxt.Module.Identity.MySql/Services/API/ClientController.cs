@@ -15,6 +15,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API
     {
         public const string OAUTH_CLIENT_TABLE = "oauth_client";
         public const string OAUTH_CLIENT_ROLE_TABLE = "oauth_client_role";
+        public const string OAUTH_CLIENT_IP_TABLE = "oauth_client_ip";
         public const string OAUTH_CLIENT_TENANT_TABLE = "oauth_client_tenant";
         protected readonly IResponseBuilder _responseBuilder;
         protected readonly IHttpContextProxy _httpContextProxy;
@@ -45,7 +46,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API
                 List<OAuthClientModelDto> clientDto = new List<OAuthClientModelDto>();
                 foreach (var item in responedata.ToList())
                 {
-                    clientDto.Add(GetDto(item, GetOAuthClientRoles(item)));
+                    clientDto.Add(GetDto(item, GetOAuthClientRoles(item), GetOAuthClientIPs(item)));
                 }
                 return _responseBuilder.SuccessPaggedData(clientDto.ToJArray(),currentpage, pagesize);
 
@@ -71,7 +72,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API
                 if (data.Any())
                 {
                     var client = data.First();
-                    OAuthClientModelDto clientDto =  GetDto(client, GetOAuthClientRoles(client));
+                    OAuthClientModelDto clientDto =  GetDto(client, GetOAuthClientRoles(client), GetOAuthClientIPs(client));
                     return _responseBuilder.Success(clientDto.ToJObject());
                 }
                 else
@@ -86,7 +87,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API
             }
         }
 
-        private OAuthClientModelDto GetDto(OAuthClientModelDbo client, List<string> roles)
+        private OAuthClientModelDto GetDto(OAuthClientModelDbo client, List<string> roles, List<ClientIP> clientips)
         {
             return new OAuthClientModelDto()
             {
@@ -94,8 +95,10 @@ namespace ZNxt.Module.Identity.MySql.Services.API
                 client_secret = client.client_secret,
                 description = client.description,
                 tenant_id = client.tenant_id,
+                encryption_key = client.encryption_key,
                 salt = client.salt,
-                roles = roles
+                roles = roles,
+                ips = clientips
             };
         }
 
@@ -118,7 +121,26 @@ namespace ZNxt.Module.Identity.MySql.Services.API
             }
             return roles;
         }
-       
+        private List<ClientIP> GetOAuthClientIPs(OAuthClientModelDbo client)
+        {
+            var ips = new List<ClientIP>();
+            JObject filter = new JObject()
+            {
+                ["oauth_client_id"] = client.oauth_client_id,
+                ["is_enabled"] = true
+            };
+            var roledata = _rDBService.Get<OAuthClientIpModelDbo>(OAUTH_CLIENT_IP_TABLE, 100, 0, filter);
+            foreach (var item in roledata)
+            {
+                ips.Add(new ClientIP()
+                {
+                    host = item.host_name,
+                    ip = item.host_ip
+                });
+            }
+            return ips;
+        }
+
         [Route("/sso/oauthclient/edit", CommonConst.ActionMethods.POST, CommonConst.CommonField.SYS_ADMIN_ROLE)]
         public JObject EditClient()
         {

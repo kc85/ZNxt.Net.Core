@@ -21,7 +21,7 @@ namespace ZNxt.Identity.Services
 
             var headers  = _httpContextProxy.GetHeaders();
             var  user = _zNxtUserStore.FindByUsername(context.UserName);
-            if (user != null && user.user_type == "mobile_auth")
+            if (user != null)
             {
                 var validate = _zNxtUserStore.ValidateCredentials(context.UserName, context.Password, null, null);
                 if (validate)

@@ -168,7 +168,7 @@ namespace ZNxt.Net.Core.Web.Services
 
             var trimtoken = token.Substring(20, token.Length - 20);
             _logger.Debug($"DecryptToken id {trimtoken}");
-            var data = _encryption.Decrypt(trimtoken, client.Secret);
+            var data = _encryption.Decrypt(trimtoken, client.EncryptionKey);
             var model = Newtonsoft.Json.JsonConvert.DeserializeObject<AppTokenModel>(data);
             return model;
         }

@@ -14,9 +14,19 @@ namespace ZNxt.Module.Identity.MySql.Services.API.Models
 
         public long tenant_id { get; set; }
 
+        public string encryption_key { get; set; }
+
         public string salt { get; set; }
 
         public List<string> roles = new List<string>();
+
+        public List<ClientIP> ips { get; set; } = new List<ClientIP>();
+
+    }
+    public class ClientIP
+    {
+        public string host { get; set; }
+        public string ip { get; set; }
 
     }
 }

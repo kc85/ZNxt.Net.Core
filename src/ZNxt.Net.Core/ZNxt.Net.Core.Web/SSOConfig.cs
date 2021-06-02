@@ -75,7 +75,21 @@ namespace ZNxt.Identity
                     {
                         new Secret("secret".Sha256())
                     },
-                AllowedScopes = { "ZNxtCoreAppApi", IdentityServerConstants.StandardScopes.OfflineAccess },
+                AllowedScopes = { "profile", "ZNxtCoreAppApi", IdentityServerConstants.StandardScopes.OfflineAccess },
+                AllowOfflineAccess = true,
+                RequireConsent = false,
+                AccessTokenLifetime = MOBILE_ACCESS_TOKEN_LIFETIME
+            };
+            var auth_client = new Client
+            {
+                ClientId = "auth_client",
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                AllowedScopes = { "profile", IdentityServerConstants.StandardScopes.OfflineAccess },
                 AllowOfflineAccess = true,
                 RequireConsent = false,
                 AccessTokenLifetime = MOBILE_ACCESS_TOKEN_LIFETIME
@@ -84,7 +98,7 @@ namespace ZNxt.Identity
 
             return new[]
             {
-             // mobileClient,
+             auth_client,
               mobile_auth_client,
                 new Client
                 {

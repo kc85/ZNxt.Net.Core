@@ -20,6 +20,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API.Models
         public string salt { get; set; }
         public long tenant_id { get; set; }
         public string client_secret { get; set; }
+        public string encryption_key { get; set; }
 
         public bool is_enabled { get; set; }
     }

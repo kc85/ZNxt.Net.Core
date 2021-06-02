@@ -232,7 +232,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                     UserModel userModel = null;
                     userModel = _httpContextProxy.User;
 
-                    if (userModel == null)
+                    if (userModel == null || (userModel != null && userModel.user_id == "auth2"))
                     {
                         var accessToken = _httpContextProxy.GetAccessTokenAync().GetAwaiter().GetResult();
                         var cackeKey = $"{accessToken}";
@@ -240,11 +240,11 @@ namespace ZNxt.Net.Core.Web.Handlers
                         if (userModel == null)
                         {
                             var endpoint = ApplicationConfig.AppEndpoint;
-                            if(endpoint == ApplicationConfig.SSOEndpoint)
+                            if (endpoint == ApplicationConfig.SSOEndpoint)
                             {
                                 endpoint = ApplicationConfig.ApiGatewayEndpoint;
                             }
-                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() {  }, endpoint).GetAwaiter().GetResult();
+                            var response = _apiGatewayService.CallAsync(CommonConst.ActionMethods.GET, "~/user/getuserinfo", "", null, new Dictionary<string, string>() { }, endpoint).GetAwaiter().GetResult();
                             if (response["user"] != null)
                             {
                                 userModel = JsonConvert.DeserializeObject<UserModel>(response["user"].ToString());

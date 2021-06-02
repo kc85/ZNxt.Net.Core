@@ -52,6 +52,7 @@ namespace ZNxt.Net.Core.Web.SSOClientSample
                    options.Listen(IPAddress.Any, ApplicationConfig.HttpsPort, listenOptions =>
                    {
                        listenOptions.UseHttps(cert);
+                       listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
                    });
                })
                .UseStartup<Startup>();

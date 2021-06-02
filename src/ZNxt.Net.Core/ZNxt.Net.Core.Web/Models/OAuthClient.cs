@@ -13,8 +13,8 @@ namespace ZNxt.Net.Core.Web.Models
         public string TenantId{ get; set; }
 
         public string Salt { get; set; }
-
-        public List<string> Roles { get; set; }
-
+        public string EncryptionKey { get; set; }
+        public List<string> Roles { get; set; }= new List<string>();
+        public List<string> IPs { get; set; } = new List<string>();
     }
 }

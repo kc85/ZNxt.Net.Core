@@ -53,6 +53,7 @@ namespace ZNxt.Net.Core.Web.SSOSample
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHttpsRedirection();
             var fordwardedHeaderOptions = new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
