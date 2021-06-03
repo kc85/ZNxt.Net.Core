@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using ZNxt.Net.Core.Model;
-using ZNxt.Net.Core.Web.Models;
 
-namespace ZNxt.Net.Core.Web.Interfaces
+namespace ZNxt.Net.Core.Interfaces
 {
     public interface IAppAuthTokenHandler
     {
@@ -14,5 +13,6 @@ namespace ZNxt.Net.Core.Web.Interfaces
         string LoginFailRedirect();
 
         UserModel GetUser(AppTokenModel token);
+        bool Validate(string username, string token);
     }
 }

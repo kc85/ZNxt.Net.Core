@@ -20,8 +20,8 @@ using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Exceptions;
 using ZNxt.Net.Core.Helpers;
+using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
-using ZNxt.Net.Core.Web.Interfaces;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -39,14 +39,14 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
-        private readonly IAppAuthTokenHandler _appAuthTokenHandler;
+       // private readonly IAppAuthTokenHandler _appAuthTokenHandler;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            IAppAuthTokenHandler appAuthTokenHandler,
+          //  IAppAuthTokenHandler appAuthTokenHandler,
             ZNxtUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -57,7 +57,7 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
-            _appAuthTokenHandler = appAuthTokenHandler;
+         //   _appAuthTokenHandler = appAuthTokenHandler;
         }
 
         /// <summary>
@@ -69,35 +69,36 @@ namespace IdentityServer4.Quickstart.UI
         {
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
-            if (vm.LoginUIType == CommonConst.USER_TYPE.APP_TOKEN && _appAuthTokenHandler.IsInAction())
-            {
-                var context = await _interaction.GetAuthorizationContextAsync(vm.ReturnUrl);
-                var token = _appAuthTokenHandler.GetTokenModel(context.Client.ClientId, vm.AppToken);
-                if (token == null)
-                {
-                    return Redirect(_appAuthTokenHandler.LoginFailRedirect());
-                }
-                else
-                {
-                    var user = _appAuthTokenHandler.GetUser(token);
-                    if (user == null)
-                    {
-                        return Redirect(_appAuthTokenHandler.LoginFailRedirect());
-                    }
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.Client?.ClientId));
-                    var props = new AuthenticationProperties
-                    {
-                        IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.Add(_appAuthTokenHandler.GetLoginDuration())
-                    };
-                    var isuser = new IdentityServerUser(user.user_id)
-                    {
-                        DisplayName = user.GetDisplayName()
-                    };
-                    await HttpContext.SignInAsync(isuser, props);
-                }
-            }
-            else if (vm.IsExternalLoginOnly)
+            //if (vm.LoginUIType == CommonConst.USER_TYPE.APP_TOKEN && _appAuthTokenHandler.IsInAction())
+            //{
+            //    var context = await _interaction.GetAuthorizationContextAsync(vm.ReturnUrl);
+            //    var token = _appAuthTokenHandler.GetTokenModel(context.Client.ClientId, vm.AppToken);
+            //    if (token == null)
+            //    {
+            //        return Redirect(_appAuthTokenHandler.LoginFailRedirect());
+            //    }
+            //    else
+            //    {
+            //        var user = _appAuthTokenHandler.GetUser(token);
+            //        if (user == null)
+            //        {
+            //            return Redirect(_appAuthTokenHandler.LoginFailRedirect());
+            //        }
+            //        await _events.RaiseAsync(new UserLoginSuccessEvent(user.user_name, user.user_id, user.GetDisplayName(), clientId: context?.Client?.ClientId));
+            //        var props = new AuthenticationProperties
+            //        {
+            //            IsPersistent = true,
+            //            ExpiresUtc = DateTimeOffset.UtcNow.Add(_appAuthTokenHandler.GetLoginDuration())
+            //        };
+            //        var isuser = new IdentityServerUser(user.user_id)
+            //        {
+            //            DisplayName = user.GetDisplayName()
+            //        };
+            //        await HttpContext.SignInAsync(isuser, props);
+            //    }
+            //}
+            //else
+            if (vm.IsExternalLoginOnly)
             {
                 // we only have one option for logging in and it's an external provider
                 return RedirectToAction("Challenge", "External", new { provider = vm.ExternalLoginScheme, returnUrl });

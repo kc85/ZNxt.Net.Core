@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ZNxt.Net.Core.Web.Models
+namespace ZNxt.Net.Core.Model
 {
     public class AppTokenModel
     {

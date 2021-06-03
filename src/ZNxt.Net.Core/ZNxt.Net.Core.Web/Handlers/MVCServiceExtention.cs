@@ -31,7 +31,6 @@ using ZNxt.Net.Core.Web.Services.SSO;
 using ZNxt.Net.Core.DB.MySql;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Threading.Tasks;
-using ZNxt.Net.Core.Web.Interfaces;
 using System.Net.Http;
 using System.Reflection;
 using Microsoft.Extensions.Hosting;

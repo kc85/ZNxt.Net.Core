@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.42</Version>
+    <Version>1.1.45</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -72,6 +72,7 @@
   
 <ItemGroup>
   <Folder Include="Exceptions\" />
+  <Folder Include="Interfaces\" />
 </ItemGroup>
 
 </Project>

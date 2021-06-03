@@ -57,6 +57,8 @@
             public const string APP_NAME_CONFIG_KEY = "AppName";
             public const string APP_SECRET_CONFIG_KEY = "AppSecret";
             public const string TENANT_KEY = "tenantkey";
+
+            public const string APP_TOKEN_UNAUTHORIZED_PAGE = "UnauthorizedPage";
         }
     }
 }

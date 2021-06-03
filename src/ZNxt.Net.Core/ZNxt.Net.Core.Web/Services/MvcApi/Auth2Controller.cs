@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using ZNxt.Net.Core.Config;
+using ZNxt.Net.Core.Consts;
+using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 
 
@@ -23,86 +25,78 @@ namespace ZNxt.Net.Core.Web.Services.MvcApi
     {
         private readonly IHttpContextProxy _httpContextProxy;
         private readonly ILogger _logger;
-        public Auth2Controller(IHttpContextProxy httpContextProxy, ILogger logger)
+        private readonly IApiGatewayService _apiGatewayService;
+        private const string appAuthValidateRoute = "/sso/authapptoken";
+        public Auth2Controller(IHttpContextProxy httpContextProxy, ILogger logger,IApiGatewayService apiGatewayService)
         {
             _httpContextProxy = httpContextProxy;
             _logger = logger;
+            _apiGatewayService = apiGatewayService ;
         }
         // GET: /<controller>/
         [Route("signin")]
-        public async Task<IActionResult> SignIn(string token)
+        public async Task<IActionResult> SignIn(string token, string redirecturl="~/")
         {
-
-            // //
-            //
-            // grant_type=password&username=rett.bryon%40fineoak.org&password=rett.bryon%40fineoak.org&client_id=mobile_auth_client&client_secret=secret&scope=profile
-            //
-            var tokenrequest = new Dictionary<string,string>()
+            _logger.Debug($"Auth2Controller.SignIn calling {appAuthValidateRoute}");
+            var result = _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, appAuthValidateRoute, null, new JObject() { ["token"] = token }).GetAwaiter().GetResult();
+            var appSecret = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_SECRET_CONFIG_KEY);
+            var unauthorizedPage = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_TOKEN_UNAUTHORIZED_PAGE);
+            if(string.IsNullOrEmpty(unauthorizedPage))
             {
-                ["grant_type"] = "password",
-                ["username"] = "kydon.len@fineoak.org",
-                ["password"] = "abc@1234",
-                ["client_id"] = "mobile_auth_client",
-                ["client_secret"] = "secret",
-                ["scope"] = "profile"
-            };
-
-            
-
-
-            var client = new RestClient($"{ApplicationConfig.SSOEndpoint}/connect/token");
-            client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("content-type", "application/x-www-form-urlencoded");
-
-            
-            request.AddParameter("application/x-www-form-urlencoded", $"{ string.Join("&", tokenrequest.Select(f=> $"{f.Key}={f.Value}").ToList())}", ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
-
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                Console.WriteLine("Access Token cannot obtain, process terminate");
-                return null;
+                unauthorizedPage = "~/unauthorized.html";
             }
+            if (result["code"].ToString() == CommonConst._1_SUCCESS.ToString())
+            {
+                var tokenrequest = new Dictionary<string, string>()
+                {
+                    ["grant_type"] = "password",
+                    ["username"] = result["data"]["user_name"].ToString(),
+                    ["password"] = "pass",
+                    ["client_id"] = "auth_client",
+                    ["client_secret"] = appSecret,
+                    ["scope"] = "profile"
+                };
+                var conneturl = $"{ApplicationConfig.SSOEndpoint}/connect/token";
+                var client = new RestClient(conneturl);
+                client.RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("content-type", "application/x-www-form-urlencoded");
+                request.AddHeader("token", token);
+                request.AddParameter("application/x-www-form-urlencoded", $"{ string.Join("&", tokenrequest.Select(f => $"{f.Key}={f.Value}").ToList())}", ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
 
-            var tokenResponse = JObject.Parse(response.Content);
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    _logger.Error($"Auth2Controller.SignIn connect url fail: {conneturl},:  {response.StatusCode}");
+                    return Redirect(unauthorizedPage);
+                }
 
+                var tokenResponse = JObject.Parse(response.Content);
 
-            AuthenticationProperties props = null;
-           
+                AuthenticationProperties props = null;
+
                 props = new AuthenticationProperties
                 {
                     IsPersistent = true,
                     ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromHours(1))
                 };
-
-
-
-            var isuser = new IdentityServerUser("auth2")
-            {
-                DisplayName = "auth2",
-                AdditionalClaims = new List<Claim>() { 
-                 new Claim("access_token", tokenResponse["access_token"].ToString()),
-                 new Claim("123", "333"),
+                var isuser = new IdentityServerUser("auth2")
+                {
+                    DisplayName = "auth2",
+                    AdditionalClaims = new List<Claim>() {
+                    new Claim("access_token", tokenResponse["access_token"].ToString()),
                 }
+
+                };
                 
-            };
-            // issue authentication cookie with subject ID and username
-            await HttpContext.SignInAsync(isuser, props);
-
-
-            return Redirect("~/auth2test/test");
-            //_logger.Debug($"SignIn token: {token}");
-            //var redirectUri = $"/";
-            //var authtokenProp = new AuthenticationProperties() { RedirectUri = redirectUri };
-            //if (string.IsNullOrEmpty(token))
-            //{
-            //    token = "";
-            //}
-            //authtokenProp.Items.Add("app_token", token);
-            //authtokenProp.Items.Add("login_ui_type", "app_token");
-            //_logger.Debug($"auth2/signin: RedirectUri: {redirectUri}");
-            //return Challenge(authtokenProp);
+                await HttpContext.SignInAsync(isuser, props);
+                return Redirect(redirecturl);
+            }
+            else
+            {
+                _logger.Error($"Auth2Controller.SignIn token validation fail: {token}");
+                return Redirect(unauthorizedPage);
+            }
         }
         [Route("signout")]
         public async Task SignOut()

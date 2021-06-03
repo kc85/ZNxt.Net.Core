@@ -87,7 +87,7 @@ namespace ZNxt.Identity
 
                 ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new Secret(appSecret.Sha256())
                     },
                 AllowedScopes = { "profile", IdentityServerConstants.StandardScopes.OfflineAccess },
                 AllowOfflineAccess = true,

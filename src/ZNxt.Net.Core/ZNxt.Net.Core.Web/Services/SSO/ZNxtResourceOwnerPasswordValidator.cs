@@ -11,10 +11,12 @@ namespace ZNxt.Identity.Services
     {
         private ZNxtUserStore _zNxtUserStore;
         private IHttpContextProxy _httpContextProxy;
-        public ZNxtResourceOwnerPasswordValidator(ZNxtUserStore zNxtUserStore, IHttpContextProxy httpContextProxy)
+        protected readonly IAppAuthTokenHandler _appAuthTokenHandler;
+        public ZNxtResourceOwnerPasswordValidator(ZNxtUserStore zNxtUserStore, IHttpContextProxy httpContextProxy, IAppAuthTokenHandler appAuthTokenHandler)
         {
             _zNxtUserStore = zNxtUserStore;
             _httpContextProxy = httpContextProxy;
+            _appAuthTokenHandler = appAuthTokenHandler;
         }
         public virtual Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
@@ -23,8 +25,8 @@ namespace ZNxt.Identity.Services
             var  user = _zNxtUserStore.FindByUsername(context.UserName);
             if (user != null)
             {
-                var validate = _zNxtUserStore.ValidateCredentials(context.UserName, context.Password, null, null);
-                if (validate)
+                //    var validate = _zNxtUserStore.ValidateCredentials(context.UserName, context.Password, null, null);
+                if (_appAuthTokenHandler.Validate(context.UserName, headers["token"]))
                 {
                     //set the result
                     context.Result = new GrantValidationResult(
@@ -32,9 +34,7 @@ namespace ZNxt.Identity.Services
                         authenticationMethod: "custom"
                         //  claims: GetUserClaims(user)
                         );
-
                     return Task.FromResult(0);
-
                 }
             }
             context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Invalid username or password");

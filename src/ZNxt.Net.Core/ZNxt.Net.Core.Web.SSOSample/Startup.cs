@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Web.Services;
 using ZNxt.Identity.Services;
-using ZNxt.Net.Core.Web.Interfaces;
 using ZNxt.Module.Identity.MySql.Services.API;
 using ZNxt.Net.Core.Web.Handlers;
 
@@ -53,7 +52,7 @@ namespace ZNxt.Net.Core.Web.SSOSample
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
             var fordwardedHeaderOptions = new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -70,8 +69,6 @@ namespace ZNxt.Net.Core.Web.SSOSample
             app.UseCors(
                     options => options.WithOrigins(corurl.Split(';')).AllowAnyMethod()
              );
-            //app.UseZNxtSSO();
-            //app.UseZNxtApp();
 
             app.UseIdentityServer();
 

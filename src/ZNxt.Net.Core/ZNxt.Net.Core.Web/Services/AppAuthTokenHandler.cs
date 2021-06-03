@@ -10,7 +10,6 @@ using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
-using ZNxt.Net.Core.Web.Interfaces;
 using ZNxt.Net.Core.Web.Models;
 using ZNxt.Net.Core.Web.Services;
 using ZNxt.Net.Core.Web.Services.SSO;
@@ -120,6 +119,7 @@ namespace ZNxt.Net.Core.Web.Services
                         {
                             JObject data = model.ToJObject();
                             data["url_token"] = token;
+                            data["user_name"] = GetUserName(model);
                             data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
                             if (_dBService.Write(collection, data))
                             {
@@ -190,13 +190,35 @@ namespace ZNxt.Net.Core.Web.Services
 
         public virtual string LoginFailRedirect()
         {
-            return "/unauthorized_player.html";
+            
+            return CommonUtility.GetAppConfigValue(CommonConst.CommonValue.APP_TOKEN_UNAUTHORIZED_PAGE);
+        }
+
+        public bool Validate(string username, string token)
+        {
+            JObject filter = new JObject();
+            filter["url_token"] = token;
+            filter["user_name"] = username;
+            var dbdata = _dBService.Get(collection, new ZNxt.Net.Core.Model.RawQuery(filter.ToString()));
+            if (dbdata == null || !dbdata.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public UserModel GetUser(AppTokenModel token)
         {
-            _logger.Debug($"GetUser id {$"{token.tenant_id}_{token.user_id}"}", token.ToJObject());
-            return _userService.FindByUsername($"{token.tenant_id}_{token.user_id}");
+            _logger.Debug($"GetUser id {GetUserName(token)}", token.ToJObject());
+            return _userService.FindByUsername(GetUserName(token));
+        }
+
+        private static string GetUserName(AppTokenModel token)
+        {
+            return $"{token.tenant_id}_{token.user_id}";
         }
     }
 }

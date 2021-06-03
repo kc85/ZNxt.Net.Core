@@ -125,7 +125,14 @@ namespace ZNxt.Net.Core.Web.Services
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             string version = fvi.FileVersion;
             string modulename = assembly.GetName().Name;
-            _dbService.Delete(CommonConst.Collection.SERVER_ROUTES,new RawQuery(new JObject() { [CommonConst.CommonField.MODULE_NAME] = assembly.FullName }.ToString()) );
+
+            _dbService.Delete(CommonConst.Collection.SERVER_ROUTES,new RawQuery(new JObject() { [CommonConst.CommonField.MODULE_NAME] = modulename }.ToString()) );
+            if (assembly.GetName().Name != "ZNxt.Net.Core.Module.Gateway" && !string.IsNullOrEmpty(ApplicationConfig.ApiGatewayEndpoint))
+            {
+                _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", new JObject(){
+                    [CommonConst.CommonField.NAME] = modulename
+                }, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+            }
             foreach (var route in _assemblyLoader.GetRoulesFromAssembly(assembly))
             {
                 try
@@ -139,7 +146,7 @@ namespace ZNxt.Net.Core.Web.Services
                     data[CommonConst.CommonField.KEY] = $"{route.Method}:{route.Route}";
                     WriteToDB(data, CommonConst.Collection.SERVER_ROUTES);
                     data[CommonConst.CommonField.MODULE_ENDPOINT] = ApplicationConfig.AppEndpoint;
-                    if (assembly.FullName != "ZNxt.Net.Core.Module.Gateway")
+                    if (assembly.GetName().Name != "ZNxt.Net.Core.Module.Gateway" && !string.IsNullOrEmpty(ApplicationConfig.ApiGatewayEndpoint))
                     {
                         _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", data, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
                     }
