@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.DB.MySql;
+using ZNxt.Net.Core.DB.MySqlTest;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Web.Models.DBO;
 
@@ -15,7 +16,7 @@ namespace ZNxt.Net.Core.Web.Test
         public IdentityCURD()
         {
             Environment.SetEnvironmentVariable("NPGSQLConnectionString", "Host=103.212.120.XXX;Username=root;Password=root;Database=identity;");
-            _rDBService = new SqlRDBService();
+            _rDBService = new SqlRDBService(new HttpProxyMock());
 
         }
         [TestMethod]

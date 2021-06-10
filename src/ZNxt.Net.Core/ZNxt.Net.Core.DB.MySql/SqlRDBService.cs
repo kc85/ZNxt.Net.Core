@@ -13,6 +13,7 @@ using ZNxt.Net.Core.Interfaces;
 using Dapper.Contrib;
 using System.Data;
 using System.Linq;
+using ZNxt.Net.Core.Model;
 
 namespace ZNxt.Net.Core.DB.MySql
 {
@@ -21,9 +22,10 @@ namespace ZNxt.Net.Core.DB.MySql
         private  string  _connectionStr = "";
         private  string _DBType= "NONE";
 
-
-        public SqlRDBService()
+        private IHttpContextProxy _httpContextProxy;
+        public SqlRDBService(IHttpContextProxy httpContextProxy)
         {
+            _httpContextProxy = httpContextProxy;
             _connectionStr = CommonUtility.GetAppConfigValue("MYSQLConnectionString");
             if (string.IsNullOrEmpty(_connectionStr))
             {
@@ -80,7 +82,7 @@ namespace ZNxt.Net.Core.DB.MySql
             transaction.Connection.Close();
             transaction.Connection.Dispose();
         }
-        private DbConnection GetConnection()
+        public DbConnection GetConnection()
         {
             switch (_DBType.ToUpper())
             {
@@ -121,7 +123,7 @@ namespace ZNxt.Net.Core.DB.MySql
                     filters.Add($"{item.Key}='{item.Value}'");
                 }
             }
-
+            AddTenantFilter<T>(filter);
             if (filters.Any())
             {
                 sql = $"{sql} where { string.Join(" and ", filters) }";
@@ -177,7 +179,6 @@ namespace ZNxt.Net.Core.DB.MySql
         }
         public long GetCount(string tablename, JObject filter)
         {
-
             var filters = new List<string>();
             if (filter != null)
             {
@@ -186,7 +187,7 @@ namespace ZNxt.Net.Core.DB.MySql
                     filters.Add($"{item.Key}='{item.Value}'");
                 }
             }
-
+           
             var sql = $"select count(*) from {tablename} ";
             if (filters.Any())
             {
@@ -197,7 +198,6 @@ namespace ZNxt.Net.Core.DB.MySql
                 return conn.QueryFirst<long>(sql);
             }
         }
-
 
         public T GetFirst<T>(string sql, object param = null) where T : class
         {
@@ -351,11 +351,13 @@ namespace ZNxt.Net.Core.DB.MySql
         {
             using (var conn = GetConnection())
             {
+                SetDefaultValues<T>(data,false);
                 return conn.Update<T>(data);
             }
         }
         public bool Update<T>(T data, RDBTransaction transaction) where T : class
         {
+            SetDefaultValues<T>(data, false);
             return transaction.Connection.Update<T>(data, transaction.Transaction);
         }
 
@@ -375,6 +377,7 @@ namespace ZNxt.Net.Core.DB.MySql
                 {
                     foreach (var item in data)
                     {
+                        SetDefaultValues<T>(item);
                         var result = conn.Insert<T>(item, transaction);
                         if (result != 0)
                         {
@@ -409,14 +412,15 @@ namespace ZNxt.Net.Core.DB.MySql
         {
             using (var conn = GetConnection())
             {
+                SetDefaultValues<T>(data);
                 var result = conn.Insert<T>(data);
                 return result;
             }
         }
         public long WriteData<T>(T data, RDBTransaction transaction) where T : class
         {
-           
-                return transaction.Connection.Insert<T>(data,transaction.Transaction) ;
+            SetDefaultValues<T>(data);
+            return transaction.Connection.Insert<T>(data,transaction.Transaction) ;
             
         }
         public bool WriteData(string sql, object param = null)
@@ -426,7 +430,6 @@ namespace ZNxt.Net.Core.DB.MySql
                 return conn.Execute(sql, param) == 1;
             }
         }
-       
         public long WriteDataGetId(string sql, object param = null)
         {
             using (var conn = GetConnection())
@@ -452,7 +455,7 @@ namespace ZNxt.Net.Core.DB.MySql
             }
             
         }
-
+       
         #endregion
 
         #region delete 
@@ -520,8 +523,56 @@ namespace ZNxt.Net.Core.DB.MySql
         {
             return transaction.Connection.Delete<T>(data, transaction.Transaction);
         }
+
+        DbConnection IRDBService.GetConnection()
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
-      
+        private void AddTenantFilter<T>(JObject filter)
+        {
+            if (filter != null)
+            {
+                if (typeof(T).IsSubclassOf(typeof(BaseModelTenantDbo)))
+                {
+                    var tenantId = _httpContextProxy.GetRequestTenantId();
+                    if (!string.IsNullOrEmpty(tenantId))
+                    {
+                        filter["tenant_id"] = long.Parse(tenantId);
+                    }
+                }
+            }
+        }
+        private void SetDefaultValues<T>(T request, bool setCreated = true)
+        {
+            if (request != null)
+            {
+                if (typeof(T).IsSubclassOf(typeof(BaseModelDbo)))
+                {
+                    var user = _httpContextProxy.User;
+                    if (user != null)
+                    {
+                        if (setCreated)
+                        {
+                            ((BaseModelDbo)((object)request)).created_by = user.user_id;
+                        }
+                        else
+                        {
+                            ((BaseModelDbo)((object)request)).updated_by = user.user_id;
+                           // ((BaseModelDbo)((object)request)).updated_on = CommonUtility.GetUnixTimestamp(DateTime.UtcNow);
+                        }
+                    }
+                }
+                if (typeof(T).IsSubclassOf(typeof(BaseModelTenantDbo)))
+                {
+                    var tenantId = _httpContextProxy.GetRequestTenantId();
+                    if (!string.IsNullOrEmpty(tenantId))
+                    {
+                        ((BaseModelTenantDbo)((object)request)).tenant_id = long.Parse(tenantId);
+                    }
+                }
+            }
+        }
     }
 }

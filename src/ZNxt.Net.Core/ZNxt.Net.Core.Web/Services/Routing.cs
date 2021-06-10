@@ -122,41 +122,45 @@ namespace ZNxt.Net.Core.Web.Services
 
         public void PushAssemblyRoute(Assembly assembly)
         {
-            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = fvi.FileVersion;
-            string modulename = assembly.GetName().Name;
+            if (!string.IsNullOrEmpty(ApplicationConfig.ConnectionString))
+            {
+                System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+                string version = fvi.FileVersion;
+                string modulename = assembly.GetName().Name;
 
-            _dbService.Delete(CommonConst.Collection.SERVER_ROUTES,new RawQuery(new JObject() { [CommonConst.CommonField.MODULE_NAME] = modulename }.ToString()) );
-            if (assembly.GetName().Name != "ZNxt.Net.Core.Module.Gateway" && !string.IsNullOrEmpty(ApplicationConfig.ApiGatewayEndpoint))
-            {
-                _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", new JObject(){
-                    [CommonConst.CommonField.NAME] = modulename
-                }, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
-            }
-            foreach (var route in _assemblyLoader.GetRoulesFromAssembly(assembly))
-            {
-                try
+                _dbService.Delete(CommonConst.Collection.SERVER_ROUTES, new RawQuery(new JObject() { [CommonConst.CommonField.MODULE_NAME] = modulename }.ToString()));
+                if (assembly.GetName().Name != "ZNxt.Net.Core.Module.Gateway" && !string.IsNullOrEmpty(ApplicationConfig.ApiGatewayEndpoint))
                 {
-                    var data = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(route));
-                    data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
-                    data[CommonConst.CommonField.MODULE_NAME] = modulename;
-                    data[CommonConst.CommonField.VERSION] = version;
-                    data[CommonConst.CommonField.ÌS_OVERRIDE] = false;
-                    data[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
-                    data[CommonConst.CommonField.KEY] = $"{route.Method}:{route.Route}";
-                    WriteToDB(data, CommonConst.Collection.SERVER_ROUTES);
-                    data[CommonConst.CommonField.MODULE_ENDPOINT] = ApplicationConfig.AppEndpoint;
-                    if (assembly.GetName().Name != "ZNxt.Net.Core.Module.Gateway" && !string.IsNullOrEmpty(ApplicationConfig.ApiGatewayEndpoint))
+                    _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", new JObject()
                     {
-                        _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", data, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+                        [CommonConst.CommonField.NAME] = modulename
+                    }, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+                }
+                foreach (var route in _assemblyLoader.GetRoulesFromAssembly(assembly))
+                {
+                    try
+                    {
+                        var data = JObject.Parse(Newtonsoft.Json.JsonConvert.SerializeObject(route));
+                        data[CommonConst.CommonField.DISPLAY_ID] = CommonUtility.GetNewID();
+                        data[CommonConst.CommonField.MODULE_NAME] = modulename;
+                        data[CommonConst.CommonField.VERSION] = version;
+                        data[CommonConst.CommonField.ÌS_OVERRIDE] = false;
+                        data[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
+                        data[CommonConst.CommonField.KEY] = $"{route.Method}:{route.Route}";
+                        WriteToDB(data, CommonConst.Collection.SERVER_ROUTES);
+                        data[CommonConst.CommonField.MODULE_ENDPOINT] = ApplicationConfig.AppEndpoint;
+                        if (assembly.GetName().Name != "ZNxt.Net.Core.Module.Gateway" && !string.IsNullOrEmpty(ApplicationConfig.ApiGatewayEndpoint))
+                        {
+                            _apiGatewayService.CallAsync(CommonConst.ActionMethods.POST, "/gateway/installroute", "", data, null, ApplicationConfig.ApiGatewayEndpoint).GetAwaiter().GetResult();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error($"Error InstallRoutes route:{route}", ex);
                     }
                 }
-                catch (Exception ex)
-                {
-                    _logger.Error($"Error InstallRoutes route:{route}", ex);
-                }
+                ReLoadRoutes();
             }
-            ReLoadRoutes();
         }
         private void WriteToDB(JObject joData, string collection)
         {

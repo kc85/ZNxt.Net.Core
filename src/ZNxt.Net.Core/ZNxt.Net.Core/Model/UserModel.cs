@@ -36,6 +36,8 @@ namespace ZNxt.Net.Core.Model
         public string tenant_key { get; set; }
         public bool is_enabled { get; set; }
         public string user_id { get; set; }
+
+        public bool  is_selected{ get; set; }
         public List<string> permissions  { get; set; } = new List<string>();
         public List<TenantGroup> groups { get; set; } = new List<TenantGroup>();
     }

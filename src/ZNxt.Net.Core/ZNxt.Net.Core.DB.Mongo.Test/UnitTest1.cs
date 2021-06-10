@@ -142,6 +142,11 @@ namespace ZNxt.Net.Core.DB.Mongo.Test
             }
         }
 
+        public string GetRequestTenantId()
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetURIAbsolutePath()
         {
             throw new NotImplementedException();

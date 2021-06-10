@@ -16,4 +16,9 @@ namespace ZNxt.Net.Core.Model
             updated_on = created_on = ZNxt.Net.Core.Helpers.CommonUtility.GetUnixTimestamp(DateTime.UtcNow);
         }
     }
+
+    public class BaseModelTenantDbo : BaseModelDbo
+    {
+        public long tenant_id { get; set; }
+    }
 }

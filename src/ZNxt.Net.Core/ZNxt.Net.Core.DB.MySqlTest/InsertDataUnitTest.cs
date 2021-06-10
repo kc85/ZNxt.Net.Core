@@ -19,8 +19,7 @@ namespace ZNxt.Net.Core.DB.MySqlTest
         public InsertDataUnitTest()
         {
             Environment.SetEnvironmentVariable("MSSQLConnectionString", "Server=.\\SQLEXPRESS;Database=TEST;Trusted_Connection=True;");
-            _rDBService = new SqlRDBService();
-            
+            _rDBService = new SqlRDBService(new HttpProxyMock());
         }
         [TestMethod]
         public void InsertWithSQL()

@@ -213,7 +213,13 @@ namespace ZNxt.Net.Core.Web.Services
         public UserModel GetUser(AppTokenModel token)
         {
             _logger.Debug($"GetUser id {GetUserName(token)}", token.ToJObject());
-            return _userService.FindByUsername(GetUserName(token));
+
+            return new UserModel()
+            {
+                user_id = GetUserName(token)
+            };
+
+            //return _userService.FindByUsername(GetUserName(token));
         }
 
         private static string GetUserName(AppTokenModel token)

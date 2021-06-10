@@ -52,7 +52,6 @@ namespace ZNxt.Net.Core.Web.Services.SSO
         }
         public OAuthClient FetchClient(string clientId)
         {
-
             var route = _apiGatewayService.GetRouteAsync(CommonConst.ActionMethods.GET, oauthClientApiPath).GetAwaiter().GetResult();
             if (route != null)
             {

@@ -171,6 +171,11 @@ namespace ZNxt.Net.Core.Web.Proxies
                 return null;
             }
         }
+
+        public string GetRequestTenantId()
+        {
+            return GetReponseHeader(CommonConst.CommonField.TENANT_ID);
+        }
         public string GetReponseHeader(string key)
         {
             if (_httpContextAccessor.HttpContext != null)

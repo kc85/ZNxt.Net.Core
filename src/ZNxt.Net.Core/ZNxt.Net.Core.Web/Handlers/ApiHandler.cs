@@ -24,17 +24,17 @@ namespace ZNxt.Net.Core.Web.Handlers
 
     public class ApiHandler
     {
-        private readonly RequestDelegate _next;
-        private readonly IRouting _routing;
-        private readonly IDBService _dbService;
-        private readonly IHttpContextProxy _httpContextProxy;
-        private readonly IAssemblyLoader _assemblyLoader;
-        private readonly IServiceResolver _serviceResolver;
-        private readonly ILogger _logger;
-        private readonly IResponseBuilder _responseBuilder;
-        private readonly IApiGatewayService _apiGatewayService;
-        private readonly IInMemoryCacheService _inMemoryCacheService;
-        private readonly IOAuthClientService _oAuthClientService;
+        protected readonly RequestDelegate _next;
+        protected readonly IRouting _routing;
+        protected readonly IDBService _dbService;
+        protected readonly IHttpContextProxy _httpContextProxy;
+        protected readonly IAssemblyLoader _assemblyLoader;
+        protected readonly IServiceResolver _serviceResolver;
+        protected readonly ILogger _logger;
+        protected readonly IResponseBuilder _responseBuilder;
+        protected readonly IApiGatewayService _apiGatewayService;
+        protected readonly IInMemoryCacheService _inMemoryCacheService;
+        protected readonly IOAuthClientService _oAuthClientService;
         public ApiHandler(RequestDelegate next, ILogger logger, IDBService dbService, IRouting routing,
             IHttpContextProxy httpContextProxy, IAssemblyLoader assemblyLoader, IServiceResolver serviceResolver, IResponseBuilder responseBuilder,
             IApiGatewayService apiGatewayService, IInMemoryCacheService inMemoryCacheService, IOAuthClientService oAuthClientService)
@@ -53,7 +53,7 @@ namespace ZNxt.Net.Core.Web.Handlers
 
         }
 
-        public async Task Invoke(HttpContext context, IAuthorizationService authorizationService)
+        public virtual async Task Invoke(HttpContext context, IAuthorizationService authorizationService)
         {
             
             var route = _routing.GetRoute(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
@@ -131,17 +131,13 @@ namespace ZNxt.Net.Core.Web.Handlers
             {
                 try
                 {
-
                     route = await _apiGatewayService.GetRouteAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath());
                     if (route != null)
                     {
                         try
                         {
-                            _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
                             context.Response.ContentType = route.ContentType;
-                            var headers = new Dictionary<string, string>();
-                            headers[CommonConst.CommonField.API_AUTH_TOKEN] = "route-call";
-                            var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath(), _httpContextProxy.GetQueryString(), _httpContextProxy.GetRequestBody<JObject>(), headers);
+                            JObject response = await CallRemoteRouteCalls(context, route);
                             if (response != null)
                             {
                                 RemoveHeaders(context);
@@ -184,6 +180,16 @@ namespace ZNxt.Net.Core.Web.Handlers
             }
         }
 
+        public virtual async Task<JObject> CallRemoteRouteCalls(HttpContext context, RoutingModel route)
+        {
+            var appToken = "route-call";
+            _logger.Debug(string.Format("Executing remote route:{0}:{1}", route.Method, route.Route));
+            var headers = new Dictionary<string, string>();
+            headers[CommonConst.CommonField.API_AUTH_TOKEN] = appToken;
+            var response = await _apiGatewayService.CallAsync(_httpContextProxy.GetHttpMethod(), _httpContextProxy.GetURIAbsolutePath(), _httpContextProxy.GetQueryString(), _httpContextProxy.GetRequestBody<JObject>(), headers);
+            return response;
+        }
+
         private static void RemoveHeaders(HttpContext context)
         {
             if (context.Response.Headers.ContainsKey(CommonConst.CommonField.MODULE_NAME))
@@ -208,7 +214,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             }
         }
 
-        private bool AuthorizedRoute(HttpContext context, RoutingModel route, IAuthorizationService authorizationService)
+        public virtual bool AuthorizedRoute(HttpContext context, RoutingModel route, IAuthorizationService authorizationService)
         {
             var ssourl = CommonUtility.GetAppConfigValue(CommonConst.CommonValue.SSOURL_CONFIG_KEY);
             
@@ -232,7 +238,7 @@ namespace ZNxt.Net.Core.Web.Handlers
                     UserModel userModel = null;
                     userModel = _httpContextProxy.User;
 
-                    if (userModel == null || (userModel != null && userModel.user_id == "auth2"))
+                    if (userModel == null) // || (userModel != null && userModel.user_id == "auth2")
                     {
                         var accessToken = _httpContextProxy.GetAccessTokenAync().GetAwaiter().GetResult();
                         var cackeKey = $"{accessToken}";
@@ -304,7 +310,7 @@ namespace ZNxt.Net.Core.Web.Handlers
             }
         }
 
-        private UserModel ValidateOAuthRequest(StringValues oauthclientid, HttpContext context, RoutingModel route)
+        public virtual UserModel ValidateOAuthRequest(StringValues oauthclientid, HttpContext context, RoutingModel route)
         {
             var secrect  = context.Request.Headers[CommonConst.CommonField.OAUTH_CLIENT_SECRET];
             var oauthclient = _oAuthClientService.GetClient(oauthclientid);

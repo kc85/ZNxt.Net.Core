@@ -49,5 +49,7 @@ namespace ZNxt.Net.Core.Interfaces
         UserModel User { get; }
 
         Task<string> GetAccessTokenAync();
+
+        string GetRequestTenantId();
     }
 }

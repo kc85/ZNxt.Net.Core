@@ -7,7 +7,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API.Models
 {
 
     [Table(ClientController.OAUTH_CLIENT_TABLE)]
-    public class OAuthClientModelDbo : BaseModelDbo
+    public class OAuthClientModelDbo : BaseModelTenantDbo
     {
         [Dapper.Contrib.Extensions.Key]
         public long oauth_client_id { get; set; }
@@ -18,7 +18,6 @@ namespace ZNxt.Module.Identity.MySql.Services.API.Models
 
         public string description { get; set; }
         public string salt { get; set; }
-        public long tenant_id { get; set; }
         public string client_secret { get; set; }
         public string encryption_key { get; set; }
 

@@ -92,7 +92,7 @@ namespace ZNxt.Net.Core.Services
 
         public string GetRequestTenantId()
         {
-            return HttpProxy.GetReponseHeader(CommonConst.CommonField.TENANT_ID);
+            return HttpProxy.GetRequestTenantId();
         }
         protected JObject GetCollectionJoin(string soureField, string destinationCollection, string destinationJoinField, List<string> fields, string valueKey, string filter = "{}", bool unwind = false, bool innerJoin= true)
         {

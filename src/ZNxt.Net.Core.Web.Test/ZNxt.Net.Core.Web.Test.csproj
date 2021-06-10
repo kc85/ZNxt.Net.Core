@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.DB.MySqlTest\ZNxt.Net.Core.DB.MySqlTest.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.DB.MySql\ZNxt.Net.Core.DB.MySql.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core.Web\ZNxt.Net.Core.Web.csproj" />
     <ProjectReference Include="..\ZNxt.Net.Core\ZNxt.Net.Core\ZNxt.Net.Core.csproj" />

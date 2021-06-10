@@ -21,7 +21,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API
         protected readonly ILogger _logger;
         private readonly IRDBService _rDBService;
         private readonly IZNxtUserService _zNxtUserService;
-        public UserJsController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService,IRDBService rDBService, IZNxtUserService zNxtUserService, IAppSettingService appSettingService)
+        public UserJsController(IResponseBuilder responseBuilder, ILogger logger, IHttpContextProxy httpContextProxy, IDBService dBService, IRDBService rDBService, IZNxtUserService zNxtUserService, IAppSettingService appSettingService)
        : base(httpContextProxy, dBService, logger, responseBuilder)
         {
 
@@ -38,7 +38,7 @@ namespace ZNxt.Module.Identity.MySql.Services.API
 
             try
             {
-              
+
                 _logger.Debug("Calling Get User");
                 var response = new StringBuilder();
                 var user = _httpContextProxy.User;
@@ -65,5 +65,6 @@ namespace ZNxt.Module.Identity.MySql.Services.API
                 return $"/****Error {ex.Message} , {ex.StackTrace }****/";
             }
         }
+
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ZNxt.Identity.Services;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.DB.MySql;
+using ZNxt.Net.Core.DB.MySqlTest;
 using ZNxt.Net.Core.Interfaces;
 using ZNxt.Net.Core.Model;
 using ZNxt.Net.Core.Web.Models.DBO;
@@ -22,7 +23,7 @@ namespace ZNxt.Net.Core.Web.Test
         public ZNxtUserServiceBaseUnitTest()
         {
             Environment.SetEnvironmentVariable("NPGSQLConnectionString", "Host=103.212.120.XXX;Username=root;Password=root;Database=identity;");
-            _rDBService = new SqlRDBService();
+            _rDBService = new SqlRDBService(new HttpProxyMock());
 
             _zNxtUserService = new ZNxtUserRDBService(_rDBService, new MockUserNotifierService(), new MockLogger(), new MockApiGatewayService(), new MockTenantSetterService(), new MockinMemoryCacheService());
 

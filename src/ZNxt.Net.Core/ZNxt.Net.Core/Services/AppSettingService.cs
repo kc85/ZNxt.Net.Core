@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
+using ZNxt.Net.Core.Config;
 using ZNxt.Net.Core.Consts;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Interfaces;
@@ -25,7 +26,10 @@ namespace ZNxt.Net.Core.Services
             {
                 lock (_lockObj)
                 {
-                    _settings = _dbService.Get(CommonConst.Collection.APP_SETTING, new RawQuery(CommonConst.Filters.IS_OVERRIDE_FILTER));
+                    if (!string.IsNullOrEmpty(ApplicationConfig.ConnectionString))
+                    {
+                        _settings = _dbService.Get(CommonConst.Collection.APP_SETTING, new RawQuery(CommonConst.Filters.IS_OVERRIDE_FILTER));
+                    }
                 }
             }
         }
@@ -54,7 +58,10 @@ namespace ZNxt.Net.Core.Services
                 setting[CommonConst.CommonField.ÌS_OVERRIDE] = false;
                 setting[CommonConst.CommonField.OVERRIDE_BY] = CommonConst.CommonValue.NONE;
                 setting[CommonConst.CommonField.MODULE_NAME] = module;
-                var dbresponse = _dbService.Update(CommonConst.Collection.APP_SETTING, new RawQuery(filter), setting, true);
+                if (!string.IsNullOrEmpty(ApplicationConfig.ConnectionString))
+                {
+                    var dbresponse = _dbService.Update(CommonConst.Collection.APP_SETTING, new RawQuery(filter), setting, true);
+                }
                 _settings = null;
                 ReloadSettings();
             }

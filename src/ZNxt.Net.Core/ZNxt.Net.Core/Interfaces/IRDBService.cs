@@ -44,6 +44,8 @@ namespace ZNxt.Net.Core.Interfaces
         RDBTransaction BeginTransaction();
         void CommitTransaction(RDBTransaction transaction);
         void RollbackTransaction(RDBTransaction transaction);
+
+        DbConnection GetConnection();
     }
 
     public class RDBTransaction

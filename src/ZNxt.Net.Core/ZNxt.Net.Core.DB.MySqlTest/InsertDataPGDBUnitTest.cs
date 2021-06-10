@@ -20,7 +20,7 @@ namespace ZNxt.Net.Core.DB.MySqlTest
         public InsertDataPGDBUnitTest()
         {
             Environment.SetEnvironmentVariable("NPGSQLConnectionString", "Host=103.212.120.XXX;Username=root;Password=root;Database=mvp_tenant_mgt");
-            _rDBService = new SqlRDBService();
+            _rDBService = new SqlRDBService(new HttpProxyMock());
         }
         [TestMethod]
         public void InsertWithSQL()
