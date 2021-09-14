@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json.Linq;
-using ZNxt.Module.MyModule1.Helpers;
 using ZNxt.Net.Core.DB.Mongo;
 using ZNxt.Net.Core.Interfaces;
 
 namespace ZNxt.Module.MyModule1.Helpers
 {
-   public  class AppSettingServiceMock : IAppSettingService
+    public  class AppSettingServiceMock : IAppSettingService
     {
         Dictionary<string, string> data = new Dictionary<string, string>() {
             ["cloudfront_url"] = "https://d1garn5dlo0m6m.cloudfront.net",

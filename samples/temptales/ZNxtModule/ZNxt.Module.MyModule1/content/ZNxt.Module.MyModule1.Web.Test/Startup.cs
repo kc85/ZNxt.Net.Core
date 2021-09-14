@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.HttpOverrides;
 using ZNxt.Net.Core.Helpers;
 using ZNxt.Net.Core.Consts;
 using System;
-using ZNxt.Net.Core.Web.Services;
+using Microsoft.Extensions.Hosting;
 using ZNxt.Net.Core.Interfaces;
+using ZNxt.Net.Core.Web.Services;
 using ZNxt.Module.MyModule1.Consts;
 
 namespace ZNxt.Module.MyModule1.Web.Test
 {
     public class Startup
     {
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
-        public Startup(IHostingEnvironment environment, IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
             Configuration = configuration;
@@ -27,7 +28,7 @@ namespace ZNxt.Module.MyModule1.Web.Test
         {
             LoadModules();
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
+            services.AddMvc();
             services.AddZNxtSSO(Environment);
             services.AddZNxtApp();
             services.AddZNxtBearerAuthentication();
@@ -37,7 +38,7 @@ namespace ZNxt.Module.MyModule1.Web.Test
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
